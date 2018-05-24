@@ -1,0 +1,46 @@
+{
+  "name": "irc-client",
+  "version": "0.2.0",
+  "description": "IRC client using web technologies",
+  "scripts": {
+    "build": "webpack",
+    "watch": "npm run build -- -w --progress",
+    "start": "electron dist/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/jeromeludmann/irc-client.git"
+  },
+  "keywords": [
+    "irc",
+    "client",
+    "typescript",
+    "react",
+    "electron"
+  ],
+  "author": "Jerome Ludmann",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/jeromeludmann/irc-client/issues"
+  },
+  "homepage": "https://github.com/jeromeludmann/irc-client#readme",
+  "devDependencies": {
+    "@types/electron": "^1.6.10",
+    "@types/react": "^16.3.14",
+    "@types/react-dom": "^16.0.5",
+    "@types/react-redux": "^6.0.0",
+    "@types/redux": "^3.6.0",
+    "electron": "^2.0.2",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0",
+    "ts-loader": "^4.3.0",
+    "tslint": "^5.10.0",
+    "tslint-loader": "^3.6.0",
+    "tslint-react": "^3.6.0",
+    "typescript": "^2.8.3",
+    "webpack": "^4.8.3",
+    "webpack-cli": "^2.1.4"
+  }
+}
