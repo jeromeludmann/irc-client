@@ -1,7 +1,7 @@
 {
   "name": "irc-client",
   "version": "0.1.0",
-  "description": "IRC client",
+  "description": "IRC client using web technologies",
   "scripts": {
     "build": "webpack",
     "watch": "npm run build -- -w --progress",
@@ -13,7 +13,11 @@
   },
   "keywords": [
     "irc",
-    "client"
+    "client",
+    "typescript",
+    "react",
+    "react-native",
+    "electron"
   ],
   "author": "Jerome Ludmann",
   "license": "GPL-3.0",
