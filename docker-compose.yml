@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  webpack:
+      container_name: webpack
+      build:
+        context: .
+        dockerfile: ./Dockerfile
+      command: npm run watch
+      volumes:
+        - ./:/irc-client/:ro
+        - /irc-client/node_modules/
+        - ./dist/:/irc-client/dist/:rw
+      environment:
+        - NODE_ENV=development
+
+  ircd:
+    container_name: ircd
+    image: inspircd/inspircd-docker
+    ports:
+      - "6667:6667"
+      - "6697:6697"
