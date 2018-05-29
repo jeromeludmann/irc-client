@@ -1,0 +1,11 @@
+#!/bin/sh
+
+which docker-compose >/dev/null 2>&1;
+
+if [ $? -eq 1 ]
+then
+    echo "Please install Docker before running this command."
+    exit 1
+fi
+
+docker-compose --file docker-compose.yml ${@:1}
