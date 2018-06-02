@@ -1,5 +1,12 @@
 import React from "react";
 import { render } from "react-dom";
-import Hello from "@app/Hello";
+import { Provider } from "react-redux";
+import { store } from "@app/store";
+import ConnectedServerList from "@app/tmp/ConnectedServerList";
 
-render(<Hello />, document.getElementById("root"));
+render(
+  <Provider store={store}>
+    <ConnectedServerList />
+  </Provider>,
+  document.getElementById("root"),
+);
