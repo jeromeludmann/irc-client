@@ -2,6 +2,12 @@
   "extends": ["tslint:recommended", "tslint-react"],
   "rules": {
     "interface-name": false,
-    "ordered-imports": false
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "no-var-requires": false,
+    "arrow-parens": false,
+    "jsx-no-multiline-js": false,
+    "semicolon": false,
+    "object-literal-key-quotes": false
   }
 }

@@ -4,7 +4,7 @@
   "description": "IRC client using web technologies",
   "scripts": {
     "build": "webpack",
-    "watch": "npm run build -- -w --progress",
+    "watch": "npm run build -- -w --progress --color",
     "start": "electron dist/main.js"
   },
   "repository": {
@@ -16,6 +16,7 @@
     "client",
     "typescript",
     "react",
+    "redux",
     "electron"
   ],
   "author": "Jerome Ludmann",
