@@ -1,27 +1,20 @@
 import { connect } from "react-redux";
 import { RootState } from "@app/reducers/rootReducer";
-import { getMessages, getMessagesCount } from "@app/Channel/selectors";
+import { getMessagesCount } from "@app/Channel/selectors";
 import { Channel as Component } from "@app/Channel/component";
+import { ChannelScope } from "@app/types";
 
-interface OwnProps {
-  server: string;
-  name: string;
-}
+type OwnProps = ChannelScope & {};
 
 interface StateProps {
-  messages: string[];
   count: number;
 }
 
-const mapStateToProps = (state: RootState, ownProps: OwnProps): StateProps => ({
-  messages: getMessages(state, {
-    server: ownProps.server,
-    channel: ownProps.name,
-  }),
-  count: getMessagesCount(state, {
-    server: ownProps.server,
-    channel: ownProps.name,
-  }),
+const mapStateToProps = (
+  state: RootState,
+  { server, channel }: OwnProps,
+): StateProps => ({
+  count: getMessagesCount(state, { server, channel }),
 });
 
 export const Channel = connect<StateProps, void, OwnProps>(mapStateToProps)(
