@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { RootState } from "@app/reducers/rootReducer";
-import { getMessages } from "@app/Channel/selectors";
+import { getMessages, getMessagesCount } from "@app/Channel/selectors";
 import { Channel as Component } from "@app/Channel/component";
 
 interface OwnProps {
