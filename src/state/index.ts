@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import servers, { ServerMapState } from "@app/state/server-map";
+import servers, { ServerMapState } from "@app/state/servers";
 
 export type RootState = {
   servers: ServerMapState;

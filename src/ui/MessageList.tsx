@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { ChannelScope } from "@app/types";
 import { RootState } from "@app/state";
-import { getMessages } from "@app/state/server/channel/message-list";
+import { getMessages } from "@app/state/channel/messages";
 
 type OwnProps = ChannelScope & {};
 

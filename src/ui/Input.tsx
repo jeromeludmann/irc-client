@@ -6,7 +6,7 @@ import {
   getValue,
   updateInput,
   sendInput,
-} from "@app/state/server/channel/input";
+} from "@app/state/input";
 
 type OwnProps = ChannelScope & {};
 

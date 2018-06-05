@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { RootState } from "@app/state";
-import { getMessagesCount } from "@app/state/server/channel";
+import { getMessagesCount } from "@app/state/channel";
 import { ChannelScope } from "@app/types";
 import Input from "@app/ui/input";
 import MessageList from "@app/ui/MessageList";

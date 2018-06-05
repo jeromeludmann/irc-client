@@ -1,6 +1,6 @@
 import { ChannelScope } from "@app/types";
-import { pipeReducer } from "@app/core/pipeReducer";
-import channel, { ChannelState } from "@app/state/server/channel";
+import { pipeReducer } from "@app/pipeReducer";
+import channel, { ChannelState } from "@app/state/channel";
 
 export type ChannelMapState = {
   [key: string]: ChannelState;

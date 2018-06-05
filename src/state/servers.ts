@@ -1,5 +1,5 @@
 import { ServerScope } from "@app/types";
-import { pipeReducer } from "@app/core/pipeReducer";
+import { pipeReducer } from "@app/pipeReducer";
 import server, { ServerState } from "@app/state/server";
 
 export type ServerMapState = {

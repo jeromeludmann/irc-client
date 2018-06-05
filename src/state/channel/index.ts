@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
 import { createSelector } from "reselect";
-import input, { InputState } from "@app/state/server/channel/input";
+import input, { InputState } from "@app/state/input";
 import messages, {
   MessageListState,
   getMessages,
-} from "@app/state/server/channel/message-list";
+} from "@app/state/channel/messages";
 
 export interface ChannelState {
   messages: MessageListState;
