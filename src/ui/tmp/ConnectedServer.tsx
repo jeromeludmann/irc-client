@@ -1,8 +1,8 @@
 import React from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { RootState } from "@app/reducers/rootReducer";
-import { Channel } from "@app/Channel/container";
+import Channel from "@app/ui/Channel";
+import { RootState } from "@app/state";
 
 interface OwnProps {
   name: string;

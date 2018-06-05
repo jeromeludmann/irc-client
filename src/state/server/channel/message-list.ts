@@ -1,22 +1,30 @@
 import { ChannelScope } from "@app/types";
+import { RootState } from "@app/state";
 
 export type MessageListState = string[];
 
 interface MessageListAction {
-  type: "COMMAND_SENT";
+  type: "INPUT_SENT";
   payload: ChannelScope & { value: string };
 }
 
 const messagesInitialState: MessageListState = [];
 
-export const messageListReducer = (
+export default function(
   state = messagesInitialState,
   { type, payload }: MessageListAction,
-): MessageListState => {
+): MessageListState {
   switch (type) {
-    case "COMMAND_SENT":
+    case "INPUT_SENT":
       return [...state, payload.value];
     default:
       return state;
   }
-};
+}
+
+export function getMessages(
+  state: RootState,
+  { server, channel }: ChannelScope,
+) {
+  return state.servers[server].channels[channel].messages;
+}

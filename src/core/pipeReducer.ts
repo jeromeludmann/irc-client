@@ -14,7 +14,7 @@ interface Action {
   type: string;
 }
 
-export const pipingReducer = ({
+export const pipeReducer = ({
   key,
   reducer,
   actionTypes: { add, remove },

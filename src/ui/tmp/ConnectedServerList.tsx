@@ -1,8 +1,8 @@
 import React from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { ConnectedServer } from "@app/tmp/ConnectedServer";
-import { RootState } from "@app/reducers/rootReducer";
+import { RootState } from "@app/state";
+import { ConnectedServer } from "@app/ui/tmp/ConnectedServer";
 
 interface StateProps {
   serverNames: string[];
