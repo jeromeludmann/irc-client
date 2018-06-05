@@ -1,7 +1,10 @@
 import React from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
+// state
 import { RootState } from "@app/state";
+import { ServerListTypes } from "@app/state/servers";
+// ui
 import { ConnectedServer } from "@app/ui/tmp/ConnectedServer";
 
 interface StateProps {
@@ -19,7 +22,7 @@ class App extends React.Component<StateProps & DispatchProps, {}> {
         <button onClick={this.handleClick}>Add server</button>
 
         {this.props.serverNames.map(name => (
-          <ConnectedServer name={name} key={name} />
+          <ConnectedServer key={name} name={name} />
         ))}
       </div>
     );
@@ -38,8 +41,11 @@ function mapStateToProps(state: RootState): StateProps {
 
 function mapDispatchToProps(dispatch: Dispatch): DispatchProps {
   return {
-    onClick(serverName: string) {
-      dispatch({ type: `ADD_SERVER`, payload: { server: serverName } });
+    onClick(server: string) {
+      dispatch({
+        type: ServerListTypes.ADD,
+        scope: { server },
+      });
     },
   };
 }

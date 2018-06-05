@@ -1,8 +1,12 @@
 import React from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import Channel from "@app/ui/Channel";
+// state
 import { RootState } from "@app/state";
+import { ServerListTypes } from "@app/state/servers";
+import { ChannelListTypes } from "@app/state/server/channels";
+// ui
+import Channel from "@app/ui/Channel";
 
 interface OwnProps {
   name: string;
@@ -25,16 +29,13 @@ class Server extends React.Component<
     return (
       <div style={{ backgroundColor: "#eee", padding: "10px", margin: "10px" }}>
         <div>server: {this.props.name}</div>
-
         <button onClick={this.handleServerRemoveClick}>Remove server</button>
-
         <button onClick={this.handleClick}>Add channel</button>
 
         {this.props.channelNames.map(channelName => (
           <Channel
-            server={this.props.name}
-            channel={channelName}
             key={channelName}
+            scope={{ server: this.props.name, channel: channelName }}
           />
         ))}
       </div>
@@ -64,17 +65,14 @@ function mapDispatchToProps(
   return {
     onClick(channelName: string) {
       dispatch({
-        type: "ADD_CHANNEL",
-        payload: {
-          server: ownProps.name,
-          channel: channelName,
-        },
+        type: ChannelListTypes.ADD,
+        scope: { server: ownProps.name, channel: channelName },
       });
     },
     onServerRemoveClick() {
       dispatch({
-        type: "REMOVE_SERVER",
-        payload: { server: ownProps.name },
+        type: ServerListTypes.REMOVE,
+        scope: { server: ownProps.name },
       });
     },
   };

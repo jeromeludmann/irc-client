@@ -1,22 +1,22 @@
 import React from "react";
 import { connect } from "react-redux";
+// types
 import { ChannelScope } from "@app/types";
+// state
 import { RootState } from "@app/state";
-import {
-  getValue,
-  updateInput,
-  sendInput,
-} from "@app/state/input";
+import { getValue, changeInput, sendInput } from "@app/state/input";
 
-type OwnProps = ChannelScope & {};
+type OwnProps = {
+  scope: ChannelScope;
+};
 
 type StateProps = {
   value: string;
 };
 
 type DispatchProps = {
-  onChange: (input: string, scope: ChannelScope) => void;
-  onEnter: (input: string, scope: ChannelScope) => void;
+  onChange: (scope: ChannelScope, input: string) => void;
+  onEnter: (scope: ChannelScope, input: string) => void;
 };
 
 class Input extends React.PureComponent<OwnProps & StateProps & DispatchProps> {
@@ -32,27 +32,23 @@ class Input extends React.PureComponent<OwnProps & StateProps & DispatchProps> {
   }
 
   private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { server, channel } = this.props;
-    this.props.onChange(e.currentTarget.value, { server, channel });
+    this.props.onChange(this.props.scope, e.currentTarget.value);
   };
 
   private handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      const { server, channel } = this.props;
-      this.props.onEnter(e.currentTarget.value, { server, channel });
+      this.props.onEnter(this.props.scope, e.currentTarget.value);
     }
   };
 }
 
-const mapStateToProps = (state: RootState, ownProps: OwnProps): StateProps => ({
-  value: getValue(state, {
-    server: ownProps.server,
-    channel: ownProps.channel,
-  }),
-});
+const mapStateToProps = (
+  state: RootState,
+  { scope }: OwnProps,
+): StateProps => ({ value: getValue(state, scope) });
 
 const mapDispatchToProps: DispatchProps = {
-  onChange: updateInput,
+  onChange: changeInput,
   onEnter: sendInput,
 };
 

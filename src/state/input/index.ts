@@ -9,25 +9,44 @@ export interface InputState {
   history: HistoryState;
 }
 
-export default combineReducers<InputState>({
-  value,
-  history,
-});
+export const InputTypes = {
+  CHANGE: "INPUT/CHANGE",
+  SEND: "INPUT/SEND",
+};
 
-export function getValue(state: RootState, { server, channel }: ChannelScope) {
+export interface ChangeInputAction {
+  type: typeof InputTypes.CHANGE;
+  scope: ChannelScope;
+  payload: { value: string };
+}
+
+export interface SendInputAction {
+  type: typeof InputTypes.SEND;
+  scope: ChannelScope;
+  payload: { value: string };
+}
+
+export default combineReducers<InputState>({ value, history });
+
+export function getValue(
+  state: RootState,
+  { server, channel }: ChannelScope,
+): ValueState {
   return state.servers[server].channels[channel].input.value;
 }
 
-export function updateInput(input: string, { server, channel }: ChannelScope) {
+export function changeInput(scope: ChannelScope, input: string) {
   return {
-    type: "INPUT_CHANGED",
-    payload: { server, channel, value: input },
+    type: InputTypes.CHANGE,
+    scope,
+    payload: { value: input },
   };
 }
 
-export function sendInput(input: string, { server, channel }: ChannelScope) {
+export function sendInput(scope: ChannelScope, input: string) {
   return {
-    type: "INPUT_SENT",
-    payload: { server, channel, value: input },
+    type: InputTypes.SEND,
+    scope,
+    payload: { value: input },
   };
 }

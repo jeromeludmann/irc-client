@@ -11,10 +11,7 @@ export interface ChannelState {
   input: InputState;
 }
 
-export default combineReducers<ChannelState>({
-  messages,
-  input,
-});
+export default combineReducers<ChannelState>({ messages, input });
 
 export const getMessagesCount = createSelector(
   getMessages,

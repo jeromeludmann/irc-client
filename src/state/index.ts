@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import servers, { ServerMapState } from "@app/state/servers";
+import servers, { ServerListState } from "@app/state/servers";
 
 export type RootState = {
-  servers: ServerMapState;
+  servers: ServerListState;
 };
 
 export default combineReducers<RootState>({ servers });

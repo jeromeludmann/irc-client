@@ -1,33 +1,40 @@
 import { ServerScope } from "@app/types";
-import { pipeReducer } from "@app/pipeReducer";
+import { pipeToReducer } from "@app/pipeToReducer";
 import server, { ServerState } from "@app/state/server";
 
-export type ServerMapState = {
+export interface ServerListState {
   [key: string]: ServerState;
+}
+
+export const ServerListTypes = {
+  ADD: "SERVER/ADD",
+  REMOVE: "SERVER/REMOVE",
 };
 
-type ServerMapAction =
-  | {
-      type: "ADD_SERVER";
-      payload: ServerScope;
-    }
-  | {
-      type: "REMOVE_SERVER";
-      payload: ServerScope;
-    };
+interface AddServerAction {
+  type: typeof ServerListTypes.ADD;
+  payload: ServerScope;
+}
 
-const initialState: ServerMapState = {};
+interface RemoveServerAction {
+  type: typeof ServerListTypes.REMOVE;
+  payload: ServerScope;
+}
+
+type Action = { scope: ServerScope } & (AddServerAction | RemoveServerAction);
+
+const initialState: ServerListState = {};
 
 export default function(
   servers = initialState,
-  action: ServerMapAction,
-): ServerMapState {
-  return pipeReducer({
-    key: action.payload && action.payload.server,
+  action: Action,
+): ServerListState {
+  return pipeToReducer({
+    key: action.scope && action.scope.server,
     reducer: server,
     actionTypes: {
-      add: "ADD_SERVER",
-      remove: "REMOVE_SERVER",
+      add: ServerListTypes.ADD,
+      remove: ServerListTypes.REMOVE,
     },
   })(servers, action);
 }
