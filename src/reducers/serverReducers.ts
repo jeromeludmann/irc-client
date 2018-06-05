@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 import { pipingReducer } from "@app/reducers/pipingReducer";
-import { ChannelState, channelReducer } from "@app/Channel/reducers";
+import { ChannelState, channelReducer } from "@app/Channel/reducer";
 import { ChannelScope } from "@app/types";
 
 // Name

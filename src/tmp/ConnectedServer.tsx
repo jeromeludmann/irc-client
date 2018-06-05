@@ -33,7 +33,7 @@ class Server extends React.Component<
         {this.props.channelNames.map(channelName => (
           <Channel
             server={this.props.name}
-            name={channelName}
+            channel={channelName}
             key={channelName}
           />
         ))}

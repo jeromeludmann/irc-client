@@ -1,11 +1,5 @@
 import { createSelector } from "reselect";
-import { RootState } from "@app/reducers/rootReducer";
-import { ChannelScope } from "@app/types";
-
-export const getMessages = (
-  state: RootState,
-  { server, channel }: ChannelScope,
-) => state.servers[server].channels[channel].messages;
+import { getMessages } from "@app/MessageList/selectors";
 
 export const getMessagesCount = createSelector(
   getMessages,
