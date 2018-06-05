@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { RootState } from "@app/reducers/rootReducer";
-import { getMessages } from "@app/Channel/selectors";
+import { getMessages, getMessagesCount } from "@app/Channel/selectors";
 import { Channel as Component } from "@app/Channel/component";
 
 interface OwnProps {
@@ -10,6 +10,7 @@ interface OwnProps {
 
 interface StateProps {
   messages: string[];
+  count: number;
 }
 
 function mapStateToProps(state: RootState, ownProps: OwnProps): StateProps {
@@ -18,9 +19,13 @@ function mapStateToProps(state: RootState, ownProps: OwnProps): StateProps {
       server: ownProps.serverName,
       channel: ownProps.name,
     }),
+    count: getMessagesCount(state, {
+      server: ownProps.serverName,
+      channel: ownProps.name,
+    }),
   };
 }
 
-export const Channel = connect<StateProps, void, OwnProps>(
-  mapStateToProps,
-)(Component);
+export const Channel = connect<StateProps, void, OwnProps>(mapStateToProps)(
+  Component,
+);
