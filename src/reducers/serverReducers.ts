@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
-import { itemsReducer } from "@app/reducers/itemsReducer";
+import { pipingReducer } from "@app/reducers/pipingReducer";
 import { ChannelState, channelReducer } from "@app/Channel/reducers";
+import { ChannelScope } from "@app/types";
 
 // Name
 
@@ -39,7 +40,7 @@ type ChannelsState = {
 
 interface ChannelsAction {
   type: "ADD_CHANNEL";
-  payload: { server: string; channel: string };
+  payload: ChannelScope;
 }
 
 const channelsInitialState: ChannelsState = {};
@@ -48,7 +49,7 @@ const channelsReducer = (
   channels = channelsInitialState,
   action: ChannelsAction,
 ): ChannelsState =>
-  itemsReducer({
+  pipingReducer({
     key: action.payload && action.payload.channel,
     reducer: channelReducer,
     actionTypes: {

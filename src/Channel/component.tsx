@@ -1,9 +1,9 @@
 import React from "react";
-import { CommandInput } from "@app/CommandInput/connected";
+import { CommandInput } from "@app/CommandInput/container";
 
 interface Props {
   name: string;
-  serverName: string;
+  server: string;
   messages: string[];
   count: number;
 }
@@ -23,7 +23,7 @@ export class Channel extends React.Component<Props, {}> {
         </ul>
 
         <CommandInput
-          server={this.props.serverName}
+          server={this.props.server}
           channel={this.props.name}
         />
       </div>

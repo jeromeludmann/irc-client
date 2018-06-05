@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
-import { itemsReducer } from "@app/reducers/itemsReducer";
+import { pipingReducer } from "@app/reducers/pipingReducer";
 import { ServerState, serverReducer } from "@app/reducers/serverReducers";
+import { ServerScope } from "@app/types";
 
 type ServersState = {
   [key: string]: ServerState;
@@ -9,11 +10,11 @@ type ServersState = {
 type ServersAction =
   | {
       type: "ADD_SERVER";
-      payload: { server: string };
+      payload: ServerScope;
     }
   | {
       type: "REMOVE_SERVER";
-      payload: { server: string };
+      payload: ServerScope;
     };
 
 const serversInitialState: ServersState = {};
@@ -22,7 +23,7 @@ const serversReducer = (
   servers = serversInitialState,
   action: ServersAction,
 ): ServersState =>
-  itemsReducer({
+  pipingReducer({
     key: action.payload && action.payload.server,
     reducer: serverReducer,
     actionTypes: {

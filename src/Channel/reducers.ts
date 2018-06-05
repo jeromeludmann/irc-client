@@ -3,6 +3,7 @@ import {
   CommandInputState,
   commandInputReducer,
 } from "@app/CommandInput/reducers";
+import { ChannelScope } from "@app/types";
 
 // Name
 
@@ -14,9 +15,11 @@ const nameReducer = (state = nameInitialState): NameState => state;
 
 type MessagesState = string[];
 
+type MessagesPayload = ChannelScope & { value: string };
+
 interface MessagesAction {
   type: "COMMAND_SENT";
-  payload: { server: string; channel: string; value: string };
+  payload: MessagesPayload;
 }
 
 const messagesInitialState: MessagesState = [];

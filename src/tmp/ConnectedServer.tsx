@@ -2,7 +2,7 @@ import React from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { RootState } from "@app/reducers/rootReducer";
-import { Channel } from "@app/Channel/connected";
+import { Channel } from "@app/Channel/container";
 
 interface OwnProps {
   name: string;
@@ -32,7 +32,7 @@ class Server extends React.Component<
 
         {this.props.channelNames.map(channelName => (
           <Channel
-            serverName={this.props.name}
+            server={this.props.name}
             name={channelName}
             key={channelName}
           />

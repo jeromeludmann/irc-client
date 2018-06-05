@@ -1,18 +1,11 @@
 import React from "react";
+import { ChannelScope } from "@app/types";
 
-interface Props {
-  server: string;
-  channel: string;
+type Props = ChannelScope & {
   value: string;
-  onChange: (
-    command: string,
-    scope: { server: string; channel: string },
-  ) => void;
-  onEnter: (
-    command: string,
-    scope: { server: string; channel: string },
-  ) => void;
-}
+  onChange: (command: string, scope: ChannelScope) => void;
+  onEnter: (command: string, scope: ChannelScope) => void;
+};
 
 export class CommandInput extends React.PureComponent<Props> {
   public render() {

@@ -4,7 +4,7 @@ import { getMessages, getMessagesCount } from "@app/Channel/selectors";
 import { Channel as Component } from "@app/Channel/component";
 
 interface OwnProps {
-  serverName: string;
+  server: string;
   name: string;
 }
 
@@ -15,11 +15,11 @@ interface StateProps {
 
 const mapStateToProps = (state: RootState, ownProps: OwnProps): StateProps => ({
   messages: getMessages(state, {
-    server: ownProps.serverName,
+    server: ownProps.server,
     channel: ownProps.name,
   }),
   count: getMessagesCount(state, {
-    server: ownProps.serverName,
+    server: ownProps.server,
     channel: ownProps.name,
   }),
 });
