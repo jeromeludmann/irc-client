@@ -1,10 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-// types
 import { ChannelScope } from "@app/types";
-// state
+import { changeInput, sendInput } from "@app/actions/input";
 import { RootState } from "@app/state";
-import { getValue, changeInput, sendInput } from "@app/state/input";
+import { getValue } from "@app/state/input";
 
 type OwnProps = {
   scope: ChannelScope;
