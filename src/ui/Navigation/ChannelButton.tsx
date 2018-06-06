@@ -17,8 +17,8 @@ export default class ChannelButton extends Component<Props> {
         data-server={server}
         data-channel={channel}
         style={{
-          backgroundColor: active ? "red" : "#333",
-          color: active ? "#111" : "red",
+          backgroundColor: active ? "#ccc" : "#333",
+          color: active ? "#111" : "#ccc",
           fontWeight: unread ? "bold" : "normal",
           outline: "none",
           width: "100%",

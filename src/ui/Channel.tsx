@@ -1,30 +1,47 @@
 import React from "react";
 import { connect } from "react-redux";
-import { ChannelScope } from "@app/types";
+import { Scope } from "@app/types";
 import { RootState } from "@app/state";
-import { getMessagesCount } from "@app/state/channel/messages";
 import MessageList from "@app/ui/MessageList";
 import Input from "@app/ui/Input";
 
-type OwnProps = {
-  scope: ChannelScope;
-};
-
 interface StateProps {
-  count: number;
+  scope: Scope;
 }
 
-const Channel = ({ scope, count }: OwnProps & StateProps) => (
-  <div style={{ border: "1px dashed #ccc", width: "100%" }}>
-    <MessageList scope={scope} />
-    <Input scope={scope} />
-    <div>messages counter: {count}</div>
-  </div>
+const Channel = ({ scope }: StateProps) => (
+  <>
+    <div
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        borderBottom: "1px dashed #333",
+      }}
+    >
+      <MessageList scope={scope} />
+    </div>
+
+    <div
+      style={{
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        borderTop: "1px solid #666",
+      }}
+    >
+      <Input scope={scope} />
+    </div>
+  </>
 );
 
-const mapStateToProps = (
-  state: RootState,
-  { scope }: OwnProps,
-): StateProps => ({ count: getMessagesCount(scope, state) });
+const mapStateToProps = ({ current }: RootState): StateProps => ({
+  scope: {
+    server: current.server,
+    channel: current.channel,
+  },
+});
 
-export default connect<StateProps, void, OwnProps>(mapStateToProps)(Channel);
+export default connect<StateProps, void>(mapStateToProps)(Channel);
