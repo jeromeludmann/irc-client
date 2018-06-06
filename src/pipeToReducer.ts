@@ -1,7 +1,7 @@
 import { Reducer } from "redux";
 
 interface Params {
-  key: string;
+  key?: string;
   reducer: Reducer;
   actionTypes: { add: string; remove: string };
 }
@@ -24,7 +24,7 @@ export const pipeToReducer = ({
   }
 
   switch (action.type) {
-    case add:
+    case add: // TODO useless? see default case
       return {
         ...items,
         [key]: reducer(undefined, action),
