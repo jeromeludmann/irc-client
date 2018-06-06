@@ -15,11 +15,10 @@ interface StateProps {
 }
 
 const Channel = ({ scope, count }: OwnProps & StateProps) => (
-  <div style={{ backgroundColor: "#ddd", padding: "10px", margin: "10px" }}>
-    <span>{scope.channel}</span>
-    <div>Messages: {count}</div>
+  <div style={{ border: "1px dashed #ccc", width: "100%" }}>
     <MessageList scope={scope} />
     <Input scope={scope} />
+    <div>messages counter: {count}</div>
   </div>
 );
 
