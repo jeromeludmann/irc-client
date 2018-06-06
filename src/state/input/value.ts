@@ -1,25 +1,21 @@
 import {
-  ChangeInputAction,
-  SendInputAction,
-  InputTypes,
-} from "@app/state/input";
+  InputChangedAction,
+  InputSentAction,
+  InputActionTypes,
+} from "@app/actions/input";
 
 export type ValueState = string;
 
-type Action = ChangeInputAction | SendInputAction;
-
-const initialState: ValueState = "";
-
 export default function(
-  state = initialState,
-  { type, payload }: Action,
+  value: ValueState = "",
+  { type, payload }: InputChangedAction | InputSentAction,
 ): ValueState {
   switch (type) {
-    case InputTypes.CHANGE:
+    case InputActionTypes.CHANGED:
       return payload.value;
-    case InputTypes.SEND:
+    case InputActionTypes.SENT:
       return "";
     default:
-      return state;
+      return value;
   }
 }

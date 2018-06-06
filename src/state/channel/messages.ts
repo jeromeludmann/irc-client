@@ -1,22 +1,19 @@
 import { ChannelScope } from "@app/types";
+import { InputSentAction, InputActionTypes } from "@app/actions/input";
 import { RootState } from "@app/state";
-import { SendInputAction, InputTypes } from "@app/state/input";
+import { createSelector } from "reselect";
 
 export type MessageListState = string[];
 
-type Action = SendInputAction;
-
-const initialState: MessageListState = [];
-
 export default function(
-  state = initialState,
-  { type, payload }: Action,
+  messages: MessageListState = [],
+  { type, payload }: InputSentAction,
 ): MessageListState {
   switch (type) {
-    case InputTypes.SEND:
-      return [...state, payload.value];
+    case InputActionTypes.SENT:
+      return [...messages, payload.value];
     default:
-      return state;
+      return messages;
   }
 }
 
@@ -26,3 +23,8 @@ export function getMessages(
 ): MessageListState {
   return state.servers[server].channels[channel].messages;
 }
+
+export const getMessagesCount = createSelector(
+  getMessages,
+  messages => (messages ? messages.length : 0),
+);
