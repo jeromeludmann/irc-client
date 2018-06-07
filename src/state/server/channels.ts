@@ -1,4 +1,4 @@
-import { ChannelScope } from "@app/types";
+import { Scope } from "@app/types";
 import { pipeToReducer } from "@app/pipeToReducer";
 import channel, { ChannelState } from "@app/state/channel";
 import {
@@ -13,7 +13,7 @@ export interface ChannelListState {
 
 export default function(
   channels: ChannelListState = {},
-  action: { scope: ChannelScope } & (AddChannelAction | RemoveChannelAction),
+  action: { scope: Scope } & (AddChannelAction | RemoveChannelAction),
 ): ChannelListState {
   return pipeToReducer({
     key: action.scope && action.scope.channel,

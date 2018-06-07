@@ -1,4 +1,4 @@
-import { ChannelScope } from "@app/types";
+import { Scope } from "@app/types";
 import { InputSentAction, InputActionTypes } from "@app/actions/input";
 import { RootState } from "@app/state";
 import { createSelector } from "reselect";
@@ -17,12 +17,13 @@ export default function(
   }
 }
 
-export function getMessages(
-  { server, channel }: ChannelScope,
+export const getMessages = (
+  { server, channel }: Scope,
   state: RootState,
-): MessageListState {
-  return state.servers[server].channels[channel].messages;
-}
+): MessageListState =>
+  channel
+    ? state.servers[server].channels[channel].messages
+    : state.servers[server].status.messages;
 
 export const getMessagesCount = createSelector(
   getMessages,
