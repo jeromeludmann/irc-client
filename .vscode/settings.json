@@ -16,5 +16,9 @@
     "**/dist": true
   },
   "typescript.format.enable": true,
-  "typescript.validate.enable": true
+  "typescript.validate.enable": true,
+  "editor.rulers": [
+    80
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
