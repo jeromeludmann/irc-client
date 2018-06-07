@@ -7,7 +7,6 @@ export interface ChannelState {
   messages: MessageListState;
   input: InputState;
   unread: UnreadState;
-  users?: any[]; // for channels only
 }
 
 export default combineReducers<ChannelState>({ messages, input, unread });

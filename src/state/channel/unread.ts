@@ -1,12 +1,14 @@
+import { AnyAction } from "redux";
+
 export type UnreadState = boolean;
 
 export default function(
   unread: UnreadState = false,
-  { type, scope, payload }: any,
+  { type }: AnyAction,
 ): UnreadState {
   switch (type) {
-    case "IRC/PRIVMSG":
-      return scope.channel !== payload.channel;
+    // case IRC_PRIVMSG:
+    // return route.channel !== current channel ???
     default:
       return unread;
   }

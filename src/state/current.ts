@@ -1,14 +1,16 @@
+import { SetActiveWindow, SET_ACTIVE_WINDOW } from "@app/navigation/types";
+
 export interface CurrentState {
   server: string;
-  channel?: string;
+  channel: string;
 }
 
 export default function reduceCurrent(
-  current: CurrentState = { server: "server" }, // TODO no default?
-  { type, payload }: any,
+  current: CurrentState = { server: "", channel: "" },
+  { type, payload }: SetActiveWindow,
 ) {
   switch (type) {
-    case "APP/SWITCH_CHANNEL":
+    case SET_ACTIVE_WINDOW:
       return { server: payload.server, channel: payload.channel };
     default:
       return current;

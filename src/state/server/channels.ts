@@ -1,26 +1,26 @@
-import { Scope } from "@app/types";
-import { pipeToReducer } from "@app/pipeToReducer";
 import channel, { ChannelState } from "@app/state/channel";
-import {
-  AddChannelAction,
-  RemoveChannelAction,
-  ChannelListTypes,
-} from "@app/actions/channel";
+import { RoutedAction, ChannelRoute } from "@app/Route";
 
 export interface ChannelListState {
   [key: string]: ChannelState;
 }
 
+const initialState = {
+  status: {
+    messages: [],
+    input: { value: "", history: [] },
+    unread: false,
+  },
+};
+
 export default function(
-  channels: ChannelListState = {},
-  action: { scope: Scope } & (AddChannelAction | RemoveChannelAction),
+  channels: ChannelListState = initialState,
+  action: RoutedAction<ChannelRoute>,
 ): ChannelListState {
-  return pipeToReducer({
-    key: action.scope && action.scope.channel,
-    reducer: channel,
-    actionTypes: {
-      add: ChannelListTypes.ADD,
-      remove: ChannelListTypes.REMOVE,
-    },
-  })(channels, action);
+  return action.route && action.route.channel
+    ? {
+        ...channels,
+        [action.route.channel]: channel(channels[action.route.channel], action),
+      }
+    : channels;
 }

@@ -1,12 +1,12 @@
 const mockedState = {
   servers: {
     server1: {
-      status: {
-        messages: ["Welcome to server1"],
-        input: { value: "", history: [""] },
-        unread: false,
-      },
       channels: {
+        status: {
+          messages: ["Welcome to server1"],
+          input: { value: "", history: [""] },
+          unread: false,
+        },
         "#chan1": {
           messages: ["Hello"],
           input: { value: "", history: [""] },
@@ -20,16 +20,18 @@ const mockedState = {
       },
     },
     server2: {
-      status: {
-        messages: ["Welcome to server2"],
-        input: { value: "", history: [""] },
-        unread: false,
+      channels: {
+        status: {
+          messages: ["Welcome to server2"],
+          input: { value: "", history: [""] },
+          unread: false,
+        },
       },
-      channels: {},
     },
   },
   current: {
     server: "server1",
+    channel: "status",
   },
 };
 

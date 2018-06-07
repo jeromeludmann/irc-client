@@ -1,12 +1,6 @@
-import { Scope } from "@app/types";
-import { pipeToReducer } from "@app/pipeToReducer";
 import server, { ServerState } from "@app/state/server";
-import {
-  ServerListTypes,
-  AddServerAction,
-  RemoveServerAction,
-} from "@app/actions/server";
 import { RootState } from "@app/state";
+import { RoutedAction, ServerRoute } from "@app/Route";
 
 export interface ServerListState {
   [key: string]: ServerState;
@@ -14,16 +8,14 @@ export interface ServerListState {
 
 export default function(
   servers: ServerListState = {},
-  action: { scope: Scope } & (AddServerAction | RemoveServerAction),
+  action: RoutedAction<ServerRoute>,
 ): ServerListState {
-  return pipeToReducer({
-    key: action.scope && action.scope.server,
-    reducer: server,
-    actionTypes: {
-      add: ServerListTypes.ADD,
-      remove: ServerListTypes.REMOVE,
-    },
-  })(servers, action);
+  return action.route && action.route.server
+    ? {
+        ...servers,
+        [action.route.server]: server(servers[action.route.server], action),
+      }
+    : servers;
 }
 
 export function getServers(state: RootState) {

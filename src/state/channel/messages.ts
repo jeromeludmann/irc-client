@@ -1,16 +1,15 @@
-import { Scope } from "@app/types";
-import { InputSentAction, InputActionTypes } from "@app/actions/input";
-import { RootState } from "@app/state";
 import { createSelector } from "reselect";
+import { RootState } from "@app/state";
+import { SentAction, INPUT_SENT } from "@app/input/types";
 
 export type MessageListState = string[];
 
 export default function(
   messages: MessageListState = [],
-  { type, payload }: InputSentAction,
+  { type, payload }: SentAction,
 ): MessageListState {
   switch (type) {
-    case InputActionTypes.SENT:
+    case INPUT_SENT:
       return [...messages, payload.value];
     default:
       return messages;
@@ -18,12 +17,10 @@ export default function(
 }
 
 export const getMessages = (
-  { server, channel }: Scope,
   state: RootState,
-): MessageListState =>
-  channel
-    ? state.servers[server].channels[channel].messages
-    : state.servers[server].status.messages;
+  server: string,
+  channel: string,
+): MessageListState => state.servers[server].channels[channel].messages;
 
 export const getMessagesCount = createSelector(
   getMessages,

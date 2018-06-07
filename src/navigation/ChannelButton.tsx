@@ -2,10 +2,10 @@ import React, { MouseEvent, Component } from "react";
 
 interface Props {
   server: string;
-  channel?: string;
+  channel: string;
   active: boolean;
   unread: boolean;
-  onChannelClick: (server: string, channel?: string) => void;
+  onChannelClick: (server: string, channel: string) => void;
 }
 
 export default class ChannelButton extends Component<Props> {
@@ -27,16 +27,16 @@ export default class ChannelButton extends Component<Props> {
           fontSize: channel ? "12px" : "13px",
         }}
       >
-        {channel || server}
+        {channel === "status" ? server : channel}
       </button>
     );
   }
 
   private handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     const server = e.currentTarget.getAttribute("data-server");
-    const channel = e.currentTarget.getAttribute("data-channel") || undefined; // explicitly set to undefined if null
+    const channel = e.currentTarget.getAttribute("data-channel"); // explicitly set to undefined if null
 
-    if (server) {
+    if (server && channel) {
       this.props.onChannelClick(server, channel);
     }
   };
