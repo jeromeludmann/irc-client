@@ -1,12 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import { ChannelScope } from "@app/types";
+import { Scope } from "@app/types";
 import { changeInput, sendInput } from "@app/actions/input";
 import { RootState } from "@app/state";
 import { getValue } from "@app/state/input";
 
 type OwnProps = {
-  scope: ChannelScope;
+  scope: Scope;
 };
 
 type StateProps = {
@@ -14,14 +14,25 @@ type StateProps = {
 };
 
 type DispatchProps = {
-  onChange: (scope: ChannelScope, input: string) => void;
-  onEnter: (scope: ChannelScope, input: string) => void;
+  onChange: (scope: Scope, input: string) => void;
+  onEnter: (scope: Scope, input: string) => void;
 };
 
 class Input extends React.PureComponent<OwnProps & StateProps & DispatchProps> {
   public render() {
     return (
       <input
+        style={{
+          width: "100%",
+          height: "30px",
+          border: 0,
+          outline: "none",
+          fontFamily: "Menlo, Monaco, Courier",
+          backgroundColor: "#111",
+          color: "#ccc",
+          padding: "5px 10px",
+        }}
+        placeholder="Your message here"
         type="text"
         value={this.props.value}
         onChange={this.handleChange}
