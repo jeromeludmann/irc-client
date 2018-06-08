@@ -1,29 +1,37 @@
-import { Scope } from "@app/types";
-import { InputSentAction, InputActionTypes } from "@app/actions/input";
-import { RootState } from "@app/state";
 import { createSelector } from "reselect";
+import { RootState } from "@app/state";
+import { InputValueSent, INPUT_VALUE_SENT } from "@app/actions/input";
 
-export type MessageListState = string[];
+interface Message {
+  timestamp: number;
+  value: string;
+}
+
+export type MessageListState = Message[];
 
 export default function(
   messages: MessageListState = [],
-  { type, payload }: InputSentAction,
+  { type, payload }: InputValueSent,
 ): MessageListState {
   switch (type) {
-    case InputActionTypes.SENT:
-      return [...messages, payload.value];
+    case INPUT_VALUE_SENT:
+      return [
+        ...messages,
+        {
+          timestamp: Date.now(),
+          value: payload.value,
+        },
+      ];
     default:
       return messages;
   }
 }
 
 export const getMessages = (
-  { server, channel }: Scope,
   state: RootState,
-): MessageListState =>
-  channel
-    ? state.servers[server].channels[channel].messages
-    : state.servers[server].status.messages;
+  server: string,
+  channel: string,
+): MessageListState => state.servers[server].channels[channel].messages;
 
 export const getMessagesCount = createSelector(
   getMessages,

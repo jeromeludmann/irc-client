@@ -3,7 +3,8 @@
     "**/.vscode": true,
     "**/node_modules": true,
     "**/package-lock.json": true,
-    "**/dist": true
+    "**/dist": true,
+    "LICENSE": true
   },
   "files.watcherExclude": {
     "**/dist/**": true
@@ -16,5 +17,9 @@
     "**/dist": true
   },
   "typescript.format.enable": true,
-  "typescript.validate.enable": true
+  "typescript.validate.enable": true,
+  "editor.rulers": [
+    80
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

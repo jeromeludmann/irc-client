@@ -1,27 +1,38 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Scope } from "@app/types";
 import { RootState } from "@app/state";
 import { getMessages } from "@app/state/channel/messages";
 
-type OwnProps = {
-  scope: Scope;
-};
-
-interface StateProps {
-  messages: string[];
+interface OwnProps {
+  server: string;
+  channel: string;
 }
 
-const MessageList = ({ messages }: OwnProps & StateProps) => (
-  <ul style={{ listStyle: "none", padding: "5px 10px" }}>
-    {messages.map(message => <li key={message}>{message}</li>)}
-  </ul>
-);
+interface StateProps {
+  messages: Message[];
+}
+
+interface Message {
+  timestamp: number;
+  value: string;
+}
+
+const MessageList = ({ messages }: OwnProps & StateProps) => {
+  return (
+    <ul style={{ listStyle: "none", padding: "5px 10px" }}>
+      {messages.map(message => (
+        <li key={message.timestamp}>
+          {message.timestamp} | {message.value}
+        </li>
+      ))}
+    </ul>
+  );
+};
 
 const mapStateToProps = (
   state: RootState,
-  { scope }: OwnProps,
-): StateProps => ({ messages: getMessages(scope, state) });
+  { server, channel }: OwnProps,
+): StateProps => ({ messages: getMessages(state, server, channel) });
 
 export default connect<StateProps, void, OwnProps>(mapStateToProps)(
   MessageList,

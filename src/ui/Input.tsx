@@ -1,24 +1,47 @@
-import React from "react";
+import React, { KeyboardEvent, ChangeEvent } from "react";
 import { connect } from "react-redux";
-import { Scope } from "@app/types";
-import { changeInput, sendInput } from "@app/actions/input";
+import { ChannelRoute } from "@app/Route";
 import { RootState } from "@app/state";
-import { getValue } from "@app/state/input";
+import { selectValue } from "@app/state/input/selectors";
+import {
+  updateValue,
+  sendValue,
+  goForwardHistory,
+  goBackHistory,
+} from "@app/effects/input";
 
-type OwnProps = {
-  scope: Scope;
-};
+interface OwnProps {
+  route: ChannelRoute;
+}
 
-type StateProps = {
+interface StateProps {
   value: string;
-};
+}
 
-type DispatchProps = {
-  onChange: (scope: Scope, input: string) => void;
-  onEnter: (scope: Scope, input: string) => void;
+interface DispatchProps {
+  onType: (route: ChannelRoute, input: string) => void;
+  onEnter: (route: ChannelRoute, input: string) => void;
+  onArrowUp: (route: ChannelRoute) => void;
+  onArrowDown: (route: ChannelRoute) => void;
+}
+
+const mapStateToProps = (
+  state: RootState,
+  { route }: OwnProps,
+): StateProps => ({
+  value: selectValue(route, state),
+});
+
+const mapDispatchToProps: DispatchProps = {
+  onType: updateValue,
+  onEnter: sendValue,
+  onArrowUp: goBackHistory,
+  onArrowDown: goForwardHistory,
 };
 
 class Input extends React.PureComponent<OwnProps & StateProps & DispatchProps> {
+  private static ARROW = { UP: 38, DOWN: 40 };
+
   public render() {
     return (
       <input
@@ -37,30 +60,35 @@ class Input extends React.PureComponent<OwnProps & StateProps & DispatchProps> {
         value={this.props.value}
         onChange={this.handleChange}
         onKeyPress={this.handleKeyPress}
+        onKeyDown={this.handleKeyDown}
       />
     );
   }
 
-  private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.onChange(this.props.scope, e.currentTarget.value);
+  private handleChange = ({
+    currentTarget: { value },
+  }: ChangeEvent<HTMLInputElement>) => {
+    this.props.onType(this.props.route, value);
   };
 
-  private handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      this.props.onEnter(this.props.scope, e.currentTarget.value);
+  private handleKeyPress = ({
+    key,
+    currentTarget: { value },
+  }: KeyboardEvent<HTMLInputElement>) => {
+    if (key === "Enter") {
+      this.props.onEnter(this.props.route, value);
+    }
+  };
+
+  private handleKeyDown = ({ keyCode }: KeyboardEvent<HTMLInputElement>) => {
+    switch (keyCode) {
+      case Input.ARROW.UP:
+        return this.props.onArrowUp(this.props.route);
+      case Input.ARROW.DOWN:
+        return this.props.onArrowDown(this.props.route);
     }
   };
 }
-
-const mapStateToProps = (
-  state: RootState,
-  { scope }: OwnProps,
-): StateProps => ({ value: getValue(state, scope) });
-
-const mapDispatchToProps: DispatchProps = {
-  onChange: changeInput,
-  onEnter: sendInput,
-};
 
 export default connect<StateProps, DispatchProps, OwnProps>(
   mapStateToProps,
