@@ -1,11 +1,13 @@
-import { ChannelRoute } from "@app/Route";
-import { RootState } from "@app/state";
 import { selectInput } from "@app/state/selectors";
+import { createSelector } from "reselect";
+import { InputState } from "@app/state/input/input";
 
-export function selectValue(route: ChannelRoute, state: RootState): string {
-  return selectInput(route, state).value;
-}
+export const selectValue = createSelector(
+  selectInput,
+  (input: InputState) => input.value,
+);
 
-export function selectHistory(route: ChannelRoute, state: RootState) {
-  return selectInput(route, state).history;
-}
+export const selectHistory = createSelector(
+  selectInput,
+  (input: InputState) => input.history,
+);
