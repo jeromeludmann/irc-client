@@ -1,35 +1,50 @@
 const mockedState = {
   servers: {
-    server1: {
-      status: {
-        messages: ["Welcome to server1"],
-        input: { value: "", history: [""] },
-        unread: false,
-      },
+    "irc.empty": {
       channels: {
-        "#chan1": {
-          messages: ["Hello"],
-          input: { value: "", history: [""] },
-          unread: false,
-        },
-        "#chan2": {
-          messages: ["world!"],
-          input: { value: "", history: [""] },
+        status: {
+          messages: [],
+          input: {
+            value: "",
+            lastValue: "",
+            history: [],
+            historyIndex: 0,
+          },
           unread: false,
         },
       },
     },
-    server2: {
-      status: {
-        messages: ["Welcome to server2"],
-        input: { value: "", history: [""] },
-        unread: false,
+    "irc.filled": {
+      channels: {
+        status: {
+          messages: [{ timestamp: 0, value: "Welcome!" }],
+          input: {
+            value: "",
+            lastValue: "",
+            history: ["Welcome!"],
+            historyIndex: 1,
+          },
+          unread: false,
+        },
+        "#general": {
+          messages: [
+            { timestamp: 0, value: "Hello" },
+            { timestamp: 1, value: "World!" },
+          ],
+          input: {
+            value: "",
+            lastValue: "",
+            history: ["Hello", "World!"],
+            historyIndex: 2,
+          },
+          unread: false,
+        },
       },
-      channels: {},
     },
   },
   current: {
-    server: "server1",
+    server: "irc.empty",
+    channel: "status",
   },
 };
 
