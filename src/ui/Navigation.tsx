@@ -2,7 +2,7 @@ import React, { Component, MouseEvent } from "react";
 import { connect } from "react-redux";
 import { RootState } from "@app/state";
 import { getServers } from "@app/state/servers";
-import { setActiveWindow } from "@app/navigation/actions";
+import { setActiveWindow } from "@app/actions";
 
 interface StateProps {
   current: {

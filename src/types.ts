@@ -1,4 +1,4 @@
-import { RoutedAction, ServerRoute, ChannelRoute } from "@app/Route";
+import { RoutedAction, ServerRoute } from "@app/Route";
 
 export const SERVER_REMOVE = "SERVER/REMOVE";
 export const CHANNEL_REMOVE = "CHANNEL/REMOVE";

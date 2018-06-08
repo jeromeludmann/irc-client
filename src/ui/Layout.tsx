@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { RootState } from "@app/state";
-import Navigation from "@app/navigation/Navigation";
-import MessageList from "@app/messages/MessageList";
-import Input from "@app/input/Input";
+import Navigation from "@app/ui/Navigation";
+import MessageList from "@app/ui/MessageList";
+import Input from "@app/ui/Input";
 
 interface StateProps {
   server: string;
@@ -72,7 +72,7 @@ class Layout extends Component<StateProps> {
               borderTop: "1px solid #666",
             }}
           >
-            <Input {...this.props} />
+            <Input route={this.props} />
           </div>
         </div>
       </div>

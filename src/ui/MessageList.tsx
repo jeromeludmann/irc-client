@@ -9,14 +9,25 @@ interface OwnProps {
 }
 
 interface StateProps {
-  messages: string[];
+  messages: Message[];
 }
 
-const MessageList = ({ messages }: OwnProps & StateProps) => (
-  <ul style={{ listStyle: "none", padding: "5px 10px" }}>
-    {messages.map(message => <li key={message}>{message}</li>)}
-  </ul>
-);
+interface Message {
+  timestamp: number;
+  value: string;
+}
+
+const MessageList = ({ messages }: OwnProps & StateProps) => {
+  return (
+    <ul style={{ listStyle: "none", padding: "5px 10px" }}>
+      {messages.map(message => (
+        <li key={message.timestamp}>
+          {message.timestamp} | {message.value}
+        </li>
+      ))}
+    </ul>
+  );
+};
 
 const mapStateToProps = (
   state: RootState,

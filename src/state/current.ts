@@ -1,4 +1,4 @@
-import { SetActiveWindow, SET_ACTIVE_WINDOW } from "@app/navigation/types";
+import { SetActiveWindow, SET_ACTIVE_WINDOW } from "@app/actions";
 
 export interface CurrentState {
   server: string;

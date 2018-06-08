@@ -1,16 +1,27 @@
 import { createSelector } from "reselect";
 import { RootState } from "@app/state";
-import { SentAction, INPUT_SENT } from "@app/input/types";
+import { InputValueSent, INPUT_VALUE_SENT } from "@app/actions/input";
 
-export type MessageListState = string[];
+interface Message {
+  timestamp: number;
+  value: string;
+}
+
+export type MessageListState = Message[];
 
 export default function(
   messages: MessageListState = [],
-  { type, payload }: SentAction,
+  { type, payload }: InputValueSent,
 ): MessageListState {
   switch (type) {
-    case INPUT_SENT:
-      return [...messages, payload.value];
+    case INPUT_VALUE_SENT:
+      return [
+        ...messages,
+        {
+          timestamp: Date.now(),
+          value: payload.value,
+        },
+      ];
     default:
       return messages;
   }

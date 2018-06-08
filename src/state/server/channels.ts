@@ -8,7 +8,7 @@ export interface ChannelListState {
 const initialState = {
   status: {
     messages: [],
-    input: { value: "", history: [] },
+    input: { value: "", lastValue: "", history: [], historyIndex: 0 },
     unread: false,
   },
 };
