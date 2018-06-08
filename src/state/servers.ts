@@ -6,8 +6,10 @@ export interface ServerListState {
   [key: string]: ServerState;
 }
 
+const serversInitialState = {};
+
 export default function(
-  servers: ServerListState = {},
+  servers: ServerListState = serversInitialState,
   action: RoutedAction<ServerRoute>,
 ): ServerListState {
   return action.route && action.route.server
@@ -18,6 +20,6 @@ export default function(
     : servers;
 }
 
-export function getServers(state: RootState) {
+export function selectServers(state: RootState) {
   return state.servers;
 }

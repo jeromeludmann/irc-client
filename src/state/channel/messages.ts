@@ -27,13 +27,12 @@ export default function(
   }
 }
 
-export const getMessages = (
-  state: RootState,
-  server: string,
-  channel: string,
-): MessageListState => state.servers[server].channels[channel].messages;
+export const selectMessages = ({
+  servers,
+  active: { server, channel },
+}: RootState): MessageListState => servers[server].channels[channel].messages;
 
 export const getMessagesCount = createSelector(
-  getMessages,
+  selectMessages,
   messages => (messages ? messages.length : 0),
 );

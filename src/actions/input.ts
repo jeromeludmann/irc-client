@@ -2,7 +2,7 @@ import { RoutedAction, ChannelRoute } from "@app/Route";
 
 export const INPUT_VALUE_CHANGED = "INPUT/VALUE/CHANGED";
 export const INPUT_VALUE_SENT = "INPUT/VALUE/SENT";
-export const INPUT_HISTORY_SET = "INPUT/HISTORY/SET";
+export const INPUT_HISTORY_UPDATE = "INPUT/HISTORY/SET";
 
 export interface InputValueChanged extends RoutedAction<ChannelRoute> {
   type: typeof INPUT_VALUE_CHANGED;
@@ -15,8 +15,8 @@ export interface InputValueSent extends RoutedAction<ChannelRoute> {
 }
 
 export interface SetInputHistory extends RoutedAction<ChannelRoute> {
-  type: typeof INPUT_HISTORY_SET;
-  payload: { value: string; historyIndex: number };
+  type: typeof INPUT_HISTORY_UPDATE;
+  payload: { value: string; index: number };
 }
 
 export function inputValueChanged(
@@ -33,14 +33,14 @@ export function inputValueSent(
   return { type: INPUT_VALUE_SENT, route, payload: { value } };
 }
 
-export function setInputHistory(
+export function updateInputHistory(
   route: ChannelRoute,
   value: string,
-  historyIndex: number,
+  index: number,
 ): SetInputHistory {
   return {
-    type: INPUT_HISTORY_SET,
+    type: INPUT_HISTORY_UPDATE,
     route,
-    payload: { value, historyIndex },
+    payload: { value, index },
   };
 }

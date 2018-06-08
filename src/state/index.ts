@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
 import servers, { ServerListState } from "@app/state/servers";
-import current, { CurrentState } from "@app/state/current";
+import active, { ActiveState } from "@app/state/active";
 
 export type RootState = {
   servers: ServerListState;
-  current: CurrentState;
+  active: ActiveState;
 };
 
-export default combineReducers<RootState>({ servers, current });
+export default combineReducers<RootState>({ servers, active });

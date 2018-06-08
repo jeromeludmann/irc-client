@@ -1,48 +1,56 @@
 import { Dispatch } from "redux";
-import { ChannelRoute } from "@app/Route";
 import {
   inputValueChanged,
   inputValueSent,
-  setInputHistory,
+  updateInputHistory,
 } from "@app/actions/input";
 import { RootState } from "@app/state";
-import { selectInput } from "@app/state/selectors";
+import { selectInput, selectActiveRoute } from "@app/state/selectors";
+import { selectHistory } from "@app/state/input/selectors";
 
-export const updateValue = (route: ChannelRoute, value: string) => (
+export const updateValue = (value: string) => (
   dispatch: Dispatch,
+  getState: () => RootState,
 ) => {
-  dispatch(inputValueChanged(route, value));
+  dispatch(inputValueChanged(selectActiveRoute(getState()), value));
 };
 
-export const sendValue = (route: ChannelRoute, value: string) => (
+export const sendValue = (value: string) => (
   dispatch: Dispatch,
+  getState: () => RootState,
 ) => {
   // TODO send to socket
-  dispatch(inputValueSent(route, value));
+  dispatch(inputValueSent(selectActiveRoute(getState()), value));
 };
 
-export const goBackHistory = (route: ChannelRoute) => (
+export const goBackHistory = () => (
   dispatch: Dispatch,
   getState: () => RootState,
 ) => {
-  const { history, historyIndex } = selectInput(route, getState());
-  if (historyIndex === 0) {
+  const history = selectHistory(getState());
+
+  if (history.index === 0) {
     return;
   }
-  const updatedIndex = historyIndex - 1;
-  const newValue = history[updatedIndex];
-  dispatch(setInputHistory(route, newValue, updatedIndex));
+
+  const index = history.index - 1;
+  const value = history.values[index];
+
+  dispatch(updateInputHistory(selectActiveRoute(getState()), value, index));
 };
 
-export const goForwardHistory = (route: ChannelRoute) => (
+export const goForwardHistory = () => (
   dispatch: Dispatch,
   getState: () => RootState,
 ) => {
-  const { lastValue, history, historyIndex } = selectInput(route, getState());
-  if (historyIndex === history.length) {
+  const { dirtyValue, history } = selectInput(getState());
+
+  if (history.index === history.values.length) {
     return;
   }
-  const updatedIndex = historyIndex + 1;
-  const newValue = history[updatedIndex] || lastValue;
-  dispatch(setInputHistory(route, newValue, updatedIndex));
+
+  const index = history.index + 1;
+  const value = history.values[index] || dirtyValue;
+
+  dispatch(updateInputHistory(selectActiveRoute(getState()), value, index));
 };

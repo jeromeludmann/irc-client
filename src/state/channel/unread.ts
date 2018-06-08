@@ -8,7 +8,7 @@ export default function(
 ): UnreadState {
   switch (type) {
     // case IRC_PRIVMSG:
-    // return route.channel !== current channel ???
+    // return route.channel !== active channel ???
     default:
       return unread;
   }

@@ -1,5 +1,7 @@
 import channel, { ChannelState } from "@app/state/channel";
 import { RoutedAction, ChannelRoute } from "@app/Route";
+import { valueInitialState } from "@app/state/input/value";
+import { historyInitialState } from "@app/state/input/history";
 
 export interface ChannelListState {
   [key: string]: ChannelState;
@@ -8,7 +10,11 @@ export interface ChannelListState {
 const initialState = {
   status: {
     messages: [],
-    input: { value: "", lastValue: "", history: [], historyIndex: 0 },
+    input: {
+      value: valueInitialState,
+      dirtyValue: valueInitialState,
+      history: historyInitialState,
+    },
     unread: false,
   },
 };
