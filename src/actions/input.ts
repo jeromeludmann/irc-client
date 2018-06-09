@@ -1,46 +1,49 @@
-import { RoutedAction, ChannelRoute } from "@app/Route";
+export const INPUT_VALUE_CHANGE = "INPUT/VALUE/CHANGE";
+export const INPUT_VALUE_SEND = "INPUT/VALUE/SEND";
+export const INPUT_HISTORY_UPDATE = "INPUT/HISTORY/UPDATE";
+export const INPUT_HISTORY_BACK = "INPUT/HISTORY/BACK";
+export const INPUT_HISTORY_FORWARD = "INPUT/HISTORY/FORWARD";
 
-export const INPUT_VALUE_CHANGED = "INPUT/VALUE/CHANGED";
-export const INPUT_VALUE_SENT = "INPUT/VALUE/SENT";
-export const INPUT_HISTORY_UPDATE = "INPUT/HISTORY/SET";
-
-export interface InputValueChanged extends RoutedAction<ChannelRoute> {
-  type: typeof INPUT_VALUE_CHANGED;
+export interface ChangeInputValue {
+  type: typeof INPUT_VALUE_CHANGE;
   payload: { value: string };
 }
 
-export interface InputValueSent extends RoutedAction<ChannelRoute> {
-  type: typeof INPUT_VALUE_SENT;
+export interface SendInputValue {
+  type: typeof INPUT_VALUE_SEND;
   payload: { value: string };
 }
 
-export interface SetInputHistory extends RoutedAction<ChannelRoute> {
-  type: typeof INPUT_HISTORY_UPDATE;
-  payload: { value: string; index: number };
+export interface GoBackInputHistory {
+  type: typeof INPUT_HISTORY_BACK;
 }
 
-export function inputValueChanged(
-  route: ChannelRoute,
-  value: string,
-): InputValueChanged {
-  return { type: INPUT_VALUE_CHANGED, route, payload: { value } };
+export interface GoForwardInputHistory {
+  type: typeof INPUT_HISTORY_FORWARD;
 }
 
-export function inputValueSent(
-  route: ChannelRoute,
-  value: string,
-): InputValueSent {
-  return { type: INPUT_VALUE_SENT, route, payload: { value } };
-}
-
-export function updateInputHistory(
-  route: ChannelRoute,
-  value: string,
-  index: number,
-): SetInputHistory {
+export function changeInputValue(value: string): ChangeInputValue {
   return {
-    type: INPUT_HISTORY_UPDATE,
-    route,
-    payload: { value, index },
+    type: INPUT_VALUE_CHANGE,
+    payload: { value },
+  };
+}
+
+export function sendInputValue(value: string): SendInputValue {
+  return {
+    type: INPUT_VALUE_SEND,
+    payload: { value },
+  };
+}
+
+export function goBackHistory(): GoBackInputHistory {
+  return {
+    type: INPUT_HISTORY_BACK,
+  };
+}
+
+export function goForwardHistory(): GoForwardInputHistory {
+  return {
+    type: INPUT_HISTORY_FORWARD,
   };
 }

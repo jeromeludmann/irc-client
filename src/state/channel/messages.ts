@@ -1,38 +1,29 @@
-import { createSelector } from "reselect";
-import { RootState } from "@app/state";
-import { InputValueSent, INPUT_VALUE_SENT } from "@app/actions/input";
+import { SendInputValue, INPUT_VALUE_SEND } from "@app/actions/input";
+
+export type MessageListState = Message[];
 
 interface Message {
   timestamp: number;
   value: string;
 }
 
-export type MessageListState = Message[];
+export type MessageListAction = SendInputValue;
 
 export default function(
   messages: MessageListState = [],
-  { type, payload }: InputValueSent,
+  action: MessageListAction,
 ): MessageListState {
-  switch (type) {
-    case INPUT_VALUE_SENT:
+  switch (action.type) {
+    case INPUT_VALUE_SEND:
       return [
         ...messages,
         {
-          timestamp: Date.now(),
-          value: payload.value,
+          timestamp: Date.now(), // TODO remove me
+          value: action.payload.value,
         },
       ];
+
     default:
       return messages;
   }
 }
-
-export const selectMessages = ({
-  servers,
-  active: { server, channel },
-}: RootState): MessageListState => servers[server].channels[channel].messages;
-
-export const getMessagesCount = createSelector(
-  selectMessages,
-  messages => (messages ? messages.length : 0),
-);

@@ -1,27 +1,31 @@
 import {
-  InputValueChanged,
-  InputValueSent,
-  INPUT_VALUE_CHANGED,
-  INPUT_VALUE_SENT,
-  SetInputHistory,
+  INPUT_VALUE_CHANGE,
+  INPUT_VALUE_SEND,
+  ChangeInputValue,
+  SendInputValue,
 } from "@app/actions/input";
+import { InputState } from "@app/state/input";
+import { endOfHistory } from "@app/state/input/helpers";
 
 export type DirtyValueState = string;
 
+export type DirtyValueAction = ChangeInputValue | SendInputValue;
+
 export const dirtyValueInitialState = "";
 
-export default function reduceDirtyValue(
-  value: DirtyValueState = dirtyValueInitialState,
-  action: InputValueChanged | InputValueSent | SetInputHistory,
-): DirtyValueState {
+export function reduceDirtyValue(
+  dirtyValue: DirtyValueState = dirtyValueInitialState,
+  action: DirtyValueAction,
+  input: InputState,
+) {
   switch (action.type) {
-    case INPUT_VALUE_CHANGED:
-      return action.payload.value;
+    case INPUT_VALUE_CHANGE:
+      return endOfHistory(input.history) ? action.payload.value : dirtyValue;
 
-    case INPUT_VALUE_SENT:
+    case INPUT_VALUE_SEND:
       return "";
 
     default:
-      return value;
+      return dirtyValue;
   }
 }

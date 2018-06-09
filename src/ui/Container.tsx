@@ -2,33 +2,33 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { setActiveWindow } from "@app/actions";
 import { RootState } from "@app/state";
-import { selectServers, ServerListState } from "@app/state/servers";
+import { ServerRouterState } from "@app/state/server-router";
 import { ActiveState } from "@app/state/active";
-import { selectActiveRoute } from "@app/state/selectors";
-import { selectMessages, MessageListState } from "@app/state/channel/messages";
-import { selectValue } from "@app/state/input/selectors";
-import { ValueState } from "@app/state/input/value";
 import Navigation from "@app/ui/Navigation";
 import MessageList from "@app/ui/MessageList";
 import Input from "@app/ui/Input";
+import { selectActiveRoute, selectServers } from "@app/state/selectors";
 import {
-  sendValue,
+  changeInputValue,
+  sendInputValue,
   goBackHistory,
   goForwardHistory,
-  updateValue,
-} from "@app/effects/input";
+} from "@app/actions/input";
+import { MessageListState } from "@app/state/channel/messages";
+import { selectMessages } from "@app/state/channel/selectors";
+import { selectValue } from "@app/state/input/selectors";
 
 interface StateProps {
-  servers: ServerListState;
+  servers: ServerRouterState;
   active: ActiveState;
   messages: MessageListState;
-  inputValue: ValueState;
+  inputValue: string;
 }
 
 interface DispatchProps {
   onWindowSwitch: (server: string, channel: string) => void;
-  onInputType: (input: string) => void;
-  onInputEnter: (input: string) => void;
+  onInputType: (value: string) => void;
+  onInputEnter: (value: string) => void;
   onInputArrowUp: () => void;
   onInputArrowDown: () => void;
 }
@@ -65,9 +65,9 @@ const mapStateToProps = (state: RootState): StateProps => ({
 });
 
 const mapDispatchToProps: DispatchProps = {
-  onWindowSwitch: setActiveWindow, // TODO it should be an effect
-  onInputType: updateValue,
-  onInputEnter: sendValue,
+  onWindowSwitch: setActiveWindow,
+  onInputType: changeInputValue,
+  onInputEnter: sendInputValue,
   onInputArrowUp: goBackHistory,
   onInputArrowDown: goForwardHistory,
 };

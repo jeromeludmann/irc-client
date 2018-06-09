@@ -1,17 +1,25 @@
-import { SetActiveWindow, SET_ACTIVE_WINDOW } from "@app/actions";
+import { SetActiveWindow, SET_ACTIVE_ROUTE } from "@app/actions";
 
 export interface ActiveState {
   server: string;
   channel: string;
 }
 
-export default function reduceCurrent(
-  active: ActiveState = { server: "", channel: "" },
-  { type, payload }: SetActiveWindow,
+export type ActiveAction = SetActiveWindow;
+
+export const initialActiveState = { server: "", channel: "" };
+
+export default function reduceActive(
+  active: ActiveState = initialActiveState,
+  action: ActiveAction,
 ) {
-  switch (type) {
-    case SET_ACTIVE_WINDOW:
-      return { server: payload.server, channel: payload.channel };
+  switch (action.type) {
+    case SET_ACTIVE_ROUTE:
+      return {
+        server: action.payload.server,
+        channel: action.payload.channel,
+      };
+
     default:
       return active;
   }

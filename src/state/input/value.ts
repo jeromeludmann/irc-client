@@ -1,29 +1,47 @@
 import {
-  InputValueChanged,
-  InputValueSent,
-  INPUT_VALUE_CHANGED,
-  INPUT_VALUE_SENT,
-  INPUT_HISTORY_UPDATE,
-  SetInputHistory,
+  INPUT_VALUE_CHANGE,
+  INPUT_VALUE_SEND,
+  INPUT_HISTORY_BACK,
+  INPUT_HISTORY_FORWARD,
+  ChangeInputValue,
+  SendInputValue,
+  GoBackInputHistory,
+  GoForwardInputHistory,
 } from "@app/actions/input";
+import { InputState } from "@app/state/input";
+import { beginOfHistory, endOfHistory } from "@app/state/input/helpers";
 
 export type ValueState = string;
 
+export type ValueAction =
+  | ChangeInputValue
+  | SendInputValue
+  | GoBackInputHistory
+  | GoForwardInputHistory;
+
 export const valueInitialState = "";
 
-export default function reduceValue(
+export function reduceValue(
   value: ValueState = valueInitialState,
-  action: InputValueChanged | InputValueSent | SetInputHistory,
-): ValueState {
+  action: ValueAction,
+  input: InputState,
+) {
   switch (action.type) {
-    case INPUT_VALUE_CHANGED:
+    case INPUT_VALUE_CHANGE:
       return action.payload.value;
 
-    case INPUT_VALUE_SENT:
+    case INPUT_VALUE_SEND:
       return "";
 
-    case INPUT_HISTORY_UPDATE:
-      return action.payload.value;
+    case INPUT_HISTORY_BACK:
+      return beginOfHistory(input.history)
+        ? value
+        : input.history.values[input.history.index - 1];
+
+    case INPUT_HISTORY_FORWARD:
+      return endOfHistory(input.history)
+        ? value
+        : input.history.values[input.history.index + 1] || input.dirtyValue;
 
     default:
       return value;
