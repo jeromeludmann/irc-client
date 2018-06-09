@@ -17,5 +17,6 @@
     "paths": {
       "@app/*": ["src/*"]
     }
-  }
+  },
+  "exclude": ["node_modules/*", "dist/*"]
 }
