@@ -7,16 +7,27 @@
 ╚═╝╚═╝  ╚═╝ ╚═════╝     ╚═════╝╚══════╝╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝
 ```
 
-Simple IRC client written in [TypeScript](https://github.com/Microsoft/TypeScript) and made with [React](https://github.com/facebook/react), [Redux](https://github.com/reduxjs/redux) and [Electron](https://github.com/electron/electron).
+Simple IRC client written in [TypeScript](https://github.com/Microsoft/TypeScript) and made with [React](https://github.com/facebook/react), [Redux](https://github.com/reduxjs/redux) and [Node.js](https://github.com/nodejs/node).
 
-# Summary
+Currently packaged with [Electron](https://github.com/electron/electron).
 
-- [How to get ready to develop](#how-to-get-ready-to-develop)
-- [How to organize state folder](#how-to-organize-state-folder)
+# Documentation
+
+- [Get ready](#get-ready)
+  - [Set up project](#set-up-project)
+  - [Start to develop](#start-to-develop)
+- [Organize state folder](#organize-state-folder)
   - [Keep folder structure flat](#keep-folder-structure-flat)
   - [Keep reducers and selectors together](#keep-reducers-and-selectors-together)
 
-# How to get ready to develop
+# Get ready
+
+Required:
+
+- [Node.js](https://nodejs.org/)
+- [Docker](https://www.docker.com/)
+
+## Set up project
 
 ```sh
 git clone https://github.com/jeromeludmann/irc-client
@@ -26,19 +37,23 @@ npm install
 
 Make sure you have Docker installed.
 
-Then run webpack + ircd:
+## Start to develop
+
+Run Docker services (webpack + ircd):
 
 ```sh
 ./dc up
 ```
 
-and run the app:
+or just run `npm run watch` without Docker services.
+
+Then run the app:
 
 ```sh
 npm start
 ```
 
-# How to organize state folder
+# Organize state folder
 
 Two rules to follow:
 
@@ -46,40 +61,48 @@ Two rules to follow:
 
 In order to easily search reducer files, it's better to have a flat folder structure.
 
-If a reducer file named `/src/state/channel/input.ts` export a _combined reducer_ containing nested reducers like `value` and `history`:
+If a reducer file named `/state/server/channel.ts` exports a reducer that calls nested reducers (like `messages` and `input`), as below:
 
-- create a dedicated folder `/src/state/input/`
-- move `/src/state/channel/input.ts` to `/src/state/input/index.ts`
-- extract its own nested reducers and put them in `/src/state/input/`
+```
+state
+└── server
+    ├── channel.ts      <- also contains messages and input reducers
+    ├── index.ts
+    ├── modes.ts
+    └── channel-router.ts
+```
 
-Result:
+in this case, nested reducers contained in `channel.ts` should be splitted by following these steps:
 
-- `/src/state/channel/`
-  - `index.ts`
-  - `selectors.ts` (channel selectors)
-  - `messages.ts`
-  - `unread.ts`
-- `/src/state/input/`
-  - `index.ts`
-  - `value.ts`
-  - `history.ts`
+1.  create a dedicated folder `/state/channel/` (back to the root of the state)
+2.  move `/state/server/channel.ts` to `/state/channel/index.ts`
+3.  extract its own nested reducers (`messages.ts` and `input.ts`) and put them in `/state/channel/`
+
+The expected folder structure should look like that:
+
+```
+state
+├── channel
+│   ├── index.ts
+│   ├── input.ts        <- extracted reducer from channel
+│   └── messages.ts     <- extracted reducer from channel
+└── server
+    ├── index.ts
+    ├── modes.ts
+    └── channel-router.ts
+```
 
 ## Keep reducers and selectors together
 
-Since they are tightly coupled, it is needed to keep reducers and selectors together.
+Since they are tightly coupled, it is needed to keep reducers and related selectors together.
 
-If a reducer file named `/src/state/server/channel-router.ts` has its own selectors:
+For instance, a `channel` reducer has its related selectors in its own folder:
 
-- create a dedicated folder `/src/state/server/channel-router/`
-- move `/src/state/server/channel-router.ts` to `/src/state/server/channel-router/index.ts`
-- extract its own selectors and put them in `/src/state/server/channel-router/`
-
-It should look like that:
-
-- `/src/state/server/`
-  - `channel-router/`
-    - `index.ts`
-    - `selectors.ts` (channel-router selectors)
-  - `index.ts`
-  - `modes.ts`
-  - `selectors.ts` (server selectors)
+```
+state
+└── channel
+    ├── index.ts
+    ├── input.ts
+    ├── messages.ts
+    └── selectors.ts    <- also contains all channel related selectors
+```
