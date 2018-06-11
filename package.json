@@ -34,13 +34,12 @@
     "react-dom": "^16.4.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
-    "redux-thunk": "^2.3.0",
     "reselect": "^3.0.1",
     "ts-loader": "^4.3.0",
     "tslint": "^5.10.0",
     "tslint-loader": "^3.6.0",
     "tslint-react": "^3.6.0",
-    "typescript": "^3.0.0-dev.20180605",
+    "typescript": "^3.0.0-dev.20180609",
     "webpack": "^4.8.3",
     "webpack-cli": "^2.1.4"
   }
