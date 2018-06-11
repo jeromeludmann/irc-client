@@ -1,14 +1,6 @@
-import React, { Component, MouseEvent } from "react";
-import { connect } from "react-redux";
-import { RootState } from "@app/state";
-import { getServers } from "@app/state/servers";
-import { setActiveWindow } from "@app/actions";
+import React, { PureComponent, MouseEvent } from "react";
 
-interface StateProps {
-  current: {
-    server: string;
-    channel: string;
-  };
+interface Props {
   servers: {
     [server: string]: {
       channels: {
@@ -18,50 +10,35 @@ interface StateProps {
       };
     };
   };
-}
-
-interface DispatchProps {
+  active: {
+    server: string;
+    channel: string;
+  };
   onChannelClick: (server: string, channel: string) => void;
 }
 
-class Navigation extends Component<StateProps & DispatchProps> {
+export default class Navigation extends PureComponent<Props> {
   public render() {
-    const { current, servers } = this.props;
+    const { active, servers } = this.props;
 
     return (
       <>
         {Object.keys(servers).map(server => (
-          <ul
-            key={server}
-            style={{
-              listStyle: "none",
-              padding: 0,
-              marginTop: "6px",
-            }}
-          >
+          <ul key={server}>
             {Object.keys(servers[server].channels).map(channel => {
-              const active =
-                server === current.server && channel === current.channel;
-              const unread = servers[server].channels[channel].unread;
+              const isActive =
+                server === active.server && channel === active.channel;
+              // const isUnread = servers[server].channels[channel].unread;
 
               return (
-                <li key={`${server}/${channel}`} style={{ marginTop: "3px" }}>
+                <li key={`${server}/${channel}`}>
                   <button
                     onClick={this.handleClick}
                     data-server={server}
                     data-channel={channel}
-                    style={{
-                      backgroundColor: active ? "#ccc" : "#333",
-                      color: active ? "#111" : "#ccc",
-                      fontWeight: unread ? "bold" : "normal",
-                      outline: "none",
-                      width: "100%",
-                      height: "24px",
-                      border: 0,
-                      fontSize: channel ? "12px" : "13px",
-                    }}
                   >
-                    {channel === "status" ? server : channel}
+                    {channel === "status" ? server : channel}{" "}
+                    {isActive && <span>&lt;</span>}
                   </button>
                 </li>
               );
@@ -81,17 +58,3 @@ class Navigation extends Component<StateProps & DispatchProps> {
     }
   };
 }
-
-const mapStateToProps = (state: RootState): StateProps => ({
-  current: state.current,
-  servers: getServers(state),
-});
-
-const mapDispatchToProps = {
-  onChannelClick: setActiveWindow,
-};
-
-export default connect<StateProps, DispatchProps>(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Navigation);

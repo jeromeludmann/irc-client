@@ -1,13 +1,4 @@
-import { selectInput } from "@app/state/selectors";
 import { createSelector } from "reselect";
-import { InputState } from "@app/state/input/input";
+import { selectInput } from "@app/state/channel/selectors";
 
-export const selectValue = createSelector(
-  selectInput,
-  (input: InputState) => input.value,
-);
-
-export const selectHistory = createSelector(
-  selectInput,
-  (input: InputState) => input.history,
-);
+export const selectValue = createSelector(selectInput, input => input.value);
