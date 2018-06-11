@@ -1,13 +1,16 @@
-export const SET_ACTIVE_WINDOW = "SET_ACTIVE_WINDOW";
+import { ActionCreator } from "redux";
+
+export const SET_ACTIVE_ROUTE = "UI/SET_ACTIVE_ROUTE";
 
 export interface SetActiveWindow {
-  type: typeof SET_ACTIVE_WINDOW;
+  type: typeof SET_ACTIVE_ROUTE;
   payload: { server: string; channel: string };
 }
 
-export function setActiveWindow(server: string, channel: string) {
-  return {
-    type: SET_ACTIVE_WINDOW,
-    payload: { server, channel },
-  };
-}
+export const setActiveWindow: ActionCreator<SetActiveWindow> = (
+  server: string,
+  channel: string,
+) => ({
+  type: SET_ACTIVE_ROUTE,
+  payload: { server, channel },
+});

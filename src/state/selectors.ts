@@ -1,8 +1,15 @@
-import { ChannelRoute } from "@app/Route";
+import { createSelector } from "reselect";
 import { RootState } from "@app/state";
-import { InputState } from "@app/state/input/input";
+import { ServerRouterState } from "@app/state/server-router";
+import { ActiveState } from "@app/state/active";
 
-export const selectInput = (
-  { server, channel }: ChannelRoute,
-  state: RootState,
-): InputState => state.servers[server].channels[channel].input;
+export const selectServers = ({ servers }: RootState): ServerRouterState =>
+  servers;
+
+export const selectActiveRoute = ({ active }: RootState): ActiveState => active;
+
+export const selectServer = createSelector(
+  selectServers,
+  selectActiveRoute,
+  (servers, { server }) => servers[server],
+);

@@ -6,9 +6,8 @@ const mockedState = {
           messages: [],
           input: {
             value: "",
-            lastValue: "",
-            history: [],
-            historyIndex: 0,
+            dirtyValue: "",
+            history: { values: [], index: 0 },
           },
           unread: false,
         },
@@ -20,9 +19,8 @@ const mockedState = {
           messages: [{ timestamp: 0, value: "Welcome!" }],
           input: {
             value: "",
-            lastValue: "",
-            history: ["Welcome!"],
-            historyIndex: 1,
+            dirtyValue: "",
+            history: { values: ["Welcome!"], index: 1 },
           },
           unread: false,
         },
@@ -33,16 +31,15 @@ const mockedState = {
           ],
           input: {
             value: "",
-            lastValue: "",
-            history: ["Hello", "World!"],
-            historyIndex: 2,
+            dirtyValue: "",
+            history: { values: ["Hello", "World!"], index: 2 },
           },
           unread: false,
         },
       },
     },
   },
-  current: {
+  active: {
     server: "irc.empty",
     channel: "status",
   },

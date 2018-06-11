@@ -2,11 +2,11 @@ import React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 import { store } from "@app/store";
-import Layout from "@app/ui/Layout";
+import Container from "@app/ui/Container";
 
 render(
   <Provider store={store}>
-    <Layout />
+    <Container />
   </Provider>,
   document.getElementById("root"),
 );

@@ -1,14 +1,24 @@
 import { AnyAction } from "redux";
+import { ActiveState } from "@app/state/active";
 
 export type UnreadState = boolean;
 
+export type UnreadAction = AnyAction; // TODO add action types
+
+interface ExtraParams {
+  active: ActiveState;
+}
+
 export default function(
   unread: UnreadState = false,
-  { type }: AnyAction,
+  action: UnreadAction,
+  { active }: ExtraParams,
 ): UnreadState {
-  switch (type) {
-    // case IRC_PRIVMSG:
-    // return route.channel !== current channel ???
+  if (!active) {
+    // TODO
+    return false;
+  }
+  switch (action.type) {
     default:
       return unread;
   }
