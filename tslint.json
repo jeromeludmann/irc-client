@@ -10,6 +10,7 @@
     "jsx-no-multiline-js": false,
     "semicolon": false,
     "object-literal-key-quotes": false,
-    "interface-over-type-literal": false
+    "interface-over-type-literal": false,
+    "trailing-comma": true
   }
 }

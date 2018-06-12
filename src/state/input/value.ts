@@ -8,13 +8,13 @@ import {
 } from "@app/actions/input";
 import { InputState } from "@app/state/input";
 import { beginOfHistory, endOfHistory } from "@app/state/input/helpers";
-import { SendCommand, SEND_COMMAND } from "@app/actions/irc";
+import { SendMessage, SEND_MESSAGE } from "@app/actions/irc";
 
 export type ValueState = string;
 
 export type ValueAction =
   | ChangeInputValue
-  | SendCommand
+  | SendMessage
   | GoBackInputHistory
   | GoForwardInputHistory;
 
@@ -27,7 +27,7 @@ export function reduceValue(
     case INPUT_VALUE_CHANGE:
       return action.payload.value;
 
-    case SEND_COMMAND:
+    case SEND_MESSAGE:
       return "";
 
     case INPUT_HISTORY_BACK:

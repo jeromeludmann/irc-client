@@ -1,10 +1,16 @@
 export const INPUT_VALUE_CHANGE = "INPUT/VALUE/CHANGE";
+export const INPUT_VALUE_SEND = "INPUT/VALUE/SEND";
 export const INPUT_HISTORY_UPDATE = "INPUT/HISTORY/UPDATE";
 export const INPUT_HISTORY_BACK = "INPUT/HISTORY/BACK";
 export const INPUT_HISTORY_FORWARD = "INPUT/HISTORY/FORWARD";
 
 export interface ChangeInputValue {
   type: typeof INPUT_VALUE_CHANGE;
+  payload: { value: string };
+}
+
+export interface SendInputValue {
+  type: typeof INPUT_VALUE_SEND;
   payload: { value: string };
 }
 
@@ -19,6 +25,13 @@ export interface GoForwardInputHistory {
 export function changeInputValue(value: string): ChangeInputValue {
   return {
     type: INPUT_VALUE_CHANGE,
+    payload: { value },
+  };
+}
+
+export function sendInputValue(value: string): SendInputValue {
+  return {
+    type: INPUT_VALUE_SEND,
     payload: { value },
   };
 }

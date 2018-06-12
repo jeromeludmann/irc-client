@@ -10,9 +10,9 @@ import Input from "@app/ui/Input";
 import { selectActiveRoute, selectServers } from "@app/state/selectors";
 import {
   changeInputValue,
-  sendInputValue,
   goBackHistory,
   goForwardHistory,
+  sendInputValue,
 } from "@app/actions/input";
 import { MessageListState } from "@app/state/channel/messages";
 import { selectMessages } from "@app/state/channel/selectors";

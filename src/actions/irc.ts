@@ -1,27 +1,25 @@
-import { ClientMessage, Command } from "@app/irc/Message";
+export const SEND_MESSAGE = "SEND_RAW_MESSAGE";
 
-export const SEND_COMMAND = "SEND_COMMAND";
-
-export interface SendCommand {
-  type: typeof SEND_COMMAND;
-  payload: ClientMessage;
+export interface SendMessage {
+  type: typeof SEND_MESSAGE;
+  payload: { message: string };
 }
 
-export const whois = (nick: string) => {
-  return command("whois", nick);
-};
+export function join(channel: string) {
+  return raw(`JOIN ${channel}`);
+}
 
-export const join = (channel: string) => {
-  return command("join", channel);
-};
+export function part(channel: string, text: string = "Bye!") {
+  return raw(`PART ${channel} :${text}`);
+}
 
-export const privmsg = (target: string, text: string) => {
-  return command("privmsg", target, text);
-};
+export function whois(nick: string) {
+  return raw(`WHOIS ${nick}`);
+}
 
-function command(name: Command, ...parameters: string[]): SendCommand {
+export function raw(message: string): SendMessage {
   return {
-    type: SEND_COMMAND,
-    payload: { command: name, parameters },
+    type: SEND_MESSAGE,
+    payload: { message },
   };
 }

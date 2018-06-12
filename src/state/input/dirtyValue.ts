@@ -1,11 +1,11 @@
 import { INPUT_VALUE_CHANGE, ChangeInputValue } from "@app/actions/input";
 import { InputState } from "@app/state/input";
 import { endOfHistory } from "@app/state/input/helpers";
-import { SendCommand, SEND_COMMAND } from "@app/actions/irc";
+import { SendMessage, SEND_MESSAGE } from "@app/actions/irc";
 
 export type DirtyValueState = string;
 
-export type DirtyValueAction = ChangeInputValue | SendCommand;
+export type DirtyValueAction = ChangeInputValue | SendMessage;
 
 export function reduceDirtyValue(
   dirtyValue: DirtyValueState,
@@ -16,7 +16,7 @@ export function reduceDirtyValue(
     case INPUT_VALUE_CHANGE:
       return endOfHistory(input.history) ? action.payload.value : dirtyValue;
 
-    case SEND_COMMAND:
+    case SEND_MESSAGE:
       return "";
 
     default:

@@ -1,11 +1,12 @@
 import {
   INPUT_HISTORY_BACK,
   INPUT_HISTORY_FORWARD,
+  INPUT_VALUE_SEND,
   GoBackInputHistory,
   GoForwardInputHistory,
+  SendInputValue,
 } from "@app/actions/input";
 import { beginOfHistory, endOfHistory } from "@app/state/input/helpers";
-import { SEND_COMMAND, SendCommand } from "@app/actions/irc";
 
 export interface HistoryState {
   readonly values: string[];
@@ -13,7 +14,7 @@ export interface HistoryState {
 }
 
 export type HistoryAction =
-  | SendCommand
+  | SendInputValue
   | GoBackInputHistory
   | GoForwardInputHistory;
 
@@ -22,7 +23,7 @@ export default function reduceHistory(
   action: HistoryAction,
 ): HistoryState {
   switch (action.type) {
-    case SEND_COMMAND: {
+    case INPUT_VALUE_SEND: {
       const values = [...history.values, action.payload.value];
       const index = values.length;
       return { values, index };
