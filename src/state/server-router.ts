@@ -13,18 +13,26 @@ interface ExtraParams {
   readonly active: ActiveState;
 }
 
+export const serversInitialState: ServerRouterState = {};
+
 export default function reduceServers(
-  servers: ServerRouterState,
+  servers = serversInitialState,
   action: ServerRouterAction,
   { route, active }: ExtraParams,
 ): ServerRouterState {
+  // tslint:disable-next-line
+  console.log("action", action);
+
+  const reducedServer = reduceServer(servers[route.server], action, {
+    route,
+    active,
+  });
+  console.log("reduced server", reducedServer);
+
   return route.server
     ? {
         ...servers,
-        [route.server]: reduceServer(servers[route.server], action, {
-          route,
-          active,
-        }),
+        [route.server]: reducedServer,
       }
     : servers;
 }

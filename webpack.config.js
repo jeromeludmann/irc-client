@@ -2,6 +2,8 @@ const path = require("path");
 
 const mode = "development";
 
+const devtool = "cheap-module-eval-source-map";
+
 const resolve = {
   extensions: [".ts", ".tsx", ".js"],
   alias: {
@@ -27,6 +29,7 @@ const rules = {
 
 const mainConfig = {
   mode,
+  devtool,
   resolve,
   target: "electron-main",
   entry: "./src/main.ts",
@@ -45,6 +48,7 @@ const mainConfig = {
 
 const rendererConfig = {
   mode,
+  devtool,
   resolve,
   target: "electron-renderer",
   entry: "./src/renderer.tsx",

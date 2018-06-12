@@ -7,8 +7,13 @@ export interface ActiveState {
 
 export type ActiveAction = SetActiveWindow;
 
+export const activeInitialState: ActiveState = {
+  server: "default", // TODO
+  channel: "status",
+};
+
 export default function reduceActive(
-  active: ActiveState,
+  active = activeInitialState,
   action: ActiveAction,
 ) {
   switch (action.type) {

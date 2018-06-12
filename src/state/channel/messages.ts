@@ -9,8 +9,10 @@ interface Message {
 
 export type MessageListAction = Action;
 
+export const messagesInitialState: MessageListState = [];
+
 export default function(
-  messages: MessageListState,
+  messages = messagesInitialState,
   action: MessageListAction,
 ): MessageListState {
   switch (action.type) {

@@ -13,8 +13,10 @@ interface ExtraParams {
   readonly active: ActiveState;
 }
 
+export const channelsInitialState: ChannelRouterState = {};
+
 export default function(
-  channels: ChannelRouterState,
+  channels = channelsInitialState,
   action: ChannelRouterAction,
   { route, active }: ExtraParams,
 ): ChannelRouterState {

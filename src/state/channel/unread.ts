@@ -9,8 +9,10 @@ interface ExtraParams {
   readonly active: ActiveState;
 }
 
+export const unreadInitialState: UnreadState = false;
+
 export default function(
-  unread: UnreadState,
+  unread = unreadInitialState,
   action: UnreadAction,
   { active }: ExtraParams,
 ): UnreadState {

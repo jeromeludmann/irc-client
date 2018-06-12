@@ -1,8 +1,12 @@
 import { Action } from "redux";
-import reduceModes, { ModesState } from "@app/state/server/modes";
+import reduceModes, {
+  ModesState,
+  modesInitialState,
+} from "@app/state/server/modes";
 import reduceChannels, {
   ChannelRouterState,
   ChannelRouterAction,
+  channelsInitialState,
 } from "@app/state/server/channel-router";
 import { Route } from "@app/actions/Route";
 import { ActiveState } from "@app/state/active";
@@ -18,15 +22,19 @@ interface ExtraParams {
   route: Route;
   active: ActiveState;
 }
+export const serverInitialState: ServerState = {
+  channels: channelsInitialState,
+  modes: modesInitialState,
+};
 
 export default function reduceServer(
-  state: ServerState,
+  server = serverInitialState,
   action: ServerAction,
   { route, active }: ExtraParams,
-) {
+): ServerState {
   return {
-    modes: reduceModes(state.modes),
-    channels: reduceChannels(state.channels, action as ChannelRouterAction, {
+    modes: reduceModes(server.modes),
+    channels: reduceChannels(server.channels, action as ChannelRouterAction, {
       route,
       active,
     }),

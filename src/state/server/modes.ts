@@ -1,3 +1,5 @@
 export type ModesState = string[];
 
-export default (modes: ModesState): ModesState => modes;
+export const modesInitialState: ModesState = [];
+
+export default (modes = modesInitialState): ModesState => modes;

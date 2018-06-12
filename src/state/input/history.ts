@@ -18,8 +18,10 @@ export type HistoryAction =
   | GoBackInputHistory
   | GoForwardInputHistory;
 
+export const historyInitialState: HistoryState = { values: [], index: 0 };
+
 export default function reduceHistory(
-  history: HistoryState,
+  history = historyInitialState,
   action: HistoryAction,
 ): HistoryState {
   switch (action.type) {
