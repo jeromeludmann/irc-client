@@ -1,16 +1,14 @@
 import { SetActiveWindow, SET_ACTIVE_ROUTE } from "@app/actions";
 
 export interface ActiveState {
-  server: string;
-  channel: string;
+  readonly server: string;
+  readonly channel: string;
 }
 
 export type ActiveAction = SetActiveWindow;
 
-export const initialActiveState = { server: "", channel: "" };
-
 export default function reduceActive(
-  active: ActiveState = initialActiveState,
+  active: ActiveState,
   action: ActiveAction,
 ) {
   switch (action.type) {

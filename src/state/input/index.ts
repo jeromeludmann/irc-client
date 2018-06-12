@@ -1,16 +1,10 @@
 import reduceHistory, {
   HistoryState,
-  historyInitialState,
   HistoryAction,
 } from "@app/state/input/history";
-import {
-  reduceValue,
-  valueInitialState,
-  ValueAction,
-} from "@app/state/input/value";
+import { reduceValue, ValueAction } from "@app/state/input/value";
 import {
   reduceDirtyValue,
-  dirtyValueInitialState,
   DirtyValueAction,
 } from "@app/state/input/dirtyValue";
 
@@ -22,14 +16,8 @@ export interface InputState {
 
 export type InputAction = ValueAction | DirtyValueAction | HistoryAction;
 
-export const inputInitialState = {
-  value: valueInitialState,
-  dirtyValue: dirtyValueInitialState,
-  history: historyInitialState,
-};
-
 export default function reduceInput(
-  input: InputState = inputInitialState,
+  input: InputState,
   action: InputAction,
 ): InputState {
   return {

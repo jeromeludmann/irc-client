@@ -7,8 +7,8 @@ import reduceServers, {
 } from "@app/state/server-router";
 
 export type RootState = {
-  servers: ServerRouterState;
-  active: ActiveState;
+  readonly servers: ServerRouterState;
+  readonly active: ActiveState;
 };
 
 type RootAction = Action;

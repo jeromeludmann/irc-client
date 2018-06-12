@@ -6,11 +6,11 @@ export type UnreadState = boolean;
 export type UnreadAction = AnyAction; // TODO add action types
 
 interface ExtraParams {
-  active: ActiveState;
+  readonly active: ActiveState;
 }
 
 export default function(
-  unread: UnreadState = false,
+  unread: UnreadState,
   action: UnreadAction,
   { active }: ExtraParams,
 ): UnreadState {

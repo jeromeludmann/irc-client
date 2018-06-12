@@ -1,34 +1,28 @@
 import {
-  INPUT_VALUE_SEND,
   INPUT_HISTORY_BACK,
   INPUT_HISTORY_FORWARD,
-  SendInputValue,
   GoBackInputHistory,
   GoForwardInputHistory,
 } from "@app/actions/input";
 import { beginOfHistory, endOfHistory } from "@app/state/input/helpers";
+import { SEND_COMMAND, SendCommand } from "@app/actions/irc";
 
 export interface HistoryState {
-  values: string[];
-  index: number;
+  readonly values: string[];
+  readonly index: number;
 }
 
 export type HistoryAction =
-  | SendInputValue
+  | SendCommand
   | GoBackInputHistory
   | GoForwardInputHistory;
 
-export const historyInitialState = {
-  values: [],
-  index: 0,
-};
-
 export default function reduceHistory(
-  history: HistoryState = historyInitialState,
+  history: HistoryState,
   action: HistoryAction,
 ): HistoryState {
   switch (action.type) {
-    case INPUT_VALUE_SEND: {
+    case SEND_COMMAND: {
       const values = [...history.values, action.payload.value];
       const index = values.length;
       return { values, index };

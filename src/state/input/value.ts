@@ -1,28 +1,25 @@
 import {
   INPUT_VALUE_CHANGE,
-  INPUT_VALUE_SEND,
   INPUT_HISTORY_BACK,
   INPUT_HISTORY_FORWARD,
   ChangeInputValue,
-  SendInputValue,
   GoBackInputHistory,
   GoForwardInputHistory,
 } from "@app/actions/input";
 import { InputState } from "@app/state/input";
 import { beginOfHistory, endOfHistory } from "@app/state/input/helpers";
+import { SendCommand, SEND_COMMAND } from "@app/actions/irc";
 
 export type ValueState = string;
 
 export type ValueAction =
   | ChangeInputValue
-  | SendInputValue
+  | SendCommand
   | GoBackInputHistory
   | GoForwardInputHistory;
 
-export const valueInitialState = "";
-
 export function reduceValue(
-  value: ValueState = valueInitialState,
+  value: ValueState,
   action: ValueAction,
   input: InputState,
 ) {
@@ -30,7 +27,7 @@ export function reduceValue(
     case INPUT_VALUE_CHANGE:
       return action.payload.value;
 
-    case INPUT_VALUE_SEND:
+    case SEND_COMMAND:
       return "";
 
     case INPUT_HISTORY_BACK:

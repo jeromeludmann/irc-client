@@ -1,2 +1,3 @@
 export type ModesState = string[];
-export default (modes: ModesState = []): ModesState => modes;
+
+export default (modes: ModesState): ModesState => modes;

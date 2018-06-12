@@ -1,20 +1,20 @@
-import { SendInputValue, INPUT_VALUE_SEND } from "@app/actions/input";
+import { SendCommand, SEND_COMMAND } from "@app/actions/irc";
 
 export type MessageListState = Message[];
 
 interface Message {
-  timestamp: number;
-  value: string;
+  readonly timestamp: number;
+  readonly value: string;
 }
 
-export type MessageListAction = SendInputValue;
+export type MessageListAction = SendCommand;
 
 export default function(
-  messages: MessageListState = [],
+  messages: MessageListState,
   action: MessageListAction,
 ): MessageListState {
   switch (action.type) {
-    case INPUT_VALUE_SEND:
+    case SEND_COMMAND:
       return [
         ...messages,
         {

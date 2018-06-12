@@ -8,8 +8,8 @@ import { Route } from "@app/actions/Route";
 import { ActiveState } from "@app/state/active";
 
 export type ServerState = {
-  modes: ModesState;
-  channels: ChannelRouterState;
+  readonly modes: ModesState;
+  readonly channels: ChannelRouterState;
 };
 
 export type ServerAction = Action;
