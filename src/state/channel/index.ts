@@ -14,7 +14,7 @@ import unread, {
   UnreadAction,
   unreadInitialState,
 } from "@app/state/channel/unread";
-import { ActiveState } from "@app/state/active";
+import { ActiveRouteState } from "@app/state/active";
 
 export interface ChannelState {
   readonly messages: MessageListState;
@@ -25,7 +25,7 @@ export interface ChannelState {
 export type ChannelAction = Action;
 
 interface ExtraParams {
-  active: ActiveState;
+  active: ActiveRouteState;
 }
 
 export const channelInitialState: ChannelState = {

@@ -1,11 +1,11 @@
-import { INPUT_VALUE_CHANGE, ChangeInputValue } from "@app/actions/input";
+import { ChangeInputValueAction, CHANGE_INPUT_VALUE } from "@app/actions/ui/input";
 import { InputState } from "@app/state/input";
 import { endOfHistory } from "@app/state/input/helpers";
-import { SendMessage, SOCKET_WRITE } from "@app/actions/irc";
+import { CommandAction, SEND_COMMAND } from "@app/actions/commands";
 
 export type DirtyValueState = string;
 
-export type DirtyValueAction = ChangeInputValue | SendMessage;
+export type DirtyValueAction = ChangeInputValueAction | CommandAction;
 
 export const dirtyValueInitialState: DirtyValueState = "";
 
@@ -15,10 +15,10 @@ export function reduceDirtyValue(
   input: InputState,
 ) {
   switch (action.type) {
-    case INPUT_VALUE_CHANGE:
+    case CHANGE_INPUT_VALUE:
       return endOfHistory(input.history) ? action.payload.value : dirtyValue;
 
-    case SOCKET_WRITE:
+    case SEND_COMMAND:
       return "";
 
     default:

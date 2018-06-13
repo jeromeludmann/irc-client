@@ -1,11 +1,11 @@
 import {
-  INPUT_HISTORY_BACK,
-  INPUT_HISTORY_FORWARD,
-  INPUT_VALUE_SEND,
-  GoBackInputHistory,
-  GoForwardInputHistory,
-  SendInputValue,
-} from "@app/actions/input";
+  GoBackInputHistoryAction,
+  GoForwardInputHistoryAction,
+  SendInputValueAction,
+  SEND_INPUT_VALUE,
+  GO_BACK_INPUT_HISTORY,
+  GO_FORWARD_INPUT_HISTORY,
+} from "@app/actions/ui/input";
 import { beginOfHistory, endOfHistory } from "@app/state/input/helpers";
 
 export interface HistoryState {
@@ -14,24 +14,27 @@ export interface HistoryState {
 }
 
 export type HistoryAction =
-  | SendInputValue
-  | GoBackInputHistory
-  | GoForwardInputHistory;
+  | SendInputValueAction
+  | GoBackInputHistoryAction
+  | GoForwardInputHistoryAction;
 
-export const historyInitialState: HistoryState = { values: [], index: 0 };
+export const historyInitialState: HistoryState = {
+  values: [],
+  index: 0,
+};
 
 export default function reduceHistory(
   history = historyInitialState,
   action: HistoryAction,
 ): HistoryState {
   switch (action.type) {
-    case INPUT_VALUE_SEND: {
+    case SEND_INPUT_VALUE: {
       const values = [...history.values, action.payload.value];
       const index = values.length;
       return { values, index };
     }
 
-    case INPUT_HISTORY_BACK: {
+    case GO_BACK_INPUT_HISTORY: {
       if (beginOfHistory(history)) {
         return history;
       }
@@ -39,7 +42,7 @@ export default function reduceHistory(
       return { ...history, index };
     }
 
-    case INPUT_HISTORY_FORWARD: {
+    case GO_FORWARD_INPUT_HISTORY: {
       if (endOfHistory(history)) {
         return history;
       }

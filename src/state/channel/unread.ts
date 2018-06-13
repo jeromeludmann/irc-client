@@ -1,12 +1,12 @@
 import { AnyAction } from "redux";
-import { ActiveState } from "@app/state/active";
+import { ActiveRouteState } from "@app/state/active";
 
 export type UnreadState = boolean;
 
 export type UnreadAction = AnyAction; // TODO add action types
 
 interface ExtraParams {
-  readonly active: ActiveState;
+  readonly active: ActiveRouteState;
 }
 
 export const unreadInitialState: UnreadState = false;

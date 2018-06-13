@@ -1,19 +1,19 @@
 import { Action } from "redux";
-import { RoutedAction } from "@app/actions/Route";
-import reduceActive, {
-  ActiveState,
-  ActiveAction,
+import reduceActiveRoute, {
+  ActiveRouteState,
+  ActiveRouteAction,
   activeInitialState,
 } from "@app/state/active";
 import reduceServers, {
   ServerRouterState,
-  ServerRouterAction,
   serversInitialState,
+  ServerRouterAction,
 } from "@app/state/server-router";
+import { Routable } from "@app/state/Route";
 
 export type RootState = {
   readonly servers: ServerRouterState;
-  readonly active: ActiveState;
+  readonly active: ActiveRouteState;
 };
 
 type RootAction = Action;
@@ -24,11 +24,15 @@ export const rootInitialState = {
 };
 
 export default function reduce(state: RootState, action: RootAction) {
+  const route = (action as Routable).route || state.active;
+  const extraParams = { route, active: state.active };
+
   return {
-    servers: reduceServers(state.servers, action as ServerRouterAction, {
-      route: (action as RoutedAction).route || state.active,
-      active: state.active,
-    }),
-    active: reduceActive(state.active, action as ActiveAction),
+    servers: reduceServers(
+      state.servers,
+      action as ServerRouterAction,
+      extraParams,
+    ),
+    active: reduceActiveRoute(state.active, action as ActiveRouteAction),
   };
 }

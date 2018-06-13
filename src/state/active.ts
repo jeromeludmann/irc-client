@@ -1,20 +1,21 @@
-import { SetActiveWindow, SET_ACTIVE_ROUTE } from "@app/actions";
+import {
+  SetActiveRouteAction,
+  SET_ACTIVE_ROUTE,
+} from "@app/actions/ui/active-route";
+import { Route } from "@app/state/Route";
 
-export interface ActiveState {
-  readonly server: string;
-  readonly channel: string;
-}
+export type ActiveRouteState = { server: string } & Route;
 
-export type ActiveAction = SetActiveWindow;
+export type ActiveRouteAction = SetActiveRouteAction;
 
-export const activeInitialState: ActiveState = {
-  server: "default", // TODO
+export const activeInitialState: ActiveRouteState = {
+  server: "localhost", // TODO
   channel: "status",
 };
 
-export default function reduceActive(
+export default function reduceActiveRoute(
   active = activeInitialState,
-  action: ActiveAction,
+  action: ActiveRouteAction,
 ) {
   switch (action.type) {
     case SET_ACTIVE_ROUTE:

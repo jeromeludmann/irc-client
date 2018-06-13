@@ -1,21 +1,27 @@
-import reduceChannel, { ChannelState } from "@app/state/channel";
-import { RoutedAction, Route } from "@app/actions/Route";
-import { ActiveState } from "@app/state/active";
+import reduceChannel, {
+  ChannelState,
+  channelInitialState,
+} from "@app/state/channel";
+import { Route } from "@app/state/Route";
+import { ActiveRouteState } from "@app/state/active";
+import { Action } from "redux";
 
 export interface ChannelRouterState {
   readonly [key: string]: ChannelState;
 }
 
-export type ChannelRouterAction = RoutedAction;
+export type ChannelRouterAction = Action;
 
 interface ExtraParams {
   readonly route: Route;
-  readonly active: ActiveState;
+  readonly active: ActiveRouteState;
 }
 
-export const channelsInitialState: ChannelRouterState = {};
+export const channelsInitialState: ChannelRouterState = {
+  status: channelInitialState,
+};
 
-export default function(
+export default function reduceChannels(
   channels = channelsInitialState,
   action: ChannelRouterAction,
   { route, active }: ExtraParams,

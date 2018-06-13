@@ -1,26 +1,26 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setActiveWindow } from "@app/actions";
+import { setActiveRoute } from "@app/actions/ui/active-route";
 import { RootState } from "@app/state";
 import { ServerRouterState } from "@app/state/server-router";
-import { ActiveState } from "@app/state/active";
+import { ActiveRouteState } from "@app/state/active";
 import Navigation from "@app/ui/Navigation";
 import MessageList from "@app/ui/MessageList";
 import Input from "@app/ui/Input";
 import { selectActiveRoute, selectServers } from "@app/state/selectors";
-import {
-  changeInputValue,
-  goBackHistory,
-  goForwardHistory,
-  sendInputValue,
-} from "@app/actions/input";
 import { MessageListState } from "@app/state/channel/messages";
 import { selectMessages } from "@app/state/channel/selectors";
 import { selectValue } from "@app/state/input/selectors";
+import {
+  changeInputValue,
+  sendInputValue,
+  goBackInputHistory,
+  goForwardInputHistory,
+} from "@app/actions/ui/input";
 
 interface StateProps {
   servers: ServerRouterState;
-  active: ActiveState;
+  active: ActiveRouteState;
   messages: MessageListState;
   inputValue: string;
 }
@@ -65,11 +65,11 @@ const mapStateToProps = (state: RootState): StateProps => ({
 });
 
 const mapDispatchToProps: DispatchProps = {
-  onWindowSwitch: setActiveWindow,
+  onWindowSwitch: setActiveRoute,
   onInputType: changeInputValue,
   onInputEnter: sendInputValue,
-  onInputArrowUp: goBackHistory,
-  onInputArrowDown: goForwardHistory,
+  onInputArrowUp: goBackInputHistory,
+  onInputArrowDown: goForwardInputHistory,
 };
 
 export default connect<StateProps, DispatchProps>(

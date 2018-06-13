@@ -8,8 +8,8 @@ import reduceChannels, {
   ChannelRouterAction,
   channelsInitialState,
 } from "@app/state/server/channel-router";
-import { Route } from "@app/actions/Route";
-import { ActiveState } from "@app/state/active";
+import { Route } from "@app/state/Route";
+import { ActiveRouteState } from "@app/state/active";
 
 export type ServerState = {
   readonly modes: ModesState;
@@ -20,7 +20,7 @@ export type ServerAction = Action;
 
 interface ExtraParams {
   route: Route;
-  active: ActiveState;
+  active: ActiveRouteState;
 }
 export const serverInitialState: ServerState = {
   channels: channelsInitialState,
