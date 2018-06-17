@@ -8,13 +8,17 @@ export const CONNECTION_CLOSED = "SOCKET/CONNECTION_CLOSED";
 export const CONNECTION_FAILED = "SOCKET/CONNECTION_FAILED";
 
 export type LookupSuccessAction = Action<typeof LOOKUP_SUCCESS> & {
-  address: string;
-  family: string | number | null;
-  host: string;
+  payload: {
+    address: string;
+    family: string | number | null;
+    host: string;
+  };
 };
 
 export type LookupFailedAction = Action<typeof LOOKUP_FAILED> & {
-  error: Error;
+  payload: {
+    error: Error;
+  };
 };
 
 export type MessagesReceivedAction = Action<typeof MESSAGES_RECEIVED> & {
@@ -46,8 +50,8 @@ export const lookup = (
   host: string,
 ): LookupSuccessAction | LookupFailedAction => {
   return error
-    ? { type: LOOKUP_FAILED, error }
-    : { type: LOOKUP_SUCCESS, address, family, host };
+    ? { type: LOOKUP_FAILED, payload: { error } }
+    : { type: LOOKUP_SUCCESS, payload: { address, family, host } };
 };
 
 export const setMessagesReceived = (

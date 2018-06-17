@@ -1,28 +1,49 @@
 import {
   MessageAction,
   MessageActionCreator,
-  Prefix,
+  isPrefixServer,
+  Server,
+  User,
 } from "@app/actions/messages/raw";
 
-interface Ping {
-  server: Prefix;
+interface ServerPing {
+  server: Server;
   key: string;
 }
 
-export const MESSAGE_PING = "MESSAGE/PING";
+interface UserPing {
+  user: User;
+  key: string;
+}
 
-export type PingAction = MessageAction<typeof MESSAGE_PING, Ping>;
+export const MESSAGE_SERVER_PING = "MESSAGE/SERVER_PING";
+export const MESSAGE_USER_PING = "MESSAGE/USER_PING";
 
-export const pingReceived: MessageActionCreator<PingAction> = (
-  prefix,
-  params,
-) => {
-  // TODO MESSAGE_PING_SERVER
-  // TODO MESSAGE_PING_USER
+export type ServerPingAction = MessageAction<
+  typeof MESSAGE_SERVER_PING,
+  ServerPing
+>;
 
-  return {
-    type: MESSAGE_PING,
-    payload: { server: prefix, key: params.join(" ") },
-    route: { channel: "status" },
-  };
+export type UserPingAction = MessageAction<typeof MESSAGE_USER_PING, UserPing>;
+
+export const pingReceived: MessageActionCreator<
+  ServerPingAction | UserPingAction
+> = (prefix, params) => {
+  const key = params.join(" ");
+
+  return isPrefixServer(prefix)
+    ? serverPing(prefix as Server, key)
+    : userPing(prefix as User, key);
 };
+
+const serverPing = (server: Server, key: string): ServerPingAction => ({
+  type: MESSAGE_SERVER_PING,
+  payload: { server, key },
+  route: { channel: "status" },
+});
+
+const userPing = (user: User, key: string): UserPingAction => ({
+  type: MESSAGE_USER_PING,
+  payload: { user, key },
+  route: { channel: "status" },
+});
