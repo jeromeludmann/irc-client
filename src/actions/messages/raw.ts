@@ -27,6 +27,12 @@ export type Server = string;
 
 export type User = { nick: string; user: string; host: string };
 
+export const isChannel = (channel: string) => channel.charAt(0) === "#";
+
+export const isPrefixServer = (prefix: Prefix) => typeof prefix === "string";
+
+export const isPrefixUser = (prefix: Prefix) => !isPrefixServer(prefix);
+
 export const rawReceived = (rawMessage: Raw): RawMessageAction => ({
   type: MESSAGE_RAW,
   payload: rawMessage,
