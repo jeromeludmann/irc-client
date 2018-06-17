@@ -1,12 +1,12 @@
 import { createSelector } from "reselect";
 import { RootState } from "@app/state";
 import { ServerRouterState } from "@app/state/server-router";
-import { ActiveState } from "@app/state/active";
+import { ActiveRouteState } from "@app/state/active";
 
 export const selectServers = ({ servers }: RootState): ServerRouterState =>
   servers;
 
-export const selectActiveRoute = ({ active }: RootState): ActiveState => active;
+export const selectActiveRoute = ({ active }: RootState): ActiveRouteState => active;
 
 export const selectServer = createSelector(
   selectServers,

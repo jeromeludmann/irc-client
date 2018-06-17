@@ -1,6 +1,7 @@
-const mockedState = {
+export const mocked = {
   servers: {
     "irc.empty": {
+      modes: [],
       channels: {
         status: {
           messages: [],
@@ -14,6 +15,7 @@ const mockedState = {
       },
     },
     "irc.filled": {
+      modes: [],
       channels: {
         status: {
           messages: [{ timestamp: 0, value: "Welcome!" }],
@@ -40,9 +42,7 @@ const mockedState = {
     },
   },
   active: {
-    server: "irc.empty",
+    server: "default",
     channel: "status",
   },
 };
-
-export default mockedState;

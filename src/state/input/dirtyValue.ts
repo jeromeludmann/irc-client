@@ -1,28 +1,24 @@
-import {
-  INPUT_VALUE_CHANGE,
-  INPUT_VALUE_SEND,
-  ChangeInputValue,
-  SendInputValue,
-} from "@app/actions/input";
+import { ChangeInputValueAction, CHANGE_INPUT_VALUE } from "@app/actions/ui/input";
 import { InputState } from "@app/state/input";
 import { endOfHistory } from "@app/state/input/helpers";
+import { CommandAction, SEND_COMMAND } from "@app/actions/commands";
 
 export type DirtyValueState = string;
 
-export type DirtyValueAction = ChangeInputValue | SendInputValue;
+export type DirtyValueAction = ChangeInputValueAction | CommandAction;
 
-export const dirtyValueInitialState = "";
+export const dirtyValueInitialState: DirtyValueState = "";
 
 export function reduceDirtyValue(
-  dirtyValue: DirtyValueState = dirtyValueInitialState,
+  dirtyValue = dirtyValueInitialState,
   action: DirtyValueAction,
   input: InputState,
 ) {
   switch (action.type) {
-    case INPUT_VALUE_CHANGE:
+    case CHANGE_INPUT_VALUE:
       return endOfHistory(input.history) ? action.payload.value : dirtyValue;
 
-    case INPUT_VALUE_SEND:
+    case SEND_COMMAND:
       return "";
 
     default:

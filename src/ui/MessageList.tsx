@@ -1,20 +1,19 @@
 import React from "react";
 
 interface Props {
-  messages: Message[];
-}
-
-interface Message {
-  timestamp: number;
-  value: string;
+  messages: string[];
 }
 
 export default ({ messages }: Props) => (
-  <ul>
-    {messages.map(message => (
-      <li key={message.timestamp}>
-        {message.timestamp} | {message.value}
-      </li>
-    ))}
+  // do not use index
+  <ul
+    style={{
+      fontFamily: "Menlo, Monaco, Courier",
+      fontSize: "12px",
+      listStyle: "none",
+      padding: "0",
+    }}
+  >
+    {messages.map((message, i) => <li key={i}>{message}</li>)}
   </ul>
 );
