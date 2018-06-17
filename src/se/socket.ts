@@ -1,27 +1,27 @@
 import { Socket } from "net";
 import { Middleware } from "redux";
 import {
-  socketConnect,
-  socketClose,
-  socketData,
-  socketError,
-  socketEnd,
+  setConnectionEstablished,
+  setConnectionClosed,
+  setMessagesReceived,
+  setConnectionFailed,
+  lookup,
 } from "@app/actions/socket";
 import { CommandAction, SEND_COMMAND } from "@app/actions/commands";
 import { RootState } from "@app/state";
 import {
-  ConnectAction,
-  DisconnectAction,
+  ConnectServerAction,
+  DisconnectServerAction,
   CONNECT_SERVER,
   DISCONNECT_SERVER,
-} from "@app/actions/socket";
+} from "@app/actions/server";
 
 // TODO multi servers
 let singletonSocket: Socket;
 let buffer = "";
 
 export const socket: Middleware<{}, RootState> = store => next => (
-  action: CommandAction | ConnectAction | DisconnectAction,
+  action: CommandAction | ConnectServerAction | DisconnectServerAction,
 ) => {
   next(action);
 
@@ -39,36 +39,41 @@ export const socket: Middleware<{}, RootState> = store => next => (
         port: action.payload.port,
       });
 
-      // TODO
-      // singletonSocket.on("lookup", (err, address, family, host) => {});
+      singletonSocket.on("lookup", (error, address, family, host) =>
+        store.dispatch(lookup(error, address, family, host)),
+      );
 
-      singletonSocket.on("connect", () => store.dispatch(socketConnect()));
+      singletonSocket.on("connect", () =>
+        store.dispatch(setConnectionEstablished()),
+      );
 
       singletonSocket.on("data", bytes => {
         buffer += bytes;
         const messages = buffer.split("\r\n");
         buffer = messages.pop() || "";
 
-        store.dispatch(socketData("serverKey", messages));
+        store.dispatch(setMessagesReceived("serverKey", messages));
       });
-
-      singletonSocket.on("end", () => store.dispatch(socketEnd()));
 
       singletonSocket.on("close", hadError =>
-        store.dispatch(socketClose(hadError)),
+        store.dispatch(setConnectionClosed(hadError)),
       );
 
-      // TODO socket timeout
-      // singletonSocket.on("timeout", () => {});
-
-      // TODO socket drain
-      // singletonSocket.on("drain", () => {});
-
       singletonSocket.on("error", ({ name, message, stack }) => {
-        store.dispatch(socketError(name, message));
+        store.dispatch(setConnectionFailed(name, message));
         // tslint:disable-next-line
-        console.log("connection error", stack);
+        console.log("unhandled socket error", stack);
       });
+
+      singletonSocket.on("end", () =>
+        // tslint:disable-next-line
+        console.log("unhandled socket end"),
+      );
+
+      singletonSocket.on("timeout", () =>
+        // tslint:disable-next-line
+        console.log("unhandled socket timeout"),
+      );
 
       break;
 

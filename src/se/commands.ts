@@ -1,7 +1,7 @@
 import { Middleware } from "redux";
 import { SendInputValueAction, SEND_INPUT_VALUE } from "@app/actions/ui/input";
 import { raw } from "@app/actions/commands";
-import { connect, disconnect } from "@app/actions/socket";
+import { connectServer, disconnectServer } from "@app/actions/server";
 
 export const commands: Middleware = () => next => (
   action: SendInputValueAction,
@@ -16,12 +16,12 @@ export const commands: Middleware = () => next => (
     // const params = value.slice(p + 1);
 
     if (value.indexOf("connect") === 0) {
-      next(connect("localhost"));
+      next(connectServer("localhost"));
       return;
     }
 
     if (value.indexOf("disconnect") === 0) {
-      next(disconnect());
+      next(disconnectServer());
       return;
     }
 

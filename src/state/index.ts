@@ -1,4 +1,4 @@
-import { Action } from "redux";
+import { Action, Reducer } from "redux";
 import reduceActiveRoute, {
   ActiveRouteState,
   ActiveRouteAction,
@@ -23,7 +23,10 @@ export const rootInitialState = {
   active: activeInitialState,
 };
 
-export default function reduce(state: RootState, action: RootAction) {
+const reduce: Reducer<RootState, RootAction> = (
+  state = rootInitialState,
+  action,
+): RootState => {
   const route = (action as Routable).route || state.active;
   const extraParams = { route, active: state.active };
 
@@ -35,4 +38,6 @@ export default function reduce(state: RootState, action: RootAction) {
     ),
     active: reduceActiveRoute(state.active, action as ActiveRouteAction),
   };
-}
+};
+
+export default reduce;

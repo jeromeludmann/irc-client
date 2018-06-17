@@ -1,22 +1,21 @@
 import { Middleware, Action } from "redux";
 import { Routable } from "@app/state/Route";
-import { SOCKET_DATA, SocketDataAction } from "@app/actions/socket";
+import { MESSAGES_RECEIVED, MessagesReceivedAction } from "@app/actions/socket";
 import { Prefix, MessageActionCreator } from "@app/actions/messages/raw";
 import { rawReceived, Raw } from "@app/actions/messages/raw";
-import { MESSAGE_JOIN, joinReceived } from "@app/actions/messages/join";
-import { MESSAGE_NOTICE, noticeReceived } from "@app/actions/messages/notice";
-import { MESSAGE_PING, pingReceived } from "@app/actions/messages/ping";
-import {
-  MESSAGE_PRIVMSG,
-  privmsgReceived,
-} from "@app/actions/messages/privmsg";
+import { joinReceived } from "@app/actions/messages/join";
+import { noticeReceived } from "@app/actions/messages/notice";
+import { pingReceived } from "@app/actions/messages/ping";
+import { privmsgReceived } from "@app/actions/messages/privmsg";
 
 type Mapping = {
   [command: string]: MessageActionCreator<Action<string>, Prefix | undefined>;
 };
 
-export const parser: Middleware = () => next => (action: SocketDataAction) => {
-  if (action.type !== SOCKET_DATA) {
+export const parser: Middleware = () => next => (
+  action: MessagesReceivedAction,
+) => {
+  if (action.type !== MESSAGES_RECEIVED) {
     next(action);
     return;
   }
@@ -24,14 +23,13 @@ export const parser: Middleware = () => next => (action: SocketDataAction) => {
   action.payload.messages.forEach(unparsed => {
     const rawMessage = parseMessage(unparsed);
     const { prefix, command, params } = rawMessage;
-    const actionType = `MESSAGE/${command}`;
 
-    if (!actions.hasOwnProperty(actionType)) {
+    if (!actions.hasOwnProperty(command)) {
       next(rawReceived(rawMessage));
       return;
     }
 
-    const messageAction = actions[actionType](prefix, params) as Routable;
+    const messageAction = actions[command](prefix, params) as Routable;
 
     messageAction.route = {
       server: action.payload.serverId,
@@ -43,10 +41,10 @@ export const parser: Middleware = () => next => (action: SocketDataAction) => {
 };
 
 const actions: Mapping = {
-  [MESSAGE_JOIN]: joinReceived,
-  [MESSAGE_NOTICE]: noticeReceived,
-  [MESSAGE_PING]: pingReceived,
-  [MESSAGE_PRIVMSG]: privmsgReceived,
+  JOIN: joinReceived,
+  NOTICE: noticeReceived,
+  PING: pingReceived,
+  PRIVMSG: privmsgReceived,
 };
 
 const MESSAGE_LENGTH = 510; // RFC says 512 - "CR" "LF" = 510

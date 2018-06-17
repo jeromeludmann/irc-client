@@ -1,9 +1,9 @@
 import { Middleware, Dispatch } from "redux";
-import { SOCKET_CONNECT, SocketConnectAction } from "@app/actions/socket";
+import { CONNECTION_ESTABLISHED, ConnectionEstablishedAction } from "@app/actions/socket";
 import { user, nick, pong, CommandAction } from "@app/actions/commands";
 import { PingAction, MESSAGE_PING } from "@app/actions/messages/ping";
 
-type RepliersAction = SocketConnectAction | PingAction;
+type RepliersAction = ConnectionEstablishedAction | PingAction;
 
 type ReplierFunction<A = void> = (
   next: Dispatch<CommandAction>,
@@ -30,6 +30,6 @@ const pingPong: ReplierFunction<PingAction> = (next, action) => {
 };
 
 const actions: Mapping = {
-  [SOCKET_CONNECT]: register,
+  [CONNECTION_ESTABLISHED]: register,
   [MESSAGE_PING]: pingPong,
 };

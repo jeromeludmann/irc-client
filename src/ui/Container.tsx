@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
+import { connect, MapStateToProps } from "react-redux";
 import { setActiveRoute } from "@app/actions/ui/active-route";
 import { RootState } from "@app/state";
 import { ServerRouterState } from "@app/state/server-router";
@@ -57,7 +57,7 @@ class Container extends Component<StateProps & DispatchProps> {
   }
 }
 
-const mapStateToProps = (state: RootState): StateProps => ({
+const mapStateToProps: MapStateToProps<StateProps, {}, RootState> = state => ({
   messages: selectMessages(state),
   active: selectActiveRoute(state),
   servers: selectServers(state),
@@ -72,7 +72,7 @@ const mapDispatchToProps: DispatchProps = {
   onInputArrowDown: goForwardInputHistory,
 };
 
-export default connect<StateProps, DispatchProps>(
+export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(Container);

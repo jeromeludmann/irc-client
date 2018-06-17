@@ -1,61 +1,78 @@
 import { Action } from "redux";
 
-export const CONNECT_SERVER = "COMMAND/CONNECT";
-export const DISCONNECT_SERVER = "COMMAND/DISCONNECT";
+export const LOOKUP_SUCCESS = "SOCKET/LOOKUP_SUCCESS";
+export const LOOKUP_FAILED = "SOCKET/LOOKUP_FAILED";
+export const MESSAGES_RECEIVED = "SOCKET/RECEIVE_MESSAGES";
+export const CONNECTION_ESTABLISHED = "SOCKET/CONNECTION_ESTABLISHED";
+export const CONNECTION_CLOSED = "SOCKET/CONNECTION_CLOSED";
+export const CONNECTION_FAILED = "SOCKET/CONNECTION_FAILED";
 
-export const SOCKET_CONNECT = "SOCKET/CONNECT";
-export const SOCKET_END = "SOCKET/END";
-export const SOCKET_CLOSE = "SOCKET/CLOSE";
-export const SOCKET_ERROR = "SOCKET/ERROR";
-export const SOCKET_DATA = "SOCKET/DATA";
+export type LookupSuccessAction = Action<typeof LOOKUP_SUCCESS> & {
+  address: string;
+  family: string | number | null;
+  host: string;
+};
 
-export interface ConnectAction extends Action<typeof CONNECT_SERVER> {
-  payload: { host: string; port: number };
-}
+export type LookupFailedAction = Action<typeof LOOKUP_FAILED> & {
+  error: Error;
+};
 
-export interface DisconnectAction extends Action<typeof DISCONNECT_SERVER> {}
+export type MessagesReceivedAction = Action<typeof MESSAGES_RECEIVED> & {
+  payload: {
+    serverId: string;
+    messages: string[];
+  };
+};
 
-export interface SocketConnectAction extends Action<typeof SOCKET_CONNECT> {}
+export type ConnectionEstablishedAction = Action<typeof CONNECTION_ESTABLISHED>;
 
-export interface SocketEndAction extends Action<typeof SOCKET_END> {}
+export type ConnectionClosedAction = Action<typeof CONNECTION_CLOSED> & {
+  payload: {
+    hadError: boolean;
+  };
+};
 
-export interface SocketCloseAction extends Action<typeof SOCKET_CLOSE> {
-  payload: { hadError: boolean };
-}
-export interface SocketErrorAction extends Action<typeof SOCKET_ERROR> {
-  payload: { name: string; message: string };
-}
-export interface SocketDataAction extends Action<typeof SOCKET_DATA> {
-  payload: { serverId: string; messages: string[] };
-}
+export type ConnectionFailedAction = Action<typeof CONNECTION_FAILED> & {
+  payload: {
+    name: string;
+    message: string;
+  };
+};
 
-export function connect(host: string, port: number = 6667): ConnectAction {
-  return { type: CONNECT_SERVER, payload: { host, port } };
-}
+export const lookup = (
+  error: Error | null,
+  address: string,
+  family: string | number | null,
+  host: string,
+): LookupSuccessAction | LookupFailedAction => {
+  return error
+    ? { type: LOOKUP_FAILED, error }
+    : { type: LOOKUP_SUCCESS, address, family, host };
+};
 
-export function disconnect(): DisconnectAction {
-  return { type: DISCONNECT_SERVER };
-}
-
-export function socketConnect(): SocketConnectAction {
-  return { type: SOCKET_CONNECT };
-}
-
-export function socketClose(hadError: boolean): SocketCloseAction {
-  return { type: SOCKET_CLOSE, payload: { hadError } };
-}
-
-export function socketEnd(): SocketEndAction {
-  return { type: SOCKET_END };
-}
-
-export function socketError(name: string, message: string): SocketErrorAction {
-  return { type: SOCKET_ERROR, payload: { name, message } };
-}
-
-export function socketData(
+export const setMessagesReceived = (
   serverId: string,
   messages: string[],
-): SocketDataAction {
-  return { type: SOCKET_DATA, payload: { serverId, messages } };
-}
+): MessagesReceivedAction => ({
+  type: MESSAGES_RECEIVED,
+  payload: { serverId, messages },
+});
+
+export const setConnectionEstablished = (): ConnectionEstablishedAction => ({
+  type: CONNECTION_ESTABLISHED,
+});
+
+export const setConnectionClosed = (
+  hadError: boolean,
+): ConnectionClosedAction => ({
+  type: CONNECTION_CLOSED,
+  payload: { hadError },
+});
+
+export const setConnectionFailed = (
+  name: string,
+  message: string,
+): ConnectionFailedAction => ({
+  type: CONNECTION_FAILED,
+  payload: { name, message },
+});
