@@ -1,22 +1,23 @@
 import reduceServer, { ServerState } from "@app/state/server";
-import { RoutedAction, Route } from "@app/actions/Route";
-import { ActiveState } from "@app/state/active";
+import { ActiveRouteState } from "@app/state/active";
+import { Action } from "redux";
+import { Route } from "@app/state/Route";
 
 export interface ServerRouterState {
-  [key: string]: ServerState;
+  readonly [key: string]: ServerState;
 }
 
-export type ServerRouterAction = RoutedAction;
+export type ServerRouterAction = Action;
 
 interface ExtraParams {
-  route: Route;
-  active: ActiveState;
+  readonly route: Route;
+  readonly active: ActiveRouteState;
 }
 
-const initialState = {};
+export const serversInitialState: ServerRouterState = {};
 
 export default function reduceServers(
-  servers: ServerRouterState = initialState,
+  servers = serversInitialState,
   action: ServerRouterAction,
   { route, active }: ExtraParams,
 ): ServerRouterState {

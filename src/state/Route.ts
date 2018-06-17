@@ -5,6 +5,6 @@ export interface Route {
   channel: string;
 }
 
-export type RoutedAction = Action & {
+export interface Routable extends Action<string> {
   route: Route;
-};
+}
