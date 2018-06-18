@@ -1,35 +1,41 @@
 import { Action } from "redux";
 
-export const SEND_COMMAND = "COMMAND/SEND";
+export const COMMAND_RAW = "COMMAND/RAW";
 
-export interface CommandAction extends Action<typeof SEND_COMMAND> {
-  payload: { command: string };
+export interface CommandAction extends Action<typeof COMMAND_RAW> {
+  serverKey: string;
+  payload: { raw: string };
 }
 
-export function raw(command: string): CommandAction {
-  return { type: SEND_COMMAND, payload: { command } };
-}
+export type CommandActionCreator = (
+  serverKey: string,
+  ...args: string[]
+) => CommandAction;
 
-export function join(channel: string) {
-  return raw(`JOIN ${channel}`);
-}
+export const sendRawMessage = (
+  serverKey: string,
+  message: string,
+): CommandAction => ({
+  type: COMMAND_RAW,
+  serverKey,
+  payload: { raw: message },
+});
 
-export function nick(nickname: string) {
-  return raw(`NICK ${nickname}`);
-}
+export const join: CommandActionCreator = (serverKey, channel) =>
+  sendRawMessage(serverKey, `JOIN ${channel}`);
 
-export function part(channel: string, text?: string) {
-  return raw(text ? `PART ${channel} :${text}` : `PART ${channel}`);
-}
+export const nick: CommandActionCreator = (serverKey, nickname) =>
+  sendRawMessage(serverKey, `NICK :${nickname}`);
 
-export function pong(key: string) {
-  return raw(`PONG :${key}`);
-}
+export const pong: CommandActionCreator = (serverKey, key) =>
+  sendRawMessage(serverKey, `PONG :${key}`);
 
-export function user(username: string, realname: string, mode: number = 0) {
-  return raw(`USER ${username} ${mode} * :${realname}`);
-}
+export const user: CommandActionCreator = (
+  serverKey,
+  username,
+  realname,
+  mode = "0",
+) => sendRawMessage(serverKey, `USER ${username} ${mode} * :${realname}`);
 
-export function whois(nickname: string) {
-  return raw(`WHOIS ${nickname}`);
-}
+export const whois: CommandActionCreator = (serverKey, nickname) =>
+  sendRawMessage(serverKey, `WHOIS ${nickname}`);

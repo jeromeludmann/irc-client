@@ -5,7 +5,8 @@ import {
   isPrefixServer,
   User,
   Server,
-} from "@app/actions/messages/raw";
+} from "@app/actions/messages/helpers";
+import { STATUS_WINDOW } from "@app/Route";
 
 interface ServerNotice {
   server: Server;
@@ -44,37 +45,24 @@ export type UserNoticeAction = MessageAction<
 
 export const noticeReceived: MessageActionCreator<
   ServerNoticeAction | ChannelNoticeAction | UserNoticeAction
-> = (prefix, params) => {
-  const target = params[0];
-  const text = params[1];
-
+> = (serverKey, prefix, params) => {
   if (isPrefixServer(prefix)) {
-    return serverNotice(prefix as Server, text);
+    return {
+      type: MESSAGE_SERVER_NOTICE,
+      payload: { server: prefix as Server, text: params[1] },
+      route: { server: serverKey, window: STATUS_WINDOW },
+    };
   }
 
-  return isChannel(target)
-    ? channelNotice(prefix as User, target, text)
-    : userNotice(prefix as User, text);
+  return isChannel(params[0])
+    ? {
+        type: MESSAGE_CHANNEL_NOTICE,
+        payload: { user: prefix as User, channel: params[0], text: params[1] },
+        route: { server: serverKey, window: params[0] },
+      }
+    : {
+        type: MESSAGE_USER_NOTICE,
+        payload: { user: prefix as User, text: params[1] },
+        route: { server: serverKey, window: STATUS_WINDOW },
+      };
 };
-
-const serverNotice = (server: Server, text: string): ServerNoticeAction => ({
-  type: MESSAGE_SERVER_NOTICE,
-  payload: { server, text },
-  route: { channel: "status" },
-});
-
-const channelNotice = (
-  user: User,
-  target: string,
-  text: string,
-): ChannelNoticeAction => ({
-  type: MESSAGE_CHANNEL_NOTICE,
-  payload: { user, channel: target, text },
-  route: { channel: target },
-});
-
-const userNotice = (user: User, text: string): UserNoticeAction => ({
-  type: MESSAGE_USER_NOTICE,
-  payload: { user, text },
-  route: { channel: user.nick },
-});
