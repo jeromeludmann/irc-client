@@ -2,7 +2,7 @@ import {
   User,
   MessageAction,
   MessageActionCreator,
-} from "@app/actions/messages/raw";
+} from "@app/actions/messages/helpers";
 
 interface Join {
   user: User;
@@ -14,12 +14,11 @@ export const MESSAGE_JOIN = "MESSAGE/JOIN";
 export type JoinAction = MessageAction<typeof MESSAGE_JOIN, Join>;
 
 export const joinReceived: MessageActionCreator<JoinAction, User> = (
+  serverKey,
   user,
   params,
-) => {
-  return {
-    type: MESSAGE_JOIN,
-    payload: { user, channel: params[0] },
-    route: { channel: params[0] },
-  };
-};
+) => ({
+  type: MESSAGE_JOIN,
+  payload: { user, channel: params[0] },
+  route: { server: serverKey, window: params[0] },
+});

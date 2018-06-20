@@ -1,82 +1,90 @@
 import { Action } from "redux";
+import { RAW_WINDOW, Route } from "@app/Route";
 
 export const LOOKUP_SUCCESS = "SOCKET/LOOKUP_SUCCESS";
 export const LOOKUP_FAILED = "SOCKET/LOOKUP_FAILED";
-export const MESSAGES_RECEIVED = "SOCKET/RECEIVE_MESSAGES";
+export const RAW_MESSAGES_RECEIVED = "SOCKET/RAW_MESSAGES_RECEIVED";
 export const CONNECTION_ESTABLISHED = "SOCKET/CONNECTION_ESTABLISHED";
 export const CONNECTION_CLOSED = "SOCKET/CONNECTION_CLOSED";
 export const CONNECTION_FAILED = "SOCKET/CONNECTION_FAILED";
 
+// TODO add route to all actions
+// TODO move route to abstract interface
+
 export type LookupSuccessAction = Action<typeof LOOKUP_SUCCESS> & {
-  payload: {
-    address: string;
-    family: string | number | null;
-    host: string;
-  };
+  serverKey: string;
+  payload: { address: string; family: string | number | null; host: string };
 };
 
 export type LookupFailedAction = Action<typeof LOOKUP_FAILED> & {
-  payload: {
-    error: Error;
-  };
+  serverKey: string;
+  payload: { error: Error };
 };
 
-export type MessagesReceivedAction = Action<typeof MESSAGES_RECEIVED> & {
-  payload: {
-    serverId: string;
-    messages: string[];
-  };
+export type RawMessagesReceivedAction = Action<typeof RAW_MESSAGES_RECEIVED> & {
+  payload: { messages: string[] };
+  route: Route;
 };
 
-export type ConnectionEstablishedAction = Action<typeof CONNECTION_ESTABLISHED>;
+export type ConnectionEstablishedAction = Action<
+  typeof CONNECTION_ESTABLISHED
+> & {
+  serverKey: string;
+};
 
 export type ConnectionClosedAction = Action<typeof CONNECTION_CLOSED> & {
-  payload: {
-    hadError: boolean;
-  };
+  serverKey: string;
+  payload: { hadError: boolean };
 };
 
 export type ConnectionFailedAction = Action<typeof CONNECTION_FAILED> & {
-  payload: {
-    name: string;
-    message: string;
-  };
+  serverKey: string;
+  payload: { name: string; message: string };
 };
 
 export const lookup = (
+  serverKey: string,
   error: Error | null,
   address: string,
   family: string | number | null,
   host: string,
 ): LookupSuccessAction | LookupFailedAction => {
   return error
-    ? { type: LOOKUP_FAILED, payload: { error } }
-    : { type: LOOKUP_SUCCESS, payload: { address, family, host } };
+    ? { type: LOOKUP_FAILED, serverKey, payload: { error } }
+    : { type: LOOKUP_SUCCESS, serverKey, payload: { address, family, host } };
 };
 
-export const setMessagesReceived = (
-  serverId: string,
+export const setRawMessagesReceived = (
+  serverKey: string,
   messages: string[],
-): MessagesReceivedAction => ({
-  type: MESSAGES_RECEIVED,
-  payload: { serverId, messages },
+): RawMessagesReceivedAction => ({
+  type: RAW_MESSAGES_RECEIVED,
+  payload: { messages },
+  route: { server: serverKey, window: RAW_WINDOW },
 });
 
-export const setConnectionEstablished = (): ConnectionEstablishedAction => ({
+export const setConnectionEstablished = (
+  serverKey: string,
+): ConnectionEstablishedAction => ({
   type: CONNECTION_ESTABLISHED,
+  serverKey,
 });
 
 export const setConnectionClosed = (
+  serverKey: string,
   hadError: boolean,
 ): ConnectionClosedAction => ({
   type: CONNECTION_CLOSED,
+  serverKey,
   payload: { hadError },
 });
 
 export const setConnectionFailed = (
+  serverKey: string,
   name: string,
   message: string,
 ): ConnectionFailedAction => ({
   type: CONNECTION_FAILED,
+  serverKey,
   payload: { name, message },
 });
