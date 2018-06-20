@@ -4,10 +4,7 @@ export const CONNECT_SERVER = "SERVER/CONNECT_SERVER";
 export const DISCONNECT_SERVER = "SERVER/DISCONNECT_SERVER";
 
 export type ConnectServerAction = Action<typeof CONNECT_SERVER> & {
-  payload: {
-    host: string;
-    port: number;
-  };
+  payload: { host: string; port: number };
 };
 
 export type DisconnectServerAction = Action<typeof DISCONNECT_SERVER>;
