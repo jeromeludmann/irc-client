@@ -1,26 +1,25 @@
 import { ActiveWindowState } from "@app/reducers/active";
 import { Route } from "@app/Route";
-import { SET_WINDOW, SetWindowAction } from "@app/actions/ui/active-window";
+import { SWITCH_WINDOW, SwitchWindowAction } from "@app/actions/ui-window";
 import {
   RawMessagesReceivedAction,
   RAW_MESSAGES_RECEIVED,
-} from "@app/actions/socket";
-import { MESSAGE_JOIN, JoinAction } from "@app/actions/messages/join";
-import {
-  ChannelPrivmsgAction,
-  MESSAGE_CHANNEL_PRIVMSG,
-} from "@app/actions/messages/privmsg";
-import {
-  ChannelNoticeAction,
-  MESSAGE_CHANNEL_NOTICE,
-} from "@app/actions/messages/notice";
+} from "@app/actions/network";
 import { UserState } from "@app/reducers/user";
+import {
+  JoinAction,
+  ChannelPrivmsgAction,
+  ChannelNoticeAction,
+  JOIN,
+  CHANNEL_NOTICE,
+  CHANNEL_PRIVMSG,
+} from "@app/actions/message-in";
 
 export type UnreadState = boolean;
 
 export type UnreadAction =
   | JoinAction
-  | SetWindowAction
+  | SwitchWindowAction
   | RawMessagesReceivedAction
   | ChannelPrivmsgAction
   | ChannelNoticeAction;
@@ -39,15 +38,15 @@ export default (
   { user, active, route }: ExtraParams,
 ): UnreadState => {
   switch (action.type) {
-    case SET_WINDOW:
+    case SWITCH_WINDOW:
       return false;
 
-    case MESSAGE_JOIN:
+    case JOIN:
       return action.payload.user.nick !== user.nick;
 
     case RAW_MESSAGES_RECEIVED:
-    case MESSAGE_CHANNEL_NOTICE:
-    case MESSAGE_CHANNEL_PRIVMSG:
+    case CHANNEL_NOTICE:
+    case CHANNEL_PRIVMSG:
       return active.server !== route.server || active.window !== route.window;
 
     default:

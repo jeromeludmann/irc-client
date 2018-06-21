@@ -6,32 +6,36 @@ import {
   setRawMessagesReceived,
   setConnectionFailed,
   lookup,
-} from "@app/actions/socket";
+} from "@app/actions/network";
 import { RootState } from "@app/reducers";
 import {
   ConnectServerAction,
   DisconnectServerAction,
   CONNECT_SERVER,
   DISCONNECT_SERVER,
-} from "@app/actions/server";
-import { CommandAction, COMMAND_RAW } from "@app/actions/commands";
+} from "@app/actions/network";
+import {
+  OutgoingMessageAction,
+  OUTGOING_MESSAGE,
+} from "@app/actions/message-out";
 
 // TODO multi servers
 let singletonSocket: Socket;
 let buffer = "";
 
-export const socket: Middleware<{}, RootState> = store => next => (
-  action: CommandAction | ConnectServerAction | DisconnectServerAction,
+export const network: Middleware<{}, RootState> = store => next => (
+  action: OutgoingMessageAction | ConnectServerAction | DisconnectServerAction,
 ) => {
   next(action);
 
   switch (action.type) {
-    case COMMAND_RAW:
-      // TODO action.serverKey
+    case OUTGOING_MESSAGE:
+      // TODO multi servers: action.serverKey
       singletonSocket.write(`${action.payload.raw}\r\n`);
       break;
 
     case CONNECT_SERVER:
+      // TODO multi servers: add socket to hash map
       singletonSocket = new Socket();
       singletonSocket.connect({
         host: action.payload.host,
@@ -78,6 +82,7 @@ export const socket: Middleware<{}, RootState> = store => next => (
       break;
 
     case DISCONNECT_SERVER:
+      // TODO multi servers: use route.server key (from commands middleware)
       singletonSocket.end();
       break;
   }

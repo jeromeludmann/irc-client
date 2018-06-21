@@ -1,11 +1,11 @@
 import {
   GoBackInputHistoryAction,
   GoForwardInputHistoryAction,
-  SendInputValueAction,
-  SEND_INPUT_VALUE,
+  EnterInputValueAction,
+  ENTER_INPUT_VALUE,
   GO_BACK_INPUT_HISTORY,
   GO_FORWARD_INPUT_HISTORY,
-} from "@app/actions/ui/input";
+} from "@app/actions/ui-input";
 import { beginOfHistory, endOfHistory } from "@app/reducers/input/helpers";
 
 export interface HistoryState {
@@ -14,7 +14,7 @@ export interface HistoryState {
 }
 
 export type HistoryAction =
-  | SendInputValueAction
+  | EnterInputValueAction
   | GoBackInputHistoryAction
   | GoForwardInputHistoryAction;
 
@@ -28,7 +28,7 @@ export default (
   action: HistoryAction,
 ): HistoryState => {
   switch (action.type) {
-    case SEND_INPUT_VALUE: {
+    case ENTER_INPUT_VALUE: {
       const values = [...history.values, action.payload.value];
       const index = values.length;
       return { values, index };
