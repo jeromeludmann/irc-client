@@ -1,5 +1,11 @@
 import { Action } from "redux";
-import { RAW_WINDOW, Route, STATUS_WINDOW } from "@app/Route";
+import {
+  RAW_BUFFER,
+  Route,
+  STATUS_BUFFER,
+  ALL_BUFFERS,
+  NO_BUFFER,
+} from "@app/Route";
 
 export interface NetworkAction<T> extends Action<T> {
   route: Route;
@@ -35,7 +41,7 @@ export const disconnectServer = (
   serverKey: string,
 ): DisconnectServerAction => ({
   type: DISCONNECT_SERVER,
-  route: { server: serverKey, window: STATUS_WINDOW },
+  route: { serverKey, bufferKey: NO_BUFFER },
 });
 
 // Socket lookup
@@ -72,13 +78,13 @@ export const lookup = (
         type: LOOKUP_FAILED,
         serverKey,
         payload: { error },
-        route: { server: serverKey, window: STATUS_WINDOW },
+        route: { serverKey, bufferKey: STATUS_BUFFER },
       }
     : {
         type: LOOKUP_SUCCESS,
         serverKey,
         payload: { address, family, host },
-        route: { server: serverKey, window: STATUS_WINDOW },
+        route: { serverKey, bufferKey: STATUS_BUFFER },
       };
 };
 
@@ -97,7 +103,7 @@ export const setRawMessagesReceived = (
 ): RawMessagesReceivedAction => ({
   type: RAW_MESSAGES_RECEIVED,
   payload: { messages },
-  route: { server: serverKey, window: RAW_WINDOW },
+  route: { serverKey, bufferKey: RAW_BUFFER },
 });
 
 // Socket connection established
@@ -111,7 +117,7 @@ export const setConnectionEstablished = (
   serverKey: string,
 ): ConnectionEstablishedAction => ({
   type: CONNECTION_ESTABLISHED,
-  route: { server: serverKey, window: STATUS_WINDOW },
+  route: { serverKey, bufferKey: STATUS_BUFFER },
 });
 
 // Socket connection closed
@@ -129,7 +135,7 @@ export const setConnectionClosed = (
 ): ConnectionClosedAction => ({
   type: CONNECTION_CLOSED,
   payload: { hadError },
-  route: { server: serverKey, window: STATUS_WINDOW },
+  route: { serverKey, bufferKey: ALL_BUFFERS },
 });
 
 // Socket connection failed
@@ -151,5 +157,5 @@ export const setConnectionFailed = (
 ): ConnectionFailedAction => ({
   type: CONNECTION_FAILED,
   payload: { name, message },
-  route: { server: serverKey, window: STATUS_WINDOW },
+  route: { serverKey, bufferKey: ALL_BUFFERS },
 });

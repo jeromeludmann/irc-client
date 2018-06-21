@@ -9,7 +9,7 @@ import {
   EnterInputValueAction,
 } from "@app/actions/ui-input";
 import { InputState } from "@app/reducers/input";
-import { beginOfHistory, endOfHistory } from "@app/reducers/input/helpers";
+import { beginOfHistory, endOfHistory } from "@app/reducers/input-helpers";
 
 export type ValueState = string;
 

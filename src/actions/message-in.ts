@@ -1,5 +1,5 @@
 import { Action } from "redux";
-import { Route, STATUS_WINDOW } from "@app/Route";
+import { Route, STATUS_BUFFER } from "@app/Route";
 
 export interface IncomingMessageAction<T, M> extends Action<T> {
   payload: M;
@@ -46,7 +46,7 @@ export const join: IncomingMessageActionCreator<JoinAction, User> = (
 ) => ({
   type: JOIN,
   payload: { user, channel: params[0] },
-  route: { server: serverKey, window: params[0] },
+  route: { serverKey, bufferKey: params[0] },
 });
 
 // NICK
@@ -67,7 +67,7 @@ export const nick: IncomingMessageActionCreator<NickAction, User> = (
 ) => ({
   type: NICK,
   payload: { user, nick: params[0] },
-  route: { server: serverKey, window: STATUS_WINDOW },
+  route: { serverKey, bufferKey: STATUS_BUFFER },
 });
 
 // NOTICE
@@ -116,7 +116,7 @@ export const notice: IncomingMessageActionCreator<
     return {
       type: SERVER_NOTICE,
       payload: { server: prefix as Server, text: params[1] },
-      route: { server: serverKey, window: STATUS_WINDOW },
+      route: { serverKey, bufferKey: STATUS_BUFFER },
     };
   }
 
@@ -124,12 +124,12 @@ export const notice: IncomingMessageActionCreator<
     ? {
         type: CHANNEL_NOTICE,
         payload: { user: prefix as User, channel: params[0], text: params[1] },
-        route: { server: serverKey, window: params[0] },
+        route: { serverKey, bufferKey: params[0] },
       }
     : {
         type: USER_NOTICE,
         payload: { user: prefix as User, text: params[1] },
-        route: { server: serverKey, window: STATUS_WINDOW },
+        route: { serverKey, bufferKey: STATUS_BUFFER },
       };
 };
 
@@ -153,7 +153,7 @@ export const ping: IncomingMessageActionCreator<ServerPingAction, Server> = (
 ) => ({
   type: SERVER_PING,
   payload: { key: params.join(" ") },
-  route: { server: serverKey, window: STATUS_WINDOW },
+  route: { serverKey, bufferKey: STATUS_BUFFER },
 });
 
 // PRIVMSG
@@ -194,11 +194,11 @@ export const privmsg: IncomingMessageActionCreator<
     ? {
         type: CHANNEL_PRIVMSG,
         payload: { user, channel: target, text },
-        route: { server: serverKey, window: target },
+        route: { serverKey, bufferKey: target },
       }
     : {
         type: USER_PRIVMSG,
         payload: { user, text },
-        route: { server: serverKey, window: user.nick },
+        route: { serverKey, bufferKey: user.nick },
       };
 };

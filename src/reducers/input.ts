@@ -2,15 +2,15 @@ import reduceHistory, {
   HistoryState,
   HistoryAction,
   historyInitialState,
-} from "@app/reducers/input/history";
+} from "@app/reducers/input-history";
 import reduceValue, {
   ValueAction,
   valueInitialState,
-} from "@app/reducers/input/value";
+} from "@app/reducers/input-value";
 import reduceDirtyValue, {
   DirtyValueAction,
   dirtyValueInitialState,
-} from "@app/reducers/input/dirtyValue";
+} from "@app/reducers/input-dirty-value";
 
 export interface InputState {
   readonly value: string;

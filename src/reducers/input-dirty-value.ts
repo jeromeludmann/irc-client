@@ -5,7 +5,7 @@ import {
   EnterInputValueAction,
 } from "@app/actions/ui-input";
 import { InputState } from "@app/reducers/input";
-import { endOfHistory } from "@app/reducers/input/helpers";
+import { endOfHistory } from "@app/reducers/input-helpers";
 
 export type DirtyValueState = string;
 

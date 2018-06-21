@@ -3,7 +3,7 @@ import messages, {
   MessageListState,
   MessageListAction,
   messagesInitialState,
-} from "@app/reducers/window/messages";
+} from "@app/reducers/buffer-messages";
 import input, {
   InputState,
   InputAction,
@@ -13,37 +13,37 @@ import unread, {
   UnreadState,
   UnreadAction,
   unreadInitialState,
-} from "@app/reducers/window/unread";
-import { ActiveWindowState } from "@app/reducers/active";
+} from "@app/reducers/buffer-unread";
+import { WindowState } from "@app/reducers/window";
 import { Route } from "@app/Route";
 import { UserState } from "@app/reducers/user";
 
-export interface WindowState {
+export interface BufferState {
   readonly messages: MessageListState;
   readonly input: InputState;
   readonly unread: UnreadState;
 }
 
-export type WindowAction = Action;
+export type BufferAction = Action;
 
 interface ExtraParams {
   user: UserState;
-  active: ActiveWindowState;
+  active: WindowState;
   route: Route;
 }
 
-export const windowInitialState: WindowState = {
+export const bufferInitialState: BufferState = {
   messages: messagesInitialState,
   input: inputInitialState,
   unread: unreadInitialState,
 };
 
 export default (
-  window = windowInitialState,
-  action: WindowAction,
+  buffer = bufferInitialState,
+  action: BufferAction,
   params: ExtraParams,
-): WindowState => ({
-  messages: messages(window.messages, action as MessageListAction),
-  input: input(window.input, action as InputAction),
-  unread: unread(window.unread, action as UnreadAction, params),
+): BufferState => ({
+  messages: messages(buffer.messages, action as MessageListAction),
+  input: input(buffer.input, action as InputAction),
+  unread: unread(buffer.unread, action as UnreadAction, params),
 });

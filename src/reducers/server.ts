@@ -2,19 +2,19 @@ import { Action } from "redux";
 import reduceModes, {
   ModesState,
   modesInitialState,
-} from "@app/reducers/server/modes";
-import { ActiveWindowState } from "@app/reducers/active";
-import reduceWindowRouter, {
-  WindowRouterState,
-  windowRouterInitialState,
-  WindowRouterAction,
-} from "@app/reducers/server/window-router";
+} from "@app/reducers/server-modes";
+import { WindowState } from "@app/reducers/window";
+import reduceBufferRouter, {
+  BufferRouterState,
+  bufferRouterInitialState,
+  BufferRouterAction,
+} from "@app/reducers/server-buffers";
 import { Route } from "@app/Route";
 import { UserState } from "@app/reducers/user";
 
 export type ServerState = {
   readonly modes: ModesState;
-  readonly windows: WindowRouterState;
+  readonly buffers: BufferRouterState;
 };
 
 export type ServerAction = Action;
@@ -22,12 +22,12 @@ export type ServerAction = Action;
 interface ExtraParams {
   user: UserState;
   route: Route;
-  active: ActiveWindowState;
+  active: WindowState;
 }
 
 export const serverInitialState: ServerState = {
   modes: modesInitialState,
-  windows: windowRouterInitialState,
+  buffers: bufferRouterInitialState,
 };
 
 export default (
@@ -36,9 +36,9 @@ export default (
   params: ExtraParams,
 ): ServerState => ({
   modes: reduceModes(server.modes),
-  windows: reduceWindowRouter(
-    server.windows,
-    action as WindowRouterAction,
+  buffers: reduceBufferRouter(
+    server.buffers,
+    action as BufferRouterAction,
     params,
   ),
 });
