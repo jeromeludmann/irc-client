@@ -1,11 +1,11 @@
 import { Route, STATUS_BUFFER } from "@app/Route";
 import { SwitchWindowAction, SWITCH_WINDOW } from "@app/actions/ui-window";
-import { JoinAction, JOIN } from "@app/actions/message-in";
+import { IncomingJoinAction, JOIN } from "@app/actions/message-in";
 import { UserState } from "@app/reducers/user";
 
 export type WindowState = Route;
 
-export type WindowAction = JoinAction | SwitchWindowAction;
+export type WindowAction = IncomingJoinAction | SwitchWindowAction;
 
 export const windowInitialState: WindowState = {
   serverKey: "serverKey", // TODO multi servers

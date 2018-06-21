@@ -3,11 +3,11 @@ import {
   CONNECTION_ESTABLISHED,
   ConnectionEstablishedAction,
 } from "@app/actions/network";
-import { user, nick, pong } from "@app/actions/message-out";
-import { ServerPingAction, SERVER_PING } from "@app/actions/message-in";
-import { RootState } from "@app/reducers/root";
+import { sendUser, sendNick, sendPong } from "@app/actions/message-out";
+import { IncomingServerPingAction, SERVER_PING } from "@app/actions/message-in";
+import { RootState } from "@app/reducers";
 
-type Actions = ConnectionEstablishedAction | ServerPingAction;
+type Actions = ConnectionEstablishedAction | IncomingServerPingAction;
 
 export const autoReply: Middleware<{}, RootState> = store => next => (
   action: Actions,
@@ -19,17 +19,21 @@ export const autoReply: Middleware<{}, RootState> = store => next => (
   }
 };
 
+const onConnectionEstablished = (
+  action: ConnectionEstablishedAction,
+  state: RootState,
+) => [
+  sendUser(action.route.serverKey, state.user.user, state.user.real),
+  sendNick(action.route.serverKey, state.user.nick),
+];
+
+const onServerPing = (action: IncomingServerPingAction) => [
+  sendPong(action.route.serverKey, action.payload.key),
+];
+
 const actions: {
   [action: string]: (action: Actions, state: RootState) => Action[];
 } = {
-  [CONNECTION_ESTABLISHED]: (
-    action: ConnectionEstablishedAction,
-    state: RootState,
-  ) => [
-    user(action.route.serverKey, state.user.user, state.user.real),
-    nick(action.route.serverKey, state.user.nick),
-  ],
-  [SERVER_PING]: (action: ServerPingAction) => [
-    pong(action.route.serverKey, action.payload.key),
-  ],
+  [CONNECTION_ESTABLISHED]: onConnectionEstablished,
+  [SERVER_PING]: onServerPing,
 };

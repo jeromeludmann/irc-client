@@ -1,4 +1,4 @@
-import { NICK, NickAction } from "@app/actions/message-in";
+import { NICK, IncomingNickAction } from "@app/actions/message-in";
 
 export interface UserState {
   nick: string;
@@ -6,7 +6,7 @@ export interface UserState {
   real: string;
 }
 
-export type UserAction = NickAction;
+export type UserAction = IncomingNickAction;
 
 export const userInitialState: UserState = {
   nick: "",
