@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect, MapStateToProps } from "react-redux";
-import { setWindow } from "@app/actions/ui/active-window";
+import { switchWindow } from "@app/actions/ui-window";
 import { RootState } from "@app/reducers";
 import { ServerRouterState } from "@app/reducers/server-router";
 import { ActiveWindowState } from "@app/reducers/active";
@@ -16,11 +16,11 @@ import { MessageListState } from "@app/reducers/window/messages";
 import { selectMessages } from "@app/reducers/window/selectors";
 import { selectValue } from "@app/reducers/input/selectors";
 import {
-  changeInputValue,
-  sendInputValue,
+  updateInputValue,
+  enterInputValue,
   goBackInputHistory,
   goForwardInputHistory,
-} from "@app/actions/ui/input";
+} from "@app/actions/ui-input";
 import { Route } from "@app/Route";
 import { UserState } from "@app/reducers/user";
 
@@ -75,9 +75,9 @@ const mapStateToProps: MapStateToProps<StateProps, {}, RootState> = state => ({
 });
 
 const mapDispatchToProps: DispatchProps = {
-  onWindowSwitch: setWindow,
-  onInputType: changeInputValue,
-  onInputEnter: sendInputValue,
+  onWindowSwitch: switchWindow,
+  onInputType: updateInputValue,
+  onInputEnter: enterInputValue,
   onInputArrowUp: goBackInputHistory,
   onInputArrowDown: goForwardInputHistory,
 };
