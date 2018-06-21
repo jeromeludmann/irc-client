@@ -1,5 +1,5 @@
 import { createSelector } from "reselect";
-import { selectWindow } from "@app/reducers/server/selectors";
+import { selectWindow } from "@app/reducers/server-selectors";
 
 export const selectMessages = createSelector(
   selectWindow,

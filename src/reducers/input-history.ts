@@ -6,7 +6,7 @@ import {
   GO_BACK_INPUT_HISTORY,
   GO_FORWARD_INPUT_HISTORY,
 } from "@app/actions/ui-input";
-import { beginOfHistory, endOfHistory } from "@app/reducers/input/helpers";
+import { beginOfHistory, endOfHistory } from "@app/reducers/input-helpers";
 
 export interface HistoryState {
   readonly values: string[];

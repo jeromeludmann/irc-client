@@ -1,9 +1,9 @@
 import { Action } from "redux";
 import reduceActiveWindow, {
-  ActiveWindowState,
-  ActiveWindowAction,
-  activeInitialState,
-} from "@app/reducers/active";
+  WindowState,
+  WindowAction,
+  windowInitialState,
+} from "@app/reducers/window";
 import reduceServers, {
   ServerRouterState,
   serversInitialState,
@@ -19,7 +19,7 @@ import reduceUser, {
 export type RootState = {
   readonly user: UserState;
   readonly servers: ServerRouterState;
-  readonly active: ActiveWindowState;
+  readonly active: WindowState;
 };
 
 type RootAction = Action;
@@ -27,7 +27,7 @@ type RootAction = Action;
 export const rootInitialState = {
   user: userInitialState,
   servers: serversInitialState,
-  active: activeInitialState,
+  active: windowInitialState,
 };
 
 export default (state = rootInitialState, action: RootAction): RootState => ({
@@ -37,7 +37,7 @@ export default (state = rootInitialState, action: RootAction): RootState => ({
     route: (action as RootAction & { route: Route }).route || state.active,
     active: state.active,
   }),
-  active: reduceActiveWindow(state.active, action as ActiveWindowAction, {
+  active: reduceActiveWindow(state.active, action as WindowAction, {
     user: state.user,
   }),
 });

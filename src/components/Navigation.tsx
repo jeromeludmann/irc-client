@@ -2,31 +2,32 @@ import React, { PureComponent, MouseEvent, CSSProperties } from "react";
 
 interface Props {
   servers: {
-    [s: string]: {
-      windows: { [w: string]: { unread: boolean } };
+    [serverKey: string]: {
+      buffers: { [bufferKey: string]: { unread: boolean } };
     };
   };
-  active: {
-    server: string;
-    window: string;
+  window: {
+    serverKey: string;
+    bufferKey: string;
   };
-  onWindowButtonClick: (
-    { server, window }: { server: string; window: string },
+  onBufferButtonClick: (
+    { serverKey, bufferKey }: { serverKey: string; bufferKey: string },
   ) => void;
 }
 
 export default class Navigation extends PureComponent<Props> {
   public render() {
-    const { active, servers } = this.props;
+    const { window, servers } = this.props;
 
     return (
       <>
-        {Object.keys(servers).map(server => (
-          <ul key={server} style={{ listStyle: "none", padding: "0" }}>
-            {Object.keys(servers[server].windows).map(window => {
+        {Object.keys(servers).map(serverKey => (
+          <ul key={serverKey} style={{ listStyle: "none", padding: "0" }}>
+            {Object.keys(servers[serverKey].buffers).map(bufferKey => {
               const isActive =
-                server === active.server && window === active.window;
-              const isUnread = servers[server].windows[window].unread;
+                serverKey === window.serverKey &&
+                bufferKey === window.bufferKey;
+              const isUnread = servers[serverKey].buffers[bufferKey].unread;
               const style: CSSProperties = {
                 outline: "none",
                 border: "1px solid #ddd",
@@ -36,14 +37,14 @@ export default class Navigation extends PureComponent<Props> {
               };
 
               return (
-                <li key={window} style={{ marginBottom: "5px" }}>
+                <li key={bufferKey} style={{ marginBottom: "5px" }}>
                   <button
                     onClick={this.handleClick}
-                    data-server={server}
-                    data-window={window}
+                    data-server-key={serverKey}
+                    data-buffer-key={bufferKey}
                     style={style}
                   >
-                    {window}
+                    {bufferKey}
                   </button>
                 </li>
               );
@@ -55,11 +56,11 @@ export default class Navigation extends PureComponent<Props> {
   }
 
   private handleClick = (e: MouseEvent<HTMLButtonElement>) => {
-    const server = e.currentTarget.getAttribute("data-server");
-    const window = e.currentTarget.getAttribute("data-window");
+    const serverKey = e.currentTarget.getAttribute("data-server-key");
+    const bufferKey = e.currentTarget.getAttribute("data-buffer-key");
 
-    if (server && window) {
-      this.props.onWindowButtonClick({ server, window });
+    if (serverKey && bufferKey) {
+      this.props.onBufferButtonClick({ serverKey, bufferKey });
     }
   };
 }

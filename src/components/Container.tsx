@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 import { connect, MapStateToProps } from "react-redux";
-import { switchWindow } from "@app/actions/ui-window";
-import { RootState } from "@app/reducers";
+import { switchBuffer } from "@app/actions/ui-window";
+import { RootState } from "@app/reducers/root";
 import { ServerRouterState } from "@app/reducers/server-router";
-import { ActiveWindowState } from "@app/reducers/active";
+import { WindowState } from "@app/reducers/window";
 import Navigation from "@app/components/Navigation";
 import MessageList from "@app/components/MessageList";
 import Input from "@app/components/Input";
 import {
-  selectActiveWindow,
+  selectActiveBuffer,
   selectServers,
   selectUser,
 } from "@app/reducers/selectors";
-import { MessageListState } from "@app/reducers/window/messages";
-import { selectMessages } from "@app/reducers/window/selectors";
-import { selectValue } from "@app/reducers/input/selectors";
+import { MessageListState } from "@app/reducers/buffer-messages";
+import { selectMessages } from "@app/reducers/buffer-selectors";
+import { selectValue } from "@app/reducers/input-selectors";
 import {
   updateInputValue,
   enterInputValue,
@@ -27,13 +27,13 @@ import { UserState } from "@app/reducers/user";
 interface StateProps {
   user: UserState;
   servers: ServerRouterState;
-  active: ActiveWindowState;
+  window: WindowState;
   messages: MessageListState;
   inputValue: string;
 }
 
 interface DispatchProps {
-  onWindowSwitch: (route: Route) => void;
+  onBufferSwitch: (route: Route) => void;
   onInputType: (value: string) => void;
   onInputEnter: (value: string) => void;
   onInputArrowUp: () => void;
@@ -48,8 +48,8 @@ class Container extends Component<StateProps & DispatchProps> {
 
         <Navigation
           servers={this.props.servers}
-          active={this.props.active}
-          onWindowButtonClick={this.props.onWindowSwitch}
+          window={this.props.window}
+          onBufferButtonClick={this.props.onBufferSwitch}
         />
 
         <Input
@@ -69,13 +69,13 @@ class Container extends Component<StateProps & DispatchProps> {
 const mapStateToProps: MapStateToProps<StateProps, {}, RootState> = state => ({
   user: selectUser(state),
   messages: selectMessages(state),
-  active: selectActiveWindow(state),
+  window: selectActiveBuffer(state),
   servers: selectServers(state),
   inputValue: selectValue(state),
 });
 
 const mapDispatchToProps: DispatchProps = {
-  onWindowSwitch: switchWindow,
+  onBufferSwitch: switchBuffer,
   onInputType: updateInputValue,
   onInputEnter: enterInputValue,
   onInputArrowUp: goBackInputHistory,

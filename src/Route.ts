@@ -1,7 +1,9 @@
-export const STATUS_WINDOW = "@status";
-export const RAW_WINDOW = "@raw";
+export const STATUS_BUFFER = "@status";
+export const RAW_BUFFER = "@raw";
+export const ALL_BUFFERS = "@all";
+export const NO_BUFFER = "@none";
 
 export interface Route {
-  server: string;
-  window: string;
+  serverKey: string;
+  bufferKey: string;
 }

@@ -1,4 +1,4 @@
-import { ActiveWindowState } from "@app/reducers/active";
+import { WindowState } from "@app/reducers/window";
 import { Route } from "@app/Route";
 import { SWITCH_WINDOW, SwitchWindowAction } from "@app/actions/ui-window";
 import {
@@ -26,7 +26,7 @@ export type UnreadAction =
 
 interface ExtraParams {
   readonly user: UserState;
-  readonly active: ActiveWindowState;
+  readonly active: WindowState;
   readonly route: Route;
 }
 
@@ -47,7 +47,10 @@ export default (
     case RAW_MESSAGES_RECEIVED:
     case CHANNEL_NOTICE:
     case CHANNEL_PRIVMSG:
-      return active.server !== route.server || active.window !== route.window;
+      return (
+        active.serverKey !== route.serverKey ||
+        active.bufferKey !== route.bufferKey
+      );
 
     default:
       return unread;
