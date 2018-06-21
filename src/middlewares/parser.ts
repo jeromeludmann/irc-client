@@ -45,52 +45,59 @@ const actions: {
 
 const MESSAGE_LENGTH = 510; // RFC says 512 - "CR" "LF" = 510
 
-const parseMessage = (
-  message: string,
-): {
+interface GenericMessage {
   prefix?: Prefix;
   command: string;
   params: string[];
-} => {
+}
+
+const parseMessage = (message: string): GenericMessage => {
   if (message.length > MESSAGE_LENGTH) {
     // tslint:disable-next-line
     console.warn(`Unexpected message length: (${MESSAGE_LENGTH} bytes max)`);
   }
 
-  let i;
+  let pos: number;
+
+  // TODO Skip tags (optional, not yet supported)
+
+  if (message.charAt(0) === "@") {
+    pos = message.indexOf(" ");
+    message = message.slice(pos + 1);
+  }
 
   // Parse prefix
 
   let prefix: Prefix = "";
 
   if (message.charAt(0) === ":") {
-    i = message.indexOf(" ");
-    prefix = parsePrefix(message.slice(1, i));
-    message = message.slice(i + 1);
+    pos = message.indexOf(" ");
+    prefix = parsePrefix(message.slice(1, pos));
+    message = message.slice(pos + 1);
   }
 
   // Parse command
 
   let command: string;
-  i = message.indexOf(" ");
-  if (i === -1) {
-    i = message.length;
+  pos = message.indexOf(" ");
+  if (pos === -1) {
+    pos = message.length;
   }
-  command = message.slice(0, i);
-  message = message.slice(i + 1);
+  command = message.slice(0, pos);
+  message = message.slice(pos + 1);
 
   const params = [];
 
   // Parse middle parameters
 
   while (message.length > 0 && message.charAt(0) !== ":") {
-    i = message.indexOf(" ");
-    if (i === -1) {
-      i = message.length;
+    pos = message.indexOf(" ");
+    if (pos === -1) {
+      pos = message.length;
     }
-    const middle = message.slice(0, i);
+    const middle = message.slice(0, pos);
     params.push(middle);
-    message = message.slice(i + 1);
+    message = message.slice(pos + 1);
   }
 
   // Parse trailing parameter

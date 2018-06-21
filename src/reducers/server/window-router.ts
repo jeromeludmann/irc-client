@@ -28,8 +28,14 @@ export default (
   windowRouter = windowRouterInitialState,
   action: WindowRouterAction,
   { user, route, active }: ExtraParams,
-): WindowRouterState =>
-  route.window
+): WindowRouterState => {
+  // // TODO broadcast actions if needed
+  // if (!route.window) {
+  //   return {
+  //     ...windowRouter,
+  //   };
+  // } else {
+  return route.window
     ? {
         ...windowRouter,
         [route.window]: reduceWindow(windowRouter[route.window], action, {
@@ -39,3 +45,5 @@ export default (
         }),
       }
     : windowRouter;
+  // }
+};
