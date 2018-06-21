@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware } from "redux";
-import rootReducer from "@app/reducers";
-import { STATUS_WINDOW } from "@app/Route";
+import rootReducer from "@app/reducers/root";
+import { STATUS_BUFFER } from "@app/Route";
 import { createLogger } from "@app/middlewares/logger";
 import { UPDATE_INPUT_VALUE } from "@app/actions/ui-input";
 import { parser } from "@app/middlewares/parser";
@@ -14,7 +14,7 @@ export const store = createStore(
   rootReducer,
   {
     user: { nick: "nick", user: "user", real: "IRC Client" },
-    active: { server: "serverKey", window: STATUS_WINDOW },
+    active: { serverKey: "serverKey", bufferKey: STATUS_BUFFER },
   },
   // be careful with the order of the middlewares
   applyMiddleware(

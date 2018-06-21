@@ -5,7 +5,7 @@ import {
 } from "@app/actions/network";
 import { user, nick, pong } from "@app/actions/message-out";
 import { ServerPingAction, SERVER_PING } from "@app/actions/message-in";
-import { RootState } from "@app/reducers";
+import { RootState } from "@app/reducers/root";
 
 type Actions = ConnectionEstablishedAction | ServerPingAction;
 
@@ -26,10 +26,10 @@ const actions: {
     action: ConnectionEstablishedAction,
     state: RootState,
   ) => [
-    user(action.route.server, state.user.user, state.user.real),
-    nick(action.route.server, state.user.nick),
+    user(action.route.serverKey, state.user.user, state.user.real),
+    nick(action.route.serverKey, state.user.nick),
   ],
   [SERVER_PING]: (action: ServerPingAction) => [
-    pong(action.route.server, action.payload.key),
+    pong(action.route.serverKey, action.payload.key),
   ],
 };

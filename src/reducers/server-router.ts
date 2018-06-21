@@ -1,5 +1,5 @@
 import reduceServer, { ServerState } from "@app/reducers/server";
-import { ActiveWindowState } from "@app/reducers/active";
+import { WindowState } from "@app/reducers/window";
 import { Action } from "redux";
 import { Route } from "@app/Route";
 import { UserState } from "@app/reducers/user";
@@ -13,7 +13,7 @@ export type ServerRouterAction = Action;
 interface ExtraParams {
   readonly user: UserState;
   readonly route: Route;
-  readonly active: ActiveWindowState;
+  readonly active: WindowState;
 }
 
 export const serversInitialState: ServerRouterState = {};
@@ -23,10 +23,10 @@ export default (
   action: ServerRouterAction,
   { user, route, active }: ExtraParams,
 ): ServerRouterState =>
-  route.server
+  route.serverKey
     ? {
         ...servers,
-        [route.server]: reduceServer(servers[route.server], action, {
+        [route.serverKey]: reduceServer(servers[route.serverKey], action, {
           user,
           route,
           active,

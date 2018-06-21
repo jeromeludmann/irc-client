@@ -24,7 +24,7 @@ export const parser: Middleware = () => next => (
       const { prefix, command, params } = genericMessage;
 
       if (actions.hasOwnProperty(command)) {
-        next(actions[command](action.route.server, prefix, params));
+        next(actions[command](action.route.serverKey, prefix, params));
       }
     });
   }
@@ -101,6 +101,7 @@ const parseMessage = (message: string): GenericMessage => {
   }
 
   // Parse trailing parameter
+
   if (message.length > 0) {
     const trailing = message.slice(1);
     params.push(trailing);

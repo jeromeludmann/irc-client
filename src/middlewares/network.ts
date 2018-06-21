@@ -7,7 +7,7 @@ import {
   setConnectionFailed,
   lookup,
 } from "@app/actions/network";
-import { RootState } from "@app/reducers";
+import { RootState } from "@app/reducers/root";
 import {
   ConnectServerAction,
   DisconnectServerAction,
