@@ -1,8 +1,8 @@
 import { createSelector } from "reselect";
-import { selectServer, selectActiveBuffer } from "@app/reducers/selectors";
+import { selectServer, selectWindow } from "@app/reducers/selectors";
 
-export const selectWindow = createSelector(
+export const selectBuffer = createSelector(
   selectServer,
-  selectActiveBuffer,
+  selectWindow,
   (server, active) => server.buffers[active.bufferKey],
 );

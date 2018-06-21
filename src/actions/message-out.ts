@@ -7,7 +7,7 @@ export interface OutgoingMessageAction extends Action<typeof OUTGOING_MESSAGE> {
   payload: { raw: string };
 }
 
-export const raw = (
+export const sendRaw = (
   serverKey: string,
   message: string,
 ): OutgoingMessageAction => ({
@@ -16,33 +16,35 @@ export const raw = (
   payload: { raw: message },
 });
 
-export const join = (
+export const sendJoin = (
   serverKey: string,
   channel: string,
-): OutgoingMessageAction => raw(serverKey, `JOIN ${channel}`);
+): OutgoingMessageAction => sendRaw(serverKey, `JOIN ${channel}`);
 
-export const nick = (
+export const sendNick = (
   serverKey: string,
   nickname: string,
-): OutgoingMessageAction => raw(serverKey, `NICK :${nickname}`);
+): OutgoingMessageAction => sendRaw(serverKey, `NICK :${nickname}`);
 
-export const pong = (serverKey: string, key: string): OutgoingMessageAction =>
-  raw(serverKey, `PONG :${key}`);
+export const sendPong = (
+  serverKey: string,
+  key: string,
+): OutgoingMessageAction => sendRaw(serverKey, `PONG :${key}`);
 
-export const privmsg = (
+export const sendPrivmsg = (
   serverKey: string,
   target: string,
   text: string,
-): OutgoingMessageAction => raw(serverKey, `PRIVMSG ${target} :${text}`);
+): OutgoingMessageAction => sendRaw(serverKey, `PRIVMSG ${target} :${text}`);
 
-export const user = (
+export const sendUser = (
   serverKey: string,
   username: string,
   realname: string,
   mode = 0,
-) => raw(serverKey, `USER ${username} ${mode} * :${realname}`);
+) => sendRaw(serverKey, `USER ${username} ${mode} * :${realname}`);
 
-export const whois = (
+export const sendWhois = (
   serverKey: string,
   nickname: string,
-): OutgoingMessageAction => raw(serverKey, `WHOIS ${nickname}`);
+): OutgoingMessageAction => sendRaw(serverKey, `WHOIS ${nickname}`);

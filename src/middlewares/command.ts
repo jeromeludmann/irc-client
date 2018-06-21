@@ -4,9 +4,9 @@ import {
   ENTER_INPUT_VALUE,
 } from "@app/actions/ui-input";
 import { connectServer, disconnectServer } from "@app/actions/network";
-import { RootState } from "@app/reducers/root";
-import { raw, join } from "@app/actions/message-out";
-import { privmsg } from "@app/actions/message-out";
+import { RootState } from "@app/reducers";
+import { sendRaw, sendJoin } from "@app/actions/message-out";
+import { sendPrivmsg } from "@app/actions/message-out";
 
 export const commands: Middleware<{}, RootState> = store => next => (
   action: EnterInputValueAction,
@@ -17,13 +17,13 @@ export const commands: Middleware<{}, RootState> = store => next => (
     return;
   }
 
-  const { serverKey, bufferKey } = store.getState().active;
   const value = action.payload.value;
   const regExpResult = value.match(/^\s*\/(\S+)(\s+)?(.*)?/);
+  const { serverKey, bufferKey } = store.getState().active;
 
   if (!regExpResult) {
     if (bufferKey.charAt(0) !== "@") {
-      next(privmsg(serverKey, bufferKey, value));
+      next(sendPrivmsg(serverKey, bufferKey, value));
     } else {
       // tslint:disable-next-line
       console.log("Not a channel/private");
@@ -40,29 +40,39 @@ export const commands: Middleware<{}, RootState> = store => next => (
     return;
   }
 
-  next(registry[command](serverKey, regExpResult[3]));
+  next(registry[command]({ serverKey, params: regExpResult[3] }));
 };
 
-type Command = (server: string, params: string) => Action;
+type Command = (
+  { serverKey, params }: { serverKey: string; params: string },
+) => Action;
+
+const connect: Command = ({ params }) => {
+  // TODO dispatch error action
+  if (!params) {
+    // tslint:disable-next-line
+    console.warn("params is missing");
+    return { type: "ACTION" };
+  }
+
+  return connectServer(params);
+};
+
+const disconnect: Command = ({ serverKey }) => {
+  return disconnectServer(serverKey);
+};
+
+const join: Command = ({ serverKey, params: channel }) => {
+  return sendJoin(serverKey, channel);
+};
+
+const raw: Command = ({ serverKey, params: message }) => {
+  return sendRaw(serverKey, message);
+};
 
 const registry: { [command: string]: Command } = {
-  connect: (_server, params) => {
-    // TODO dispatch error action
-    if (!params) {
-      // tslint:disable-next-line
-      console.warn("params is missing");
-      return { type: "ACTION" };
-    }
-
-    return connectServer(params);
-  },
-  disconnect: server => {
-    return disconnectServer(server);
-  },
-  join: (server, channel) => {
-    return join(server, channel);
-  },
-  raw: (server, params) => {
-    return raw(server, params);
-  },
+  connect,
+  disconnect,
+  join,
+  raw,
 };

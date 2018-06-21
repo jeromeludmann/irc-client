@@ -15,7 +15,8 @@ export interface NetworkAction<T> extends Action<T> {
 
 export const CONNECT_SERVER = "SERVER/CONNECT_SERVER";
 
-export interface ConnectServerAction extends Action<typeof CONNECT_SERVER> {
+export interface ConnectServerAction
+  extends NetworkAction<typeof CONNECT_SERVER> {
   payload: {
     host: string;
     port: number;
@@ -28,6 +29,7 @@ export const connectServer = (
 ): ConnectServerAction => ({
   type: CONNECT_SERVER,
   payload: { host, port },
+  route: { serverKey: "", bufferKey: ALL_BUFFERS },
 });
 
 // Disconnect from server

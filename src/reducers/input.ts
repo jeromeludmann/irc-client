@@ -10,7 +10,7 @@ import reduceValue, {
 import reduceDirtyValue, {
   DirtyValueAction,
   dirtyValueInitialState,
-} from "@app/reducers/input-dirty-value";
+} from "@app/reducers/input-dirty";
 
 export interface InputState {
   readonly value: string;

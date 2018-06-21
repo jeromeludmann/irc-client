@@ -7,9 +7,9 @@ import {
 } from "@app/actions/network";
 import { UserState } from "@app/reducers/user";
 import {
-  JoinAction,
-  ChannelPrivmsgAction,
-  ChannelNoticeAction,
+  IncomingJoinAction,
+  IncomingChannelPrivmsgAction,
+  IncomingChannelNoticeAction,
   JOIN,
   CHANNEL_NOTICE,
   CHANNEL_PRIVMSG,
@@ -18,11 +18,11 @@ import {
 export type UnreadState = boolean;
 
 export type UnreadAction =
-  | JoinAction
+  | IncomingJoinAction
   | SwitchWindowAction
   | RawMessagesReceivedAction
-  | ChannelPrivmsgAction
-  | ChannelNoticeAction;
+  | IncomingChannelPrivmsgAction
+  | IncomingChannelNoticeAction;
 
 interface ExtraParams {
   readonly user: UserState;

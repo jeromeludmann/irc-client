@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { connect, MapStateToProps } from "react-redux";
-import { switchBuffer } from "@app/actions/ui-window";
-import { RootState } from "@app/reducers/root";
+import { switchWindow } from "@app/actions/ui-window";
+import { RootState } from "@app/reducers";
 import { ServerRouterState } from "@app/reducers/server-router";
 import { WindowState } from "@app/reducers/window";
 import Navigation from "@app/components/Navigation";
 import MessageList from "@app/components/MessageList";
 import Input from "@app/components/Input";
 import {
-  selectActiveBuffer,
+  selectWindow,
   selectServers,
   selectUser,
 } from "@app/reducers/selectors";
@@ -69,13 +69,13 @@ class Container extends Component<StateProps & DispatchProps> {
 const mapStateToProps: MapStateToProps<StateProps, {}, RootState> = state => ({
   user: selectUser(state),
   messages: selectMessages(state),
-  window: selectActiveBuffer(state),
+  window: selectWindow(state),
   servers: selectServers(state),
   inputValue: selectValue(state),
 });
 
 const mapDispatchToProps: DispatchProps = {
-  onBufferSwitch: switchBuffer,
+  onBufferSwitch: switchWindow,
   onInputType: updateInputValue,
   onInputEnter: enterInputValue,
   onInputArrowUp: goBackInputHistory,

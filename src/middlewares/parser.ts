@@ -6,11 +6,12 @@ import {
 import {
   IncomingMessageActionCreator,
   Prefix,
-  join,
-  nick,
-  notice,
-  ping,
-  privmsg,
+  receiveJoin,
+  receiveNick,
+  receiveNotice,
+  receivePing,
+  receivePrivmsg,
+  receiveError,
 } from "@app/actions/message-in";
 
 export const parser: Middleware = () => next => (
@@ -24,7 +25,13 @@ export const parser: Middleware = () => next => (
       const { prefix, command, params } = genericMessage;
 
       if (actions.hasOwnProperty(command)) {
-        next(actions[command](action.route.serverKey, prefix, params));
+        next(
+          actions[command]({
+            serverKey: action.route.serverKey,
+            prefix,
+            params,
+          }),
+        );
       }
     });
   }
@@ -33,14 +40,15 @@ export const parser: Middleware = () => next => (
 const actions: {
   [command: string]: IncomingMessageActionCreator<
     Action<string>,
-    Prefix | undefined
+    Prefix | void
   >;
 } = {
-  JOIN: join,
-  NICK: nick,
-  NOTICE: notice,
-  PING: ping,
-  PRIVMSG: privmsg,
+  error: receiveError,
+  join: receiveJoin,
+  nick: receiveNick,
+  notice: receiveNotice,
+  ping: receivePing,
+  privmsg: receivePrivmsg,
 };
 
 const MESSAGE_LENGTH = 510; // RFC says 512 - "CR" "LF" = 510
@@ -83,7 +91,7 @@ const parseMessage = (message: string): GenericMessage => {
   if (pos === -1) {
     pos = message.length;
   }
-  command = message.slice(0, pos);
+  command = message.slice(0, pos).toLowerCase();
   message = message.slice(pos + 1);
 
   const params = [];

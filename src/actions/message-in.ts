@@ -1,15 +1,21 @@
 import { Action } from "redux";
-import { Route, STATUS_BUFFER } from "@app/Route";
+import { Route, STATUS_BUFFER, ALL_BUFFERS } from "@app/Route";
 
 export interface IncomingMessageAction<T, M> extends Action<T> {
   payload: M;
   route: Route;
 }
 
-export type IncomingMessageActionCreator<A, P = Prefix> = (
-  serverKey: string,
-  prefix: P,
-  params: string[],
+export type IncomingMessageActionCreator<A, P = void> = (
+  {
+    serverKey,
+    prefix,
+    params,
+  }: {
+    serverKey: string;
+    prefix: P;
+    params: string[];
+  },
 ) => A;
 
 export type Prefix = Server | User;
@@ -28,6 +34,24 @@ export const isPrefixServer = (prefix: Prefix) => typeof prefix === "string";
 
 export const isPrefixUser = (prefix: Prefix) => !isPrefixServer(prefix);
 
+// ERROR
+
+interface Error {
+  message: string;
+}
+
+export const ERROR = "MESSAGE/INCOMING/ERROR";
+
+export type IncomingErrorAction = IncomingMessageAction<typeof ERROR, Error>;
+
+export const receiveError: IncomingMessageActionCreator<
+  IncomingErrorAction
+> = ({ serverKey, params }) => ({
+  type: ERROR,
+  payload: { message: params[0] },
+  route: { serverKey, bufferKey: ALL_BUFFERS },
+});
+
 // JOIN
 
 interface Join {
@@ -37,13 +61,12 @@ interface Join {
 
 export const JOIN = "MESSAGE/INCOMING/JOIN";
 
-export type JoinAction = IncomingMessageAction<typeof JOIN, Join>;
+export type IncomingJoinAction = IncomingMessageAction<typeof JOIN, Join>;
 
-export const join: IncomingMessageActionCreator<JoinAction, User> = (
-  serverKey,
-  user,
-  params,
-) => ({
+export const receiveJoin: IncomingMessageActionCreator<
+  IncomingJoinAction,
+  User
+> = ({ serverKey, prefix: user, params }) => ({
   type: JOIN,
   payload: { user, channel: params[0] },
   route: { serverKey, bufferKey: params[0] },
@@ -58,13 +81,12 @@ interface Nick {
 
 export const NICK = "MESSAGE/INCOMING/NICK";
 
-export type NickAction = IncomingMessageAction<typeof NICK, Nick>;
+export type IncomingNickAction = IncomingMessageAction<typeof NICK, Nick>;
 
-export const nick: IncomingMessageActionCreator<NickAction, User> = (
-  serverKey,
-  user,
-  params,
-) => ({
+export const receiveNick: IncomingMessageActionCreator<
+  IncomingNickAction,
+  User
+> = ({ serverKey, prefix: user, params }) => ({
   type: NICK,
   payload: { user, nick: params[0] },
   route: { serverKey, bufferKey: STATUS_BUFFER },
@@ -94,24 +116,27 @@ export const CHANNEL_NOTICE = "MESSAGE/INCOMING/CHANNEL_NOTICE";
 
 export const USER_NOTICE = "MESSAGE/INCOMING/USER_NOTICE";
 
-export type ServerNoticeAction = IncomingMessageAction<
+export type IncomingServerNoticeAction = IncomingMessageAction<
   typeof SERVER_NOTICE,
   ServerNotice
 >;
 
-export type ChannelNoticeAction = IncomingMessageAction<
+export type IncomingChannelNoticeAction = IncomingMessageAction<
   typeof CHANNEL_NOTICE,
   ChannelNotice
 >;
 
-export type UserNoticeAction = IncomingMessageAction<
+export type IncomingUserNoticeAction = IncomingMessageAction<
   typeof USER_NOTICE,
   UserNotice
 >;
 
-export const notice: IncomingMessageActionCreator<
-  ServerNoticeAction | ChannelNoticeAction | UserNoticeAction
-> = (serverKey, prefix, params) => {
+export const receiveNotice: IncomingMessageActionCreator<
+  | IncomingServerNoticeAction
+  | IncomingChannelNoticeAction
+  | IncomingUserNoticeAction,
+  Prefix
+> = ({ serverKey, prefix, params }) => {
   if (isPrefixServer(prefix)) {
     return {
       type: SERVER_NOTICE,
@@ -141,16 +166,15 @@ interface ServerPing {
 
 export const SERVER_PING = "MESSAGE/INCOMING/SERVER_PING";
 
-export type ServerPingAction = IncomingMessageAction<
+export type IncomingServerPingAction = IncomingMessageAction<
   typeof SERVER_PING,
   ServerPing
 >;
 
-export const ping: IncomingMessageActionCreator<ServerPingAction, Server> = (
-  serverKey,
-  _server,
-  params,
-) => ({
+export const receivePing: IncomingMessageActionCreator<
+  IncomingServerPingAction,
+  Server
+> = ({ serverKey, params }) => ({
   type: SERVER_PING,
   payload: { key: params.join(" ") },
   route: { serverKey, bufferKey: STATUS_BUFFER },
@@ -173,20 +197,20 @@ export const CHANNEL_PRIVMSG = "MESSAGE/INCOMING/CHANNEL_PRIVMSG";
 
 export const USER_PRIVMSG = "MESSAGE/INCOMING/USER_PRIVMSG";
 
-export type ChannelPrivmsgAction = IncomingMessageAction<
+export type IncomingChannelPrivmsgAction = IncomingMessageAction<
   typeof CHANNEL_PRIVMSG,
   ChannelPrivmsg
 >;
 
-export type UserPrivmsgAction = IncomingMessageAction<
+export type IncomingUserPrivmsgAction = IncomingMessageAction<
   typeof USER_PRIVMSG,
   UserPrivmsg
 >;
 
-export const privmsg: IncomingMessageActionCreator<
-  ChannelPrivmsgAction | UserPrivmsgAction,
+export const receivePrivmsg: IncomingMessageActionCreator<
+  IncomingChannelPrivmsgAction | IncomingUserPrivmsgAction,
   User
-> = (serverKey, user, params) => {
+> = ({ serverKey, prefix: user, params }) => {
   const target = params[0];
   const text = params[1];
 

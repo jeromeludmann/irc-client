@@ -7,7 +7,7 @@ export interface SwitchWindowAction extends Action<typeof SWITCH_WINDOW> {
   route: Route;
 }
 
-export function switchBuffer(route: Route): SwitchWindowAction {
+export function switchWindow(route: Route): SwitchWindowAction {
   return {
     type: SWITCH_WINDOW,
     route,

@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from "redux";
-import rootReducer from "@app/reducers/root";
+import rootReducer from "@app/reducers";
 import { STATUS_BUFFER } from "@app/Route";
 import { createLogger } from "@app/middlewares/logger";
 import { UPDATE_INPUT_VALUE } from "@app/actions/ui-input";
