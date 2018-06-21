@@ -1,4 +1,4 @@
-import { MESSAGE_NICK, NickAction } from "@app/actions/messages/nick";
+import { NICK, NickAction } from "@app/actions/message-in";
 
 export interface UserState {
   nick: string;
@@ -24,7 +24,7 @@ export default (
   params: ExtraParams,
 ): UserState => {
   switch (action.type) {
-    case MESSAGE_NICK:
+    case NICK:
       return action.payload.user.nick === params.user.nick
         ? { ...user, nick: action.payload.nick }
         : user;

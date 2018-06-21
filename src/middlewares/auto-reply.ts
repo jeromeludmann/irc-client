@@ -2,17 +2,14 @@ import { Middleware, Action } from "redux";
 import {
   CONNECTION_ESTABLISHED,
   ConnectionEstablishedAction,
-} from "@app/actions/socket";
-import { user, nick, pong } from "@app/actions/commands";
-import {
-  ServerPingAction,
-  MESSAGE_SERVER_PING,
-} from "@app/actions/messages/ping";
+} from "@app/actions/network";
+import { user, nick, pong } from "@app/actions/message-out";
+import { ServerPingAction, SERVER_PING } from "@app/actions/message-in";
 import { RootState } from "@app/reducers";
 
 type Actions = ConnectionEstablishedAction | ServerPingAction;
 
-export const repliers: Middleware<{}, RootState> = store => next => (
+export const autoReply: Middleware<{}, RootState> = store => next => (
   action: Actions,
 ) => {
   next(action);
@@ -29,10 +26,10 @@ const actions: {
     action: ConnectionEstablishedAction,
     state: RootState,
   ) => [
-    user(action.serverKey, state.user.user, state.user.real),
-    nick(action.serverKey, state.user.nick),
+    user(action.route.server, state.user.user, state.user.real),
+    nick(action.route.server, state.user.nick),
   ],
-  [MESSAGE_SERVER_PING]: (action: ServerPingAction) => [
+  [SERVER_PING]: (action: ServerPingAction) => [
     pong(action.route.server, action.payload.key),
   ],
 };

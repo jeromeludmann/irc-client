@@ -2,13 +2,16 @@ import { Middleware, Action } from "redux";
 import {
   RAW_MESSAGES_RECEIVED,
   RawMessagesReceivedAction,
-} from "@app/actions/socket";
-import { Prefix, MessageActionCreator } from "@app/actions/messages/helpers";
-import { joinReceived } from "@app/actions/messages/join";
-import { noticeReceived } from "@app/actions/messages/notice";
-import { pingReceived } from "@app/actions/messages/ping";
-import { privmsgReceived } from "@app/actions/messages/privmsg";
-import { nickReceived } from "@app/actions/messages/nick";
+} from "@app/actions/network";
+import {
+  IncomingMessageActionCreator,
+  Prefix,
+  join,
+  nick,
+  notice,
+  ping,
+  privmsg,
+} from "@app/actions/message-in";
 
 export const parser: Middleware = () => next => (
   action: RawMessagesReceivedAction,
@@ -28,13 +31,16 @@ export const parser: Middleware = () => next => (
 };
 
 const actions: {
-  [command: string]: MessageActionCreator<Action<string>, Prefix | undefined>;
+  [command: string]: IncomingMessageActionCreator<
+    Action<string>,
+    Prefix | undefined
+  >;
 } = {
-  JOIN: joinReceived,
-  NICK: nickReceived,
-  NOTICE: noticeReceived,
-  PING: pingReceived,
-  PRIVMSG: privmsgReceived,
+  JOIN: join,
+  NICK: nick,
+  NOTICE: notice,
+  PING: ping,
+  PRIVMSG: privmsg,
 };
 
 const MESSAGE_LENGTH = 510; // RFC says 512 - "CR" "LF" = 510

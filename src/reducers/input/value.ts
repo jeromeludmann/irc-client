@@ -1,21 +1,21 @@
 import {
-  ChangeInputValueAction,
+  UpdateInputValueAction,
   GoBackInputHistoryAction,
   GoForwardInputHistoryAction,
-  CHANGE_INPUT_VALUE,
+  UPDATE_INPUT_VALUE,
   GO_BACK_INPUT_HISTORY,
   GO_FORWARD_INPUT_HISTORY,
-  SEND_INPUT_VALUE,
-  SendInputValueAction,
-} from "@app/actions/ui/input";
+  ENTER_INPUT_VALUE,
+  EnterInputValueAction,
+} from "@app/actions/ui-input";
 import { InputState } from "@app/reducers/input";
 import { beginOfHistory, endOfHistory } from "@app/reducers/input/helpers";
 
 export type ValueState = string;
 
 export type ValueAction =
-  | ChangeInputValueAction
-  | SendInputValueAction
+  | UpdateInputValueAction
+  | EnterInputValueAction
   | GoBackInputHistoryAction
   | GoForwardInputHistoryAction;
 
@@ -27,10 +27,10 @@ export default (
   input: InputState,
 ): ValueState => {
   switch (action.type) {
-    case CHANGE_INPUT_VALUE:
+    case UPDATE_INPUT_VALUE:
       return action.payload.value;
 
-    case SEND_INPUT_VALUE:
+    case ENTER_INPUT_VALUE:
       return "";
 
     case GO_BACK_INPUT_HISTORY:

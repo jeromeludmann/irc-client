@@ -1,4 +1,5 @@
 import { Middleware } from "redux";
+import { OUTGOING_MESSAGE } from "@app/actions/message-out";
 
 interface Props {
   exclude: string[];
@@ -21,10 +22,10 @@ export const createLogger = ({ exclude: actions }: Props): Middleware => {
 };
 
 function getStyle(type: string) {
-  if (type.indexOf("MESSAGE/") === 0) {
+  if (type.indexOf("MESSAGE/INCOMING/") === 0) {
     return "color: blue";
   }
-  if (type.indexOf("COMMAND/RAW") === 0) {
+  if (type.indexOf(OUTGOING_MESSAGE) === 0) {
     return "color: red";
   }
   if (type.indexOf("UI/") === 0) {
