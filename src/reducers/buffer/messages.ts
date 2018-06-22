@@ -3,33 +3,36 @@ import {
   ConnectionFailedAction,
   RAW_MESSAGES_RECEIVED,
   RawMessagesReceivedAction,
+  CONNECTION_CLOSED,
+  ConnectionClosedAction,
 } from "@app/actions/network";
 import {
   IncomingJoinAction,
-  IncomingServerNoticeAction,
   IncomingServerPingAction,
-  IncomingChannelPrivmsgAction,
-  IncomingUserPrivmsgAction,
   JOIN,
-  SERVER_PING,
-  CHANNEL_PRIVMSG,
-  USER_PRIVMSG,
   SERVER_NOTICE,
   ERROR,
   IncomingErrorAction,
-} from "@app/actions/message-in";
+  IncomingPrivmsgAction,
+  PRIVMSG,
+  IncomingServerNoticeAction,
+  SERVER_PING,
+  PART,
+  IncomingPartAction,
+} from "@app/actions/incoming";
 
 export type MessageListState = string[];
 
 export type MessageListAction =
-  | IncomingChannelPrivmsgAction
+  | ConnectionClosedAction
   | ConnectionFailedAction
   | IncomingErrorAction
   | IncomingJoinAction
-  | RawMessagesReceivedAction
+  | IncomingPartAction
+  | IncomingPrivmsgAction
   | IncomingServerNoticeAction
   | IncomingServerPingAction
-  | IncomingUserPrivmsgAction;
+  | RawMessagesReceivedAction;
 
 export const messagesInitialState: MessageListState = [];
 
@@ -38,6 +41,14 @@ export default (
   action: MessageListAction,
 ): MessageListState => {
   switch (action.type) {
+    case CONNECTION_FAILED: {
+      return [...messages, action.payload.message];
+    }
+
+    case CONNECTION_CLOSED: {
+      return [...messages, "Disconnected from remote host."];
+    }
+
     case ERROR: {
       return [...messages, action.payload.message];
     }
@@ -48,27 +59,29 @@ export default (
       return [...messages, msg];
     }
 
-    case SERVER_PING: {
-      return [...messages, "Ping? (Pong!)"];
+    case PART: {
+      const { user, channel, message } = action.payload;
+      const baseMsg = `${user.nick} has left ${channel}`;
+      const msg = message ? `${baseMsg} (${message})` : baseMsg;
+      return [...messages, msg];
     }
 
-    case CHANNEL_PRIVMSG:
-    case USER_PRIVMSG: {
+    case PRIVMSG: {
       const { user, text } = action.payload;
       const msg = `${user.nick}: ${text}`;
       return [...messages, msg];
+    }
+
+    case RAW_MESSAGES_RECEIVED: {
+      return [...messages, ...action.payload.messages];
     }
 
     case SERVER_NOTICE: {
       return [...messages, action.payload.text];
     }
 
-    case CONNECTION_FAILED: {
-      return [...messages, action.payload.message];
-    }
-
-    case RAW_MESSAGES_RECEIVED: {
-      return [...messages, ...action.payload.messages];
+    case SERVER_PING: {
+      return [...messages, "Ping?"];
     }
 
     default:

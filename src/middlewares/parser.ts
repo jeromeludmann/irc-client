@@ -13,37 +13,44 @@ import {
   receiveError,
   User,
   IncomingMessageAction,
-} from "@app/actions/message-in";
+  receivePart,
+  receiveReplyMyInfo,
+  Server,
+} from "@app/actions/incoming";
+import { IRC_MESSAGE_LENGTH } from "@app/middlewares/constants";
 
-const registry: {
+const messageRegistry: {
   [command: string]: (
     serverKey: string,
     prefix: Prefix,
     params: string[],
   ) => IncomingMessageAction<string, {}>;
 } = {
-  join(serverKey, prefix, params) {
+  JOIN(serverKey, prefix, params) {
     return receiveJoin(serverKey, prefix as User, params);
   },
-  error(serverKey, _, params) {
+  ERROR(serverKey, _, params) {
     return receiveError(serverKey, undefined, params);
   },
-  nick(serverKey, prefix, params) {
+  NICK(serverKey, prefix, params) {
     return receiveNick(serverKey, prefix as User, params);
   },
-  notice(serverKey, prefix, params) {
+  NOTICE(serverKey, prefix, params) {
     return receiveNotice(serverKey, prefix, params);
   },
-  ping(serverKey, _, params) {
+  PART(serverKey, prefix, params) {
+    return receivePart(serverKey, prefix as User, params);
+  },
+  PING(serverKey, _, params) {
     return receivePing(serverKey, undefined, params);
   },
-  privmsg(serverKey, prefix, params) {
+  PRIVMSG(serverKey, prefix, params) {
     return receivePrivmsg(serverKey, prefix as User, params);
   },
+  "004"(serverKey, prefix, params) {
+    return receiveReplyMyInfo(serverKey, prefix as Server, params);
+  },
 };
-
-// RFC says 512 - "CR" "LF" = 510
-const MESSAGE_LENGTH = 510;
 
 interface GenericMessage {
   prefix?: Prefix;
@@ -52,9 +59,11 @@ interface GenericMessage {
 }
 
 const parseMessage = (message: string): GenericMessage => {
-  if (message.length > MESSAGE_LENGTH) {
+  if (message.length > IRC_MESSAGE_LENGTH) {
     // tslint:disable-next-line
-    console.warn(`Unexpected message length: (${MESSAGE_LENGTH} bytes max)`);
+    console.warn(
+      `Unexpected message length: (${IRC_MESSAGE_LENGTH} bytes max)`,
+    );
   }
 
   let pos: number;
@@ -83,7 +92,7 @@ const parseMessage = (message: string): GenericMessage => {
   if (pos === -1) {
     pos = message.length;
   }
-  command = message.slice(0, pos).toLowerCase();
+  command = message.slice(0, pos).toUpperCase();
   message = message.slice(pos + 1);
 
   // Parameters
@@ -137,8 +146,8 @@ export const parser: Middleware = () => next => (
       const genericMessage = parseMessage(rawMessage);
       const { prefix, command, params } = genericMessage;
 
-      if (registry.hasOwnProperty(command)) {
-        next(registry[command](action.route.serverKey, prefix, params));
+      if (messageRegistry.hasOwnProperty(command)) {
+        next(messageRegistry[command](action.route.serverKey, prefix, params));
       }
     });
   }

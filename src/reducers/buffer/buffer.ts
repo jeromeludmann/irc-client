@@ -3,17 +3,17 @@ import messages, {
   MessageListState,
   MessageListAction,
   messagesInitialState,
-} from "@app/reducers/buffer-messages";
+} from "@app/reducers/buffer/messages";
 import input, {
   InputState,
   InputAction,
   inputInitialState,
-} from "@app/reducers/input";
+} from "@app/reducers/input/input";
 import unread, {
   UnreadState,
   UnreadAction,
   unreadInitialState,
-} from "@app/reducers/buffer-unread";
+} from "@app/reducers/buffer/unread";
 import { WindowState } from "@app/reducers/window";
 import { Route } from "@app/Route";
 import { UserState } from "@app/reducers/user";

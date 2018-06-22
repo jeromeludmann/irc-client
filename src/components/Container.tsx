@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect, MapStateToProps } from "react-redux";
-import { switchWindow } from "@app/actions/ui-window";
+import { switchWindow } from "@app/actions/window";
 import { RootState } from "@app/reducers";
 import { ServerRouterState } from "@app/reducers/server-router";
 import { WindowState } from "@app/reducers/window";
@@ -12,15 +12,15 @@ import {
   selectServers,
   selectUser,
 } from "@app/reducers/selectors";
-import { MessageListState } from "@app/reducers/buffer-messages";
-import { selectMessages } from "@app/reducers/buffer-selectors";
-import { selectValue } from "@app/reducers/input-selectors";
+import { MessageListState } from "@app/reducers/buffer/messages";
+import { selectMessages } from "@app/reducers/buffer/selectors";
+import { selectValue } from "@app/reducers/input/selectors";
 import {
   updateInputValue,
   enterInputValue,
   goBackInputHistory,
   goForwardInputHistory,
-} from "@app/actions/ui-input";
+} from "@app/actions/input";
 import { Route } from "@app/Route";
 import { UserState } from "@app/reducers/user";
 

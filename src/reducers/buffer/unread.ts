@@ -8,20 +8,23 @@ import {
 import { UserState } from "@app/reducers/user";
 import {
   IncomingJoinAction,
-  IncomingChannelPrivmsgAction,
   IncomingChannelNoticeAction,
   JOIN,
   CHANNEL_NOTICE,
-  CHANNEL_PRIVMSG,
+  IncomingPrivmsgAction,
+  PRIVMSG,
+  IncomingPartAction,
+  PART,
 } from "@app/actions/incoming";
 
 export type UnreadState = boolean;
 
 export type UnreadAction =
+  | IncomingPartAction
   | IncomingJoinAction
   | SwitchWindowAction
   | RawMessagesReceivedAction
-  | IncomingChannelPrivmsgAction
+  | IncomingPrivmsgAction
   | IncomingChannelNoticeAction;
 
 interface ExtraParams {
@@ -44,9 +47,10 @@ export default (
     case JOIN:
       return action.payload.user.nick !== user.nick;
 
-    case RAW_MESSAGES_RECEIVED:
+    case PART:
+    case PRIVMSG:
     case CHANNEL_NOTICE:
-    case CHANNEL_PRIVMSG:
+    case RAW_MESSAGES_RECEIVED:
       return (
         active.serverKey !== route.serverKey ||
         active.bufferKey !== route.bufferKey

@@ -158,6 +158,27 @@ export const receiveNotice: IncomingMessageActionCreator<
       };
 };
 
+// PART
+
+interface Part {
+  user: User;
+  channel: string;
+  message?: string;
+}
+
+export const PART = "MESSAGE/INCOMING/PART";
+
+export type IncomingPartAction = IncomingMessageAction<typeof PART, Part>;
+
+export const receivePart: IncomingMessageActionCreator<
+  IncomingPartAction,
+  User
+> = (serverKey, user, params) => ({
+  type: PART,
+  payload: { user, channel: params[0], message: params[1] },
+  route: { serverKey, bufferKey: params[0] },
+});
+
 // PING
 
 interface ServerPing {
@@ -181,47 +202,62 @@ export const receivePing: IncomingMessageActionCreator<
 
 // PRIVMSG
 
-interface ChannelPrivmsg {
-  user: User;
-  channel: string;
-  text: string;
-}
-
-interface UserPrivmsg {
+interface Privmsg {
   user: User;
   text: string;
 }
 
-export const CHANNEL_PRIVMSG = "MESSAGE/INCOMING/CHANNEL_PRIVMSG";
+export const PRIVMSG = "MESSAGE/INCOMING/PRIVMSG";
 
-export const USER_PRIVMSG = "MESSAGE/INCOMING/USER_PRIVMSG";
-
-export type IncomingChannelPrivmsgAction = IncomingMessageAction<
-  typeof CHANNEL_PRIVMSG,
-  ChannelPrivmsg
->;
-
-export type IncomingUserPrivmsgAction = IncomingMessageAction<
-  typeof USER_PRIVMSG,
-  UserPrivmsg
+export type IncomingPrivmsgAction = IncomingMessageAction<
+  typeof PRIVMSG,
+  Privmsg
 >;
 
 export const receivePrivmsg: IncomingMessageActionCreator<
-  IncomingChannelPrivmsgAction | IncomingUserPrivmsgAction,
+  IncomingPrivmsgAction,
   User
 > = (serverKey, user, params) => {
   const target = params[0];
-  const text = params[1];
 
-  return isChannel(target)
-    ? {
-        type: CHANNEL_PRIVMSG,
-        payload: { user, channel: target, text },
-        route: { serverKey, bufferKey: target },
-      }
-    : {
-        type: USER_PRIVMSG,
-        payload: { user, text },
-        route: { serverKey, bufferKey: user.nick },
-      };
+  return {
+    type: PRIVMSG,
+    payload: { user, text: params[1] },
+    route: { serverKey, bufferKey: isChannel(target) ? target : user.nick },
+  };
+};
+
+// 004 RPL_MYINFO
+
+interface ReplyMyInfo {
+  serverName: string;
+  version: string;
+  availableUserModes: string[];
+  availableChannelModes: string[];
+}
+
+export const RPL_MYINFO = "MESSAGE/INCOMING/RPL_MYINFO";
+
+export type IncomingReplyMyInfoAction = IncomingMessageAction<
+  typeof RPL_MYINFO,
+  ReplyMyInfo
+>;
+
+export const receiveReplyMyInfo: IncomingMessageActionCreator<
+  IncomingReplyMyInfoAction,
+  Server
+> = (serverKey, _, params) => {
+  const [, serverName, version] = params;
+  const availableUserModes = params[3].split("");
+  const availableChannelModes = params[4].split("");
+  return {
+    type: RPL_MYINFO,
+    payload: {
+      serverName,
+      version,
+      availableUserModes,
+      availableChannelModes,
+    },
+    route: { serverKey, bufferKey: STATUS_BUFFER },
+  };
 };

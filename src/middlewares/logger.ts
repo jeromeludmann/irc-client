@@ -1,5 +1,5 @@
 import { Middleware } from "redux";
-import { OUTGOING_MESSAGE } from "@app/actions/message-out";
+import { OUTGOING_MESSAGE } from "@app/actions/outgoing";
 
 interface Props {
   exclude: string[];

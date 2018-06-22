@@ -7,9 +7,9 @@ import {
   GO_FORWARD_INPUT_HISTORY,
   ENTER_INPUT_VALUE,
   EnterInputValueAction,
-} from "@app/actions/ui-input";
-import { InputState } from "@app/reducers/input";
-import { beginOfHistory, endOfHistory } from "@app/reducers/input-helpers";
+} from "@app/actions/input";
+import { InputState } from "@app/reducers/input/input";
+import { beginOfHistory, endOfHistory } from "@app/reducers/input/_helpers";
 
 export type ValueState = string;
 

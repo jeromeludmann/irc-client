@@ -1,6 +1,6 @@
 import { Route, STATUS_BUFFER } from "@app/Route";
-import { SwitchWindowAction, SWITCH_WINDOW } from "@app/actions/ui-window";
-import { IncomingJoinAction, JOIN } from "@app/actions/message-in";
+import { SwitchWindowAction, SWITCH_WINDOW } from "@app/actions/window";
+import { IncomingJoinAction, JOIN } from "@app/actions/incoming";
 import { UserState } from "@app/reducers/user";
 
 export type WindowState = Route;

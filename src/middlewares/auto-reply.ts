@@ -3,13 +3,13 @@ import {
   CONNECTION_ESTABLISHED,
   ConnectionEstablishedAction,
 } from "@app/actions/network";
-import { sendUser, sendNick, sendPong } from "@app/actions/message-out";
-import { IncomingServerPingAction, SERVER_PING } from "@app/actions/message-in";
+import { sendUser, sendNick, sendPong } from "@app/actions/outgoing";
+import { IncomingServerPingAction, SERVER_PING } from "@app/actions/incoming";
 import { RootState } from "@app/reducers";
 
 type AutoReplyAction = ConnectionEstablishedAction | IncomingServerPingAction;
 
-const registry: {
+const replyRegistry: {
   [action: string]: (action: AutoReplyAction, state: RootState) => Action[];
 } = {
   [CONNECTION_ESTABLISHED](action, state) {
@@ -33,7 +33,7 @@ export const autoReply: Middleware<{}, RootState> = store => next => (
 ) => {
   next(action);
 
-  if (registry.hasOwnProperty(action.type)) {
-    registry[action.type](action, store.getState()).forEach(next);
+  if (replyRegistry.hasOwnProperty(action.type)) {
+    replyRegistry[action.type](action, store.getState()).forEach(next);
   }
 };

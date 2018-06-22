@@ -1,4 +1,4 @@
-import { HistoryState } from "@app/reducers/input-history";
+import { HistoryState } from "@app/reducers/input/history";
 
 export const beginOfHistory = (history: HistoryState) => history.index === 0;
 

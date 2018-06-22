@@ -1,4 +1,4 @@
-import { NICK, IncomingNickAction } from "@app/actions/message-in";
+import { NICK, IncomingNickAction } from "@app/actions/incoming";
 
 export interface UserState {
   nick: string;
