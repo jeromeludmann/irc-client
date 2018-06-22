@@ -1,10 +1,9 @@
-import { Middleware, Action } from "redux";
+import { Middleware } from "redux";
 import {
   RAW_MESSAGES_RECEIVED,
   RawMessagesReceivedAction,
 } from "@app/actions/network";
 import {
-  IncomingMessageActionCreator,
   Prefix,
   receiveJoin,
   receiveNick,
@@ -12,46 +11,39 @@ import {
   receivePing,
   receivePrivmsg,
   receiveError,
+  User,
+  IncomingMessageAction,
 } from "@app/actions/message-in";
 
-export const parser: Middleware = () => next => (
-  action: RawMessagesReceivedAction,
-) => {
-  next(action);
-
-  if (action.type === RAW_MESSAGES_RECEIVED) {
-    action.payload.messages.forEach(rawMessage => {
-      const genericMessage = parseMessage(rawMessage);
-      const { prefix, command, params } = genericMessage;
-
-      if (actions.hasOwnProperty(command)) {
-        next(
-          actions[command]({
-            serverKey: action.route.serverKey,
-            prefix,
-            params,
-          }),
-        );
-      }
-    });
-  }
-};
-
-const actions: {
-  [command: string]: IncomingMessageActionCreator<
-    Action<string>,
-    Prefix | void
-  >;
+const registry: {
+  [command: string]: (
+    serverKey: string,
+    prefix: Prefix,
+    params: string[],
+  ) => IncomingMessageAction<string, {}>;
 } = {
-  error: receiveError,
-  join: receiveJoin,
-  nick: receiveNick,
-  notice: receiveNotice,
-  ping: receivePing,
-  privmsg: receivePrivmsg,
+  join(serverKey, prefix, params) {
+    return receiveJoin(serverKey, prefix as User, params);
+  },
+  error(serverKey, _, params) {
+    return receiveError(serverKey, undefined, params);
+  },
+  nick(serverKey, prefix, params) {
+    return receiveNick(serverKey, prefix as User, params);
+  },
+  notice(serverKey, prefix, params) {
+    return receiveNotice(serverKey, prefix, params);
+  },
+  ping(serverKey, _, params) {
+    return receivePing(serverKey, undefined, params);
+  },
+  privmsg(serverKey, prefix, params) {
+    return receivePrivmsg(serverKey, prefix as User, params);
+  },
 };
 
-const MESSAGE_LENGTH = 510; // RFC says 512 - "CR" "LF" = 510
+// RFC says 512 - "CR" "LF" = 510
+const MESSAGE_LENGTH = 510;
 
 interface GenericMessage {
   prefix?: Prefix;
@@ -76,7 +68,7 @@ const parseMessage = (message: string): GenericMessage => {
 
   // Parse prefix
 
-  let prefix: Prefix = "";
+  let prefix: Prefix;
 
   if (message.charAt(0) === ":") {
     pos = message.indexOf(" ");
@@ -93,6 +85,8 @@ const parseMessage = (message: string): GenericMessage => {
   }
   command = message.slice(0, pos).toLowerCase();
   message = message.slice(pos + 1);
+
+  // Parameters
 
   const params = [];
 
@@ -131,4 +125,21 @@ const parsePrefix = (prefix: string): Prefix => {
     user: prefix.slice(i + 1, j),
     host: prefix.slice(j + 1),
   };
+};
+
+export const parser: Middleware = () => next => (
+  action: RawMessagesReceivedAction,
+) => {
+  next(action);
+
+  if (action.type === RAW_MESSAGES_RECEIVED) {
+    action.payload.messages.forEach(rawMessage => {
+      const genericMessage = parseMessage(rawMessage);
+      const { prefix, command, params } = genericMessage;
+
+      if (registry.hasOwnProperty(command)) {
+        next(registry[command](action.route.serverKey, prefix, params));
+      }
+    });
+  }
 };
