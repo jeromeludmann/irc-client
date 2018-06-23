@@ -30,6 +30,9 @@ const commandRegistry: {
     const message = params;
     return sendRaw(serverKey, message);
   },
+  quote(serverKey, params) {
+    return this.raw(serverKey, params);
+  },
 };
 
 export const command: Middleware<{}, RootState> = store => next => (
