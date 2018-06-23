@@ -81,6 +81,7 @@ const connectServer: Handler<ConnectServerAction> = (
 const disconnectServer: Handler<DisconnectServerAction> = action => {
   const { payload, route } = action;
   if (!connections.hasOwnProperty(route.serverKey)) {
+    // TODO dispatch error
     console.warn("disconnectServer: unable to find socket");
     return;
   }

@@ -5,8 +5,6 @@ export interface GenericMessage {
   params: string[];
 }
 
-// TODO
-// export interface Server { name: string }
 export type Server = string;
 
 export interface User {

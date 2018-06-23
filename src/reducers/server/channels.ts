@@ -54,37 +54,6 @@ const closeWindow: ChannelsReducer<CloseWindowAction> = (channels, action) => {
   return updatedChannels;
 };
 
-// const join: ChannelsReducer<JoinAction> = (channels, action, extraStates) => ({
-//   ...channels,
-//   [action.payload.channel]: reduceChannel(
-//     channels[action.payload.channel],
-//     action,
-//     extraStates,
-//   ),
-// });
-
-// const privmsg: ChannelsReducer<PrivmsgAction> = (
-//   channels,
-//   action,
-//   extraStates,
-// ) => {
-//   if (!isChannel(action.route.channelKey)) {
-//     // create channel key node
-//   }
-//   if (!channels.hasOwnProperty(action.route.channelKey)) {
-//     return {
-//       ...channels,
-//       [action.route.channelKey]: reduceChannel(
-//         channels[action.route.channelKey],
-//         action,
-//         extraStates,
-//       ),
-//     };
-//   }
-
-//   return channels;
-// };
-
 const broadcastActive: ChannelsReducer = (channels, action, extraStates) => {
   const key = extraStates.route.channelKey;
   return {
