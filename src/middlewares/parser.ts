@@ -1,7 +1,7 @@
 import { Middleware } from "redux";
 import {
-  RAW_MESSAGES_RECEIVED,
-  RawMessagesReceivedAction,
+  RAW_MESSAGES,
+  ReceiveRawMessagesAction,
 } from "@app/actions/network";
 import {
   Prefix,
@@ -137,11 +137,11 @@ const parsePrefix = (prefix: string): Prefix => {
 };
 
 export const parser: Middleware = () => next => (
-  action: RawMessagesReceivedAction,
+  action: ReceiveRawMessagesAction,
 ) => {
   next(action);
 
-  if (action.type === RAW_MESSAGES_RECEIVED) {
+  if (action.type === RAW_MESSAGES) {
     action.payload.messages.forEach(rawMessage => {
       const genericMessage = parseMessage(rawMessage);
       const { prefix, command, params } = genericMessage;

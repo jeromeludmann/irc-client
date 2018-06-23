@@ -1,5 +1,5 @@
 import { Middleware } from "redux";
-import { OUTGOING_MESSAGE } from "@app/actions/outgoing";
+import { SEND_MESSAGE } from "@app/actions/outgoing";
 
 interface Props {
   exclude: string[];
@@ -25,7 +25,7 @@ function getStyle(type: string) {
   if (type.indexOf("MESSAGE/INCOMING/") === 0) {
     return "color: blue";
   }
-  if (type.indexOf(OUTGOING_MESSAGE) === 0) {
+  if (type.indexOf(SEND_MESSAGE) === 0) {
     return "color: red";
   }
   if (type.indexOf("UI/") === 0) {

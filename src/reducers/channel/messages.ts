@@ -1,45 +1,45 @@
 import {
   CONNECTION_FAILED,
   ConnectionFailedAction,
-  RAW_MESSAGES_RECEIVED,
-  RawMessagesReceivedAction,
+  RAW_MESSAGES,
+  ReceiveRawMessagesAction,
   CONNECTION_CLOSED,
   ConnectionClosedAction,
 } from "@app/actions/network";
 import {
-  IncomingJoinAction,
-  IncomingServerPingAction,
+  JoinAction,
+  ServerPingAction,
   JOIN,
   SERVER_NOTICE,
   ERROR,
-  IncomingErrorAction,
-  IncomingPrivmsgAction,
+  ErrorAction,
+  PrivmsgAction,
   PRIVMSG,
-  IncomingServerNoticeAction,
+  ServerNoticeAction,
   SERVER_PING,
   PART,
-  IncomingPartAction,
+  PartAction,
 } from "@app/actions/incoming";
 
-export type MessageListState = string[];
+export type MessagesState = string[];
 
-export type MessageListAction =
+export type MessagesAction =
   | ConnectionClosedAction
   | ConnectionFailedAction
-  | IncomingErrorAction
-  | IncomingJoinAction
-  | IncomingPartAction
-  | IncomingPrivmsgAction
-  | IncomingServerNoticeAction
-  | IncomingServerPingAction
-  | RawMessagesReceivedAction;
+  | ErrorAction
+  | JoinAction
+  | PartAction
+  | PrivmsgAction
+  | ServerNoticeAction
+  | ServerPingAction
+  | ReceiveRawMessagesAction;
 
-export const messagesInitialState: MessageListState = [];
+export const messagesInitialState: MessagesState = [];
 
-export default (
+export const reduceMessages = (
   messages = messagesInitialState,
-  action: MessageListAction,
-): MessageListState => {
+  action: MessagesAction,
+): MessagesState => {
   switch (action.type) {
     case CONNECTION_FAILED: {
       return [...messages, action.payload.message];
@@ -72,7 +72,7 @@ export default (
       return [...messages, msg];
     }
 
-    case RAW_MESSAGES_RECEIVED: {
+    case RAW_MESSAGES: {
       return [...messages, ...action.payload.messages];
     }
 

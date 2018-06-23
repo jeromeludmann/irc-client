@@ -1,11 +1,5 @@
 import { Action } from "redux";
-import {
-  RAW_BUFFER,
-  Route,
-  STATUS_BUFFER,
-  ALL_BUFFERS,
-  NO_BUFFER,
-} from "@app/Route";
+import { RAW, Route, STATUS, BROADCAST, NONE } from "@app/Route";
 
 export interface NetworkAction<T> extends Action<T> {
   route: Route;
@@ -15,8 +9,7 @@ export interface NetworkAction<T> extends Action<T> {
 
 export const CONNECT_SERVER = "SERVER/CONNECT_SERVER";
 
-export interface ConnectServerAction
-  extends NetworkAction<typeof CONNECT_SERVER> {
+export interface ConnectServerAction extends Action<typeof CONNECT_SERVER> {
   payload: {
     host: string;
     port: number;
@@ -29,7 +22,6 @@ export const connectServer = (
 ): ConnectServerAction => ({
   type: CONNECT_SERVER,
   payload: { host, port },
-  route: { serverKey: "", bufferKey: ALL_BUFFERS },
 });
 
 // Disconnect from server
@@ -43,7 +35,7 @@ export const disconnectServer = (
   serverKey: string,
 ): DisconnectServerAction => ({
   type: DISCONNECT_SERVER,
-  route: { serverKey, bufferKey: NO_BUFFER },
+  route: { serverKey, channelKey: NONE },
 });
 
 // Socket lookup
@@ -80,32 +72,32 @@ export const lookup = (
         type: LOOKUP_FAILED,
         serverKey,
         payload: { error },
-        route: { serverKey, bufferKey: STATUS_BUFFER },
+        route: { serverKey, channelKey: STATUS },
       }
     : {
         type: LOOKUP_SUCCESS,
         serverKey,
         payload: { address, family, host },
-        route: { serverKey, bufferKey: STATUS_BUFFER },
+        route: { serverKey, channelKey: STATUS },
       };
 };
 
 // Socket messages received
 
-export const RAW_MESSAGES_RECEIVED = "SOCKET/RAW_MESSAGES_RECEIVED";
+export const RAW_MESSAGES = "SOCKET/RECEIVE_RAW_MESSAGES";
 
-export interface RawMessagesReceivedAction
-  extends NetworkAction<typeof RAW_MESSAGES_RECEIVED> {
+export interface ReceiveRawMessagesAction
+  extends NetworkAction<typeof RAW_MESSAGES> {
   payload: { messages: string[] };
 }
 
-export const setRawMessagesReceived = (
+export const receiveRawMessages = (
   serverKey: string,
   messages: string[],
-): RawMessagesReceivedAction => ({
-  type: RAW_MESSAGES_RECEIVED,
+): ReceiveRawMessagesAction => ({
+  type: RAW_MESSAGES,
   payload: { messages },
-  route: { serverKey, bufferKey: RAW_BUFFER },
+  route: { serverKey, channelKey: RAW },
 });
 
 // Socket connection established
@@ -119,7 +111,7 @@ export const setConnectionEstablished = (
   serverKey: string,
 ): ConnectionEstablishedAction => ({
   type: CONNECTION_ESTABLISHED,
-  route: { serverKey, bufferKey: STATUS_BUFFER },
+  route: { serverKey, channelKey: STATUS },
 });
 
 // Socket connection closed
@@ -137,7 +129,7 @@ export const setConnectionClosed = (
 ): ConnectionClosedAction => ({
   type: CONNECTION_CLOSED,
   payload: { hadError },
-  route: { serverKey, bufferKey: ALL_BUFFERS },
+  route: { serverKey, channelKey: BROADCAST },
 });
 
 // Socket connection failed
@@ -149,6 +141,7 @@ export interface ConnectionFailedAction
   payload: {
     name: string;
     message: string;
+    stack?: string;
   };
 }
 
@@ -156,8 +149,9 @@ export const setConnectionFailed = (
   serverKey: string,
   name: string,
   message: string,
+  stack?: string,
 ): ConnectionFailedAction => ({
   type: CONNECTION_FAILED,
-  payload: { name, message },
-  route: { serverKey, bufferKey: ALL_BUFFERS },
+  payload: { name, message, stack },
+  route: { serverKey, channelKey: BROADCAST },
 });

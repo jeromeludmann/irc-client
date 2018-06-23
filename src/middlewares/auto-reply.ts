@@ -4,25 +4,26 @@ import {
   ConnectionEstablishedAction,
 } from "@app/actions/network";
 import { sendUser, sendNick, sendPong } from "@app/actions/outgoing";
-import { IncomingServerPingAction, SERVER_PING } from "@app/actions/incoming";
+import { ServerPingAction, SERVER_PING } from "@app/actions/incoming";
 import { RootState } from "@app/reducers";
 
-type AutoReplyAction = ConnectionEstablishedAction | IncomingServerPingAction;
+type AutoReplyAction = ConnectionEstablishedAction | ServerPingAction;
 
 const replyRegistry: {
   [action: string]: (action: AutoReplyAction, state: RootState) => Action[];
 } = {
   [CONNECTION_ESTABLISHED](action, state) {
+    const { nick, user, real } = state.servers[action.route.serverKey].user;
     return [
-      sendUser(action.route.serverKey, state.user.user, state.user.real),
-      sendNick(action.route.serverKey, state.user.nick),
+      sendUser(action.route.serverKey, user, real),
+      sendNick(action.route.serverKey, nick),
     ];
   },
   [SERVER_PING](action) {
     return [
       sendPong(
         action.route.serverKey,
-        (action as IncomingServerPingAction).payload.key,
+        (action as ServerPingAction).payload.key,
       ),
     ];
   },

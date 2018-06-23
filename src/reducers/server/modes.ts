@@ -1,5 +1,7 @@
-export type ModesState = string[];
+export type ServerModesState = string[];
 
-export const modesInitialState: ModesState = [];
+export const serverModesInitialState: ServerModesState = [];
 
-export default (modes = modesInitialState): ModesState => modes;
+export const reduceServerModes = (
+  modes = serverModesInitialState,
+): ServerModesState => modes;

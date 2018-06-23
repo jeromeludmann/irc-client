@@ -43,11 +43,11 @@ export const command: Middleware<{}, RootState> = store => next => (
 
   const value = action.payload.value;
   const regExpResult = value.match(/^\s*\/(\S+)(\s+)?(.*)?/);
-  const { serverKey, bufferKey } = store.getState().active;
+  const { serverKey, channelKey } = store.getState().route;
 
   if (!regExpResult) {
-    if (bufferKey.charAt(0) !== "@") {
-      next(sendPrivmsg(serverKey, bufferKey, value));
+    if (channelKey.charAt(0) !== "@") {
+      next(sendPrivmsg(serverKey, channelKey, value));
     } else {
       // tslint:disable-next-line
       console.log("Not a channel/private");

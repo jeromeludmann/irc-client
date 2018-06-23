@@ -1,8 +1,8 @@
 import { Action } from "redux";
 
-export const OUTGOING_MESSAGE = "MESSAGE/OUTGOING";
+export const SEND_MESSAGE = "MESSAGE/OUTGOING";
 
-export interface OutgoingMessageAction extends Action<typeof OUTGOING_MESSAGE> {
+export interface OutgoingMessageAction extends Action<typeof SEND_MESSAGE> {
   serverKey: string;
   payload: { raw: string };
 }
@@ -11,7 +11,7 @@ export const sendRaw = (
   serverKey: string,
   message: string,
 ): OutgoingMessageAction => ({
-  type: OUTGOING_MESSAGE,
+  type: SEND_MESSAGE,
   serverKey,
   payload: { raw: message },
 });

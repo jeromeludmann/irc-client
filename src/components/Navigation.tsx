@@ -1,17 +1,19 @@
 import React, { PureComponent, MouseEvent, CSSProperties } from "react";
+import { STATUS } from "@app/Route";
 
 interface Props {
   servers: {
     [serverKey: string]: {
-      buffers: { [bufferKey: string]: { unread: boolean } };
+      name: string;
+      channels: { [channelKey: string]: { unread: boolean } };
     };
   };
   window: {
     serverKey: string;
-    bufferKey: string;
+    channelKey: string;
   };
-  onBufferButtonClick: (
-    { serverKey, bufferKey }: { serverKey: string; bufferKey: string },
+  onChannelButtonClick: (
+    { serverKey, channelKey }: { serverKey: string; channelKey: string },
   ) => void;
 }
 
@@ -23,28 +25,31 @@ export default class Navigation extends PureComponent<Props> {
       <>
         {Object.keys(servers).map(serverKey => (
           <ul key={serverKey} style={{ listStyle: "none", padding: "0" }}>
-            {Object.keys(servers[serverKey].buffers).map(bufferKey => {
+            {Object.keys(servers[serverKey].channels).map(channelKey => {
               const isActive =
                 serverKey === window.serverKey &&
-                bufferKey === window.bufferKey;
-              const isUnread = servers[serverKey].buffers[bufferKey].unread;
+                channelKey === window.channelKey;
+              const isUnread = servers[serverKey].channels[channelKey].unread;
               const style: CSSProperties = {
                 outline: "none",
                 border: "1px solid #ddd",
-                width: "100px",
+                width: "200px",
+                height: "30px",
                 color: isActive ? "black" : "#bbb",
                 backgroundColor: isUnread ? "yellow" : "#fff",
               };
 
               return (
-                <li key={bufferKey} style={{ marginBottom: "5px" }}>
+                <li key={channelKey} style={{ marginBottom: "5px" }}>
                   <button
                     onClick={this.handleClick}
                     data-server-key={serverKey}
-                    data-buffer-key={bufferKey}
+                    data-channel-key={channelKey}
                     style={style}
                   >
-                    {bufferKey}
+                    {channelKey === STATUS
+                      ? servers[serverKey].name
+                      : channelKey}
                   </button>
                 </li>
               );
@@ -57,10 +62,10 @@ export default class Navigation extends PureComponent<Props> {
 
   private handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     const serverKey = e.currentTarget.getAttribute("data-server-key");
-    const bufferKey = e.currentTarget.getAttribute("data-buffer-key");
+    const channelKey = e.currentTarget.getAttribute("data-channel-key");
 
-    if (serverKey && bufferKey) {
-      this.props.onBufferButtonClick({ serverKey, bufferKey });
+    if (serverKey && channelKey) {
+      this.props.onChannelButtonClick({ serverKey, channelKey });
     }
   };
 }

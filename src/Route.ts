@@ -1,9 +1,15 @@
-export const STATUS_BUFFER = "@status";
-export const RAW_BUFFER = "@raw";
-export const ALL_BUFFERS = "@all";
-export const NO_BUFFER = "@none";
+import { Action } from "redux";
+
+export const STATUS = "@status";
+export const RAW = "@raw";
+export const BROADCAST = "@all";
+export const NONE = "@none";
 
 export interface Route {
   serverKey: string;
-  bufferKey: string;
+  channelKey: string;
+}
+
+export interface RoutedAction extends Action<string> {
+  route: Route;
 }

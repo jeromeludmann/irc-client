@@ -1,4 +1,4 @@
-import { NICK, IncomingNickAction } from "@app/actions/incoming";
+import { NICK, NickAction } from "@app/actions/incoming";
 
 export interface UserState {
   nick: string;
@@ -6,26 +6,21 @@ export interface UserState {
   real: string;
 }
 
-export type UserAction = IncomingNickAction;
+export type UserAction = NickAction;
 
 export const userInitialState: UserState = {
-  nick: "",
-  user: "",
-  real: "",
+  nick: "default_nick",
+  user: "default_user",
+  real: "Default Realname",
 };
 
-interface ExtraParams {
-  user: UserState;
-}
-
-export default (
+export const reduceUser = (
   user = userInitialState,
   action: UserAction,
-  params: ExtraParams,
 ): UserState => {
   switch (action.type) {
     case NICK:
-      return action.payload.user.nick === params.user.nick
+      return action.payload.user.nick === user.nick
         ? { ...user, nick: action.payload.nick }
         : user;
 

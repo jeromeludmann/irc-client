@@ -23,7 +23,7 @@ export const historyInitialState: HistoryState = {
   index: 0,
 };
 
-export default (
+export const reduceHistory = (
   history = historyInitialState,
   action: HistoryAction,
 ): HistoryState => {
@@ -35,19 +35,15 @@ export default (
     }
 
     case GO_BACK_INPUT_HISTORY: {
-      if (beginOfHistory(history)) {
-        return history;
-      }
-      const index = history.index - 1;
-      return { ...history, index };
+      return beginOfHistory(history)
+        ? history
+        : { ...history, index: history.index - 1 };
     }
 
     case GO_FORWARD_INPUT_HISTORY: {
-      if (endOfHistory(history)) {
-        return history;
-      }
-      const index = history.index + 1;
-      return { ...history, index };
+      return endOfHistory(history)
+        ? history
+        : { ...history, index: history.index + 1 };
     }
 
     default:
