@@ -13,20 +13,17 @@ import { RoutedAction } from "@app/Route";
 import {
   serverNameInitialState,
   reduceServerName,
-  ServerNameAction,
 } from "@app/reducers/server/name";
 import {
   reduceServerAvailableModes,
   ServerAvailableModesState,
   serverAvailableModesInitialState,
-  ServerAvailableModesAction,
 } from "@app/reducers/server/availableModes";
 import { ServerNameState } from "@app/reducers/server/name";
 import {
   UserState,
   userInitialState,
   reduceUser,
-  UserAction,
 } from "@app/reducers/server/user";
 
 export type ServerState = {
@@ -48,17 +45,14 @@ export const serverInitialState: ServerState = {
 export const reduceServer = (
   server = serverInitialState,
   action: RoutedAction,
-  states: { active: RouteState },
+  extraStates: { route: RouteState },
 ): ServerState => ({
-  name: reduceServerName(server.name, action as ServerNameAction),
-  user: reduceUser(server.user, action as UserAction),
-  availableModes: reduceServerAvailableModes(
-    server.availableModes,
-    action as ServerAvailableModesAction,
-  ),
+  name: reduceServerName(server.name, action),
+  user: reduceUser(server.user, action),
+  availableModes: reduceServerAvailableModes(server.availableModes, action),
   modes: reduceServerModes(server.modes),
   channels: reduceChannels(server.channels, action, {
-    ...states,
+    ...extraStates,
     user: server.user,
   }),
 });

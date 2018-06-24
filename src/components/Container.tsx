@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect, MapStateToProps } from "react-redux";
-import { switchWindow } from "@app/actions/route";
-import { RootState } from "@app/reducers";
+import { AppState } from "@app/reducers";
 import { ServersState } from "@app/reducers/servers";
 import { RouteState } from "@app/reducers/route";
 import Navigation from "@app/components/Navigation";
@@ -16,7 +15,8 @@ import {
   enterInputValue,
   goBackInputHistory,
   goForwardInputHistory,
-} from "@app/actions/input";
+  switchWindow,
+} from "@app/actions/ui";
 import { Route, RAW } from "@app/Route";
 import { UserState } from "@app/reducers/server/user";
 import { selectUser } from "@app/reducers/server/_selectors";
@@ -63,13 +63,14 @@ class Container extends Component<StateProps & DispatchProps> {
             onArrowDown={this.props.onInputArrowDown}
           />
         )}
+
         <MessageList messages={this.props.messages} />
       </>
     );
   }
 }
 
-const mapStateToProps: MapStateToProps<StateProps, {}, RootState> = state => ({
+const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = state => ({
   user: selectUser(state),
   messages: selectMessages(state),
   window: selectRoute(state),

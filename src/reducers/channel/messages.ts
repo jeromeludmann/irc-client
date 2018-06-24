@@ -1,90 +1,119 @@
+import { Action } from "redux";
+import { mapReducer } from "@app/reducers/_map";
 import {
   CONNECTION_FAILED,
   ConnectionFailedAction,
-  RAW_MESSAGES,
-  ReceiveRawMessagesAction,
-  CONNECTION_CLOSED,
+  RawMessagesAction,
   ConnectionClosedAction,
-} from "@app/actions/network";
+  CONNECTION_CLOSED,
+  RAW_MESSAGES_RECEIVED,
+} from "@app/actions/socket";
 import {
-  JoinAction,
-  ServerPingAction,
-  JOIN,
-  SERVER_NOTICE,
-  ERROR,
   ErrorAction,
-  PrivmsgAction,
-  PRIVMSG,
-  ServerNoticeAction,
-  SERVER_PING,
-  PART,
+  JoinAction,
   PartAction,
-} from "@app/actions/incoming";
+  PrivmsgAction,
+  NoticeFromServerAction,
+  NoticeFromChannelAction,
+  NoticeFromUserAction,
+  PingFromServerAction,
+  ERROR,
+  JOIN,
+  NOTICE_FROM_SERVER,
+  NOTICE_FROM_CHANNEL,
+  NOTICE_FROM_USER,
+  PART,
+  PRIVMSG,
+  PING_FROM_SERVER,
+} from "@app/actions/messages";
 
 export type MessagesState = string[];
 
-export type MessagesAction =
-  | ConnectionClosedAction
-  | ConnectionFailedAction
-  | ErrorAction
-  | JoinAction
-  | PartAction
-  | PrivmsgAction
-  | ServerNoticeAction
-  | ServerPingAction
-  | ReceiveRawMessagesAction;
-
 export const messagesInitialState: MessagesState = [];
 
-export const reduceMessages = (
-  messages = messagesInitialState,
-  action: MessagesAction,
-): MessagesState => {
-  switch (action.type) {
-    case CONNECTION_FAILED: {
-      return [...messages, action.payload.message];
-    }
+type MessagesReducer<A = Action> = (
+  messages: MessagesState,
+  action: A,
+) => MessagesState;
 
-    case CONNECTION_CLOSED: {
-      return [...messages, "Disconnected from remote host."];
-    }
-
-    case ERROR: {
-      return [...messages, action.payload.message];
-    }
-
-    case JOIN: {
-      const { user, channel } = action.payload;
-      const msg = `${user.nick} has joined ${channel}`;
-      return [...messages, msg];
-    }
-
-    case PART: {
-      const { user, channel, message } = action.payload;
-      const baseMsg = `${user.nick} has left ${channel}`;
-      const msg = message ? `${baseMsg} (${message})` : baseMsg;
-      return [...messages, msg];
-    }
-
-    case PRIVMSG: {
-      const { user, text } = action.payload;
-      const msg = `${user.nick}: ${text}`;
-      return [...messages, msg];
-    }
-
-    case RAW_MESSAGES: {
-      return [...messages, ...action.payload.messages];
-    }
-
-    case SERVER_NOTICE: {
-      return [...messages, action.payload.text];
-    }
-
-    case SERVER_PING: {
-      return [...messages, "Ping?"];
-    }
-
-    default:
-      return messages;
-  }
+const connectionFailed: MessagesReducer<ConnectionFailedAction> = (
+  messages,
+  action,
+) => {
+  return [...messages, action.payload.message];
 };
+
+const connectionClosed: MessagesReducer<ConnectionClosedAction> = messages => {
+  return [...messages, "Disconnected from remote host."];
+};
+
+const error: MessagesReducer<ErrorAction> = (messages, action) => {
+  return [...messages, action.payload.message];
+};
+
+const join: MessagesReducer<JoinAction> = (messages, action) => {
+  const { user, channel } = action.payload;
+  const msg = `${user.nick} has joined ${channel}`;
+  return [...messages, msg];
+};
+
+const part: MessagesReducer<PartAction> = (messages, action) => {
+  const { user, channel, message } = action.payload;
+  const baseMsg = `${user.nick} has left ${channel}`;
+  const msg = message ? `${baseMsg} (${message})` : baseMsg;
+  return [...messages, msg];
+};
+
+const privmsg: MessagesReducer<PrivmsgAction> = (messages, action) => {
+  const { user, text } = action.payload;
+  const msg = `${user.nick}: ${text}`;
+  return [...messages, msg];
+};
+
+const raw: MessagesReducer<RawMessagesAction> = (messages, action) => {
+  return [...messages, ...action.payload.messages];
+};
+
+const noticeFromServer: MessagesReducer<NoticeFromServerAction> = (
+  messages,
+  action,
+) => {
+  return [...messages, action.payload.text];
+};
+
+const noticeFromChannel: MessagesReducer<NoticeFromChannelAction> = (
+  messages,
+  action,
+) => {
+  const { user, text } = action.payload;
+  const { channelKey } = action.route;
+  return [...messages, `-${user.nick}/${channelKey}- ${text}`];
+};
+
+const noticeFromUser: MessagesReducer<NoticeFromUserAction> = (
+  messages,
+  action,
+) => {
+  const { user, text } = action.payload;
+  return [...messages, `-${user.nick}- ${text}`];
+};
+
+const serverPing: MessagesReducer<PingFromServerAction> = messages => {
+  return [...messages, "Ping?"];
+};
+
+const map: { [action: string]: MessagesReducer } = {
+  [CONNECTION_FAILED]: connectionFailed,
+  [CONNECTION_CLOSED]: connectionClosed,
+  [ERROR]: error,
+  [JOIN]: join,
+  [NOTICE_FROM_SERVER]: noticeFromServer,
+  [NOTICE_FROM_CHANNEL]: noticeFromChannel,
+  [NOTICE_FROM_USER]: noticeFromUser,
+  [PART]: part,
+  [PRIVMSG]: privmsg,
+  [RAW_MESSAGES_RECEIVED]: raw,
+  [PING_FROM_SERVER]: serverPing,
+};
+
+export const reduceMessages = mapReducer<MessagesState>(map);

@@ -7,42 +7,55 @@ import {
   GO_FORWARD_INPUT_HISTORY,
   ENTER_INPUT_VALUE,
   EnterInputValueAction,
-} from "@app/actions/input";
+} from "@app/actions/ui";
 import { beginOfHistory, endOfHistory } from "@app/reducers/input/_helpers";
 import { InputState } from "@app/reducers/input";
+import { mapReducer } from "@app/reducers/_map";
+import { Action } from "redux";
 
 export type InputValueState = string;
 
-export type InputValueAction =
-  | UpdateInputValueAction
-  | EnterInputValueAction
-  | GoBackInputHistoryAction
-  | GoForwardInputHistoryAction;
-
 export const inputValueInitialState: InputValueState = "";
 
-export const reduceInputValue = (
-  input: InputState,
-  action: InputValueAction,
-): InputValueState => {
-  switch (action.type) {
-    case UPDATE_INPUT_VALUE:
-      return action.payload.value;
+type InputValueReducer<A = Action> = (
+  value: InputValueState,
+  action: A,
+  extraStates: { input: InputState },
+) => InputValueState;
 
-    case ENTER_INPUT_VALUE:
-      return "";
+const updateInputValue: InputValueReducer<UpdateInputValueAction> = (
+  _,
+  action,
+) => action.payload.value;
 
-    case GO_BACK_INPUT_HISTORY:
-      return beginOfHistory(input.history)
-        ? input.value
-        : input.history.values[input.history.index - 1];
+const enterInputValue: InputValueReducer<EnterInputValueAction> = _ => "";
 
-    case GO_FORWARD_INPUT_HISTORY:
-      return endOfHistory(input.history)
-        ? input.value
-        : input.history.values[input.history.index + 1] || input.dirtyValue;
+const goBackInputHistory: InputValueReducer<GoBackInputHistoryAction> = (
+  value,
+  _,
+  { input },
+) =>
+  beginOfHistory(input.history)
+    ? value
+    : input.history.values[input.history.index - 1];
 
-    default:
-      return input.value;
-  }
+const goForwardInputHistory: InputValueReducer<GoForwardInputHistoryAction> = (
+  value,
+  _,
+  { input },
+) =>
+  endOfHistory(input.history)
+    ? value
+    : input.history.values[input.history.index + 1] || input.dirtyValue;
+
+const map: { [action: string]: InputValueReducer } = {
+  [UPDATE_INPUT_VALUE]: updateInputValue,
+  [ENTER_INPUT_VALUE]: enterInputValue,
+  [GO_BACK_INPUT_HISTORY]: goBackInputHistory,
+  [GO_FORWARD_INPUT_HISTORY]: goForwardInputHistory,
 };
+
+export const reduceInputValue = mapReducer<
+  InputValueState,
+  { input: InputState }
+>(map);

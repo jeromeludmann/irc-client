@@ -1,18 +1,15 @@
 import {
   MessagesState,
-  MessagesAction,
   messagesInitialState,
   reduceMessages,
 } from "@app/reducers/channel/messages";
 import {
   InputState,
-  InputAction,
   inputInitialState,
   reduceInput,
 } from "@app/reducers/input";
 import {
   UnreadState,
-  UnreadAction,
   unreadInitialState,
   reduceUnread,
 } from "@app/reducers/channel/unread";
@@ -35,9 +32,9 @@ export const channelInitialState: ChannelState = {
 export const reduceChannel = (
   channel = channelInitialState,
   action: RoutedAction,
-  states: { active: RouteState; user: UserState },
+  extraStates: { route: RouteState; user: UserState },
 ): ChannelState => ({
-  messages: reduceMessages(channel.messages, action as MessagesAction),
-  input: reduceInput(channel.input, action as InputAction),
-  unread: reduceUnread(channel.unread, action as UnreadAction, states),
+  messages: reduceMessages(channel.messages, action),
+  input: reduceInput(channel.input, action),
+  unread: reduceUnread(channel.unread, action, extraStates),
 });

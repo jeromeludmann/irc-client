@@ -1,5 +1,5 @@
 import { Action } from "redux";
-import { RAW, Route, STATUS, BROADCAST, NONE } from "@app/Route";
+import { RAW, Route, STATUS, BROADCAST_ALL, BROADCAST_NONE } from "@app/Route";
 
 export interface NetworkAction<T> extends Action<T> {
   route: Route;
@@ -7,36 +7,77 @@ export interface NetworkAction<T> extends Action<T> {
 
 // Connect to server
 
-export const CONNECT_SERVER = "SERVER/CONNECT_SERVER";
+export const CONNECT_SERVER = "SOCKET/CONNECT_SERVER";
 
-export interface ConnectServerAction extends Action<typeof CONNECT_SERVER> {
+export interface ConnectServerAction
+  extends NetworkAction<typeof CONNECT_SERVER> {
   payload: {
     host: string;
     port: number;
+    newConnection: boolean;
   };
 }
 
 export const connectServer = (
+  serverKey: string,
   host: string,
   port: number = 6667,
+  newConnection = false,
 ): ConnectServerAction => ({
   type: CONNECT_SERVER,
-  payload: { host, port },
+  payload: { host, port, newConnection },
+  route: { serverKey, channelKey: BROADCAST_NONE },
 });
 
 // Disconnect from server
 
-export const DISCONNECT_SERVER = "SERVER/DISCONNECT_SERVER";
+export const DISCONNECT_SERVER = "SOCKET/DISCONNECT_SERVER";
 
 export interface DisconnectServerAction
-  extends NetworkAction<typeof DISCONNECT_SERVER> {}
+  extends NetworkAction<typeof DISCONNECT_SERVER> {
+  payload: { quitMessage?: string };
+}
 
 export const disconnectServer = (
   serverKey: string,
+  quitMessage?: string,
 ): DisconnectServerAction => ({
   type: DISCONNECT_SERVER,
-  route: { serverKey, channelKey: NONE },
+  payload: { quitMessage },
+  route: { serverKey, channelKey: BROADCAST_NONE },
 });
+
+// Send raw message to socket
+
+export const SEND_RAW_MESSAGE = "SOCKET/SEND_RAW_MESSAGE";
+
+export interface SendRawMessageAction extends Action<typeof SEND_RAW_MESSAGE> {
+  serverKey: string;
+  payload: { raw: string };
+}
+
+export const sendRaw = (
+  serverKey: string,
+  message: string,
+): SendRawMessageAction => ({
+  type: SEND_RAW_MESSAGE,
+  serverKey,
+  payload: { raw: message },
+});
+
+export const sendMessage = (
+  serverKey: string,
+  command: string,
+  ...params: string[]
+) => {
+  const last = params.length - 1;
+
+  if (params[last].indexOf(" ") > -1 || params[last].charAt(0) === ":") {
+    params[last] = `:${params[last]}`;
+  }
+
+  return sendRaw(serverKey, `${command.toUpperCase()} ${params.join(" ")}`);
+};
 
 // Socket lookup
 
@@ -82,20 +123,20 @@ export const lookup = (
       };
 };
 
-// Socket messages received
+// Receive raw messages from socket
 
-export const RAW_MESSAGES = "SOCKET/RECEIVE_RAW_MESSAGES";
+export const RAW_MESSAGES_RECEIVED = "SOCKET/RAW_MESSAGES";
 
-export interface ReceiveRawMessagesAction
-  extends NetworkAction<typeof RAW_MESSAGES> {
+export interface RawMessagesAction
+  extends NetworkAction<typeof RAW_MESSAGES_RECEIVED> {
   payload: { messages: string[] };
 }
 
 export const receiveRawMessages = (
   serverKey: string,
   messages: string[],
-): ReceiveRawMessagesAction => ({
-  type: RAW_MESSAGES,
+): RawMessagesAction => ({
+  type: RAW_MESSAGES_RECEIVED,
   payload: { messages },
   route: { serverKey, channelKey: RAW },
 });
@@ -129,7 +170,7 @@ export const setConnectionClosed = (
 ): ConnectionClosedAction => ({
   type: CONNECTION_CLOSED,
   payload: { hadError },
-  route: { serverKey, channelKey: BROADCAST },
+  route: { serverKey, channelKey: BROADCAST_ALL },
 });
 
 // Socket connection failed
@@ -153,5 +194,5 @@ export const setConnectionFailed = (
 ): ConnectionFailedAction => ({
   type: CONNECTION_FAILED,
   payload: { name, message, stack },
-  route: { serverKey, channelKey: BROADCAST },
+  route: { serverKey, channelKey: BROADCAST_ALL },
 });

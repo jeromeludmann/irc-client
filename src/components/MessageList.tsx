@@ -5,7 +5,7 @@ interface Props {
 }
 
 export default ({ messages }: Props) => (
-  // do not use index
+  // TODO do not use index
   <ul
     style={{
       fontFamily: "Menlo, Monaco, Courier",

@@ -1,29 +1,31 @@
-import { ReplyMyInfoAction, RPL_MYINFO } from "@app/actions/incoming";
+import { Action } from "redux";
+import { mapReducer } from "@app/reducers/_map";
+import { ReplyMyInfoAction, RPL_MYINFO } from "@app/actions/messages";
 
 export type ServerAvailableModesState = {
   user: string[];
   channel: string[];
 };
 
-export type ServerAvailableModesAction = ReplyMyInfoAction;
-
 export const serverAvailableModesInitialState: ServerAvailableModesState = {
   user: [],
   channel: [],
 };
 
-export const reduceServerAvailableModes = (
-  availableModes = serverAvailableModesInitialState,
-  action: ServerAvailableModesAction,
-) => {
-  switch (action.type) {
-    case RPL_MYINFO:
-      return {
-        user: action.payload.availableUserModes,
-        channel: action.payload.availableChannelModes,
-      };
+type AvailableModesReducer<A = Action> = (
+  state: ServerAvailableModesState,
+  action: A,
+) => ServerAvailableModesState;
 
-    default:
-      return availableModes;
-  }
+const replyMyInfo: AvailableModesReducer<ReplyMyInfoAction> = (_, action) => ({
+  user: action.payload.availableUserModes,
+  channel: action.payload.availableChannelModes,
+});
+
+const map: { [action: string]: AvailableModesReducer } = {
+  [RPL_MYINFO]: replyMyInfo,
 };
+
+export const reduceServerAvailableModes = mapReducer<ServerAvailableModesState>(
+  map,
+);

@@ -1,4 +1,6 @@
-import { NICK, NickAction } from "@app/actions/incoming";
+import { Action } from "redux";
+import { mapReducer } from "@app/reducers/_map";
+import { NickAction, NICK } from "@app/actions/messages";
 
 export interface UserState {
   nick: string;
@@ -6,25 +8,21 @@ export interface UserState {
   real: string;
 }
 
-export type UserAction = NickAction;
-
 export const userInitialState: UserState = {
   nick: "default_nick",
   user: "default_user",
   real: "Default Realname",
 };
 
-export const reduceUser = (
-  user = userInitialState,
-  action: UserAction,
-): UserState => {
-  switch (action.type) {
-    case NICK:
-      return action.payload.user.nick === user.nick
-        ? { ...user, nick: action.payload.nick }
-        : user;
+type UserReducer<A = Action> = (user: UserState, action: A) => UserState;
 
-    default:
-      return user;
-  }
+const nick: UserReducer<NickAction> = (user, action) =>
+  action.payload.user.nick === user.nick
+    ? { ...user, nick: action.payload.nick }
+    : user;
+
+const map: { [action: string]: UserReducer } = {
+  [NICK]: nick,
 };
+
+export const reduceUser = mapReducer<UserState>(map);

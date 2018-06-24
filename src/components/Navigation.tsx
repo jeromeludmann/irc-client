@@ -1,5 +1,5 @@
 import React, { PureComponent, MouseEvent, CSSProperties } from "react";
-import { STATUS } from "@app/Route";
+import { STATUS, RAW } from "@app/Route";
 
 interface Props {
   servers: {
@@ -49,7 +49,9 @@ export default class Navigation extends PureComponent<Props> {
                   >
                     {channelKey === STATUS
                       ? servers[serverKey].name
-                      : channelKey}
+                      : channelKey === RAW
+                        ? serverKey
+                        : channelKey}
                   </button>
                 </li>
               );

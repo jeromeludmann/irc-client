@@ -5,48 +5,46 @@ import {
   ENTER_INPUT_VALUE,
   GO_BACK_INPUT_HISTORY,
   GO_FORWARD_INPUT_HISTORY,
-} from "@app/actions/input";
+} from "@app/actions/ui";
 import { beginOfHistory, endOfHistory } from "@app/reducers/input/_helpers";
+import { mapReducer } from "@app/reducers/_map";
+import { Action } from "redux";
 
 export interface HistoryState {
   readonly values: string[];
   readonly index: number;
 }
 
-export type HistoryAction =
-  | EnterInputValueAction
-  | GoBackInputHistoryAction
-  | GoForwardInputHistoryAction;
-
 export const historyInitialState: HistoryState = {
   values: [],
   index: 0,
 };
 
-export const reduceHistory = (
-  history = historyInitialState,
-  action: HistoryAction,
-): HistoryState => {
-  switch (action.type) {
-    case ENTER_INPUT_VALUE: {
-      const values = [...history.values, action.payload.value];
-      const index = values.length;
-      return { values, index };
-    }
+type HistoryReducer<A = Action> = (
+  input: HistoryState,
+  action: A,
+) => HistoryState;
 
-    case GO_BACK_INPUT_HISTORY: {
-      return beginOfHistory(history)
-        ? history
-        : { ...history, index: history.index - 1 };
-    }
-
-    case GO_FORWARD_INPUT_HISTORY: {
-      return endOfHistory(history)
-        ? history
-        : { ...history, index: history.index + 1 };
-    }
-
-    default:
-      return history;
-  }
+const enterInputValue: HistoryReducer<EnterInputValueAction> = (
+  history,
+  action,
+) => {
+  const values = [...history.values, action.payload.value];
+  return { values, index: values.length };
 };
+
+const goBackInputHistory: HistoryReducer<GoBackInputHistoryAction> = history =>
+  beginOfHistory(history) ? history : { ...history, index: history.index - 1 };
+
+const goForwardInputHistory: HistoryReducer<
+  GoForwardInputHistoryAction
+> = history =>
+  endOfHistory(history) ? history : { ...history, index: history.index + 1 };
+
+const map: { [action: string]: HistoryReducer } = {
+  [ENTER_INPUT_VALUE]: enterInputValue,
+  [GO_BACK_INPUT_HISTORY]: goBackInputHistory,
+  [GO_FORWARD_INPUT_HISTORY]: goForwardInputHistory,
+};
+
+export const reduceHistory = mapReducer<HistoryState>(map);

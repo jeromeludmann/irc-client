@@ -1,26 +1,121 @@
 import { Socket } from "net";
-import { Middleware, Dispatch } from "redux";
+import { Middleware, Dispatch, Store } from "redux";
 import {
   setConnectionEstablished,
   setConnectionClosed,
   receiveRawMessages,
   setConnectionFailed,
   lookup,
-} from "@app/actions/network";
-import { RootState } from "@app/reducers";
+  SendRawMessageAction,
+  SEND_RAW_MESSAGE,
+} from "@app/actions/socket";
+import { AppState } from "@app/reducers";
 import {
   ConnectServerAction,
   DisconnectServerAction,
   CONNECT_SERVER,
   DISCONNECT_SERVER,
-} from "@app/actions/network";
-import { OutgoingMessageAction, SEND_MESSAGE } from "@app/actions/outgoing";
-import { CRLF, IRC_MESSAGE_LENGTH } from "@app/middlewares/constants";
+} from "@app/actions/socket";
+import { CRLF, IRC_MESSAGE_LENGTH } from "@app/middlewares/_constants";
 import { ServersState } from "@app/reducers/servers";
 
-const getSocketDispatcher = (dispatch: Dispatch) => (
-  serverKey: string,
-): Socket => {
+type NetworkMiddlewareAction =
+  | ConnectServerAction
+  | DisconnectServerAction
+  | SendRawMessageAction;
+
+/**
+ * Network Middleware
+ *
+ * Manage connections and data sending/receiving to/from the servers.
+ */
+export const network: Middleware = (store: Store<AppState>) => next => (
+  action: NetworkMiddlewareAction,
+) => {
+  next(action);
+
+  if (map.hasOwnProperty(action.type)) {
+    map[action.type](action, store);
+  }
+};
+
+/**
+ * Generate server key
+ *
+ * The returned key will be unique only if servers map are provided.
+ */
+export const generateServerKey = (servers?: ServersState): string => {
+  const key = Math.random()
+    .toString(36)
+    .slice(2);
+  return !servers || !servers.hasOwnProperty(key)
+    ? key
+    : generateServerKey(servers);
+};
+
+type Handler<A = NetworkMiddlewareAction> = (
+  action: A,
+  store: Store<AppState>,
+) => void;
+
+const connectServer: Handler<ConnectServerAction> = (
+  { payload: { host, port, newConnection }, route },
+  store,
+) => {
+  const key = newConnection
+    ? generateServerKey(store.getState().servers)
+    : route.serverKey;
+
+  if (connections.hasOwnProperty(key) && connections[key].socket) {
+    connections[key].socket.destroy();
+  }
+
+  connections[key] = {
+    socket: getSocket(store.dispatch)(key),
+    buffer: "",
+  };
+
+  connections[key].socket.connect({ host, port });
+};
+
+const disconnectServer: Handler<DisconnectServerAction> = action => {
+  const { payload, route } = action;
+  if (!connections.hasOwnProperty(route.serverKey)) {
+    console.warn("disconnectServer: unable to find socket");
+    return;
+  }
+  connections[route.serverKey].socket.end(`QUIT :${payload.quitMessage}`);
+  delete connections[route.serverKey];
+};
+
+const sendMessage: Handler<SendRawMessageAction> = action => {
+  if (!connections.hasOwnProperty(action.serverKey)) {
+    // TODO dispatch error
+    console.warn("sendMessage: unable to find socket");
+    return;
+  }
+
+  connections[action.serverKey].socket.write(
+    action.payload.raw.slice(
+      0,
+      action.payload.raw.length > IRC_MESSAGE_LENGTH - CRLF.length
+        ? IRC_MESSAGE_LENGTH
+        : undefined,
+    ) + CRLF,
+  );
+};
+
+const map: { [action: string]: Handler } = {
+  [CONNECT_SERVER]: connectServer,
+  [DISCONNECT_SERVER]: disconnectServer,
+  [SEND_RAW_MESSAGE]: sendMessage,
+};
+
+const connections: {
+  [serverKey: string]: { socket: Socket; buffer: string };
+} = {};
+
+const getSocket = (dispatch: Dispatch) => (serverKey: string): Socket => {
   const socket = new Socket();
 
   socket.on("lookup", (error, address, family, host) => {
@@ -32,9 +127,9 @@ const getSocketDispatcher = (dispatch: Dispatch) => (
   });
 
   socket.on("data", buffer => {
-    serverRegistry[serverKey].buffer += buffer;
-    const messages = serverRegistry[serverKey].buffer.split(CRLF);
-    serverRegistry[serverKey].buffer = messages.pop() || "";
+    connections[serverKey].buffer += buffer;
+    const messages = connections[serverKey].buffer.split(CRLF);
+    connections[serverKey].buffer = messages.pop() || "";
     dispatch(receiveRawMessages(serverKey, messages));
   });
 
@@ -57,55 +152,4 @@ const getSocketDispatcher = (dispatch: Dispatch) => (
   });
 
   return socket;
-};
-
-export const generateServerKey = (servers?: ServersState): string => {
-  const key = Math.random()
-    .toString(36)
-    .slice(2);
-  return !servers || !servers.hasOwnProperty(key)
-    ? key
-    : generateServerKey(servers);
-};
-
-const serverRegistry: {
-  [serverKey: string]: { socket: Socket; buffer: string };
-} = {};
-
-export const network: Middleware<{}, RootState> = store => next => (
-  action: OutgoingMessageAction | ConnectServerAction | DisconnectServerAction,
-) => {
-  next(action);
-
-  switch (action.type) {
-    case CONNECT_SERVER:
-      const serverKey = generateServerKey(store.getState().servers);
-
-      serverRegistry[serverKey] = {
-        socket: getSocketDispatcher(store.dispatch)(serverKey),
-        buffer: "",
-      };
-
-      serverRegistry[serverKey].socket.connect({
-        host: action.payload.host,
-        port: action.payload.port,
-      });
-
-      break;
-
-    case DISCONNECT_SERVER:
-      serverRegistry[action.route.serverKey].socket.end();
-      break;
-
-    case SEND_MESSAGE:
-      serverRegistry[action.serverKey].socket.write(
-        action.payload.raw.slice(
-          0,
-          action.payload.raw.length > IRC_MESSAGE_LENGTH - CRLF.length
-            ? IRC_MESSAGE_LENGTH
-            : undefined,
-        ) + CRLF,
-      );
-      break;
-  }
 };

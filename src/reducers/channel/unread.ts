@@ -1,52 +1,54 @@
 import { RouteState } from "@app/reducers/route";
-import { SWITCH_CHANNEL, SwitchRouteAction } from "@app/actions/route";
-import { ReceiveRawMessagesAction, RAW_MESSAGES } from "@app/actions/network";
+import { SWITCH_WINDOW, SwitchWindowAction } from "@app/actions/ui";
+import { RAW_MESSAGES_RECEIVED } from "@app/actions/socket";
+import { UserState } from "@app/reducers/server/user";
+import { mapReducer } from "@app/reducers/_map";
+import { Action } from "redux";
+import { RoutedAction, BROADCAST_ACTIVE } from "@app/Route";
 import {
   JoinAction,
-  ChannelNoticeAction,
   JOIN,
-  NOTICE_CHANNEL,
-  PrivmsgAction,
-  PRIVMSG,
-  PartAction,
   PART,
-} from "@app/actions/incoming";
-import { UserState } from "@app/reducers/server/user";
+  PRIVMSG,
+  NOTICE_FROM_SERVER,
+  NOTICE_FROM_CHANNEL,
+  NOTICE_FROM_USER,
+} from "@app/actions/messages";
 
 export type UnreadState = boolean;
 
-export type UnreadAction =
-  | PartAction
-  | JoinAction
-  | SwitchRouteAction
-  | ReceiveRawMessagesAction
-  | PrivmsgAction
-  | ChannelNoticeAction;
-
 export const unreadInitialState: UnreadState = false;
 
-export const reduceUnread = (
-  unread = unreadInitialState,
-  action: UnreadAction,
-  states: { active: RouteState; user: UserState },
-): UnreadState => {
-  switch (action.type) {
-    case SWITCH_CHANNEL:
-      return false;
+type UnreadReducer<A = Action> = (
+  state: UnreadState,
+  action: A,
+  extraStates: { route: RouteState; user: UserState },
+) => UnreadState;
 
-    case JOIN:
-      return action.payload.user.nick !== states.user.nick;
+const join: UnreadReducer<JoinAction> = (_, action, extraStates) =>
+  action.payload.user.nick !== extraStates.user.nick;
 
-    case PART:
-    case PRIVMSG:
-    case NOTICE_CHANNEL:
-    case RAW_MESSAGES:
-      return (
-        states.active.serverKey !== action.route.serverKey ||
-        states.active.channelKey !== action.route.channelKey
-      );
+const switchRoute: UnreadReducer<SwitchWindowAction> = () => false;
 
-    default:
-      return unread;
-  }
+const anyActivity: UnreadReducer<RoutedAction> = (_, action, extraStates) => {
+  const sameRoute =
+    action.route.serverKey === extraStates.route.serverKey &&
+    action.route.channelKey === extraStates.route.channelKey;
+  return !sameRoute && action.route.channelKey !== BROADCAST_ACTIVE;
 };
+
+const map: { [action: string]: UnreadReducer } = {
+  [JOIN]: join,
+  [SWITCH_WINDOW]: switchRoute,
+  [PART]: anyActivity,
+  [PRIVMSG]: anyActivity,
+  [NOTICE_FROM_SERVER]: anyActivity,
+  [NOTICE_FROM_CHANNEL]: anyActivity,
+  [NOTICE_FROM_USER]: anyActivity,
+  [RAW_MESSAGES_RECEIVED]: anyActivity,
+};
+
+export const reduceUnread = mapReducer<
+  UnreadState,
+  { route: RouteState; user: UserState }
+>(map);

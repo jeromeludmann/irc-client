@@ -1,11 +1,11 @@
 import { createSelector } from "reselect";
-import { RootState } from "@app/reducers";
+import { AppState } from "@app/reducers";
 import { ServersState } from "@app/reducers/servers";
 import { RouteState } from "@app/reducers/route";
 
-export const selectServers = ({ servers }: RootState): ServersState => servers;
+export const selectServers = ({ servers }: AppState): ServersState => servers;
 
-export const selectRoute = ({ route }: RootState): RouteState => route;
+export const selectRoute = ({ route }: AppState): RouteState => route;
 
 export const selectServer = createSelector(
   selectServers,

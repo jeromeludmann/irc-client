@@ -1,17 +1,17 @@
 import { createStore, applyMiddleware } from "redux";
 import { reduce } from "@app/reducers";
-import { createLogger } from "@app/middlewares/logger";
-import { UPDATE_INPUT_VALUE } from "@app/actions/input";
 import { parser } from "@app/middlewares/parser";
-import { autoReply } from "@app/middlewares/auto-reply";
-import { command } from "@app/middlewares/command";
+import { commands } from "@app/middlewares/commands";
 import { network, generateServerKey } from "@app/middlewares/network";
 import { STATUS } from "@app/Route";
 import { serverInitialState } from "@app/reducers/server";
 import { autoRouter } from "@app/middlewares/autoRouter";
+import { pingPong } from "@app/middlewares/pingPong";
+import { register } from "@app/middlewares/register";
+import { logger } from "@app/middlewares/logger";
+import { ui } from "@app/middlewares/ui";
 
 const serverKey = generateServerKey();
-const logger = createLogger({ exclude: [UPDATE_INPUT_VALUE] });
 
 export const store = createStore(
   reduce,
@@ -23,8 +23,10 @@ export const store = createStore(
   applyMiddleware(
     parser, // keep first
     autoRouter,
-    autoReply,
-    command,
+    pingPong,
+    register,
+    commands,
+    ui,
     network, // keep just before logger
     logger, // keep last
   ),

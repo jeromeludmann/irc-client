@@ -1,124 +1,111 @@
 import { Middleware } from "redux";
+import { RAW_MESSAGES_RECEIVED, RawMessagesAction } from "@app/actions/socket";
+import { IRC_MESSAGE_LENGTH, CRLF } from "@app/middlewares/_constants";
+import { GenericMessage, Prefix, Tags } from "@app/Message";
 import {
-  RAW_MESSAGES,
-  ReceiveRawMessagesAction,
-} from "@app/actions/network";
-import {
-  Prefix,
-  receiveJoin,
-  receiveNick,
-  receiveNotice,
-  receivePing,
-  receivePrivmsg,
-  receiveError,
-  User,
-  IncomingMessageAction,
-  receivePart,
-  receiveReplyMyInfo,
-  Server,
-} from "@app/actions/incoming";
-import { IRC_MESSAGE_LENGTH } from "@app/middlewares/constants";
+  MessageActionCreator,
+  MessageAction,
+  join,
+  error,
+  nick,
+  notice,
+  part,
+  ping,
+  privmsg,
+  replyMyInfo,
+} from "@app/actions/messages";
 
-const messageRegistry: {
-  [command: string]: (
-    serverKey: string,
-    prefix: Prefix,
-    params: string[],
-  ) => IncomingMessageAction<string, {}>;
-} = {
-  JOIN(serverKey, prefix, params) {
-    return receiveJoin(serverKey, prefix as User, params);
-  },
-  ERROR(serverKey, _, params) {
-    return receiveError(serverKey, undefined, params);
-  },
-  NICK(serverKey, prefix, params) {
-    return receiveNick(serverKey, prefix as User, params);
-  },
-  NOTICE(serverKey, prefix, params) {
-    return receiveNotice(serverKey, prefix, params);
-  },
-  PART(serverKey, prefix, params) {
-    return receivePart(serverKey, prefix as User, params);
-  },
-  PING(serverKey, _, params) {
-    return receivePing(serverKey, undefined, params);
-  },
-  PRIVMSG(serverKey, prefix, params) {
-    return receivePrivmsg(serverKey, prefix as User, params);
-  },
-  "004"(serverKey, prefix, params) {
-    return receiveReplyMyInfo(serverKey, prefix as Server, params);
-  },
+/**
+ * Message Parser Middleware
+ *
+ * Parse a raw message in order to get a generic message that will be used in
+ * the message callbacks.
+ */
+export const parser: Middleware = () => next => (action: RawMessagesAction) => {
+  next(action);
+
+  if (action.type === RAW_MESSAGES_RECEIVED) {
+    action.payload.messages.forEach(rawMessage => {
+      const genericMessage = parseMessage(rawMessage);
+      const { prefix, command, params } = genericMessage;
+
+      if (messagesMap.hasOwnProperty(command)) {
+        next(messagesMap[command](action.route.serverKey, prefix, params));
+      }
+    });
+  }
 };
 
-interface GenericMessage {
-  prefix?: Prefix;
-  command: string;
-  params: string[];
-}
+type Callback = MessageActionCreator<MessageAction<string, {}>>;
 
-const parseMessage = (message: string): GenericMessage => {
-  if (message.length > IRC_MESSAGE_LENGTH) {
-    // tslint:disable-next-line
-    console.warn(
-      `Unexpected message length: (${IRC_MESSAGE_LENGTH} bytes max)`,
-    );
+const messagesMap: { [command: string]: Callback } = {
+  JOIN: join,
+  ERROR: error,
+  NICK: nick,
+  NOTICE: notice,
+  PART: part,
+  PING: ping,
+  PRIVMSG: privmsg,
+  "004": replyMyInfo,
+};
+
+const parseMessage = (rawMessage: string): GenericMessage => {
+  const genericMessage: GenericMessage = {
+    command: "",
+    params: [],
+  };
+
+  if (rawMessage.length > IRC_MESSAGE_LENGTH - CRLF.length) {
+    rawMessage = rawMessage.slice(0, IRC_MESSAGE_LENGTH - CRLF.length);
   }
 
   let pos: number;
 
-  // TODO Skip tags (optional, not yet supported)
+  // Tags
 
-  if (message.charAt(0) === "@") {
-    pos = message.indexOf(" ");
-    message = message.slice(pos + 1);
+  if (rawMessage.charAt(0) === "@") {
+    pos = rawMessage.indexOf(" ");
+    genericMessage.tags = parseTags(rawMessage.slice(1, pos));
+    rawMessage = rawMessage.slice(pos + 1);
   }
 
-  // Parse prefix
+  // Prefix
 
-  let prefix: Prefix;
-
-  if (message.charAt(0) === ":") {
-    pos = message.indexOf(" ");
-    prefix = parsePrefix(message.slice(1, pos));
-    message = message.slice(pos + 1);
+  if (rawMessage.charAt(0) === ":") {
+    pos = rawMessage.indexOf(" ");
+    genericMessage.prefix = parsePrefix(rawMessage.slice(1, pos));
+    rawMessage = rawMessage.slice(pos + 1);
   }
 
-  // Parse command
+  // Command
 
-  let command: string;
-  pos = message.indexOf(" ");
+  pos = rawMessage.indexOf(" ");
   if (pos === -1) {
-    pos = message.length;
+    pos = rawMessage.length;
   }
-  command = message.slice(0, pos).toUpperCase();
-  message = message.slice(pos + 1);
+  genericMessage.command = rawMessage.slice(0, pos).toUpperCase();
+  rawMessage = rawMessage.slice(pos + 1);
 
-  // Parameters
+  // Middle parameters
 
-  const params = [];
-
-  // Parse middle parameters
-
-  while (message.length > 0 && message.charAt(0) !== ":") {
-    pos = message.indexOf(" ");
+  while (rawMessage.length > 0 && rawMessage.charAt(0) !== ":") {
+    pos = rawMessage.indexOf(" ");
     if (pos === -1) {
-      pos = message.length;
+      pos = rawMessage.length;
     }
-    const middle = message.slice(0, pos);
-    params.push(middle);
-    message = message.slice(pos + 1);
+    const middle = rawMessage.slice(0, pos);
+    genericMessage.params.push(middle);
+    rawMessage = rawMessage.slice(pos + 1);
   }
 
-  // Parse trailing parameter
+  // Trailing parameter
 
-  if (message.length > 0) {
-    const trailing = message.slice(1);
-    params.push(trailing);
+  if (rawMessage.length > 0) {
+    const trailing = rawMessage.slice(1);
+    genericMessage.params.push(trailing);
   }
 
-  return { prefix, command, params };
+  return genericMessage;
 };
 
 const parsePrefix = (prefix: string): Prefix => {
@@ -136,19 +123,5 @@ const parsePrefix = (prefix: string): Prefix => {
   };
 };
 
-export const parser: Middleware = () => next => (
-  action: ReceiveRawMessagesAction,
-) => {
-  next(action);
-
-  if (action.type === RAW_MESSAGES) {
-    action.payload.messages.forEach(rawMessage => {
-      const genericMessage = parseMessage(rawMessage);
-      const { prefix, command, params } = genericMessage;
-
-      if (messageRegistry.hasOwnProperty(command)) {
-        next(messageRegistry[command](action.route.serverKey, prefix, params));
-      }
-    });
-  }
-};
+const parseTags = (tags: string): Tags =>
+  tags.indexOf(";") > -1 ? tags.split(";") : [tags];
