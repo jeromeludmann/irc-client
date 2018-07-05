@@ -1,39 +1,36 @@
 import React, { Component } from "react";
 import { connect, MapStateToProps } from "react-redux";
-import { switchWindow } from "@app/actions/ui-window";
-import { RootState } from "@app/reducers";
-import { ServerRouterState } from "@app/reducers/server-router";
-import { WindowState } from "@app/reducers/window";
+import { AppState } from "@app/reducers";
+import { ServersState } from "@app/reducers/servers";
+import { RouteState } from "@app/reducers/route";
 import Navigation from "@app/components/Navigation";
 import MessageList from "@app/components/MessageList";
 import Input from "@app/components/Input";
-import {
-  selectWindow,
-  selectServers,
-  selectUser,
-} from "@app/reducers/selectors";
-import { MessageListState } from "@app/reducers/buffer-messages";
-import { selectMessages } from "@app/reducers/buffer-selectors";
-import { selectValue } from "@app/reducers/input-selectors";
+import { selectRoute, selectServers } from "@app/reducers/_selectors";
+import { MessagesState } from "@app/reducers/channel/messages";
+import { selectMessages } from "@app/reducers/channel/_selectors";
+import { selectValue } from "@app/reducers/input/_selectors";
 import {
   updateInputValue,
   enterInputValue,
   goBackInputHistory,
   goForwardInputHistory,
-} from "@app/actions/ui-input";
-import { Route } from "@app/Route";
-import { UserState } from "@app/reducers/user";
+  switchWindow,
+} from "@app/actions/ui";
+import { Route, RAW } from "@app/Route";
+import { UserState } from "@app/reducers/server/user";
+import { selectUser } from "@app/reducers/server/_selectors";
 
 interface StateProps {
   user: UserState;
-  servers: ServerRouterState;
-  window: WindowState;
-  messages: MessageListState;
+  servers: ServersState;
+  window: RouteState;
+  messages: MessagesState;
   inputValue: string;
 }
 
 interface DispatchProps {
-  onBufferSwitch: (route: Route) => void;
+  onChannelSwitch: (route: Route) => void;
   onInputType: (value: string) => void;
   onInputEnter: (value: string) => void;
   onInputArrowUp: () => void;
@@ -42,23 +39,30 @@ interface DispatchProps {
 
 class Container extends Component<StateProps & DispatchProps> {
   public render() {
+    const server = this.props.servers[this.props.window.serverKey];
     return (
       <>
-        <div>nick: {this.props.user.nick}</div>
+        <div>host: {server.name}</div>
+        <div>key: {this.props.window.serverKey}</div>
+        <div>current nick: {this.props.user.nick}</div>
+        <div>available user modes: {server.availableModes.user}</div>
+        <div>available channel modes: {server.availableModes.channel}</div>
 
         <Navigation
           servers={this.props.servers}
           window={this.props.window}
-          onBufferButtonClick={this.props.onBufferSwitch}
+          onChannelButtonClick={this.props.onChannelSwitch}
         />
 
-        <Input
-          value={this.props.inputValue}
-          onType={this.props.onInputType}
-          onEnter={this.props.onInputEnter}
-          onArrowUp={this.props.onInputArrowUp}
-          onArrowDown={this.props.onInputArrowDown}
-        />
+        {this.props.window.channelKey !== RAW && (
+          <Input
+            value={this.props.inputValue}
+            onType={this.props.onInputType}
+            onEnter={this.props.onInputEnter}
+            onArrowUp={this.props.onInputArrowUp}
+            onArrowDown={this.props.onInputArrowDown}
+          />
+        )}
 
         <MessageList messages={this.props.messages} />
       </>
@@ -66,16 +70,16 @@ class Container extends Component<StateProps & DispatchProps> {
   }
 }
 
-const mapStateToProps: MapStateToProps<StateProps, {}, RootState> = state => ({
+const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = state => ({
   user: selectUser(state),
   messages: selectMessages(state),
-  window: selectWindow(state),
+  window: selectRoute(state),
   servers: selectServers(state),
   inputValue: selectValue(state),
 });
 
 const mapDispatchToProps: DispatchProps = {
-  onBufferSwitch: switchWindow,
+  onChannelSwitch: switchWindow,
   onInputType: updateInputValue,
   onInputEnter: enterInputValue,
   onInputArrowUp: goBackInputHistory,

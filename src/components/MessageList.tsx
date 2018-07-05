@@ -5,7 +5,7 @@ interface Props {
 }
 
 export default ({ messages }: Props) => (
-  // do not use index
+  // TODO do not use index: instead generate a timestamp on each message
   <ul
     style={{
       fontFamily: "Menlo, Monaco, Courier",

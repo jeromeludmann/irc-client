@@ -1,43 +1,30 @@
-import { Action } from "redux";
-import reduceActiveWindow, {
-  WindowState,
-  WindowAction,
-  windowInitialState,
-} from "@app/reducers/window";
-import reduceServers, {
-  ServerRouterState,
+import {
+  RouteState,
+  routeInitialState,
+  reduceRoute,
+} from "@app/reducers/route";
+import {
+  ServersState,
   serversInitialState,
-  ServerRouterAction,
-} from "@app/reducers/server-router";
-import { Route } from "@app/Route";
-import reduceUser, {
-  UserState,
-  userInitialState,
-  UserAction,
-} from "@app/reducers/user";
+  reduceServers,
+} from "@app/reducers/servers";
+import { RoutedAction } from "@app/Route";
+import { Reducer } from "redux";
 
-export type RootState = {
-  readonly user: UserState;
-  readonly servers: ServerRouterState;
-  readonly active: WindowState;
-};
-
-type RootAction = Action;
+export interface AppState {
+  readonly servers: ServersState;
+  readonly route: RouteState;
+}
 
 export const rootInitialState = {
-  user: userInitialState,
   servers: serversInitialState,
-  active: windowInitialState,
+  route: routeInitialState,
 };
 
-export default (state = rootInitialState, action: RootAction): RootState => ({
-  user: reduceUser(state.user, action as UserAction, { user: state.user }),
-  servers: reduceServers(state.servers, action as ServerRouterAction, {
-    user: state.user,
-    route: (action as RootAction & { route: Route }).route || state.active,
-    active: state.active,
-  }),
-  active: reduceActiveWindow(state.active, action as WindowAction, {
-    user: state.user,
-  }),
+export const reduce: Reducer<AppState, RoutedAction> = (
+  state = rootInitialState,
+  action,
+) => ({
+  servers: reduceServers(state.servers, action, { route: state.route }),
+  route: reduceRoute(state.route, action, { servers: state.servers }),
 });

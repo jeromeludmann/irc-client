@@ -38,7 +38,7 @@ const mainConfig = {
     filename: "main.js",
   },
   module: {
-    rules: [rules.ts({ tsconfigPath: "../tsc/main.json" })],
+    rules: [rules.ts({ tsconfigPath: "../tsc.main.json" })],
   },
   node: {
     __dirname: false,
@@ -57,7 +57,7 @@ const rendererConfig = {
     filename: "renderer.js",
   },
   module: {
-    rules: [rules.ts({ tsconfigPath: "../tsc/renderer.json" })],
+    rules: [rules.ts({ tsconfigPath: "../tsc.renderer.json" })],
   },
 };
 
