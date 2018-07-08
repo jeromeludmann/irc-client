@@ -1,7 +1,7 @@
 {
   "name": "irc-client",
   "version": "0.2.0",
-  "description": "IRC client using web technologies",
+  "description": "IRC client. Written in TypeScript. Made with React, Redux, Node.js, Styled Components and Electron",
   "scripts": {
     "build": "webpack",
     "watch": "npm run build -- -w --progress --color",
@@ -17,7 +17,11 @@
     "typescript",
     "react",
     "redux",
-    "electron"
+    "node.js",
+    "styled-components",
+    "electron",
+    "rfc1459",
+    "rfc2812"
   ],
   "author": "Jerome Ludmann",
   "license": "GPL-3.0",

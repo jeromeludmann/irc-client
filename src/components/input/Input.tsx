@@ -1,4 +1,5 @@
 import React, { PureComponent, ChangeEvent, KeyboardEvent } from "react";
+import { InputField } from "@app/components/input/style";
 
 interface Props {
   value: string;
@@ -10,12 +11,15 @@ interface Props {
 }
 
 export default class Input extends PureComponent<Props> {
-  private static ARROW = { UP: 38, DOWN: 40 };
+  private static ARROW = {
+    UP: 38,
+    DOWN: 40,
+  };
 
   public render() {
     return (
-      <input
-        placeholder={this.props.placeholder}
+      <InputField
+        placeholder={this.props.placeholder || "Your command/message here"}
         type="text"
         value={this.props.value}
         onChange={this.handleChange}
