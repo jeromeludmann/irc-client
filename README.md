@@ -7,11 +7,13 @@
             \/        \/          \/             \/     \/
 ```
 
-Simple IRC client written in [TypeScript](https://github.com/Microsoft/TypeScript) and made with [React](https://github.com/facebook/react), [Redux](https://github.com/reduxjs/redux) and [Node.js](https://github.com/nodejs/node).
+Written in [TypeScript](https://github.com/Microsoft/TypeScript).
 
-Currently packaged with [Electron](https://github.com/electron/electron).
+Made with [React](https://github.com/facebook/react), [Redux](https://github.com/reduxjs/redux), [Node.js](https://github.com/nodejs/node), [Styled Components](https://github.com/styled-components/styled-components) and [Electron](https://github.com/electron/electron).
 
-# Documentation
+It currently implements RFC 1459/2812 client protocol.
+
+# Developer documentation
 
 - [Get ready](#get-ready)
   - [Set up project](#set-up-project)
@@ -19,6 +21,8 @@ Currently packaged with [Electron](https://github.com/electron/electron).
 - [Organize reducers folder](#organize-reducers-folder)
   - [Keep folder structure flat](#keep-folder-structure-flat)
   - [Keep reducers and selectors together](#keep-reducers-and-selectors-together)
+- [UI theming](#ui-theming)
+- [Work in progress](#work-in-progress)
 
 # Get ready
 
@@ -118,3 +122,44 @@ reducers
     ├── input.ts
     └── messages.ts
 ```
+
+# UI theming
+
+TO DO
+
+# Work in progress
+
+## Messages
+
+- (See RFC 1459 and 2812)
+
+## Commands
+
+- help
+- kick
+- mode
+- nick
+- topic
+- query
+- who
+- whois
+- (...)
+
+## UI behaviors
+
+- Auto scroll on message receiving
+- Auto focus input on window switching
+- Nicklist full implementation (actions, reducers, components)
+
+## UI themes
+
+- Add one and make it themable
+
+## Tests
+
+- Components
+- Reducers
+
+## Performances
+
+- Bufferize messages by limiting nodes in DOM in order to avoid performance issues

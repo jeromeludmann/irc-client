@@ -16,8 +16,8 @@ export interface HistoryState {
 }
 
 export const historyInitialState: HistoryState = {
-  values: [],
-  index: 0,
+  values: ["/connect -n localhost", "/connect localhost"], // TODO REMOVE ME
+  index: 2,
 };
 
 type HistoryReducer<A = Action> = (
