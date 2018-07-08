@@ -128,6 +128,12 @@ const getSocket = (dispatch: Dispatch) => (serverKey: string): Socket => {
   });
 
   socket.on("data", buffer => {
+    if (!connections[serverKey]) {
+      // TODO dispatch error
+      console.warn("receive data: unable to find socket");
+      return;
+    }
+
     connections[serverKey].buffer += buffer;
     const messages = connections[serverKey].buffer.split(CRLF);
     connections[serverKey].buffer = messages.pop() || "";
