@@ -72,7 +72,7 @@ export const join: Command = {
  */
 export const msg: Command = {
   syntax: "<channel or nick> <text>",
-  regexp: /^(\S+)\s+(\S+)$/,
+  regexp: /^(\S+)\s+(.+)$/,
   callback: (route, channel, text) =>
     sendMessage(route.serverKey, "privmsg", channel, text),
 };
