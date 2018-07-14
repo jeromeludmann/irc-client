@@ -4,8 +4,14 @@
   "description": "IRC client. Written in TypeScript. Made with React, Redux, Node.js, Styled Components and Electron",
   "scripts": {
     "build": "webpack",
-    "watch": "npm run build -- -w --progress --color",
-    "start": "electron dist/main.js"
+    "build:watch": "npm run build -- -w --progress --color",
+    "test": "jest --verbose",
+    "test:watch": "npm run test -- --watch",
+    "test:coverage": "npm run test -- --coverage",
+    "start": "electron dist/main.js",
+    "check-coverage": "open coverage/lcov-report/index.html",
+    "clean": "rm -rf dist/ coverage/",
+    "postinstall": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -30,16 +36,16 @@
   },
   "homepage": "https://github.com/jeromeludmann/irc-client#readme",
   "devDependencies": {
+    "@types/enzyme": "^3.1.12",
+    "@types/enzyme-adapter-react-16": "^1.0.2",
+    "@types/jest": "^23.1.6",
     "@types/react": "^16.3.14",
     "@types/react-dom": "^16.0.5",
     "@types/react-redux": "^6.0.0",
-    "electron": "^2.0.2",
-    "react": "^16.4.0",
-    "react-dom": "^16.4.0",
-    "react-redux": "^5.0.7",
-    "redux": "^4.0.0",
-    "reselect": "^3.0.1",
-    "styled-components": "^3.3.3",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "jest": "^23.4.1",
+    "ts-jest": "^23.0.0",
     "ts-loader": "^4.3.0",
     "tslint": "^5.10.0",
     "tslint-loader": "^3.6.0",
@@ -47,5 +53,14 @@
     "typescript": "^2.9.2",
     "webpack": "^4.8.3",
     "webpack-cli": "^2.1.4"
+  },
+  "dependencies": {
+    "electron": "^2.0.5",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0",
+    "reselect": "^3.0.1",
+    "styled-components": "^3.3.3"
   }
 }

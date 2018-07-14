@@ -2,7 +2,6 @@ import React, { PureComponent, ChangeEvent, KeyboardEvent } from "react";
 import { InputField } from "@app/components/input/style";
 
 interface Props {
-  value: string;
   placeholder?: string;
   onType: (input: string) => void;
   onEnter: (input: string) => void;
@@ -10,8 +9,16 @@ interface Props {
   onArrowDown: () => void;
 }
 
-export default class Input extends PureComponent<Props> {
-  private static ARROW = {
+interface DefaultProps {
+  value?: string;
+}
+
+export default class Input extends PureComponent<Props & DefaultProps> {
+  public static defaultProps: DefaultProps = {
+    value: "",
+  };
+
+  public static ARROW = {
     UP: 38,
     DOWN: 40,
   };

@@ -5,30 +5,36 @@
 |   ||    |   \     \____ \     \___|  |_|  \  ___/|   |  \  |  
 |___||____|_  /\______  /  \______  /____/__|\___  >___|  /__|  
             \/        \/          \/             \/     \/
+                RFC 1459/2812 client protocol
 ```
 
 Written in [TypeScript](https://github.com/Microsoft/TypeScript).
 
 Made with [React](https://github.com/facebook/react), [Redux](https://github.com/reduxjs/redux), [Node.js](https://github.com/nodejs/node), [Styled Components](https://github.com/styled-components/styled-components) and [Electron](https://github.com/electron/electron).
 
-It currently implements RFC 1459/2812 client protocol.
-
 # Developer documentation
 
 - [Get ready](#get-ready)
-  - [Set up project](#set-up-project)
-  - [Start to develop](#start-to-develop)
-- [Organize reducers folder](#organize-reducers-folder)
-  - [Keep folder structure flat](#keep-folder-structure-flat)
+  - [Prerequisites](#prerequisites)
+  - [Project installation](#project-installation)
+- [Development workflow](#development-workflow)
+  - [Tasks](#tasks)
+  - [Run a local ircd](#run-a-local-ircd)
+- [Organize codebase](#organize-codebase)
+  - [Keep reducer folder structure flat](#keep-reducer-folder-structure-flat)
   - [Keep reducers and selectors together](#keep-reducers-and-selectors-together)
-- [UI theming](#ui-theming)
+  - [UI theming](#ui-theming)
 - [Work in progress](#work-in-progress)
 
 # Get ready
 
+## Prerequisites
+
 Install [Node.js](https://nodejs.org/) first.
 
-## Set up project
+For a better developer experience, it would be better to have [Docker installed](https://www.docker.com/) (but it's not required).
+
+## Project installation
 
 ```sh
 git clone https://github.com/jeromeludmann/irc-client
@@ -36,44 +42,41 @@ cd irc-client
 npm install
 ```
 
-## Start to develop
+_Note that `npm install` will also generate coverage report._
 
-Two ways to work:
+# Development workflow
 
-- using [npm](#npm)
-- or [with Docker](#with-docker)
+## Tasks
 
-### npm
+| task                                   | command                  |
+| -------------------------------------- | ------------------------ |
+| Run compilation                        | `npm run build`          |
+| Run compilation in watch mode          | `npm run build:watch`    |
+| Run unit tests                         | `npm run test`           |
+| Run unit tests in watch mode           | `npm run test:watch`     |
+| Run unit tests and generate coverage   | `npm run test:coverage`  |
+| Run the application                    | `npm start`              |
+| Open a browser and check test coverage | `npm run check-coverage` |
 
-Run compilation process:
+## Run a local ircd
 
-```sh
-npm run watch
-```
+First make sure you have [Docker installed](https://www.docker.com/).
 
-Then run the app:
-
-```sh
-npm start
-```
-
-### with Docker
-
-It's not required but it make development easier.
-
-This command allows you to run both compilation process and local IRC server:
-
-Make sure you have [Docker](https://www.docker.com/) installed and just run:
+This command below allows you to run a local ircd on your machine:
 
 ```sh
 ./dc up
 ```
 
-# Organize reducers folder
+It will be accessible from **localhost** port **6667**.
 
-Two rules to follow:
+For instance, after running the app, you can connect it with `/connect localhost`.
 
-## Keep folder structure flat
+# Organize codebase
+
+Project recommendation and best practices.
+
+## Keep reducer folder structure flat
 
 In order to easily search reducer files, it's better to have a flat folder structure.
 
@@ -82,7 +85,7 @@ If a reducer file named `/reducers/server/channel.ts` exports a reducer that cal
 ```
 reducers
 └── server
-    ├── channel.ts      <- also contains messages and input reducers
+    ├── channel.ts <- also contains messages and input reducers
     ├── index.ts
     ├── modes.ts
     └── channels.ts
@@ -100,8 +103,8 @@ The expected folder structure should look like that:
 reducers
 ├── channel
 │   ├── index.ts
-│   ├── input.ts        <- extracted reducer from channel
-│   └── messages.ts     <- extracted reducer from channel
+│   ├── input.ts    <- extracted reducer from channel
+│   └── messages.ts <- extracted reducer from channel
 └── server
     ├── index.ts
     ├── modes.ts
@@ -117,13 +120,13 @@ For instance, a `channel` reducer has its related selectors in its own folder:
 ```
 reducers
 └── channel
-    ├── _selectors.ts    <- also contains all channel related selectors
-    ├── index.ts
-    ├── input.ts
-    └── messages.ts
+    ├── _selectors.ts <- also contains all channel related selectors
+    ├── index.ts
+    ├── input.ts
+    └── messages.ts
 ```
 
-# UI theming
+## UI theming
 
 TO DO
 
@@ -157,8 +160,7 @@ TO DO
 
 ## Tests
 
-- Components
-- Reducers
+- Storybook
 
 ## Performances
 

@@ -47,6 +47,7 @@ const closeWindow: RouteReducer<CloseWindowAction> = (
   return { ...route, channelKey: STATUS };
 };
 
+// TODO use extraStates and check if the given route exists
 const switchRoute: RouteReducer<SwitchWindowAction> = (_, action) =>
   action.route;
 
