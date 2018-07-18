@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`route reducer close window channel 1`] = `
+Object {
+  "channelKey": "@status",
+  "serverKey": "serverKey",
+}
+`;
+
+exports[`route reducer close window status 1`] = `
+Object {
+  "channelKey": "@status",
+  "serverKey": "serverKey",
+}
+`;
+
+exports[`route reducer close window status 2`] = `
+Object {
+  "channelKey": "@status",
+  "serverKey": "serverKey2",
+}
+`;
+
+exports[`route reducer intializing 1`] = `
+Object {
+  "channelKey": "@status",
+  "serverKey": "",
+}
+`;
+
+exports[`route reducer join I join a channel myself 1`] = `
+Object {
+  "channelKey": "#channel",
+  "serverKey": "serverKey",
+}
+`;
+
+exports[`route reducer join an user joins a channel 1`] = `
+Object {
+  "channelKey": "@status",
+  "serverKey": "",
+}
+`;
+
+exports[`route reducer switch window channel 1`] = `
+Object {
+  "channelKey": "#channel",
+  "serverKey": "serverKey",
+}
+`;
+
+exports[`route reducer switch window status 1`] = `
+Object {
+  "channelKey": "@status",
+  "serverKey": "serverKey",
+}
+`;

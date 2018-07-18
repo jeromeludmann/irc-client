@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`root selectors select route 1`] = `
+Object {
+  "channelKey": "@status",
+  "serverKey": "",
+}
+`;
+
+exports[`root selectors select server 1`] = `undefined`;
+
+exports[`root selectors select servers 1`] = `Object {}`;
