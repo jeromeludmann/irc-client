@@ -26,6 +26,12 @@ import {
   PRIVMSG,
   PING_FROM_SERVER,
 } from "@app/actions/messages";
+import {
+  PRINT_HELP_BY_DEFAULT,
+  PrintHelpByDefaultAction,
+  PRINT_HELP_ABOUT_COMMAND,
+  PrintHelpAboutCommandAction,
+} from "@app/actions/commands";
 
 export type MessagesState = string[];
 
@@ -63,6 +69,26 @@ const part: MessagesReducer<PartAction> = (messages, action) => {
   const msg = message ? `${baseMsg} (${message})` : baseMsg;
   return [...messages, msg];
 };
+
+const printHelpByDefault: MessagesReducer<PrintHelpByDefaultAction> = (
+  messages,
+  action,
+) => [
+  ...messages,
+  ...Object.keys(action.payload.commands).map(
+    commandName =>
+      `${commandName} - ${action.payload.commands[commandName].description}`,
+  ),
+  "Type /HELP <command> for more details.",
+];
+
+const printHelpAboutCommand: MessagesReducer<PrintHelpAboutCommandAction> = (
+  messages,
+  { payload: { command } },
+) => [
+  ...messages,
+  `Usage: /${command.name} ${command.syntax} - ${command.description}`,
+];
 
 const privmsg: MessagesReducer<PrivmsgAction> = (messages, action) => {
   const { user, text } = action.payload;
@@ -102,7 +128,7 @@ const serverPing: MessagesReducer<PingFromServerAction> = messages => {
   return [...messages, "Ping?"];
 };
 
-const map: { [action: string]: MessagesReducer } = {
+export const reduceMessages = mapReducer<MessagesState>({
   [CONNECTION_FAILED]: connectionFailed,
   [CONNECTION_CLOSED]: connectionClosed,
   [ERROR]: error,
@@ -111,9 +137,9 @@ const map: { [action: string]: MessagesReducer } = {
   [NOTICE_FROM_CHANNEL]: noticeFromChannel,
   [NOTICE_FROM_USER]: noticeFromUser,
   [PART]: part,
+  [PRINT_HELP_BY_DEFAULT]: printHelpByDefault,
+  [PRINT_HELP_ABOUT_COMMAND]: printHelpAboutCommand,
   [PRIVMSG]: privmsg,
   [RAW_MESSAGES_RECEIVED]: raw,
   [PING_FROM_SERVER]: serverPing,
-};
-
-export const reduceMessages = mapReducer<MessagesState>(map);
+});

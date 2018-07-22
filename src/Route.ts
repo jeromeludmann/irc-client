@@ -5,7 +5,7 @@ export interface Route {
   channelKey: string;
 }
 
-export interface RoutedAction extends Action<string> {
+export interface RoutedAction<T = string> extends Action<T> {
   route: Route;
 }
 
