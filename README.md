@@ -71,7 +71,7 @@ First make sure you have [Docker installed](https://www.docker.com/).
 This command below allows you to run a local ircd on your machine:
 
 ```sh
-./dc up
+./ircd up
 ```
 
 It will be accessible from **localhost** port **6667**.
