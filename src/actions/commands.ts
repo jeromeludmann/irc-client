@@ -16,7 +16,7 @@ export type Command<A = Action<string>> = {
   description: string;
   syntax: string;
   regexp: RegExp;
-  callback: (route: Route, ...args: string[]) => A;
+  callback: (route: Route, ...params: string[]) => A;
 };
 
 type CommandRegistry = { [command: string]: Command };
@@ -126,7 +126,7 @@ export const commands: CommandRegistry = {
   raw: {
     description: "Sends a raw message",
     syntax: "<raw message>",
-    regexp: /^(.+)$/,
+    regexp: /^(\S+)$/,
     callback: (route, message): SendRawMessageAction =>
       sendRaw(route.serverKey, message),
   },

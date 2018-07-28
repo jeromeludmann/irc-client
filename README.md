@@ -102,21 +102,22 @@ For instance, after running the app, you can connect it with `/connect localhost
 
 ## Messages
 
-|     | command | description      | origin  |
-| --- | ------- | ---------------- | ------- |
-| ✔   | JOIN    |                  | RFC1459 |
-| ✔   | ERROR   |                  | RFC1459 |
-| ✔   | NICK    |                  | RFC1459 |
-| ✔   | NOTICE  |                  | RFC1459 |
-| ✔   | PART    |                  | RFC1459 |
-| ✔   | PING    |                  | RFC1459 |
-| ✔   | PRIVMSG |                  | RFC1459 |
-|     | 001     | RPL_WELCOME      | RFC2812 |
-|     | 002     | RPL_YOURHOST     | RFC2812 |
-|     | 003     | RPL_CREATED      | RFC2812 |
-| ✔   | 004     | RPL_MYINFO       | RFC2812 |
-|     | 332     | RPL_TOPIC        | RFC1459 |
-|     | 333     | RPL_TOPICWHOTIME | ircu    |
+|     | command | description        | origin  |
+| --- | ------- | ------------------ | ------- |
+| ✔   | JOIN    |                    | RFC1459 |
+| ✔   | ERROR   |                    | RFC1459 |
+| ✔   | NICK    |                    | RFC1459 |
+| ✔   | NOTICE  |                    | RFC1459 |
+| ✔   | PART    |                    | RFC1459 |
+| ✔   | PING    |                    | RFC1459 |
+| ✔   | PRIVMSG |                    | RFC1459 |
+|     | 001     | RPL_WELCOME        | RFC2812 |
+|     | 002     | RPL_YOURHOST       | RFC2812 |
+|     | 003     | RPL_CREATED        | RFC2812 |
+| ✔   | 004     | RPL_MYINFO         | RFC2812 |
+|     | 332     | RPL_TOPIC          | RFC1459 |
+|     | 333     | RPL_TOPICWHOTIME   | ircu    |
+|     | 421     | ERR_UNKNOWNCOMMAND | RFC1459 |
 
 ## UI behaviors
 

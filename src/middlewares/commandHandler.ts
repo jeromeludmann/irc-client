@@ -35,7 +35,7 @@ export const commandHandler: Middleware<{}, AppState> = store => next => (
   }
 
   const commandName = parsedCommand[1].toLowerCase();
-  const commandArgs = parsedCommand[2] || "";
+  const params = parsedCommand[2] || "";
 
   if (!commands.hasOwnProperty(commandName)) {
     // tslint:disable-next-line
@@ -45,7 +45,14 @@ export const commandHandler: Middleware<{}, AppState> = store => next => (
   }
 
   const command = commands[commandName];
-  const parsedArgs = commandArgs.match(command.regexp) || [];
+  const parsedParams = params.match(command.regexp);
 
-  next(command.callback(route, ...parsedArgs.slice(1)));
+  if (!parsedParams) {
+    // tslint:disable-next-line
+    console.warn(`Command found but bad params provided: "${params}"`);
+    next(commands.help.callback(route, commandName));
+    return;
+  }
+
+  next(command.callback(route, ...parsedParams.slice(1)));
 };
