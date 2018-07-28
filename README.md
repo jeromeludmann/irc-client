@@ -134,10 +134,31 @@ TO DO
 
 ## Messages
 
+### Common messages
+
+|     | name    | origin  |
+| --- | ------- | ------- |
+| x   | JOIN    | RFC1459 |
+| x   | ERROR   | RFC1459 |
+| x   | NICK    | RFC1459 |
+| x   | NOTICE  | RFC1459 |
+| x   | PART    | RFC1459 |
+| x   | PING    | RFC1459 |
+| x   | PRIVMSG | RFC1459 |
+
+### RPL messages
+
 |     | code | name             | origin  |
 | --- | ---- | ---------------- | ------- |
+| x   | 004  | RPL_MYINFO       | RFC2812 |
 |     | 332  | RPL_TOPIC        | RFC1459 |
 |     | 333  | RPL_TOPICWHOTIME | ircu    |
+
+### ERR messages
+
+|     | code | name | origin |
+| --- | ---- | ---- | ------ |
+
 
 ## Commands
 

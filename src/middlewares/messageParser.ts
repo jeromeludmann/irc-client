@@ -2,18 +2,7 @@ import { Middleware } from "redux";
 import { RAW_MESSAGES_RECEIVED, RawMessagesAction } from "@app/actions/socket";
 import { IRC_MESSAGE_LENGTH, CRLF } from "@app/helpers";
 import { GenericMessage, Prefix, Tags } from "@app/Message";
-import {
-  MessageActionCreator,
-  MessageAction,
-  join,
-  error,
-  nick,
-  notice,
-  part,
-  ping,
-  privmsg,
-  replyMyInfo,
-} from "@app/actions/messages";
+import { messages } from "@app/actions/messages";
 
 /**
  * Message Parser Middleware
@@ -21,7 +10,9 @@ import {
  * Parse a raw message in order to get a generic message that will be used in
  * the message callbacks.
  */
-export const parser: Middleware = () => next => (action: RawMessagesAction) => {
+export const messageParser: Middleware = () => next => (
+  action: RawMessagesAction,
+) => {
   next(action);
 
   if (action.type === RAW_MESSAGES_RECEIVED) {
@@ -29,24 +20,11 @@ export const parser: Middleware = () => next => (action: RawMessagesAction) => {
       const genericMessage = parseMessage(rawMessage);
       const { prefix, command, params } = genericMessage;
 
-      if (messagesMap.hasOwnProperty(command)) {
-        next(messagesMap[command](action.route.serverKey, prefix, params));
+      if (messages.hasOwnProperty(command)) {
+        next(messages[command](action.route.serverKey, prefix, params));
       }
     });
   }
-};
-
-type Callback = MessageActionCreator<MessageAction<string, {}>>;
-
-const messagesMap: { [command: string]: Callback } = {
-  JOIN: join,
-  ERROR: error,
-  NICK: nick,
-  NOTICE: notice,
-  PART: part,
-  PING: ping,
-  PRIVMSG: privmsg,
-  "004": replyMyInfo,
 };
 
 const parseMessage = (rawMessage: string): GenericMessage => {

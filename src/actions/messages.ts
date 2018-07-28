@@ -13,7 +13,7 @@ export interface MessageAction<T, M> extends Action<T> {
   route: Route;
 }
 
-export type MessageActionCreator<A, P = Prefix | void> = (
+type MessageActionCreator<A, P = Prefix | void> = (
   serverKey: string,
   prefix: P,
   params: string[],
@@ -29,16 +29,6 @@ export const ERROR = "MESSAGE/ERROR";
 
 export type ErrorAction = MessageAction<typeof ERROR, Error>;
 
-export const error: MessageActionCreator<ErrorAction, void> = (
-  serverKey,
-  _,
-  params,
-) => ({
-  type: ERROR,
-  payload: { message: params[0] },
-  route: { serverKey, channelKey: BROADCAST_ALL },
-});
-
 // JOIN
 
 interface Join {
@@ -50,16 +40,6 @@ export const JOIN = "MESSAGE/JOIN";
 
 export type JoinAction = MessageAction<typeof JOIN, Join>;
 
-export const join: MessageActionCreator<JoinAction, User> = (
-  serverKey,
-  user,
-  params,
-) => ({
-  type: JOIN,
-  payload: { user, channel: params[0] },
-  route: { serverKey, channelKey: params[0] },
-});
-
 // NICK
 
 interface Nick {
@@ -70,16 +50,6 @@ interface Nick {
 export const NICK = "MESSAGE/NICK";
 
 export type NickAction = MessageAction<typeof NICK, Nick>;
-
-export const nick: MessageActionCreator<NickAction, User> = (
-  serverKey,
-  user,
-  params,
-) => ({
-  type: NICK,
-  payload: { user, nick: params[0] },
-  route: { serverKey, channelKey: STATUS },
-});
 
 // NOTICE
 
@@ -100,9 +70,7 @@ interface NoticeFromUser {
 }
 
 export const NOTICE_FROM_SERVER = "MESSAGE/NOTICE_FROM_SERVER";
-
 export const NOTICE_FROM_CHANNEL = "MESSAGE/NOTICE_FROM_CHANNEL";
-
 export const NOTICE_FROM_USER = "MESSAGE/NOTICE_FROM_USER";
 
 export type NoticeFromServerAction = MessageAction<
@@ -120,30 +88,10 @@ export type NoticeFromUserAction = MessageAction<
   NoticeFromUser
 >;
 
-export const notice: MessageActionCreator<
-  NoticeFromServerAction | NoticeFromChannelAction | NoticeFromUserAction,
-  Prefix
-> = (serverKey, prefix, params) => {
-  if (isPrefixServer(prefix)) {
-    return {
-      type: NOTICE_FROM_SERVER,
-      payload: { server: prefix as Server, text: params[1] },
-      route: { serverKey, channelKey: STATUS },
-    };
-  }
-
-  return isChannel(params[0])
-    ? {
-        type: NOTICE_FROM_CHANNEL,
-        payload: { user: prefix as User, channel: params[0], text: params[1] },
-        route: { serverKey, channelKey: params[0] },
-      }
-    : {
-        type: NOTICE_FROM_USER,
-        payload: { user: prefix as User, text: params[1] },
-        route: { serverKey, channelKey: BROADCAST_ACTIVE },
-      };
-};
+export type NoticeActions =
+  | NoticeFromServerAction
+  | NoticeFromChannelAction
+  | NoticeFromUserAction;
 
 // PART
 
@@ -156,16 +104,6 @@ interface Part {
 export const PART = "MESSAGE/PART";
 
 export type PartAction = MessageAction<typeof PART, Part>;
-
-export const part: MessageActionCreator<PartAction, User> = (
-  serverKey,
-  user,
-  params,
-) => ({
-  type: PART,
-  payload: { user, channel: params[0], message: params[1] },
-  route: { serverKey, channelKey: params[0] },
-});
 
 // PING
 
@@ -180,16 +118,6 @@ export type PingFromServerAction = MessageAction<
   PingFromServer
 >;
 
-export const ping: MessageActionCreator<PingFromServerAction> = (
-  serverKey,
-  _,
-  params,
-) => ({
-  type: PING_FROM_SERVER,
-  payload: { key: params.join(" ") },
-  route: { serverKey, channelKey: STATUS },
-});
-
 // PRIVMSG
 
 interface Privmsg {
@@ -200,19 +128,6 @@ interface Privmsg {
 export const PRIVMSG = "MESSAGE/PRIVMSG";
 
 export type PrivmsgAction = MessageAction<typeof PRIVMSG, Privmsg>;
-
-export const privmsg: MessageActionCreator<PrivmsgAction, User> = (
-  serverKey,
-  user,
-  params,
-) => ({
-  type: PRIVMSG,
-  payload: { user, text: params[1] },
-  route: {
-    serverKey,
-    channelKey: isChannel(params[0]) ? params[0] : user.nick,
-  },
-});
 
 // RPL_MYINFO
 
@@ -227,23 +142,90 @@ export const RPL_MYINFO = "MESSAGE/RPL_MYINFO";
 
 export type ReplyMyInfoAction = MessageAction<typeof RPL_MYINFO, ReplyMyInfo>;
 
-export const replyMyInfo: MessageActionCreator<ReplyMyInfoAction, Server> = (
-  serverKey,
-  _,
-  params,
-) => {
-  const [, serverName, version] = params;
-  const availableUserModes = params[3].split("");
-  const availableChannelModes = params[4].split("");
+// Callbacks
 
-  return {
-    type: RPL_MYINFO,
-    payload: {
-      serverName,
-      version,
-      availableUserModes,
-      availableChannelModes,
-    },
+export const messages: {
+  [command: string]: MessageActionCreator<MessageAction<string, {}>>;
+} = {
+  ERROR: (serverKey, _: void, params): ErrorAction => ({
+    type: ERROR,
+    payload: { message: params[0] },
+    route: { serverKey, channelKey: BROADCAST_ALL },
+  }),
+
+  JOIN: (serverKey, user: User, params): JoinAction => ({
+    type: JOIN,
+    payload: { user, channel: params[0] },
+    route: { serverKey, channelKey: params[0] },
+  }),
+
+  NICK: (serverKey, user: User, params): NickAction => ({
+    type: NICK,
+    payload: { user, nick: params[0] },
     route: { serverKey, channelKey: STATUS },
-  };
+  }),
+
+  NOTICE: (serverKey, prefix: Prefix, params): NoticeActions => {
+    if (isPrefixServer(prefix)) {
+      return {
+        type: NOTICE_FROM_SERVER,
+        payload: { server: prefix as Server, text: params[1] },
+        route: { serverKey, channelKey: STATUS },
+      };
+    }
+
+    return isChannel(params[0])
+      ? {
+          type: NOTICE_FROM_CHANNEL,
+          payload: {
+            user: prefix as User,
+            channel: params[0],
+            text: params[1],
+          },
+          route: { serverKey, channelKey: params[0] },
+        }
+      : {
+          type: NOTICE_FROM_USER,
+          payload: { user: prefix as User, text: params[1] },
+          route: { serverKey, channelKey: BROADCAST_ACTIVE },
+        };
+  },
+
+  PART: (serverKey, user: User, params): PartAction => ({
+    type: PART,
+    payload: { user, channel: params[0], message: params[1] },
+    route: { serverKey, channelKey: params[0] },
+  }),
+
+  PING: (serverKey, _server: Server, params): PingFromServerAction => ({
+    type: PING_FROM_SERVER,
+    payload: { key: params.join(" ") },
+    route: { serverKey, channelKey: STATUS },
+  }),
+
+  PRIVMSG: (serverKey, user: User, params): PrivmsgAction => ({
+    type: PRIVMSG,
+    payload: { user, text: params[1] },
+    route: {
+      serverKey,
+      channelKey: isChannel(params[0]) ? params[0] : user.nick,
+    },
+  }),
+
+  "004": (serverKey, _server: Server, params): ReplyMyInfoAction => {
+    const [, serverName, version] = params;
+    const availableUserModes = params[3].split("");
+    const availableChannelModes = params[4].split("");
+
+    return {
+      type: RPL_MYINFO,
+      payload: {
+        serverName,
+        version,
+        availableUserModes,
+        availableChannelModes,
+      },
+      route: { serverKey, channelKey: STATUS },
+    };
+  },
 };
