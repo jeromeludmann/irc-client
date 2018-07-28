@@ -20,11 +20,17 @@ Made with [React](https://github.com/facebook/react), [Redux](https://github.com
 - [Development workflow](#development-workflow)
   - [Tasks](#tasks)
   - [Run a local ircd](#run-a-local-ircd)
-- [Organize codebase](#organize-codebase)
+- [Work in progress](#work-in-progress)
+  - [Commands](#commands)
+  - [Messages](#messages)
+  - [UI behaviors](#ui-behaviors)
+  - [UI themes](#ui-themes)
+  - [Tests](#tests)
+  - [Performances](#performances)
+- [Codebase best practices](#codebase-best-practices)
   - [Keep reducer folder structure flat](#keep-reducer-folder-structure-flat)
   - [Keep reducers and selectors together](#keep-reducers-and-selectors-together)
   - [UI theming](#ui-theming)
-- [Work in progress](#work-in-progress)
 
 # Get ready
 
@@ -72,7 +78,65 @@ It will be accessible from **localhost** port **6667**.
 
 For instance, after running the app, you can connect it with `/connect localhost`.
 
-# Organize codebase
+# Work in progress
+
+## Commands
+
+|     | name          | description |
+| --- | ------------- | ----------- |
+| ✔   | `/close`      |             |
+| ✔   | `/connect`    |             |
+| ✔   | `/disconnect` |             |
+| ✔   | `/help`       |             |
+| ✔   | `/join`       |             |
+|     | `/kick`       |             |
+|     | `/mode`       |             |
+| ✔   | `/msg`        |             |
+| ✔   | `/part`       |             |
+|     | `/query`      |             |
+| ✔   | `/quit`       |             |
+| ✔   | `/raw`        |             |
+|     | `/topic`      |             |
+|     | `/who`        |             |
+|     | `/whois`      |             |
+
+## Messages
+
+|     | command | description      | origin  |
+| --- | ------- | ---------------- | ------- |
+| ✔   | JOIN    |                  | RFC1459 |
+| ✔   | ERROR   |                  | RFC1459 |
+| ✔   | NICK    |                  | RFC1459 |
+| ✔   | NOTICE  |                  | RFC1459 |
+| ✔   | PART    |                  | RFC1459 |
+| ✔   | PING    |                  | RFC1459 |
+| ✔   | PRIVMSG |                  | RFC1459 |
+|     | 001     | RPL_WELCOME      | RFC2812 |
+|     | 002     | RPL_YOURHOST     | RFC2812 |
+|     | 003     | RPL_CREATED      | RFC2812 |
+| ✔   | 004     | RPL_MYINFO       | RFC2812 |
+|     | 332     | RPL_TOPIC        | RFC1459 |
+|     | 333     | RPL_TOPICWHOTIME | ircu    |
+
+## UI behaviors
+
+- Auto scroll on message receiving
+- Auto focus input on window switching
+- Nicklist full implementation (actions, reducers, components)
+
+## UI themes
+
+- Add one and make it themable
+
+## Tests
+
+- Storybook
+
+## Performances
+
+- Bufferize messages by limiting nodes in DOM in order to avoid performance issues
+
+# Codebase best practices
 
 Project recommendation and best practices.
 
@@ -129,71 +193,3 @@ reducers
 ## UI theming
 
 TO DO
-
-# Work in progress
-
-## Messages
-
-### Common messages
-
-|     | name    | origin  |
-| --- | ------- | ------- |
-| x   | JOIN    | RFC1459 |
-| x   | ERROR   | RFC1459 |
-| x   | NICK    | RFC1459 |
-| x   | NOTICE  | RFC1459 |
-| x   | PART    | RFC1459 |
-| x   | PING    | RFC1459 |
-| x   | PRIVMSG | RFC1459 |
-
-### RPL messages
-
-|     | code | name             | origin  |
-| --- | ---- | ---------------- | ------- |
-| x   | 004  | RPL_MYINFO       | RFC2812 |
-|     | 332  | RPL_TOPIC        | RFC1459 |
-|     | 333  | RPL_TOPICWHOTIME | ircu    |
-
-### ERR messages
-
-|     | code | name | origin |
-| --- | ---- | ---- | ------ |
-
-
-## Commands
-
-|     | name       | description |
-| --- | ---------- | ----------- |
-| x   | close      |             |
-| x   | connect    |             |
-| x   | disconnect |             |
-| x   | help       |             |
-| x   | join       |             |
-|     | kick       |             |
-|     | mode       |             |
-| x   | msg        |             |
-| x   | part       |             |
-|     | query      |             |
-| x   | quit       |             |
-| x   | raw        |             |
-|     | topic      |             |
-|     | who        |             |
-|     | whois      |             |
-
-## UI behaviors
-
-- Auto scroll on message receiving
-- Auto focus input on window switching
-- Nicklist full implementation (actions, reducers, components)
-
-## UI themes
-
-- Add one and make it themable
-
-## Tests
-
-- Storybook
-
-## Performances
-
-- Bufferize messages by limiting nodes in DOM in order to avoid performance issues
