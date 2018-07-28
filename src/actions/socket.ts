@@ -56,7 +56,7 @@ export interface SendRawMessageAction extends Action<typeof SEND_RAW_MESSAGE> {
   payload: { raw: string };
 }
 
-export const sendRaw = (
+export const sendRawMessage = (
   serverKey: string,
   message: string,
 ): SendRawMessageAction => ({
@@ -76,7 +76,10 @@ export const sendMessage = (
     params[last] = `:${params[last]}`;
   }
 
-  return sendRaw(serverKey, `${command.toUpperCase()} ${params.join(" ")}`);
+  return sendRawMessage(
+    serverKey,
+    `${command.toUpperCase()} ${params.join(" ")}`,
+  );
 };
 
 // Socket lookup

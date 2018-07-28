@@ -18,6 +18,7 @@ import {
 } from "@app/actions/socket";
 import { CRLF, IRC_MESSAGE_LENGTH } from "@app/helpers";
 import { ServersState } from "@app/reducers/servers";
+import { sendQuit } from "@app/actions/messages";
 
 type NetworkMiddlewareAction =
   | ConnectServerAction
@@ -34,8 +35,8 @@ export const network: Middleware = (store: Store<AppState>) => next => (
 ) => {
   next(action);
 
-  if (map.hasOwnProperty(action.type)) {
-    map[action.type](action, store);
+  if (handlers.hasOwnProperty(action.type)) {
+    handlers[action.type](action, store);
   }
 };
 
@@ -58,35 +59,37 @@ type Handler<A = NetworkMiddlewareAction> = (
   store: Store<AppState>,
 ) => void;
 
-const connectServer: Handler<ConnectServerAction> = (
+const connect: Handler<ConnectServerAction> = (
   { payload: { host, port, newConnection }, route },
   store,
 ) => {
-  const key = newConnection
+  const serverKey = newConnection
     ? generateServerKey(store.getState().servers)
     : route.serverKey;
 
-  if (connections.hasOwnProperty(key) && connections[key].socket) {
-    connections[key].socket.destroy();
+  if (connections.hasOwnProperty(serverKey) && connections[serverKey].socket) {
+    connections[serverKey].socket.destroy();
   }
 
-  connections[key] = {
-    socket: getSocket(store.dispatch)(key),
+  connections[serverKey] = {
+    socket: getSocket(store.dispatch)(serverKey),
     buffer: "",
   };
 
-  connections[key].socket.connect({ host, port });
+  connections[serverKey].socket.connect({ host, port });
 };
 
-const disconnectServer: Handler<DisconnectServerAction> = action => {
+const disconnect: Handler<DisconnectServerAction> = (action, { dispatch }) => {
   const { payload, route } = action;
+
   if (!connections.hasOwnProperty(route.serverKey)) {
     // TODO dispatch error
-    console.warn("disconnectServer: unable to find socket");
+    console.warn("disconnect: unable to find socket");
     return;
   }
-  connections[route.serverKey].socket.end(`QUIT :${payload.quitMessage}`);
-  delete connections[route.serverKey];
+
+  dispatch(sendQuit(route.serverKey, payload.quitMessage));
+  connections[route.serverKey].socket.end();
 };
 
 const sendMessage: Handler<SendRawMessageAction> = action => {
@@ -106,9 +109,9 @@ const sendMessage: Handler<SendRawMessageAction> = action => {
   );
 };
 
-const map: { [action: string]: Handler } = {
-  [CONNECT_SERVER]: connectServer,
-  [DISCONNECT_SERVER]: disconnectServer,
+const handlers: { [action: string]: Handler } = {
+  [CONNECT_SERVER]: connect,
+  [DISCONNECT_SERVER]: disconnect,
   [SEND_RAW_MESSAGE]: sendMessage,
 };
 
@@ -128,7 +131,7 @@ const getSocket = (dispatch: Dispatch) => (serverKey: string): Socket => {
   });
 
   socket.on("data", buffer => {
-    if (!connections[serverKey]) {
+    if (!connections.hasOwnProperty(serverKey)) {
       // TODO dispatch error
       console.warn("receive data: unable to find socket");
       return;
@@ -137,14 +140,17 @@ const getSocket = (dispatch: Dispatch) => (serverKey: string): Socket => {
     connections[serverKey].buffer += buffer;
     const messages = connections[serverKey].buffer.split(CRLF);
     connections[serverKey].buffer = messages.pop() || "";
+
     dispatch(receiveRawMessages(serverKey, messages));
   });
 
   socket.on("close", hadError => {
+    delete connections[serverKey];
     dispatch(setConnectionClosed(serverKey, hadError));
   });
 
   socket.on("error", ({ name, message, stack }) => {
+    delete connections[serverKey];
     dispatch(setConnectionFailed(serverKey, name, message, stack));
   });
 
