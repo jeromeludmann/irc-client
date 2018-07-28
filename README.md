@@ -134,19 +134,30 @@ TO DO
 
 ## Messages
 
-- (See RFC 1459 and 2812)
+|     | code | name             | origin  |
+| --- | ---- | ---------------- | ------- |
+|     | 332  | RPL_TOPIC        | RFC1459 |
+|     | 333  | RPL_TOPICWHOTIME | ircu    |
 
 ## Commands
 
-- help
-- kick
-- mode
-- nick
-- topic
-- query
-- who
-- whois
-- (...)
+|     | name       | description |
+| --- | ---------- | ----------- |
+| x   | close      |             |
+| x   | connect    |             |
+| x   | disconnect |             |
+| x   | help       |             |
+| x   | join       |             |
+|     | kick       |             |
+|     | mode       |             |
+| x   | msg        |             |
+| x   | part       |             |
+|     | query      |             |
+| x   | quit       |             |
+| x   | raw        |             |
+|     | topic      |             |
+|     | who        |             |
+|     | whois      |             |
 
 ## UI behaviors
 

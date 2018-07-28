@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from "redux";
 import { reduce } from "@app/reducers";
 import { parser } from "@app/middlewares/parser";
-import { commands } from "@app/middlewares/commands";
+import { commandHandler } from "@app/middlewares/commands";
 import { network, generateServerKey } from "@app/middlewares/network";
 import { STATUS } from "@app/Route";
 import { serverInitialState } from "@app/reducers/server";
@@ -25,7 +25,7 @@ export const store = createStore(
     autoRouter,
     pingPong,
     register,
-    commands,
+    commandHandler,
     ui,
     network, // keep just before logger
     logger, // keep last

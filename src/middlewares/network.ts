@@ -16,7 +16,7 @@ import {
   CONNECT_SERVER,
   DISCONNECT_SERVER,
 } from "@app/actions/socket";
-import { CRLF, IRC_MESSAGE_LENGTH } from "@app/middlewares/_constants";
+import { CRLF, IRC_MESSAGE_LENGTH } from "@app/helpers";
 import { ServersState } from "@app/reducers/servers";
 
 type NetworkMiddlewareAction =
