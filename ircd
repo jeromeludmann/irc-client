@@ -4,7 +4,7 @@ which docker-compose >/dev/null 2>&1;
 
 if [ $? -eq 1 ]
 then
-    echo "Please install Docker before running this command."
+    echo "Docker is required"
     exit 1
 fi
 
