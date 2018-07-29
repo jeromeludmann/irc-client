@@ -2,7 +2,7 @@ import { reduceRoute, routeInitialState } from "@app/reducers/route";
 import { switchWindow, closeWindow } from "@app/actions/ui";
 import { serverInitialState } from "@app/reducers/server";
 import { STATUS } from "@app/Route";
-import { messages } from "@app/actions/messages";
+import { messageCallbacks } from "@app/actions/messages";
 
 describe("route reducer", () => {
   const user = { nick: "nickname", user: "username", host: "hostname" };
@@ -16,7 +16,7 @@ describe("route reducer", () => {
       expect(
         reduceRoute(
           routeInitialState,
-          messages.join("serverKey", user, ["#channel"]),
+          messageCallbacks.join("serverKey", user, ["#channel"]),
           {
             servers: { serverKey: serverInitialState },
           },
@@ -28,7 +28,7 @@ describe("route reducer", () => {
       expect(
         reduceRoute(
           routeInitialState,
-          messages.join("serverKey", user, ["#channel"]),
+          messageCallbacks.join("serverKey", user, ["#channel"]),
           {
             servers: {
               serverKey: {

@@ -19,8 +19,12 @@ export const logger: Middleware = _ => next => action => {
 };
 
 function stylize(type: string) {
-  if (type.indexOf("MESSAGE/") === 0) {
+  if (type.indexOf("MESSAGE/SEND_") === 0) {
     return "color: blue";
+  }
+
+  if (type.indexOf("MESSAGE/") === 0) {
+    return "color: green";
   }
 
   if (type.indexOf(SEND_RAW_MESSAGE) === 0) {

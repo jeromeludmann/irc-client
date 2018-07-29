@@ -2,9 +2,9 @@ import { Middleware } from "redux";
 import {
   ConnectionEstablishedAction,
   CONNECTION_ESTABLISHED,
-  sendMessage,
 } from "@app/actions/socket";
 import { AppState } from "@app/reducers";
+import { sendUser, sendNick } from "@app/actions/messages";
 
 /**
  * Register Middleware
@@ -20,7 +20,7 @@ export const register: Middleware<{}, AppState> = ({ getState }) => next => (
     const { serverKey } = action.route;
     const { nick, user, real } = getState().servers[serverKey].user;
 
-    next(sendMessage(serverKey, "user", user, "0", "*", real));
-    next(sendMessage(serverKey, "nick", nick));
+    next(sendUser(serverKey, user, real));
+    next(sendNick(serverKey, nick));
   }
 };

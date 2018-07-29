@@ -2,15 +2,15 @@ import { Action } from "redux";
 import {
   connectServer,
   disconnectServer,
-  sendMessage,
-  sendRaw,
   DisconnectServerAction,
   ConnectServerAction,
   SendRawMessageAction,
+  sendRawMessage,
 } from "@app/actions/socket";
 import { closeWindow, CloseWindowAction } from "@app/actions/ui";
 import { Route, RoutedAction, STATUS } from "@app/Route";
 import { CHANNEL_REGEXP } from "@app/helpers";
+import { sendJoin, sendMsg, sendPart } from "@app/actions/messages";
 
 export type Command<A = Action<string>> = {
   description: string;
@@ -40,27 +40,6 @@ export const commands: CommandRegistry = {
     syntax: "",
     regexp: /\s*/,
     callback: (route): CloseWindowAction => closeWindow(route),
-  },
-
-  connect: {
-    description: "Connects to a server",
-    syntax: "[-n] <host> [port]",
-    regexp: /^(?:(-n)\s+)?(\S+)(?:\s+(\d{1,5})?)?$/,
-    callback: (route, option, host, port?): ConnectServerAction =>
-      connectServer(
-        route.serverKey,
-        host,
-        port ? +port : undefined,
-        option === "-n",
-      ),
-  },
-
-  disconnect: {
-    description: "Disconnects from the current server",
-    syntax: "[quit message]",
-    regexp: /^(.*)$/,
-    callback: (route, quitMessage?): DisconnectServerAction =>
-      disconnectServer(route.serverKey, quitMessage),
   },
 
   help: {
@@ -96,7 +75,7 @@ export const commands: CommandRegistry = {
     syntax: "<channel>",
     regexp: CHANNEL_REGEXP,
     callback: (route, channel): SendRawMessageAction =>
-      sendMessage(route.serverKey, "join", channel),
+      sendJoin(route.serverKey, channel),
   },
 
   msg: {
@@ -104,7 +83,7 @@ export const commands: CommandRegistry = {
     syntax: "<channel or nick> <text>",
     regexp: /^(\S+)\s+(.+)$/,
     callback: (route, channel, text): SendRawMessageAction =>
-      sendMessage(route.serverKey, "privmsg", channel, text),
+      sendMsg(route.serverKey, channel, text),
   },
 
   part: {
@@ -112,23 +91,36 @@ export const commands: CommandRegistry = {
     syntax: "<channel> [text]",
     regexp: /^(\S+)(?:\s+(.+))?$/,
     callback: (route, channel, text): SendRawMessageAction =>
-      sendMessage(route.serverKey, "part", channel, text),
+      sendPart(route.serverKey, channel, text),
+  },
+
+  server: {
+    description: "Connects to a server",
+    syntax: "[-n] <host> [port]",
+    regexp: /^(?:(-n)\s+)?(\S+)(?:\s+(\d{1,5})?)?$/,
+    callback: (route, option, host, port?): ConnectServerAction =>
+      connectServer(
+        route.serverKey,
+        host,
+        port ? +port : undefined,
+        option === "-n",
+      ),
   },
 
   quit: {
     description: "Disconnects from the current server",
     syntax: "[quit message]",
     regexp: /^(.*)$/,
-    callback: (route, text): SendRawMessageAction =>
-      sendMessage(route.serverKey, "quit", text),
+    callback: (route, quitMessage?): DisconnectServerAction =>
+      disconnectServer(route.serverKey, quitMessage),
   },
 
   raw: {
     description: "Sends a raw message",
     syntax: "<raw message>",
-    regexp: /^(\S+)$/,
+    regexp: /^(.+)$/,
     callback: (route, message): SendRawMessageAction =>
-      sendRaw(route.serverKey, message),
+      sendRawMessage(route.serverKey, message),
   },
 };
 

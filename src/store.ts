@@ -2,7 +2,10 @@ import { createStore, applyMiddleware } from "redux";
 import { reduce } from "@app/reducers";
 import { messageParser } from "@app/middlewares/messageParser";
 import { commandHandler } from "@app/middlewares/commandHandler";
-import { network, generateServerKey } from "@app/middlewares/network";
+import {
+  socketHandler,
+  generateServerKey,
+} from "@app/middlewares/socketHandler";
 import { STATUS } from "@app/Route";
 import { serverInitialState } from "@app/reducers/server";
 import { autoRouter } from "@app/middlewares/autoRouter";
@@ -27,7 +30,7 @@ export const store = createStore(
     register,
     commandHandler,
     ui,
-    network, // keep just before logger
+    socketHandler, // keep just before logger
     logger, // keep last
   ),
 );

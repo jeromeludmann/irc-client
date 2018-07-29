@@ -51,9 +51,11 @@ export const disconnectServer = (
 
 export const SEND_RAW_MESSAGE = "SOCKET/SEND_RAW_MESSAGE";
 
-export interface SendRawMessageAction extends Action<typeof SEND_RAW_MESSAGE> {
+export interface SendRawMessageAction<A = void>
+  extends Action<typeof SEND_RAW_MESSAGE> {
   serverKey: string;
   payload: { raw: string };
+  action?: A;
 }
 
 export const sendRawMessage = (
@@ -64,23 +66,6 @@ export const sendRawMessage = (
   serverKey,
   payload: { raw: message },
 });
-
-export const sendMessage = (
-  serverKey: string,
-  command: string,
-  ...params: string[]
-) => {
-  const last = params.length - 1;
-
-  if (params[last].indexOf(" ") > -1 || params[last].charAt(0) === ":") {
-    params[last] = `:${params[last]}`;
-  }
-
-  return sendRawMessage(
-    serverKey,
-    `${command.toUpperCase()} ${params.join(" ")}`,
-  );
-};
 
 // Socket lookup
 
