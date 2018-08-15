@@ -137,7 +137,7 @@ export type ReplyMyInfoAction = MessageAction<
   }
 >;
 
-// Message callbacks
+// Message received callbacks
 
 export const messageCallbacks: {
   [command: string]: (
@@ -256,22 +256,31 @@ export const sendJoin = (
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("join", channel) },
   serverKey,
+  specificAction: undefined,
 });
 
-// Send MSG
+// Send PRIVMSG
 
-// export const SEND_MSG = "MESSAGE/SEND_MSG";
+export const SEND_PRIVMSG = "MESSAGE/SEND_PRIVMSG";
 
-// export type SendMsgAction = MessageAction<typeof SEND_MSG>;
+export type SendPrivmsgAction = MessageAction<
+  typeof SEND_PRIVMSG,
+  { text: string }
+>;
 
-export const sendMsg = (
+export const sendPrivmsg = (
   serverKey: string,
   channel: string,
   text: string,
-): SendRawMessageAction => ({
+): SendRawMessageAction<SendPrivmsgAction> => ({
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("privmsg", channel, text) },
   serverKey,
+  specificAction: {
+    type: SEND_PRIVMSG,
+    payload: { text },
+    route: { serverKey, channelKey: channel },
+  },
 });
 
 // Send NICK
@@ -287,6 +296,7 @@ export const sendNick = (
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("nick", nick) },
   serverKey,
+  specificAction: undefined,
 });
 
 // Send PART
@@ -303,6 +313,7 @@ export const sendPart = (
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("part", channel, text) },
   serverKey,
+  specificAction: undefined,
 });
 
 // Send PING
@@ -318,6 +329,7 @@ export const sendPingToServer = (
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("ping", key) },
   serverKey,
+  specificAction: undefined,
 });
 
 // Send PONG
@@ -327,7 +339,6 @@ export const SEND_PONG_TO_SERVER = "MESSAGE/SEND_PONG_TO_SERVER";
 export type SendPongToServerAction = MessageAction<
   typeof SEND_PONG_TO_SERVER,
   {
-    serverKey: string;
     key: string;
   }
 >;
@@ -338,11 +349,10 @@ export const sendPongToServer = (
 ): SendRawMessageAction<SendPongToServerAction> => ({
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("pong", key) },
-  // route: { serverKey, channelKey: STATUS },
   serverKey,
-  action: {
+  specificAction: {
     type: SEND_PONG_TO_SERVER,
-    payload: { serverKey, key },
+    payload: { key },
     route: { serverKey, channelKey: STATUS },
   },
 });
@@ -360,6 +370,7 @@ export const sendQuit = (
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("quit", text) },
   serverKey,
+  specificAction: undefined,
 });
 
 // Send USER
@@ -376,4 +387,5 @@ export const sendUser = (
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("user", username, "0", "*", realname) },
   serverKey,
+  specificAction: undefined,
 });

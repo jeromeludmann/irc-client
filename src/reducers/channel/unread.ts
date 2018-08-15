@@ -37,7 +37,10 @@ const anyActivity: UnreadReducer<RoutedAction> = (_, action, extraStates) => {
   return !sameRoute && action.route.channelKey !== BROADCAST_ACTIVE;
 };
 
-const map: { [action: string]: UnreadReducer } = {
+export const reduceUnread = mapReducer<
+  UnreadState,
+  { route: RouteState; user: UserState }
+>({
   [JOIN]: join,
   [SWITCH_WINDOW]: switchRoute,
   [PART]: anyActivity,
@@ -46,9 +49,4 @@ const map: { [action: string]: UnreadReducer } = {
   [NOTICE_FROM_CHANNEL]: anyActivity,
   [NOTICE_FROM_USER]: anyActivity,
   [RAW_MESSAGES_RECEIVED]: anyActivity,
-};
-
-export const reduceUnread = mapReducer<
-  UnreadState,
-  { route: RouteState; user: UserState }
->(map);
+});

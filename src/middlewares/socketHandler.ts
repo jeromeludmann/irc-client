@@ -19,6 +19,7 @@ import {
 import { CRLF, IRC_MESSAGE_LENGTH } from "@app/helpers";
 import { ServersState } from "@app/reducers/servers";
 import { sendQuit } from "@app/actions/messages";
+import { RoutedAction } from "@app/Route";
 
 /**
  * Socket Middleware
@@ -80,7 +81,10 @@ const handlers: {
     connectedSockets[route.serverKey].socket.end();
   },
 
-  [SEND_RAW_MESSAGE]: ({ serverKey, payload }: SendRawMessageAction) => {
+  [SEND_RAW_MESSAGE]: (
+    { serverKey, payload, specificAction }: SendRawMessageAction<RoutedAction>,
+    { dispatch }: Store<AppState, RoutedAction>,
+  ) => {
     if (!connectedSockets.hasOwnProperty(serverKey)) {
       // TODO dispatch error
       // tslint:disable-next-line
@@ -96,6 +100,10 @@ const handlers: {
           : undefined,
       ) + CRLF,
     );
+
+    if (specificAction !== undefined) {
+      dispatch(specificAction);
+    }
   },
 };
 

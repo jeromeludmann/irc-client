@@ -10,7 +10,12 @@ import {
 import { closeWindow, CloseWindowAction } from "@app/actions/ui";
 import { Route, RoutedAction, STATUS } from "@app/Route";
 import { CHANNEL_REGEXP } from "@app/helpers";
-import { sendJoin, sendMsg, sendPart } from "@app/actions/messages";
+import {
+  sendJoin,
+  sendPrivmsg,
+  sendPart,
+  SendPrivmsgAction,
+} from "@app/actions/messages";
 
 export type Command<A = Action<string>> = {
   description: string;
@@ -82,8 +87,8 @@ export const commands: CommandRegistry = {
     description: "Sends a message to a channel or a nick",
     syntax: "<channel or nick> <text>",
     regexp: /^(\S+)\s+(.+)$/,
-    callback: (route, channel, text): SendRawMessageAction =>
-      sendMsg(route.serverKey, channel, text),
+    callback: (route, channel, text): SendRawMessageAction<SendPrivmsgAction> =>
+      sendPrivmsg(route.serverKey, channel, text),
   },
 
   part: {
