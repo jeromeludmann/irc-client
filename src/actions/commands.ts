@@ -15,6 +15,7 @@ import {
   sendPrivmsg,
   sendPart,
   SendPrivmsgAction,
+  sendNick,
 } from "@app/actions/messages";
 
 export type Command<A = Action<string>> = {
@@ -89,6 +90,14 @@ export const commands: CommandRegistry = {
     regexp: /^(\S+)\s+(.+)$/,
     callback: (route, channel, text): SendRawMessageAction<SendPrivmsgAction> =>
       sendPrivmsg(route.serverKey, channel, text),
+  },
+
+  nick: {
+    description: "Changes the current nick",
+    syntax: "<nick>",
+    regexp: /^(\S+)$/,
+    callback: (route, nick): SendRawMessageAction =>
+      sendNick(route.serverKey, nick),
   },
 
   part: {
