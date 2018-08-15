@@ -8,7 +8,7 @@ import {
   sendRawMessage,
 } from "@app/actions/socket";
 import { closeWindow, CloseWindowAction } from "@app/actions/ui";
-import { Route, RoutedAction, STATUS } from "@app/Route";
+import { Route, RoutedAction, STATUS, BROADCAST_ACTIVE } from "@app/Route";
 import { CHANNEL_REGEXP } from "@app/helpers";
 import {
   sendJoin,
@@ -64,7 +64,7 @@ export const commands: CommandRegistry = {
         return {
           type: PRINT_HELP_ABOUT_COMMAND,
           payload: { command: { ...commands[commandName], name: commandName } },
-          route: { ...route, channelKey: STATUS },
+          route: { ...route, channelKey: BROADCAST_ACTIVE },
         };
       }
 
