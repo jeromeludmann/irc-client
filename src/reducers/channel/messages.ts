@@ -25,6 +25,10 @@ import {
   PART,
   PRIVMSG,
   PING_FROM_SERVER,
+  SendPongToServerAction,
+  SEND_PONG_TO_SERVER,
+  SEND_PRIVMSG,
+  SendPrivmsgAction,
 } from "@app/actions/messages";
 import {
   PRINT_HELP_BY_DEFAULT,
@@ -32,6 +36,8 @@ import {
   PRINT_HELP_ABOUT_COMMAND,
   PrintHelpAboutCommandAction,
 } from "@app/actions/commands";
+import { RouteState } from "@app/reducers/route";
+import { UserState } from "@app/reducers/server/user";
 
 export type MessagesState = string[];
 
@@ -40,6 +46,7 @@ export const messagesInitialState: MessagesState = [];
 type MessagesReducer<A = Action> = (
   messages: MessagesState,
   action: A,
+  extraStates: { route: RouteState; user: UserState },
 ) => MessagesState;
 
 const connectionFailed: MessagesReducer<ConnectionFailedAction> = (
@@ -124,11 +131,28 @@ const noticeFromUser: MessagesReducer<NoticeFromUserAction> = (
   return [...messages, `-${user.nick}- ${text}`];
 };
 
-const serverPing: MessagesReducer<PingFromServerAction> = messages => {
+const receivePingFromServer: MessagesReducer<
+  PingFromServerAction
+> = messages => {
   return [...messages, "Ping?"];
 };
 
-export const reduceMessages = mapReducer<MessagesState>({
+const sendPongToServer: MessagesReducer<SendPongToServerAction> = messages => {
+  return [...messages, "Pong!"];
+};
+
+const sendPrivmsg: MessagesReducer<SendPrivmsgAction> = (
+  messages,
+  action,
+  { user: { nick } },
+) => {
+  return [...messages, `${nick}: ${action.payload.text}`];
+};
+
+export const reduceMessages = mapReducer<
+  MessagesState,
+  { route: RouteState; user: UserState }
+>({
   [CONNECTION_FAILED]: connectionFailed,
   [CONNECTION_CLOSED]: connectionClosed,
   [ERROR]: error,
@@ -140,6 +164,8 @@ export const reduceMessages = mapReducer<MessagesState>({
   [PRINT_HELP_BY_DEFAULT]: printHelpByDefault,
   [PRINT_HELP_ABOUT_COMMAND]: printHelpAboutCommand,
   [PRIVMSG]: privmsg,
+  [PING_FROM_SERVER]: receivePingFromServer,
   [RAW_MESSAGES_RECEIVED]: raw,
-  [PING_FROM_SERVER]: serverPing,
+  [SEND_PONG_TO_SERVER]: sendPongToServer,
+  [SEND_PRIVMSG]: sendPrivmsg,
 });

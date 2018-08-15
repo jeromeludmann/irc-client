@@ -2,7 +2,7 @@ import { Middleware } from "redux";
 import { RAW_MESSAGES_RECEIVED, RawMessagesAction } from "@app/actions/socket";
 import { IRC_MESSAGE_LENGTH, CRLF } from "@app/helpers";
 import { GenericMessage, Prefix, Tags } from "@app/Message";
-import { messages } from "@app/actions/messages";
+import { messageCallbacks } from "@app/actions/messages";
 
 /**
  * Message Parser Middleware
@@ -20,8 +20,8 @@ export const messageParser: Middleware = () => next => (
       const genericMessage = parseMessage(rawMessage);
       const { prefix, command, params } = genericMessage;
 
-      if (messages.hasOwnProperty(command)) {
-        next(messages[command](action.route.serverKey, prefix, params));
+      if (messageCallbacks.hasOwnProperty(command)) {
+        next(messageCallbacks[command](action.route.serverKey, prefix, params));
       }
     });
   }

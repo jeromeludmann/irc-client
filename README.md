@@ -2,8 +2,8 @@
 .______________________   _________ .__  .__               __
 |   \______   \_   ___ \  \_   ___ \|  | |__| ____   _____/  |_
 |   ||       _/    \  \/  /    \  \/|  | |  |/ __ \ /    \   __\
-|   ||    |   \     \____ \     \___|  |_|  \  ___/|   |  \  |  
-|___||____|_  /\______  /  \______  /____/__|\___  >___|  /__|  
+|   ||    |   \     \____ \     \___|  |_|  \  ___/|   |  \  |
+|___||____|_  /\______  /  \______  /____/__|\___  >___|  /__|
             \/        \/          \/             \/     \/
                 RFC 1459/2812 client protocol
 ```
@@ -84,6 +84,7 @@ For instance, after running the app, you can connect it with `/connect localhost
 
 |     | name          | description |
 | --- | ------------- | ----------- |
+|     | `/away`       |             |
 | ✔   | `/close`      |             |
 | ✔   | `/connect`    |             |
 | ✔   | `/disconnect` |             |
@@ -92,7 +93,9 @@ For instance, after running the app, you can connect it with `/connect localhost
 |     | `/kick`       |             |
 |     | `/mode`       |             |
 | ✔   | `/msg`        |             |
+| ✔   | `/nick`       |             |
 | ✔   | `/part`       |             |
+|     | `/ping`       |             |
 |     | `/query`      |             |
 | ✔   | `/quit`       |             |
 | ✔   | `/raw`        |             |
@@ -123,6 +126,7 @@ For instance, after running the app, you can connect it with `/connect localhost
 
 - Auto scroll on message receiving
 - Auto focus input on window switching
+- Set caret after the last character on back/forward input history
 - Nicklist full implementation (actions, reducers, components)
 
 ## UI themes
@@ -131,7 +135,8 @@ For instance, after running the app, you can connect it with `/connect localhost
 
 ## Tests
 
-- Storybook
+- Continue the components/reducers unit tests
+- Storybook with webpack 4
 
 ## Performances
 

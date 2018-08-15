@@ -1,8 +1,8 @@
 import { reduceRoute, routeInitialState } from "@app/reducers/route";
-import { join } from "@app/actions/messages";
 import { switchWindow, closeWindow } from "@app/actions/ui";
 import { serverInitialState } from "@app/reducers/server";
 import { STATUS } from "@app/Route";
+import { messageCallbacks } from "@app/actions/messages";
 
 describe("route reducer", () => {
   const user = { nick: "nickname", user: "username", host: "hostname" };
@@ -14,22 +14,30 @@ describe("route reducer", () => {
   describe("join", () => {
     test("an user joins a channel", () => {
       expect(
-        reduceRoute(routeInitialState, join("serverKey", user, ["#channel"]), {
-          servers: { serverKey: serverInitialState },
-        }),
+        reduceRoute(
+          routeInitialState,
+          messageCallbacks.join("serverKey", user, ["#channel"]),
+          {
+            servers: { serverKey: serverInitialState },
+          },
+        ),
       ).toMatchSnapshot();
     });
 
     test("I join a channel myself", () => {
       expect(
-        reduceRoute(routeInitialState, join("serverKey", user, ["#channel"]), {
-          servers: {
-            serverKey: {
-              ...serverInitialState,
-              user: { ...serverInitialState.user, nick: user.nick },
+        reduceRoute(
+          routeInitialState,
+          messageCallbacks.join("serverKey", user, ["#channel"]),
+          {
+            servers: {
+              serverKey: {
+                ...serverInitialState,
+                user: { ...serverInitialState.user, nick: user.nick },
+              },
             },
           },
-        }),
+        ),
       ).toMatchSnapshot();
     });
   });

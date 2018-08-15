@@ -1,16 +1,21 @@
 import { Action } from "redux";
-import { RAW, Route, STATUS, BROADCAST_ALL, BROADCAST_NONE } from "@app/Route";
+import {
+  RAW,
+  STATUS,
+  BROADCAST_ALL,
+  BROADCAST_NONE,
+  RoutedAction,
+} from "@app/Route";
 
-export interface NetworkAction<T> extends Action<T> {
-  route: Route;
-}
+// it seems to be useless...
+type SocketAction<T> = RoutedAction<T>;
 
 // Connect to server
 
 export const CONNECT_SERVER = "SOCKET/CONNECT_SERVER";
 
 export interface ConnectServerAction
-  extends NetworkAction<typeof CONNECT_SERVER> {
+  extends SocketAction<typeof CONNECT_SERVER> {
   payload: {
     host: string;
     port: number;
@@ -34,7 +39,7 @@ export const connectServer = (
 export const DISCONNECT_SERVER = "SOCKET/DISCONNECT_SERVER";
 
 export interface DisconnectServerAction
-  extends NetworkAction<typeof DISCONNECT_SERVER> {
+  extends SocketAction<typeof DISCONNECT_SERVER> {
   payload: { quitMessage?: string };
 }
 
@@ -51,33 +56,22 @@ export const disconnectServer = (
 
 export const SEND_RAW_MESSAGE = "SOCKET/SEND_RAW_MESSAGE";
 
-export interface SendRawMessageAction extends Action<typeof SEND_RAW_MESSAGE> {
+export interface SendRawMessageAction<A = void>
+  extends Action<typeof SEND_RAW_MESSAGE> {
   serverKey: string;
   payload: { raw: string };
+  specificAction: A;
 }
 
-export const sendRaw = (
+export const sendRawMessage = (
   serverKey: string,
   message: string,
 ): SendRawMessageAction => ({
   type: SEND_RAW_MESSAGE,
   serverKey,
   payload: { raw: message },
+  specificAction: undefined,
 });
-
-export const sendMessage = (
-  serverKey: string,
-  command: string,
-  ...params: string[]
-) => {
-  const last = params.length - 1;
-
-  if (params[last].indexOf(" ") > -1 || params[last].charAt(0) === ":") {
-    params[last] = `:${params[last]}`;
-  }
-
-  return sendRaw(serverKey, `${command.toUpperCase()} ${params.join(" ")}`);
-};
 
 // Socket lookup
 
@@ -86,7 +80,7 @@ export const LOOKUP_SUCCESS = "SOCKET/LOOKUP_SUCCESS";
 export const LOOKUP_FAILED = "SOCKET/LOOKUP_FAILED";
 
 export interface LookupSuccessAction
-  extends NetworkAction<typeof LOOKUP_SUCCESS> {
+  extends SocketAction<typeof LOOKUP_SUCCESS> {
   serverKey: string;
   payload: {
     address: string;
@@ -95,8 +89,7 @@ export interface LookupSuccessAction
   };
 }
 
-export interface LookupFailedAction
-  extends NetworkAction<typeof LOOKUP_FAILED> {
+export interface LookupFailedAction extends SocketAction<typeof LOOKUP_FAILED> {
   serverKey: string;
   payload: { error: Error };
 }
@@ -125,10 +118,10 @@ export const lookup = (
 
 // Receive raw messages from socket
 
-export const RAW_MESSAGES_RECEIVED = "SOCKET/RAW_MESSAGES";
+export const RAW_MESSAGES_RECEIVED = "SOCKET/RAW_MESSAGES_RECEIVED";
 
 export interface RawMessagesAction
-  extends NetworkAction<typeof RAW_MESSAGES_RECEIVED> {
+  extends SocketAction<typeof RAW_MESSAGES_RECEIVED> {
   payload: { messages: string[] };
 }
 
@@ -146,7 +139,7 @@ export const receiveRawMessages = (
 export const CONNECTION_ESTABLISHED = "SOCKET/CONNECTION_ESTABLISHED";
 
 export interface ConnectionEstablishedAction
-  extends NetworkAction<typeof CONNECTION_ESTABLISHED> {}
+  extends SocketAction<typeof CONNECTION_ESTABLISHED> {}
 
 export const setConnectionEstablished = (
   serverKey: string,
@@ -160,7 +153,7 @@ export const setConnectionEstablished = (
 export const CONNECTION_CLOSED = "SOCKET/CONNECTION_CLOSED";
 
 export interface ConnectionClosedAction
-  extends NetworkAction<typeof CONNECTION_CLOSED> {
+  extends SocketAction<typeof CONNECTION_CLOSED> {
   payload: { hadError: boolean };
 }
 
@@ -178,7 +171,7 @@ export const setConnectionClosed = (
 export const CONNECTION_FAILED = "SOCKET/CONNECTION_FAILED";
 
 export interface ConnectionFailedAction
-  extends NetworkAction<typeof CONNECTION_FAILED> {
+  extends SocketAction<typeof CONNECTION_FAILED> {
   payload: {
     name: string;
     message: string;

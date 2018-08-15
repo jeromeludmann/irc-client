@@ -34,7 +34,7 @@ export const reduceChannel = (
   action: RoutedAction,
   extraStates: { route: RouteState; user: UserState },
 ): ChannelState => ({
-  messages: reduceMessages(channel.messages, action),
+  messages: reduceMessages(channel.messages, action, extraStates),
   input: reduceInput(channel.input, action),
   unread: reduceUnread(channel.unread, action, extraStates),
 });

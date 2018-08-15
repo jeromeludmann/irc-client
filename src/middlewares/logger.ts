@@ -1,6 +1,5 @@
 import { Middleware } from "redux";
 import { UPDATE_INPUT_VALUE } from "@app/actions/ui";
-import { SEND_RAW_MESSAGE } from "@app/actions/socket";
 
 const excluded = [UPDATE_INPUT_VALUE];
 
@@ -19,12 +18,12 @@ export const logger: Middleware = _ => next => action => {
 };
 
 function stylize(type: string) {
-  if (type.indexOf("MESSAGE/") === 0) {
-    return "color: blue";
+  if (type.indexOf("MESSAGE/SEND_") === 0) {
+    return "color: red";
   }
 
-  if (type.indexOf(SEND_RAW_MESSAGE) === 0) {
-    return "color: red; font-weight: bold";
+  if (type.indexOf("MESSAGE/") === 0) {
+    return "color: blue";
   }
 
   if (type.indexOf("SOCKET/") === 0) {
