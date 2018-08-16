@@ -1,5 +1,5 @@
 import { Action } from "redux";
-import { Route } from "@app/Route";
+import { Route, RoutedAction } from "@app/Route";
 
 // Update input value
 
@@ -53,9 +53,7 @@ export function goForwardInputHistory(): GoForwardInputHistoryAction {
 
 export const SWITCH_WINDOW = "UI/SWITCH_WINDOW";
 
-export interface SwitchWindowAction extends Action<typeof SWITCH_WINDOW> {
-  route: Route;
-}
+export type SwitchWindowAction = RoutedAction<typeof SWITCH_WINDOW>;
 
 export function switchWindow(route: Route): SwitchWindowAction {
   return {

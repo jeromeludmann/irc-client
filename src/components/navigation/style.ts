@@ -13,7 +13,7 @@ export const ListItem = styled.li`
 
 type ButtonProps = {
   isActive: boolean;
-  isUnread: boolean;
+  hasActivity: boolean;
 };
 
 export const Button = styled.button`
@@ -37,7 +37,7 @@ export const Button = styled.button`
     `};
 
   ${(props: ButtonProps) =>
-    props.isUnread &&
+    props.hasActivity &&
     css`
       background-color: yellow;
     `};

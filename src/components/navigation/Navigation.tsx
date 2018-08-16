@@ -6,7 +6,7 @@ interface Props {
   servers: {
     [serverKey: string]: {
       name: string;
-      channels: { [channelKey: string]: { unread: boolean } };
+      channels: { [channelKey: string]: { activity: boolean } };
     };
   };
   window: {
@@ -36,7 +36,7 @@ export default class Navigation extends PureComponent<Props> {
                     serverKey === window.serverKey &&
                     channelKey === window.channelKey
                   }
-                  isUnread={servers[serverKey].channels[channelKey].unread}
+                  hasActivity={servers[serverKey].channels[channelKey].activity}
                 >
                   {channelKey === STATUS
                     ? servers[serverKey].name

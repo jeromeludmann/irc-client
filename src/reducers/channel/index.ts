@@ -9,10 +9,10 @@ import {
   reduceInput,
 } from "@app/reducers/input";
 import {
-  UnreadState,
-  unreadInitialState,
-  reduceUnread,
-} from "@app/reducers/channel/unread";
+  ActivityState,
+  activityInitialState,
+  reduceActivity,
+} from "@app/reducers/channel/activity";
 import { RoutedAction } from "@app/Route";
 import { RouteState } from "@app/reducers/route";
 import { UserState } from "@app/reducers/server/user";
@@ -20,13 +20,13 @@ import { UserState } from "@app/reducers/server/user";
 export interface ChannelState {
   readonly messages: MessagesState;
   readonly input: InputState;
-  readonly unread: UnreadState;
+  readonly activity: ActivityState;
 }
 
 export const channelInitialState: ChannelState = {
   messages: messagesInitialState,
   input: inputInitialState,
-  unread: unreadInitialState,
+  activity: activityInitialState,
 };
 
 export const reduceChannel = (
@@ -36,5 +36,5 @@ export const reduceChannel = (
 ): ChannelState => ({
   messages: reduceMessages(channel.messages, action, extraStates),
   input: reduceInput(channel.input, action),
-  unread: reduceUnread(channel.unread, action, extraStates),
+  activity: reduceActivity(channel.activity, action, extraStates),
 });
