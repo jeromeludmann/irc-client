@@ -16,7 +16,7 @@ describe("route reducer", () => {
       expect(
         reduceRoute(
           routeInitialState,
-          messageCallbacks.join("serverKey", user, ["#channel"]),
+          messageCallbacks["JOIN"]("serverKey", user, ["#channel"]),
           {
             servers: { serverKey: serverInitialState },
           },
@@ -28,7 +28,7 @@ describe("route reducer", () => {
       expect(
         reduceRoute(
           routeInitialState,
-          messageCallbacks.join("serverKey", user, ["#channel"]),
+          messageCallbacks["JOIN"]("serverKey", user, ["#channel"]),
           {
             servers: {
               serverKey: {
