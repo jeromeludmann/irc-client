@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`servers reducer initializing with state 1`] = `Object {}`;
+
+exports[`servers reducer initializing without state 1`] = `Object {}`;
