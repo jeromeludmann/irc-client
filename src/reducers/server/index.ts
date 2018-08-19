@@ -15,9 +15,9 @@ import {
   reduceServerName,
 } from "@app/reducers/server/name";
 import {
-  reduceServerAvailableModes,
-  ServerAvailableModesState,
-  serverAvailableModesInitialState,
+  reduceAvailableServerModes,
+  AvailableServerModesState,
+  availableServerModesInitialState,
 } from "@app/reducers/server/availableModes";
 import { ServerNameState } from "@app/reducers/server/name";
 import {
@@ -29,7 +29,7 @@ import {
 export type ServerState = {
   readonly name: ServerNameState;
   readonly user: UserState;
-  readonly availableModes: ServerAvailableModesState;
+  readonly availableModes: AvailableServerModesState;
   readonly modes: ServerModesState;
   readonly channels: ChannelsState;
 };
@@ -37,7 +37,7 @@ export type ServerState = {
 export const serverInitialState: ServerState = {
   name: serverNameInitialState,
   user: userInitialState,
-  availableModes: serverAvailableModesInitialState,
+  availableModes: availableServerModesInitialState,
   modes: serverModesInitialState,
   channels: channelsInitialState,
 };
@@ -49,7 +49,7 @@ export const reduceServer = (
 ): ServerState => ({
   name: reduceServerName(server.name, action),
   user: reduceUser(server.user, action),
-  availableModes: reduceServerAvailableModes(server.availableModes, action),
+  availableModes: reduceAvailableServerModes(server.availableModes, action),
   modes: reduceServerModes(server.modes),
   channels: reduceChannels(server.channels, action, {
     ...extraStates,

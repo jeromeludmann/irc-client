@@ -1,5 +1,5 @@
 module.exports = {
-  roots: ["<rootDir>/test", "<rootDir>/src"],
+  roots: ["<rootDir>/src"],
   transform: {
     "^.+\\.tsx?$": "ts-jest",
   },
@@ -8,5 +8,5 @@ module.exports = {
   moduleNameMapper: {
     "@app/(.*)$": "<rootDir>/src/$1",
   },
-  setupTestFrameworkScriptFile: "<rootDir>/test/setup.ts",
+  setupTestFrameworkScriptFile: "<rootDir>/jest.setup.ts",
 };

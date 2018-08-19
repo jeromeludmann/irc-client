@@ -5,15 +5,16 @@ describe("root reducer", () => {
     expect(
       reduce(undefined, {
         type: "",
-        route: { serverKey: "", channelKey: "" },
+        route: { serverKey: "server1", channelKey: "" },
       }),
     ).toMatchSnapshot();
   });
+
   test("initializing with state", () => {
     expect(
       reduce(rootInitialState, {
         type: "",
-        route: { serverKey: "", channelKey: "" },
+        route: { serverKey: "server1", channelKey: "" },
       }),
     ).toMatchSnapshot();
   });

@@ -3,21 +3,21 @@
 exports[`route reducer close window channel 1`] = `
 Object {
   "channelKey": "@status",
-  "serverKey": "serverKey",
+  "serverKey": "server1",
 }
 `;
 
 exports[`route reducer close window status 1`] = `
 Object {
   "channelKey": "@status",
-  "serverKey": "serverKey",
+  "serverKey": "server1",
 }
 `;
 
 exports[`route reducer close window status 2`] = `
 Object {
   "channelKey": "@status",
-  "serverKey": "serverKey2",
+  "serverKey": "server2",
 }
 `;
 
@@ -31,7 +31,7 @@ Object {
 exports[`route reducer join I join a channel myself 1`] = `
 Object {
   "channelKey": "#channel",
-  "serverKey": "serverKey",
+  "serverKey": "server1",
 }
 `;
 
@@ -45,13 +45,13 @@ Object {
 exports[`route reducer switch window channel 1`] = `
 Object {
   "channelKey": "#channel",
-  "serverKey": "serverKey",
+  "serverKey": "server1",
 }
 `;
 
 exports[`route reducer switch window status 1`] = `
 Object {
   "channelKey": "@status",
-  "serverKey": "serverKey",
+  "serverKey": "server1",
 }
 `;
