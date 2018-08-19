@@ -1,11 +1,12 @@
 import { Reducer } from "redux";
 import { ReplyMyInfoAction, RPL_MYINFO } from "@app/actions/messages";
-import { RoutedAction } from "@app/Route";
 
 export type AvailableServerModesState = {
   user: string[];
   channel: string[];
 };
+
+export type AvailableServerModesAction = ReplyMyInfoAction;
 
 export const availableServerModesInitialState: AvailableServerModesState = {
   user: [],
@@ -21,7 +22,7 @@ const handlers: { [action: string]: Reducer<AvailableServerModesState> } = {
 
 export const reduceAvailableServerModes = (
   availableModes = availableServerModesInitialState,
-  action: RoutedAction,
+  action: AvailableServerModesAction,
 ) =>
   handlers.hasOwnProperty(action.type)
     ? handlers[action.type](availableModes, action)

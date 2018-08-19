@@ -1,12 +1,10 @@
 import { reduceRoute, routeInitialState } from "@app/reducers/route";
 import { switchWindow, closeWindow } from "@app/actions/ui";
 import { serverInitialState } from "@app/reducers/server";
-import { STATUS } from "@app/Route";
 import { messageCallbacks } from "@app/actions/messages";
+import { STATUS } from "@app/Route";
 
 describe("route reducer", () => {
-  const user = { nick: "nickname", user: "username", host: "hostname" };
-
   test("intializing", () => {
     expect(reduceRoute(routeInitialState, { type: "" })).toMatchSnapshot();
   });
@@ -16,10 +14,12 @@ describe("route reducer", () => {
       expect(
         reduceRoute(
           routeInitialState,
-          messageCallbacks["JOIN"]("serverKey", user, ["#channel"]),
-          {
-            servers: { serverKey: serverInitialState },
-          },
+          messageCallbacks["JOIN"](
+            "server1",
+            { nick: "nick", user: "user", host: "host" },
+            ["#channel"],
+          ),
+          { servers: { server1: serverInitialState } },
         ),
       ).toMatchSnapshot();
     });
@@ -28,12 +28,16 @@ describe("route reducer", () => {
       expect(
         reduceRoute(
           routeInitialState,
-          messageCallbacks["JOIN"]("serverKey", user, ["#channel"]),
+          messageCallbacks["JOIN"](
+            "server1",
+            { nick: "nick", user: "user", host: "host" },
+            ["#channel"],
+          ),
           {
             servers: {
-              serverKey: {
+              server1: {
                 ...serverInitialState,
-                user: { ...serverInitialState.user, nick: user.nick },
+                user: { ...serverInitialState.user, nick: "nick" },
               },
             },
           },
@@ -46,20 +50,22 @@ describe("route reducer", () => {
     test("status", () => {
       expect(
         reduceRoute(
-          { serverKey: "serverKey", channelKey: STATUS },
-          closeWindow({ serverKey: "serverKey", channelKey: STATUS }),
-          { servers: { serverKey: serverInitialState } },
+          { serverKey: "server1", channelKey: STATUS },
+          closeWindow({ serverKey: "server1", channelKey: STATUS }),
+          {
+            servers: { server1: serverInitialState },
+          },
         ),
       ).toMatchSnapshot();
 
       expect(
         reduceRoute(
-          { serverKey: "serverKey1", channelKey: STATUS },
-          closeWindow({ serverKey: "serverKey1", channelKey: STATUS }),
+          { serverKey: "server1", channelKey: STATUS },
+          closeWindow({ serverKey: "server1", channelKey: STATUS }),
           {
             servers: {
-              serverKey1: serverInitialState,
-              serverKey2: serverInitialState,
+              server1: serverInitialState,
+              server2: serverInitialState,
             },
           },
         ),
@@ -69,9 +75,9 @@ describe("route reducer", () => {
     test("channel", () => {
       expect(
         reduceRoute(
-          { serverKey: "serverKey", channelKey: "#channel" },
-          closeWindow({ serverKey: "serverKey", channelKey: "#channel" }),
-          { servers: { serverKey: serverInitialState } },
+          { serverKey: "server1", channelKey: "#channel" },
+          closeWindow({ serverKey: "server1", channelKey: "#channel" }),
+          { servers: { server1: serverInitialState } },
         ),
       ).toMatchSnapshot();
     });
@@ -82,7 +88,7 @@ describe("route reducer", () => {
       expect(
         reduceRoute(
           routeInitialState,
-          switchWindow({ serverKey: "serverKey", channelKey: STATUS }),
+          switchWindow({ serverKey: "server1", channelKey: STATUS }),
         ),
       ).toMatchSnapshot();
     });
@@ -91,7 +97,7 @@ describe("route reducer", () => {
       expect(
         reduceRoute(
           routeInitialState,
-          switchWindow({ serverKey: "serverKey", channelKey: "#channel" }),
+          switchWindow({ serverKey: "server1", channelKey: "#channel" }),
         ),
       ).toMatchSnapshot();
     });

@@ -8,8 +8,8 @@
     "test": "jest --verbose",
     "test:watch": "npm run test -- --watch",
     "test:coverage": "npm run test -- --coverage",
+    "test:check-coverage": "open coverage/lcov-report/index.html",
     "start": "electron dist/main.js",
-    "check-coverage": "open coverage/lcov-report/index.html",
     "clean": "rm -rf dist/ coverage/",
     "postinstall": "jest --coverage"
   },
