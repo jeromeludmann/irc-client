@@ -9,4 +9,7 @@ module.exports = {
     "@app/(.*)$": "<rootDir>/src/$1",
   },
   setupTestFrameworkScriptFile: "<rootDir>/jest.setup.ts",
+  collectCoverage: true,
+  collectCoverageFrom: ["<rootDir>/src/**/*.{ts,tsx}"],
+  notify: true,
 };

@@ -7,7 +7,6 @@
     "build:watch": "npm run build -- -w --progress --color",
     "test": "jest --verbose",
     "test:watch": "npm run test -- --watch",
-    "test:coverage": "npm run test -- --coverage",
     "test:check-coverage": "open coverage/lcov-report/index.html",
     "start": "electron dist/main.js",
     "clean": "rm -rf dist/ coverage/",
