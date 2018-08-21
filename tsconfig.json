@@ -16,10 +16,11 @@
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
       "@app/*": ["src/*"]
-    }
+    },
   },
   "exclude": ["node_modules/*", "dist/*"]
 }
