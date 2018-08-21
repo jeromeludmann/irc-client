@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reduce user receive NICK 1`] = `
+Object {
+  "nick": "",
+  "real": "",
+  "user": "",
+}
+`;
+
+exports[`reduce user receive NICK with the  1`] = `
+Object {
+  "nick": "new_nick",
+  "real": "name",
+  "user": "user",
+}
+`;
+
+exports[`reduce user without action 1`] = `
+Object {
+  "nick": "",
+  "real": "",
+  "user": "",
+}
+`;
