@@ -1,21 +1,18 @@
-import { Action } from "redux";
-import { mapReducer } from "@app/reducers/_map";
+import { Action, Reducer } from "redux";
 import { ReplyMyInfoAction, RPL_MYINFO } from "@app/actions/messages";
 
 export type ServerNameState = string;
 
 export const serverNameInitialState: ServerNameState = "<unknown>";
 
-type ServerNameReducer<A = Action> = (
-  name: ServerNameState,
-  action: A,
-) => ServerNameState;
-
-const replyMyInfo: ServerNameReducer<ReplyMyInfoAction> = (_, action) =>
-  action.payload.serverName;
-
-const map: { [action: string]: ServerNameReducer } = {
-  [RPL_MYINFO]: replyMyInfo,
+const handlers: { [action: string]: Reducer } = {
+  [RPL_MYINFO]: (_, action: ReplyMyInfoAction) => action.payload.serverName,
 };
 
-export const reduceServerName = mapReducer<ServerNameState>(map);
+export const reduceServerName = (
+  name: ServerNameState = serverNameInitialState,
+  action: Action,
+) =>
+  handlers.hasOwnProperty(action.type)
+    ? handlers[action.type](name, action)
+    : name;
