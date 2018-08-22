@@ -20,7 +20,7 @@ import { CLOSE_WINDOW, CloseWindowAction } from "@app/actions/ui";
 import { JOIN, PRIVMSG } from "@app/actions/messages";
 
 export interface ChannelsState {
-  readonly [key: string]: ChannelState;
+  [key: string]: ChannelState;
 }
 
 export const channelsInitialState: ChannelsState = {
@@ -34,56 +34,51 @@ type ChannelsReducer<A = RoutedAction> = (
   extraStates: { route: RouteState; user: UserState },
 ) => ChannelsState;
 
-const closeWindow: ChannelsReducer<CloseWindowAction> = (channels, action) => {
-  const updatedChannels = { ...channels };
-
-  if (
-    isChannel(action.route.channelKey) ||
-    isPrivate(action.route.channelKey)
-  ) {
-    delete updatedChannels[action.route.channelKey];
-    return updatedChannels;
-  }
-
-  Object.keys(channels).forEach(channelKey => {
-    if (isChannel(channelKey) || isPrivate(channelKey)) {
-      delete updatedChannels[channelKey];
-    }
-  });
-
-  return updatedChannels;
-};
-
-const broadcastActive: ChannelsReducer = (channels, action, extraStates) => {
-  const key = extraStates.route.channelKey;
-  return {
-    ...channels,
-    [key]: reduceChannel(channels[key], action, extraStates),
-  };
-};
-
-const broadcastAll: ChannelsReducer = (channels, action, extraStates) => {
-  const broadcastedChannels: { [key: string]: ChannelState } = {};
-  Object.keys(channels).forEach(key => {
-    if (!isRaw(key)) {
-      broadcastedChannels[key] = reduceChannel(
-        channels[key],
-        action,
-        extraStates,
-      );
-    }
-  });
-  return { ...channels, ...broadcastedChannels };
-};
-
-const map: { [action: string]: ChannelsReducer } = {
-  [CLOSE_WINDOW]: closeWindow,
-};
-
-const routes: { [channelKey: string]: ChannelsReducer } = {
+const broadcastHandlers: { [channelKey: string]: ChannelsReducer } = {
   [BROADCAST_NONE]: channels => channels,
-  [BROADCAST_ACTIVE]: broadcastActive,
-  [BROADCAST_ALL]: broadcastAll,
+  [BROADCAST_ACTIVE]: (channels, action, extraStates) => {
+    const key = extraStates.route.channelKey;
+    return {
+      ...channels,
+      [key]: reduceChannel(channels[key], action, extraStates),
+    };
+  },
+  [BROADCAST_ALL]: (channels, action, extraStates) => {
+    const broadcastedChannels: { [key: string]: ChannelState } = {};
+    Object.keys(channels).forEach(key => {
+      if (!isRaw(key)) {
+        broadcastedChannels[key] = reduceChannel(
+          channels[key],
+          action,
+          extraStates,
+        );
+      }
+    });
+    return { ...channels, ...broadcastedChannels };
+  },
+};
+
+const handlers: { [action: string]: ChannelsReducer } = {
+  [CLOSE_WINDOW]: (channels: ChannelsState, action: CloseWindowAction) => {
+    const updatedChannels = { ...channels };
+
+    if (
+      isChannel(action.route.channelKey) ||
+      isPrivate(action.route.channelKey)
+    ) {
+      delete updatedChannels[action.route.channelKey];
+      return updatedChannels;
+    }
+
+    // close all server-related windows while closing status window
+    Object.keys(channels).forEach(channelKey => {
+      if (isChannel(channelKey) || isPrivate(channelKey)) {
+        delete updatedChannels[channelKey];
+      }
+    });
+
+    return updatedChannels;
+  },
 };
 
 export const reduceChannels = (
@@ -93,16 +88,17 @@ export const reduceChannels = (
 ): ChannelsState => {
   const channelKey = action.route.channelKey;
 
+  // TODO will never happen since now we autoroute all actions
   if (!channelKey) {
     return channels;
   }
 
-  if (routes.hasOwnProperty(channelKey)) {
-    return routes[channelKey](channels, action, extraStates);
+  if (broadcastHandlers.hasOwnProperty(channelKey)) {
+    return broadcastHandlers[channelKey](channels, action, extraStates);
   }
 
-  if (map.hasOwnProperty(action.type)) {
-    return map[action.type](channels, action, extraStates);
+  if (handlers.hasOwnProperty(action.type)) {
+    return handlers[action.type](channels, action, extraStates);
   }
 
   if (

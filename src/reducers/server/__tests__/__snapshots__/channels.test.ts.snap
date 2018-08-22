@@ -1,0 +1,281 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reduce channels broadcast active 1`] = `
+Object {
+  "": Object {
+    "activity": false,
+    "input": Object {
+      "dirtyValue": "",
+      "history": Object {
+        "index": 2,
+        "values": Array [
+          "/connect -n localhost",
+          "/connect localhost",
+        ],
+      },
+      "value": "",
+    },
+    "messages": Array [],
+  },
+  "@raw": Object {
+    "activity": false,
+    "input": Object {
+      "dirtyValue": "",
+      "history": Object {
+        "index": 2,
+        "values": Array [
+          "/connect -n localhost",
+          "/connect localhost",
+        ],
+      },
+      "value": "",
+    },
+    "messages": Array [],
+  },
+  "@status": Object {
+    "activity": false,
+    "input": Object {
+      "dirtyValue": "",
+      "history": Object {
+        "index": 2,
+        "values": Array [
+          "/connect -n localhost",
+          "/connect localhost",
+        ],
+      },
+      "value": "",
+    },
+    "messages": Array [],
+  },
+}
+`;
+
+exports[`reduce channels broadcast all 1`] = `
+Object {
+  "@raw": Object {
+    "activity": false,
+    "input": Object {
+      "dirtyValue": "",
+      "history": Object {
+        "index": 2,
+        "values": Array [
+          "/connect -n localhost",
+          "/connect localhost",
+        ],
+      },
+      "value": "",
+    },
+    "messages": Array [],
+  },
+  "@status": Object {
+    "activity": true,
+    "input": Object {
+      "dirtyValue": "",
+      "history": Object {
+        "index": 2,
+        "values": Array [
+          "/connect -n localhost",
+          "/connect localhost",
+        ],
+      },
+      "value": "",
+    },
+    "messages": Array [],
+  },
+}
+`;
+
+exports[`reduce channels broadcast none 1`] = `
+Object {
+  "@raw": Object {
+    "activity": false,
+    "input": Object {
+      "dirtyValue": "",
+      "history": Object {
+        "index": 2,
+        "values": Array [
+          "/connect -n localhost",
+          "/connect localhost",
+        ],
+      },
+      "value": "",
+    },
+    "messages": Array [],
+  },
+  "@status": Object {
+    "activity": false,
+    "input": Object {
+      "dirtyValue": "",
+      "history": Object {
+        "index": 2,
+        "values": Array [
+          "/connect -n localhost",
+          "/connect localhost",
+        ],
+      },
+      "value": "",
+    },
+    "messages": Array [],
+  },
+}
+`;
+
+exports[`reduce channels close window channel window 1`] = `
+Object {
+  "@raw": Object {
+    "activity": false,
+    "input": Object {
+      "dirtyValue": "",
+      "history": Object {
+        "index": 2,
+        "values": Array [
+          "/connect -n localhost",
+          "/connect localhost",
+        ],
+      },
+      "value": "",
+    },
+    "messages": Array [],
+  },
+  "@status": Object {
+    "activity": false,
+    "input": Object {
+      "dirtyValue": "",
+      "history": Object {
+        "index": 2,
+        "values": Array [
+          "/connect -n localhost",
+          "/connect localhost",
+        ],
+      },
+      "value": "",
+    },
+    "messages": Array [],
+  },
+}
+`;
+
+exports[`reduce channels close window private window 1`] = `
+Object {
+  "@raw": Object {
+    "activity": false,
+    "input": Object {
+      "dirtyValue": "",
+      "history": Object {
+        "index": 2,
+        "values": Array [
+          "/connect -n localhost",
+          "/connect localhost",
+        ],
+      },
+      "value": "",
+    },
+    "messages": Array [],
+  },
+  "@status": Object {
+    "activity": false,
+    "input": Object {
+      "dirtyValue": "",
+      "history": Object {
+        "index": 2,
+        "values": Array [
+          "/connect -n localhost",
+          "/connect localhost",
+        ],
+      },
+      "value": "",
+    },
+    "messages": Array [],
+  },
+}
+`;
+
+exports[`reduce channels close window status window 1`] = `
+Object {
+  "@status": Object {
+    "activity": false,
+    "input": Object {
+      "dirtyValue": "",
+      "history": Object {
+        "index": 2,
+        "values": Array [
+          "/connect -n localhost",
+          "/connect localhost",
+        ],
+      },
+      "value": "",
+    },
+    "messages": Array [],
+  },
+}
+`;
+
+exports[`reduce channels without action with channel 1`] = `
+Object {
+  "@raw": Object {
+    "activity": false,
+    "input": Object {
+      "dirtyValue": "",
+      "history": Object {
+        "index": 2,
+        "values": Array [
+          "/connect -n localhost",
+          "/connect localhost",
+        ],
+      },
+      "value": "",
+    },
+    "messages": Array [],
+  },
+  "@status": Object {
+    "activity": false,
+    "input": Object {
+      "dirtyValue": "",
+      "history": Object {
+        "index": 2,
+        "values": Array [
+          "/connect -n localhost",
+          "/connect localhost",
+        ],
+      },
+      "value": "",
+    },
+    "messages": Array [],
+  },
+}
+`;
+
+exports[`reduce channels without action without channel 1`] = `
+Object {
+  "@raw": Object {
+    "activity": false,
+    "input": Object {
+      "dirtyValue": "",
+      "history": Object {
+        "index": 2,
+        "values": Array [
+          "/connect -n localhost",
+          "/connect localhost",
+        ],
+      },
+      "value": "",
+    },
+    "messages": Array [],
+  },
+  "@status": Object {
+    "activity": false,
+    "input": Object {
+      "dirtyValue": "",
+      "history": Object {
+        "index": 2,
+        "values": Array [
+          "/connect -n localhost",
+          "/connect localhost",
+        ],
+      },
+      "value": "",
+    },
+    "messages": Array [],
+  },
+}
+`;
