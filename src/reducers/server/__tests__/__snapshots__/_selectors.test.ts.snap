@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`server selectors select channel 1`] = `
+Object {
+  "activity": false,
+  "input": Object {
+    "dirtyValue": "",
+    "history": Object {
+      "index": 2,
+      "values": Array [
+        "/connect -n localhost",
+        "/connect localhost",
+      ],
+    },
+    "value": "",
+  },
+  "messages": Array [],
+}
+`;
+
+exports[`server selectors select user 1`] = `
+Object {
+  "nick": "",
+  "real": "",
+  "user": "",
+}
+`;
