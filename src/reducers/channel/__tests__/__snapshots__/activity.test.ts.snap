@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reduce channel activity by joining channel 1`] = `false`;
+
+exports[`reduce channel activity by switching window 1`] = `false`;
