@@ -1,28 +1,2 @@
 {
-  "editor.rulers": [80],
-  "files.exclude": {
-    "**/.vscode": true,
-    "**/node_modules": true,
-    "**/package-lock.json": true,
-    "**/dist": true,
-    "**/__snapshots__": false,
-    "**/coverage": true
-  },
-  "files.watcherExclude": {
-    "**/dist/**": true,
-    "**/coverage": true
-  },
-  "javascript.validate.enable": false,
-  "prettier.semi": true,
-  "prettier.singleQuote": false,
-  "prettier.trailingComma": "all",
-  "search.exclude": {
-    "**/dist": true,
-    "LICENSE": true,
-    "**/__snapshots__": true,
-    "**/coverage": true
-  },
-  "typescript.format.enable": true,
-  "typescript.validate.enable": true,
-  "typescript.tsdk": "node_modules/typescript/lib"
 }
