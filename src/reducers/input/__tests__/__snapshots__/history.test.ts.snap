@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reduce input history by dispatching enter value 1`] = `
+Object {
+  "index": 3,
+  "values": Array [
+    "/connect -n localhost",
+    "/connect localhost",
+    "I'm typing something",
+  ],
+}
+`;
+
+exports[`reduce input history by dispatching go back anywhere in the history 1`] = `
+Object {
+  "index": 1,
+  "values": Array [
+    "hello",
+    "world",
+  ],
+}
+`;
+
+exports[`reduce input history by dispatching go back at the begin of history 1`] = `
+Object {
+  "index": 0,
+  "values": Array [],
+}
+`;
+
+exports[`reduce input history by dispatching go back at the end of history 1`] = `
+Object {
+  "index": 1,
+  "values": Array [
+    "hello",
+    "world",
+  ],
+}
+`;
+
+exports[`reduce input history by dispatching go forward anywhere in the history 1`] = `
+Object {
+  "index": 2,
+  "values": Array [
+    "hello",
+    "world",
+  ],
+}
+`;
+
+exports[`reduce input history by dispatching go forward at the begin of history 1`] = `
+Object {
+  "index": 2,
+  "values": Array [
+    "hello",
+    "world",
+  ],
+}
+`;
+
+exports[`reduce input history by dispatching go forward at the end of history 1`] = `
+Object {
+  "index": 2,
+  "values": Array [
+    "hello",
+    "world",
+  ],
+}
+`;
+
+exports[`reduce input history by dispatching go forward without values 1`] = `
+Object {
+  "index": 2,
+  "values": Array [
+    "hello",
+    "world",
+  ],
+}
+`;
+
+exports[`reduce input history by dispatching go forward without values 2`] = `
+Object {
+  "index": 2,
+  "values": Array [
+    "hello",
+    "world",
+  ],
+}
+`;
