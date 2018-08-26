@@ -6,7 +6,6 @@ import {
 } from "@app/actions/ui";
 import { InputState } from "@app/reducers/input";
 import { endOfHistory } from "@app/reducers/input/_helpers";
-import { mapReducer } from "@app/reducers/_map";
 import { Action } from "redux";
 
 export type InputDirtyValueState = string;
@@ -32,7 +31,11 @@ const map: { [action: string]: InputDirtyValueReducer } = {
   [ENTER_INPUT_VALUE]: enterInputValue,
 };
 
-export const reduceInputDirtyValue = mapReducer<
-  InputDirtyValueState,
-  { input: InputState }
->(map);
+export const reduceInputDirtyValue = (
+  dirtyValueState = inputDirtyValueInitialState,
+  action: Action,
+  extraStates: { input: InputState },
+) =>
+  map.hasOwnProperty(action.type)
+    ? map[action.type](dirtyValueState, action, extraStates)
+    : dirtyValueState;
