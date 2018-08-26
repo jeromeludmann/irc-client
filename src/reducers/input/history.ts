@@ -1,4 +1,3 @@
-import { Reducer } from "redux";
 import {
   EnterInputValueAction,
   ENTER_INPUT_VALUE,
@@ -6,7 +5,7 @@ import {
   GO_FORWARD_INPUT_HISTORY,
 } from "@app/actions/ui";
 import { beginOfHistory, endOfHistory } from "@app/reducers/input/_helpers";
-import { RoutedAction } from "@app/Route";
+import { Reducer, Action } from "redux";
 
 export interface HistoryState {
   readonly values: string[];
@@ -35,7 +34,7 @@ const handlers: { [action: string]: Reducer } = {
 
 export const reduceHistory = (
   historyState = historyInitialState,
-  action: RoutedAction,
+  action: Action,
 ) =>
   handlers.hasOwnProperty(action.type)
     ? handlers[action.type](historyState, action)
