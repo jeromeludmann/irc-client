@@ -12,4 +12,5 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: ["<rootDir>/src/**/*.{ts,tsx}"],
   notify: true,
+  verbose: true,
 };

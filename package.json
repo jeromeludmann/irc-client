@@ -5,12 +5,11 @@
   "scripts": {
     "build": "webpack",
     "build:watch": "npm run build -- -w --progress --color",
-    "test": "jest --verbose",
+    "test": "jest",
     "test:watch": "npm run test -- --watch",
     "test:check-coverage": "open coverage/lcov-report/index.html",
     "start": "electron dist/main.js",
-    "clean": "rm -rf dist/ coverage/",
-    "postinstall": "jest --coverage"
+    "clean": "rm -rf dist/ coverage/"
   },
   "repository": {
     "type": "git",
