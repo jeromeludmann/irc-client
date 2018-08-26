@@ -4,30 +4,18 @@ import {
   goBackInputHistory,
   goForwardInputHistory,
 } from "@app/actions/ui";
-import { Action } from "redux";
 
 describe("reduce input history by dispatching", () => {
-  const makeRoutable = (action: Action<string>) => ({
-    ...action,
-    route: { serverKey: "server1", channelKey: "#channel" },
-  });
-
   test("enter value", () => {
     expect(
-      reduceHistory(
-        undefined,
-        makeRoutable(enterInputValue("I'm typing something")),
-      ),
+      reduceHistory(undefined, enterInputValue("I'm typing something")),
     ).toMatchSnapshot();
   });
 
   describe("go back", () => {
     test("at the begin of history", () => {
       expect(
-        reduceHistory(
-          { index: 0, values: [] },
-          makeRoutable(goBackInputHistory()),
-        ),
+        reduceHistory({ index: 0, values: [] }, goBackInputHistory()),
       ).toMatchSnapshot();
     });
 
@@ -35,7 +23,7 @@ describe("reduce input history by dispatching", () => {
       expect(
         reduceHistory(
           { index: 2, values: ["hello", "world"] },
-          makeRoutable(goBackInputHistory()),
+          goBackInputHistory(),
         ),
       ).toMatchSnapshot();
     });
@@ -46,7 +34,7 @@ describe("reduce input history by dispatching", () => {
       expect(
         reduceHistory(
           { index: 1, values: ["hello", "world"] },
-          makeRoutable(goForwardInputHistory()),
+          goForwardInputHistory(),
         ),
       ).toMatchSnapshot();
     });
@@ -55,7 +43,7 @@ describe("reduce input history by dispatching", () => {
       expect(
         reduceHistory(
           { index: 2, values: ["hello", "world"] },
-          makeRoutable(goForwardInputHistory()),
+          goForwardInputHistory(),
         ),
       ).toMatchSnapshot();
     });
