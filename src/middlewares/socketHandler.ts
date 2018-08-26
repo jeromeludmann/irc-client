@@ -82,7 +82,11 @@ const handlers: {
   },
 
   [SEND_RAW_MESSAGE]: (
-    { serverKey, payload, specificAction }: SendRawMessageAction<RoutedAction>,
+    {
+      payload,
+      route: { serverKey },
+      embeddedAction,
+    }: SendRawMessageAction<RoutedAction>,
     { dispatch }: Store<AppState, RoutedAction>,
   ) => {
     if (!connectedSockets.hasOwnProperty(serverKey)) {
@@ -101,8 +105,8 @@ const handlers: {
       ) + CRLF,
     );
 
-    if (specificAction !== undefined) {
-      dispatch(specificAction);
+    if (embeddedAction !== undefined) {
+      dispatch(embeddedAction);
     }
   },
 };

@@ -4,6 +4,7 @@ import {
   isChannel,
   BROADCAST_ACTIVE,
   RoutedAction,
+  BROADCAST_NONE,
 } from "@app/Route";
 import { Prefix, User, Server, isPrefixServer } from "@app/Message";
 import { SEND_RAW_MESSAGE, SendRawMessageAction } from "@app/actions/socket";
@@ -255,32 +256,8 @@ export const sendJoin = (
 ): SendRawMessageAction => ({
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("join", channel) },
-  serverKey,
-  specificAction: undefined,
-});
-
-// Send PRIVMSG
-
-export const SEND_PRIVMSG = "MESSAGE/SEND_PRIVMSG";
-
-export type SendPrivmsgAction = MessageAction<
-  typeof SEND_PRIVMSG,
-  { text: string }
->;
-
-export const sendPrivmsg = (
-  serverKey: string,
-  channel: string,
-  text: string,
-): SendRawMessageAction<SendPrivmsgAction> => ({
-  type: SEND_RAW_MESSAGE,
-  payload: { raw: getRawMessage("privmsg", channel, text) },
-  serverKey,
-  specificAction: {
-    type: SEND_PRIVMSG,
-    payload: { text },
-    route: { serverKey, channelKey: channel },
-  },
+  route: { serverKey, channelKey: BROADCAST_NONE },
+  embeddedAction: undefined,
 });
 
 // Send NICK
@@ -295,8 +272,8 @@ export const sendNick = (
 ): SendRawMessageAction => ({
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("nick", nick) },
-  serverKey,
-  specificAction: undefined,
+  route: { serverKey, channelKey: BROADCAST_NONE },
+  embeddedAction: undefined,
 });
 
 // Send PART
@@ -312,8 +289,8 @@ export const sendPart = (
 ): SendRawMessageAction => ({
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("part", channel, text) },
-  serverKey,
-  specificAction: undefined,
+  route: { serverKey, channelKey: BROADCAST_NONE },
+  embeddedAction: undefined,
 });
 
 // Send PING
@@ -328,8 +305,8 @@ export const sendPingToServer = (
 ): SendRawMessageAction => ({
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("ping", key) },
-  serverKey,
-  specificAction: undefined,
+  route: { serverKey, channelKey: BROADCAST_NONE },
+  embeddedAction: undefined,
 });
 
 // Send PONG
@@ -338,10 +315,17 @@ export const SEND_PONG_TO_SERVER = "MESSAGE/SEND_PONG_TO_SERVER";
 
 export type SendPongToServerAction = MessageAction<
   typeof SEND_PONG_TO_SERVER,
-  {
-    key: string;
-  }
+  { key: string }
 >;
+
+export const sendPongToServerEmbedded = (
+  serverKey: string,
+  key: string,
+): SendPongToServerAction => ({
+  type: SEND_PONG_TO_SERVER,
+  payload: { key },
+  route: { serverKey, channelKey: STATUS },
+});
 
 export const sendPongToServer = (
   serverKey: string,
@@ -349,12 +333,38 @@ export const sendPongToServer = (
 ): SendRawMessageAction<SendPongToServerAction> => ({
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("pong", key) },
-  serverKey,
-  specificAction: {
-    type: SEND_PONG_TO_SERVER,
-    payload: { key },
-    route: { serverKey, channelKey: STATUS },
-  },
+  route: { serverKey, channelKey: BROADCAST_NONE },
+  embeddedAction: sendPongToServerEmbedded(serverKey, key),
+});
+
+// Send PRIVMSG
+
+export const SEND_PRIVMSG = "MESSAGE/SEND_PRIVMSG";
+
+export type SendPrivmsgAction = MessageAction<
+  typeof SEND_PRIVMSG,
+  { text: string }
+>;
+
+export const sendPrivmsgEmbedded = (
+  serverKey: string,
+  channel: string,
+  text: string,
+): SendPrivmsgAction => ({
+  type: SEND_PRIVMSG,
+  payload: { text },
+  route: { serverKey, channelKey: channel },
+});
+
+export const sendPrivmsg = (
+  serverKey: string,
+  channel: string,
+  text: string,
+): SendRawMessageAction<SendPrivmsgAction> => ({
+  type: SEND_RAW_MESSAGE,
+  payload: { raw: getRawMessage("privmsg", channel, text) },
+  route: { serverKey, channelKey: BROADCAST_NONE },
+  embeddedAction: sendPrivmsgEmbedded(serverKey, channel, text),
 });
 
 // Send QUIT
@@ -369,8 +379,8 @@ export const sendQuit = (
 ): SendRawMessageAction => ({
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("quit", text) },
-  serverKey,
-  specificAction: undefined,
+  route: { serverKey, channelKey: BROADCAST_NONE },
+  embeddedAction: undefined,
 });
 
 // Send USER
@@ -386,6 +396,6 @@ export const sendUser = (
 ): SendRawMessageAction => ({
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("user", username, "0", "*", realname) },
-  serverKey,
-  specificAction: undefined,
+  route: { serverKey, channelKey: BROADCAST_NONE },
+  embeddedAction: undefined,
 });

@@ -1,4 +1,3 @@
-import { Action } from "redux";
 import {
   RAW,
   STATUS,
@@ -57,10 +56,9 @@ export const disconnectServer = (
 export const SEND_RAW_MESSAGE = "SOCKET/SEND_RAW_MESSAGE";
 
 export interface SendRawMessageAction<A = void>
-  extends Action<typeof SEND_RAW_MESSAGE> {
-  serverKey: string;
+  extends RoutedAction<typeof SEND_RAW_MESSAGE> {
   payload: { raw: string };
-  specificAction: A;
+  embeddedAction: A;
 }
 
 export const sendRawMessage = (
@@ -68,9 +66,9 @@ export const sendRawMessage = (
   message: string,
 ): SendRawMessageAction => ({
   type: SEND_RAW_MESSAGE,
-  serverKey,
   payload: { raw: message },
-  specificAction: undefined,
+  route: { serverKey, channelKey: BROADCAST_NONE },
+  embeddedAction: undefined,
 });
 
 // Socket lookup
