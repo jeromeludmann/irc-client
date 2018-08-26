@@ -54,15 +54,14 @@ _Note that `npm install` will also generate coverage report._
 
 ## Tasks
 
-| task                                   | command                  |
-| -------------------------------------- | ------------------------ |
-| Run compilation                        | `npm run build`          |
-| Run compilation in watch mode          | `npm run build:watch`    |
-| Run unit tests                         | `npm run test`           |
-| Run unit tests in watch mode           | `npm run test:watch`     |
-| Run unit tests and generate coverage   | `npm run test:coverage`  |
-| Run the application                    | `npm start`              |
-| Open a browser and check test coverage | `npm run check-coverage` |
+| task                                   | command                       |
+| -------------------------------------- | ----------------------------- |
+| Run compilation                        | `npm run build`               |
+| Run compilation in watch mode          | `npm run build:watch`         |
+| Run unit tests                         | `npm run test`                |
+| Run unit tests in watch mode           | `npm run test:watch`          |
+| Open a browser and check test coverage | `npm run test:check-coverage` |
+| Start the application                  | `npm start`                   |
 
 ## Run a local ircd
 
