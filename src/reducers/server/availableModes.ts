@@ -6,23 +6,23 @@ export type AvailableServerModesState = {
   channel: string[];
 };
 
-export type AvailableServerModesAction = ReplyMyInfoAction;
+export type AvailableModesAction = ReplyMyInfoAction;
 
 export const availableServerModesInitialState: AvailableServerModesState = {
   user: [],
-  channel: [],
+  channel: []
 };
 
 const handlers: { [action: string]: Reducer<AvailableServerModesState> } = {
   [RPL_MYINFO]: (_, action: ReplyMyInfoAction) => ({
     user: action.payload.availableUserModes,
-    channel: action.payload.availableChannelModes,
-  }),
+    channel: action.payload.availableChannelModes
+  })
 };
 
 export const reduceAvailableServerModes = (
   availableModes = availableServerModesInitialState,
-  action: AvailableServerModesAction,
+  action: AvailableModesAction
 ) =>
   handlers.hasOwnProperty(action.type)
     ? handlers[action.type](availableModes, action)

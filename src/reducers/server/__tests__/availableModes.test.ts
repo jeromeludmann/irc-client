@@ -10,10 +10,10 @@ describe("available server modes reducer", () => {
           availableChannelModes: [],
           availableUserModes: [],
           serverName: "server1",
-          version: "???",
+          version: "???"
         },
-        route: { serverKey: "server1", channelKey: "#channel" },
-      }),
+        route: { serverKey: "server1", channelKey: "#channel" }
+      })
     ).toMatchSnapshot();
   });
 });

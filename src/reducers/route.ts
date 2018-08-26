@@ -4,7 +4,7 @@ import {
   SWITCH_WINDOW,
   SwitchWindowAction,
   CLOSE_WINDOW,
-  CloseWindowAction,
+  CloseWindowAction
 } from "@app/actions/ui";
 import { ServersState } from "@app/reducers/servers";
 import { JoinAction, JOIN } from "@app/actions/messages";
@@ -13,13 +13,13 @@ export type RouteState = Route;
 
 export const routeInitialState: RouteState = {
   serverKey: "",
-  channelKey: STATUS,
+  channelKey: STATUS
 };
 
 type RouteReducer<A = Action> = (
   state: RouteState,
   action: A,
-  extraStates: { servers: ServersState },
+  extraStates: { servers: ServersState }
 ) => RouteState;
 
 const handlers: { [action: string]: RouteReducer } = {
@@ -35,7 +35,7 @@ const handlers: { [action: string]: RouteReducer } = {
       return keys.length > 1
         ? {
             serverKey: keys.filter(key => key !== route.serverKey)[0],
-            channelKey: STATUS,
+            channelKey: STATUS
           }
         : route;
     }
@@ -44,13 +44,13 @@ const handlers: { [action: string]: RouteReducer } = {
   },
 
   // TODO use extraStates and check if the given route exists
-  [SWITCH_WINDOW]: (_, action: SwitchWindowAction) => action.route,
+  [SWITCH_WINDOW]: (_, action: SwitchWindowAction) => action.route
 };
 
 export const reduceRoute = (
   routeState = routeInitialState,
   action: RoutedAction,
-  extraStates: { servers: ServersState },
+  extraStates: { servers: ServersState }
 ) =>
   handlers.hasOwnProperty(action.type)
     ? handlers[action.type](routeState, action, extraStates)

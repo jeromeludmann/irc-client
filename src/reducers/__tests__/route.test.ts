@@ -1,61 +1,58 @@
-import { reduceRoute, routeInitialState } from "@app/reducers/route";
+import { reduceRoute } from "@app/reducers/route";
 import { switchWindow, closeWindow } from "@app/actions/ui";
 import { serverInitialState } from "@app/reducers/server";
 import { messageCallbacks } from "@app/actions/messages";
 import { STATUS } from "@app/Route";
+import { serversInitialState } from "@app/reducers/servers";
 
-describe("route reducer", () => {
-  test("intializing", () => {
-    expect(reduceRoute(routeInitialState, { type: "" })).toMatchSnapshot();
-  });
-
-  describe("join", () => {
-    test("an user joins a channel", () => {
+describe("reduce route", () => {
+  describe("with join receveid", () => {
+    test("when an user joins a channel", () => {
       expect(
         reduceRoute(
-          routeInitialState,
+          undefined,
           messageCallbacks["JOIN"](
             "server1",
             { nick: "nick", user: "user", host: "host" },
-            ["#channel"],
+            ["#channel"]
           ),
-          { servers: { server1: serverInitialState } },
-        ),
+          { servers: { server1: serverInitialState } }
+        )
       ).toMatchSnapshot();
     });
 
-    test("I join a channel myself", () => {
+    test("when I join a channel myself", () => {
       expect(
         reduceRoute(
-          routeInitialState,
+          undefined,
           messageCallbacks["JOIN"](
             "server1",
             { nick: "nick", user: "user", host: "host" },
-            ["#channel"],
+            ["#channel"]
           ),
           {
             servers: {
               server1: {
                 ...serverInitialState,
-                user: { ...serverInitialState.user, nick: "nick" },
-              },
-            },
-          },
-        ),
+                user: { ...serverInitialState.user, nick: "nick" }
+              }
+            }
+          }
+        )
       ).toMatchSnapshot();
     });
   });
 
   describe("close window", () => {
-    test("status", () => {
+    test("on a status", () => {
       expect(
         reduceRoute(
           { serverKey: "server1", channelKey: STATUS },
           closeWindow({ serverKey: "server1", channelKey: STATUS }),
           {
-            servers: { server1: serverInitialState },
-          },
-        ),
+            servers: { server1: serverInitialState }
+          }
+        )
       ).toMatchSnapshot();
 
       expect(
@@ -65,40 +62,42 @@ describe("route reducer", () => {
           {
             servers: {
               server1: serverInitialState,
-              server2: serverInitialState,
-            },
-          },
-        ),
+              server2: serverInitialState
+            }
+          }
+        )
       ).toMatchSnapshot();
     });
 
-    test("channel", () => {
+    test("on a channel", () => {
       expect(
         reduceRoute(
           { serverKey: "server1", channelKey: "#channel" },
           closeWindow({ serverKey: "server1", channelKey: "#channel" }),
-          { servers: { server1: serverInitialState } },
-        ),
+          { servers: { server1: serverInitialState } }
+        )
       ).toMatchSnapshot();
     });
   });
 
   describe("switch window", () => {
-    test("status", () => {
+    test("on a status", () => {
       expect(
         reduceRoute(
-          routeInitialState,
+          undefined,
           switchWindow({ serverKey: "server1", channelKey: STATUS }),
-        ),
+          { servers: serversInitialState }
+        )
       ).toMatchSnapshot();
     });
 
-    test("channel", () => {
+    test("on a channel", () => {
       expect(
         reduceRoute(
-          routeInitialState,
+          undefined,
           switchWindow({ serverKey: "server1", channelKey: "#channel" }),
-        ),
+          { servers: serversInitialState }
+        )
       ).toMatchSnapshot();
     });
   });
