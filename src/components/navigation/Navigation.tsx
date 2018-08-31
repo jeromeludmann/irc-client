@@ -14,7 +14,7 @@ interface Props {
     channelKey: string;
   };
   onChannelButtonClick: (
-    { serverKey, channelKey }: { serverKey: string; channelKey: string },
+    { serverKey, channelKey }: { serverKey: string; channelKey: string }
   ) => void;
 }
 
@@ -53,11 +53,11 @@ export default class Navigation extends PureComponent<Props> {
   }
 
   private handleClick = (e: MouseEvent<HTMLButtonElement>) => {
-    const serverKey = e.currentTarget.getAttribute("data-server-key");
-    const channelKey = e.currentTarget.getAttribute("data-channel-key");
+    const serverKey = e.currentTarget.getAttribute("data-server-key") as string;
+    const channelKey = e.currentTarget.getAttribute(
+      "data-channel-key"
+    ) as string;
 
-    if (serverKey && channelKey) {
-      this.props.onChannelButtonClick({ serverKey, channelKey });
-    }
+    this.props.onChannelButtonClick({ serverKey, channelKey });
   };
 }
