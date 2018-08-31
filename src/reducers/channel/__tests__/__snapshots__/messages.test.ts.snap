@@ -1,0 +1,104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reduce channel messages by dispatching ERROR 1`] = `
+Array [
+  "error message",
+]
+`;
+
+exports[`reduce channel messages by dispatching JOIN 1`] = `
+Array [
+  "nick has joined #channel",
+]
+`;
+
+exports[`reduce channel messages by dispatching NOTICE from channel 1`] = `
+Array [
+  "-nick/#channel- notice from channel",
+]
+`;
+
+exports[`reduce channel messages by dispatching NOTICE from server 1`] = `
+Array [
+  "notice from server",
+]
+`;
+
+exports[`reduce channel messages by dispatching NOTICE from user 1`] = `
+Array [
+  "-nick- notice from user",
+]
+`;
+
+exports[`reduce channel messages by dispatching PART with message 1`] = `
+Array [
+  "nick has left #channel (Goodbye!)",
+]
+`;
+
+exports[`reduce channel messages by dispatching PART without message 1`] = `
+Array [
+  "nick has left #channel",
+]
+`;
+
+exports[`reduce channel messages by dispatching PING from server 1`] = `
+Array [
+  "Ping?",
+]
+`;
+
+exports[`reduce channel messages by dispatching PRIVMSG 1`] = `
+Array [
+  "nick: hello!",
+]
+`;
+
+exports[`reduce channel messages by dispatching RPL_MYINFO 1`] = `Array []`;
+
+exports[`reduce channel messages by dispatching connection closed 1`] = `
+Array [
+  "Disconnected from remote host.",
+]
+`;
+
+exports[`reduce channel messages by dispatching connection failed 1`] = `
+Array [
+  "Connection error",
+]
+`;
+
+exports[`reduce channel messages by dispatching print help about command 1`] = `
+Array [
+  "Usage: /msg <channel or nick> <text> - Sends a message to a channel or a nick",
+]
+`;
+
+exports[`reduce channel messages by dispatching print help by default 1`] = `
+Array [
+  "close - Closes the current window",
+  "help - Prints help about available commands",
+  "join - Joins a channel",
+  "msg - Sends a message to a channel or a nick",
+  "nick - Changes the current nick",
+  "part - Leaves the channel",
+  "server - Connects to a server",
+  "quit - Disconnects from the current server",
+  "raw - Sends a raw message",
+  "quote - Sends a raw message",
+  "Type /HELP <command> for more details.",
+]
+`;
+
+exports[`reduce channel messages by dispatching raw messages received 1`] = `
+Array [
+  "PRIVMSG #channel :hello",
+  "NICK :newNick",
+]
+`;
+
+exports[`reduce channel messages by dispatching send PONG to server 1`] = `
+Array [
+  "Pong!",
+]
+`;

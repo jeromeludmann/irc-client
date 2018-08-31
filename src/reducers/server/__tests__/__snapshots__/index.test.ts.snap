@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reduce server 1`] = `
+Object {
+  "availableModes": Object {
+    "channel": Array [],
+    "user": Array [],
+  },
+  "channels": Object {
+    "@raw": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 2,
+          "values": Array [
+            "/connect -n localhost",
+            "/connect localhost",
+          ],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@status": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 2,
+          "values": Array [
+            "/connect -n localhost",
+            "/connect localhost",
+          ],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+  },
+  "modes": Array [],
+  "name": "<unknown>",
+  "user": Object {
+    "nick": "",
+    "real": "",
+    "user": "",
+  },
+}
+`;

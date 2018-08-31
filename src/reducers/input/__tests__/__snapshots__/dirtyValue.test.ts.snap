@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reduce input dirty value by dispatching enter input value 1`] = `""`;
+
+exports[`reduce input dirty value by dispatching update input value anywhere in the history 1`] = `""`;
+
+exports[`reduce input dirty value by dispatching update input value at the end of history 1`] = `"hello"`;

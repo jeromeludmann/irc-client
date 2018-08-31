@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`channel selectors select input 1`] = `
+Object {
+  "dirtyValue": "",
+  "history": Object {
+    "index": 2,
+    "values": Array [
+      "/connect -n localhost",
+      "/connect localhost",
+    ],
+  },
+  "value": "",
+}
+`;
+
+exports[`channel selectors select messages 1`] = `Array []`;

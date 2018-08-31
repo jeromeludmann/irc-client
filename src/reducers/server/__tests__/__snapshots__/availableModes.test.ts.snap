@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`available server modes reducer RPL_MYINFO 1`] = `
+Object {
+  "channel": Array [],
+  "user": Array [],
+}
+`;

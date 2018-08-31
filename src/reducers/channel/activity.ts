@@ -1,6 +1,6 @@
 import { RoutedAction, BROADCAST_ACTIVE } from "@app/Route";
 import { RouteState } from "@app/reducers/route";
-import { SWITCH_WINDOW, SwitchWindowAction } from "@app/actions/ui";
+import { SWITCH_WINDOW } from "@app/actions/ui";
 import { UserState } from "@app/reducers/server/user";
 import { JoinAction, JOIN } from "@app/actions/messages";
 
@@ -14,10 +14,12 @@ type ActivityReducer<A = RoutedAction> = (
   extraStates: { route: RouteState; user: UserState },
 ) => ActivityState;
 
-const join: ActivityReducer<JoinAction> = (_, action, extraStates) =>
-  action.payload.user.nick !== extraStates.user.nick;
+const reducers: { [action: string]: ActivityReducer } = {
+  [JOIN]: (_, action: JoinAction, extraStates) =>
+    action.payload.user.nick !== extraStates.user.nick,
 
-const switchWindow: ActivityReducer<SwitchWindowAction> = () => false;
+  [SWITCH_WINDOW]: () => false,
+};
 
 const hasAnyActivity: ActivityReducer<RoutedAction> = (
   _,
@@ -28,11 +30,6 @@ const hasAnyActivity: ActivityReducer<RoutedAction> = (
     action.route.serverKey === extraStates.route.serverKey &&
     action.route.channelKey === extraStates.route.channelKey;
   return !sameRoute && action.route.channelKey !== BROADCAST_ACTIVE;
-};
-
-const reducers: { [action: string]: ActivityReducer } = {
-  [JOIN]: join,
-  [SWITCH_WINDOW]: switchWindow,
 };
 
 export const reduceActivity = (

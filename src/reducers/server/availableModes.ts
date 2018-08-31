@@ -1,31 +1,29 @@
-import { Action } from "redux";
-import { mapReducer } from "@app/reducers/_map";
+import { Reducer } from "redux";
 import { ReplyMyInfoAction, RPL_MYINFO } from "@app/actions/messages";
 
-export type ServerAvailableModesState = {
+export type AvailableServerModesState = {
   user: string[];
   channel: string[];
 };
 
-export const serverAvailableModesInitialState: ServerAvailableModesState = {
+export type AvailableModesAction = ReplyMyInfoAction;
+
+export const availableServerModesInitialState: AvailableServerModesState = {
   user: [],
-  channel: [],
+  channel: []
 };
 
-type AvailableModesReducer<A = Action> = (
-  state: ServerAvailableModesState,
-  action: A,
-) => ServerAvailableModesState;
-
-const replyMyInfo: AvailableModesReducer<ReplyMyInfoAction> = (_, action) => ({
-  user: action.payload.availableUserModes,
-  channel: action.payload.availableChannelModes,
-});
-
-const map: { [action: string]: AvailableModesReducer } = {
-  [RPL_MYINFO]: replyMyInfo,
+const handlers: { [action: string]: Reducer<AvailableServerModesState> } = {
+  [RPL_MYINFO]: (_, action: ReplyMyInfoAction) => ({
+    user: action.payload.availableUserModes,
+    channel: action.payload.availableChannelModes
+  })
 };
 
-export const reduceServerAvailableModes = mapReducer<ServerAvailableModesState>(
-  map,
-);
+export const reduceAvailableServerModes = (
+  availableModes = availableServerModesInitialState,
+  action: AvailableModesAction
+) =>
+  handlers.hasOwnProperty(action.type)
+    ? handlers[action.type](availableModes, action)
+    : availableModes;

@@ -10,6 +10,7 @@ export interface ServersState {
 
 export const serversInitialState: ServersState = {};
 
+// TODO rewrite me better
 export const reduceServers = (
   servers = serversInitialState,
   action: RoutedAction,
@@ -18,6 +19,7 @@ export const reduceServers = (
   if (action.type === CLOSE_WINDOW) {
     if (isStatus(action.route.channelKey)) {
       const isLastWindow = Object.keys(servers).length <= 1;
+
       if (!isLastWindow) {
         const updatedServers = { ...servers };
         delete updatedServers[action.route.serverKey];

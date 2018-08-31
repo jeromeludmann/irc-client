@@ -13,6 +13,8 @@ export const autoRouter: Middleware<{}, AppState> = ({
 }) => next => action => {
   if (!action.hasOwnProperty("route")) {
     action.route = selectRoute(getState());
+    // tslint:disable-next-line
+    console.log(`autoRouter: Route ${action.type} with ${action.route}`);
   }
 
   next(action);

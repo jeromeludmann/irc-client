@@ -1,4 +1,3 @@
-import { Action } from "redux";
 import {
   connectServer,
   disconnectServer,
@@ -18,11 +17,11 @@ import {
   sendNick,
 } from "@app/actions/messages";
 
-export type Command<A = Action<string>> = {
+export type Command = {
   description: string;
   syntax: string;
   regexp: RegExp;
-  callback: (route: Route, ...params: string[]) => A;
+  callback: (route: Route, ...params: string[]) => RoutedAction;
 };
 
 type CommandRegistry = { [command: string]: Command };

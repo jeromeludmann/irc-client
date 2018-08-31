@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`root reducer initializing with state 1`] = `
+Object {
+  "route": Object {
+    "channelKey": "@status",
+    "serverKey": "",
+  },
+  "servers": Object {},
+}
+`;
+
+exports[`root reducer initializing without state 1`] = `
+Object {
+  "route": Object {
+    "channelKey": "@status",
+    "serverKey": "",
+  },
+  "servers": Object {},
+}
+`;
