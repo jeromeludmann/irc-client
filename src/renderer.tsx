@@ -1,13 +1,13 @@
 import React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
-import { store } from "@app/store";
-import Layout from "@app/components/layout";
 import { injectGlobal } from "styled-components";
+import { store } from "@app/store";
+import { App } from "@app/components/App";
 
 render(
   <Provider store={store}>
-    <Layout />
+    <App />
   </Provider>,
   document.getElementById("root"),
 );
