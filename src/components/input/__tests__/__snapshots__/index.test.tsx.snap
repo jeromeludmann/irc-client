@@ -1,16 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Input component should render correctly 1`] = `
+exports[`Input container should render correctly 1`] = `
 ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <Input
-    onArrowDown={[MockFunction]}
-    onArrowUp={[MockFunction]}
-    onEnter={[MockFunction]}
-    onType={[MockFunction]}
-    value="hello"
-  />,
+  Symbol(enzyme.__unrendered__): <Connect(Input) />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
     "getNode": [Function],
@@ -23,12 +17,11 @@ ShallowWrapper {
     "key": undefined,
     "nodeType": "class",
     "props": Object {
-      "onChange": [Function],
-      "onKeyDown": [Function],
-      "onKeyPress": [Function],
-      "placeholder": "Your command/message here",
-      "type": "text",
-      "value": "hello",
+      "onArrowDown": [Function],
+      "onArrowUp": [Function],
+      "onEnter": [Function],
+      "onType": [Function],
+      "value": "",
     },
     "ref": null,
     "rendered": null,
@@ -40,12 +33,11 @@ ShallowWrapper {
       "key": undefined,
       "nodeType": "class",
       "props": Object {
-        "onChange": [Function],
-        "onKeyDown": [Function],
-        "onKeyPress": [Function],
-        "placeholder": "Your command/message here",
-        "type": "text",
-        "value": "hello",
+        "onArrowDown": [Function],
+        "onArrowUp": [Function],
+        "onEnter": [Function],
+        "onType": [Function],
+        "value": "",
       },
       "ref": null,
       "rendered": null,
@@ -56,6 +48,15 @@ ShallowWrapper {
     "adapter": ReactSixteenAdapter {
       "options": Object {
         "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+    "context": Object {
+      "store": Object {
+        "dispatch": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+        Symbol(observable): [Function],
       },
     },
   },
