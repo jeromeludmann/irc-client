@@ -19,7 +19,7 @@ ShallowWrapper {
     "props": Object {
       "onChannelButtonClick": [Function],
       "servers": Object {
-        "5yky7eyqwsb": Object {
+        "server1": Object {
           "availableModes": Object {
             "channel": Array [],
             "user": Array [],
@@ -67,7 +67,7 @@ ShallowWrapper {
       },
       "window": Object {
         "channelKey": "@status",
-        "serverKey": "5yky7eyqwsb",
+        "serverKey": "server1",
       },
     },
     "ref": null,
@@ -82,7 +82,7 @@ ShallowWrapper {
       "props": Object {
         "onChannelButtonClick": [Function],
         "servers": Object {
-          "5yky7eyqwsb": Object {
+          "server1": Object {
             "availableModes": Object {
               "channel": Array [],
               "user": Array [],
@@ -130,7 +130,7 @@ ShallowWrapper {
         },
         "window": Object {
           "channelKey": "@status",
-          "serverKey": "5yky7eyqwsb",
+          "serverKey": "server1",
         },
       },
       "ref": null,

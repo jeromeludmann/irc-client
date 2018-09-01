@@ -1,21 +1,21 @@
 import { reduce, rootInitialState } from "@app/reducers";
 
 describe("root reducer", () => {
-  test("initializing without state", () => {
+  it("should initialize without state", () => {
     expect(
       reduce(undefined, {
         type: "",
-        route: { serverKey: "server1", channelKey: "" },
-      }),
+        route: { serverKey: "server1", channelKey: "" }
+      })
     ).toMatchSnapshot();
   });
 
-  test("initializing with state", () => {
+  it("should initialize with state", () => {
     expect(
       reduce(rootInitialState, {
         type: "",
-        route: { serverKey: "server1", channelKey: "" },
-      }),
+        route: { serverKey: "server1", channelKey: "" }
+      })
     ).toMatchSnapshot();
   });
 });
