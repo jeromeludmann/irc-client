@@ -4,7 +4,7 @@ import {
   isChannel,
   BROADCAST_ACTIVE,
   RoutedAction,
-  BROADCAST_NONE,
+  BROADCAST_NONE
 } from "@app/Route";
 import { Prefix, User, Server, isPrefixServer } from "@app/Message";
 import { SEND_RAW_MESSAGE, SendRawMessageAction } from "@app/actions/socket";
@@ -19,10 +19,10 @@ interface MessageAction<T = string, P = {}> extends RoutedAction<T> {
 
 // ERROR received
 
-export const ERROR = "MESSAGE/ERROR";
+export const ERROR_RECEIVED = "MESSAGE/ERROR";
 
-export type ErrorAction = MessageAction<
-  typeof ERROR,
+export type ErrorReceivedAction = MessageAction<
+  typeof ERROR_RECEIVED,
   {
     message: string;
   }
@@ -30,10 +30,10 @@ export type ErrorAction = MessageAction<
 
 // JOIN received
 
-export const JOIN = "MESSAGE/JOIN";
+export const JOIN_RECEIVED = "MESSAGE/JOIN";
 
-export type JoinAction = MessageAction<
-  typeof JOIN,
+export type JoinReceivedAction = MessageAction<
+  typeof JOIN_RECEIVED,
   {
     user: User;
     channel: string;
@@ -42,10 +42,10 @@ export type JoinAction = MessageAction<
 
 // NICK received
 
-export const NICK = "MESSAGE/NICK";
+export const NICK_RECEIVED = "MESSAGE/NICK";
 
-export type NickAction = MessageAction<
-  typeof NICK,
+export type NickReceivedAction = MessageAction<
+  typeof NICK_RECEIVED,
   {
     user: User;
     nick: string;
@@ -54,20 +54,20 @@ export type NickAction = MessageAction<
 
 // NOTICE received
 
-export const NOTICE_FROM_SERVER = "MESSAGE/NOTICE_FROM_SERVER";
-export const NOTICE_FROM_CHANNEL = "MESSAGE/NOTICE_FROM_CHANNEL";
-export const NOTICE_FROM_USER = "MESSAGE/NOTICE_FROM_USER";
+export const NOTICE_FROM_SERVER_RECEIVED = "MESSAGE/NOTICE_FROM_SERVER";
+export const NOTICE_FROM_CHANNEL_RECEIVED = "MESSAGE/NOTICE_FROM_CHANNEL";
+export const NOTICE_FROM_USER_RECEIVED = "MESSAGE/NOTICE_FROM_USER";
 
-export type NoticeFromServerAction = MessageAction<
-  typeof NOTICE_FROM_SERVER,
+export type NoticeFromServerReceivedAction = MessageAction<
+  typeof NOTICE_FROM_SERVER_RECEIVED,
   {
     server: Server;
     text: string;
   }
 >;
 
-export type NoticeFromChannelAction = MessageAction<
-  typeof NOTICE_FROM_CHANNEL,
+export type NoticeFromChannelReceivedAction = MessageAction<
+  typeof NOTICE_FROM_CHANNEL_RECEIVED,
   {
     user: User;
     channel: string;
@@ -75,25 +75,25 @@ export type NoticeFromChannelAction = MessageAction<
   }
 >;
 
-export type NoticeFromUserAction = MessageAction<
-  typeof NOTICE_FROM_USER,
+export type NoticeFromUserReceivedAction = MessageAction<
+  typeof NOTICE_FROM_USER_RECEIVED,
   {
     user: User;
     text: string;
   }
 >;
 
-export type NoticeActions =
-  | NoticeFromServerAction
-  | NoticeFromChannelAction
-  | NoticeFromUserAction;
+export type NoticeReceivedActions =
+  | NoticeFromServerReceivedAction
+  | NoticeFromChannelReceivedAction
+  | NoticeFromUserReceivedAction;
 
 // PART received
 
-export const PART = "MESSAGE/PART";
+export const PART_RECEIVED = "MESSAGE/PART";
 
-export type PartAction = MessageAction<
-  typeof PART,
+export type PartReceivedAction = MessageAction<
+  typeof PART_RECEIVED,
   {
     user: User;
     channel: string;
@@ -103,10 +103,10 @@ export type PartAction = MessageAction<
 
 // PING received
 
-export const PING_FROM_SERVER = "MESSAGE/PING_FROM_SERVER";
+export const PING_FROM_SERVER_RECEIVED = "MESSAGE/PING_FROM_SERVER";
 
-export type PingFromServerAction = MessageAction<
-  typeof PING_FROM_SERVER,
+export type PingFromServerReceivedAction = MessageAction<
+  typeof PING_FROM_SERVER_RECEIVED,
   {
     key: string;
   }
@@ -114,10 +114,10 @@ export type PingFromServerAction = MessageAction<
 
 // PRIVMSG received
 
-export const PRIVMSG = "MESSAGE/PRIVMSG";
+export const PRIVMSG_RECEIVED = "MESSAGE/PRIVMSG";
 
-export type PrivmsgAction = MessageAction<
-  typeof PRIVMSG,
+export type PrivmsgReceivedAction = MessageAction<
+  typeof PRIVMSG_RECEIVED,
   {
     user: User;
     text: string;
@@ -126,10 +126,10 @@ export type PrivmsgAction = MessageAction<
 
 // RPL_MYINFO received
 
-export const RPL_MYINFO = "MESSAGE/RPL_MYINFO";
+export const RPL_MYINFO_RECEIVED = "MESSAGE/RPL_MYINFO";
 
-export type ReplyMyInfoAction = MessageAction<
-  typeof RPL_MYINFO,
+export type ReplyMyInfoReceivedAction = MessageAction<
+  typeof RPL_MYINFO_RECEIVED,
   {
     serverName: string;
     version: string;
@@ -140,94 +140,94 @@ export type ReplyMyInfoAction = MessageAction<
 
 // Message received callbacks
 
-export const messageCallbacks: {
+export const messagesReceived: {
   [command: string]: (
     serverKey: string,
     prefix: Prefix | void,
-    params: string[],
+    params: string[]
   ) => MessageAction;
 } = {
-  ERROR: (serverKey, _: void, params): ErrorAction => ({
-    type: ERROR,
+  ERROR: (serverKey, _: void, params): ErrorReceivedAction => ({
+    type: ERROR_RECEIVED,
     payload: { message: params[0] },
-    route: { serverKey, channelKey: BROADCAST_ALL },
+    route: { serverKey, channelKey: BROADCAST_ALL }
   }),
 
-  JOIN: (serverKey, user: User, params): JoinAction => ({
-    type: JOIN,
+  JOIN: (serverKey, user: User, params): JoinReceivedAction => ({
+    type: JOIN_RECEIVED,
     payload: { user, channel: params[0] },
-    route: { serverKey, channelKey: params[0] },
+    route: { serverKey, channelKey: params[0] }
   }),
 
-  NICK: (serverKey, user: User, params): NickAction => ({
-    type: NICK,
+  NICK: (serverKey, user: User, params): NickReceivedAction => ({
+    type: NICK_RECEIVED,
     payload: { user, nick: params[0] },
-    route: { serverKey, channelKey: STATUS },
+    route: { serverKey, channelKey: STATUS }
   }),
 
-  NOTICE: (serverKey, prefix: Prefix, params): NoticeActions => {
+  NOTICE: (serverKey, prefix: Prefix, params): NoticeReceivedActions => {
     if (isPrefixServer(prefix)) {
       return {
-        type: NOTICE_FROM_SERVER,
+        type: NOTICE_FROM_SERVER_RECEIVED,
         payload: { server: prefix as Server, text: params[1] },
-        route: { serverKey, channelKey: STATUS },
+        route: { serverKey, channelKey: STATUS }
       };
     }
 
     return isChannel(params[0])
       ? {
-          type: NOTICE_FROM_CHANNEL,
+          type: NOTICE_FROM_CHANNEL_RECEIVED,
           payload: {
             user: prefix as User,
             channel: params[0],
-            text: params[1],
+            text: params[1]
           },
-          route: { serverKey, channelKey: params[0] },
+          route: { serverKey, channelKey: params[0] }
         }
       : {
-          type: NOTICE_FROM_USER,
+          type: NOTICE_FROM_USER_RECEIVED,
           payload: { user: prefix as User, text: params[1] },
-          route: { serverKey, channelKey: BROADCAST_ACTIVE },
+          route: { serverKey, channelKey: BROADCAST_ACTIVE }
         };
   },
 
-  PART: (serverKey, user: User, params): PartAction => ({
-    type: PART,
+  PART: (serverKey, user: User, params): PartReceivedAction => ({
+    type: PART_RECEIVED,
     payload: { user, channel: params[0], message: params[1] },
-    route: { serverKey, channelKey: params[0] },
+    route: { serverKey, channelKey: params[0] }
   }),
 
-  PING: (serverKey, _server: Server, params): PingFromServerAction => ({
-    type: PING_FROM_SERVER,
+  PING: (serverKey, _server: Server, params): PingFromServerReceivedAction => ({
+    type: PING_FROM_SERVER_RECEIVED,
     payload: { key: params.join(" ") },
-    route: { serverKey, channelKey: STATUS },
+    route: { serverKey, channelKey: STATUS }
   }),
 
-  PRIVMSG: (serverKey, user: User, params): PrivmsgAction => ({
-    type: PRIVMSG,
+  PRIVMSG: (serverKey, user: User, params): PrivmsgReceivedAction => ({
+    type: PRIVMSG_RECEIVED,
     payload: { user, text: params[1] },
     route: {
       serverKey,
-      channelKey: isChannel(params[0]) ? params[0] : user.nick,
-    },
+      channelKey: isChannel(params[0]) ? params[0] : user.nick
+    }
   }),
 
-  "004": (serverKey, _server: Server, params): ReplyMyInfoAction => {
+  "004": (serverKey, _server: Server, params): ReplyMyInfoReceivedAction => {
     const [, serverName, version] = params;
     const availableUserModes = params[3].split("");
     const availableChannelModes = params[4].split("");
 
     return {
-      type: RPL_MYINFO,
+      type: RPL_MYINFO_RECEIVED,
       payload: {
         serverName,
         version,
         availableUserModes,
-        availableChannelModes,
+        availableChannelModes
       },
-      route: { serverKey, channelKey: STATUS },
+      route: { serverKey, channelKey: STATUS }
     };
-  },
+  }
 };
 
 //
@@ -252,12 +252,12 @@ const getRawMessage = (command: string, ...params: string[]): string => {
 
 export const sendJoin = (
   serverKey: string,
-  channel: string,
+  channel: string
 ): SendRawMessageAction => ({
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("join", channel) },
   route: { serverKey, channelKey: BROADCAST_NONE },
-  embeddedAction: undefined,
+  embeddedAction: undefined
 });
 
 // Send NICK
@@ -268,12 +268,12 @@ export const sendJoin = (
 
 export const sendNick = (
   serverKey: string,
-  nick: string,
+  nick: string
 ): SendRawMessageAction => ({
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("nick", nick) },
   route: { serverKey, channelKey: BROADCAST_NONE },
-  embeddedAction: undefined,
+  embeddedAction: undefined
 });
 
 // Send PART
@@ -285,12 +285,12 @@ export const sendNick = (
 export const sendPart = (
   serverKey: string,
   channel: string,
-  text: string = "",
+  text: string = ""
 ): SendRawMessageAction => ({
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("part", channel, text) },
   route: { serverKey, channelKey: BROADCAST_NONE },
-  embeddedAction: undefined,
+  embeddedAction: undefined
 });
 
 // Send PING
@@ -301,12 +301,12 @@ export const sendPart = (
 
 export const sendPingToServer = (
   serverKey: string,
-  key: string,
+  key: string
 ): SendRawMessageAction => ({
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("ping", key) },
   route: { serverKey, channelKey: BROADCAST_NONE },
-  embeddedAction: undefined,
+  embeddedAction: undefined
 });
 
 // Send PONG
@@ -320,21 +320,21 @@ export type SendPongToServerAction = MessageAction<
 
 export const sendPongToServerEmbedded = (
   serverKey: string,
-  key: string,
+  key: string
 ): SendPongToServerAction => ({
   type: SEND_PONG_TO_SERVER,
   payload: { key },
-  route: { serverKey, channelKey: STATUS },
+  route: { serverKey, channelKey: STATUS }
 });
 
 export const sendPongToServer = (
   serverKey: string,
-  key: string,
+  key: string
 ): SendRawMessageAction<SendPongToServerAction> => ({
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("pong", key) },
   route: { serverKey, channelKey: BROADCAST_NONE },
-  embeddedAction: sendPongToServerEmbedded(serverKey, key),
+  embeddedAction: sendPongToServerEmbedded(serverKey, key)
 });
 
 // Send PRIVMSG
@@ -349,22 +349,22 @@ export type SendPrivmsgAction = MessageAction<
 export const sendPrivmsgEmbedded = (
   serverKey: string,
   channel: string,
-  text: string,
+  text: string
 ): SendPrivmsgAction => ({
   type: SEND_PRIVMSG,
   payload: { text },
-  route: { serverKey, channelKey: channel },
+  route: { serverKey, channelKey: channel }
 });
 
 export const sendPrivmsg = (
   serverKey: string,
   channel: string,
-  text: string,
+  text: string
 ): SendRawMessageAction<SendPrivmsgAction> => ({
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("privmsg", channel, text) },
   route: { serverKey, channelKey: BROADCAST_NONE },
-  embeddedAction: sendPrivmsgEmbedded(serverKey, channel, text),
+  embeddedAction: sendPrivmsgEmbedded(serverKey, channel, text)
 });
 
 // Send QUIT
@@ -375,12 +375,12 @@ export const sendPrivmsg = (
 
 export const sendQuit = (
   serverKey: string,
-  text: string = "",
+  text: string = ""
 ): SendRawMessageAction => ({
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("quit", text) },
   route: { serverKey, channelKey: BROADCAST_NONE },
-  embeddedAction: undefined,
+  embeddedAction: undefined
 });
 
 // Send USER
@@ -392,10 +392,10 @@ export const sendQuit = (
 export const sendUser = (
   serverKey: string,
   username: string,
-  realname: string,
+  realname: string
 ): SendRawMessageAction => ({
   type: SEND_RAW_MESSAGE,
   payload: { raw: getRawMessage("user", username, "0", "*", realname) },
   route: { serverKey, channelKey: BROADCAST_NONE },
-  embeddedAction: undefined,
+  embeddedAction: undefined
 });

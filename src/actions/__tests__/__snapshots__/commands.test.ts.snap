@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`commands actions should be able to call /close 1`] = `
+Object {
+  "route": Object {
+    "channelKey": "#channel",
+    "serverKey": "server1",
+  },
+  "type": "UI/CLOSE_WINDOW",
+}
+`;
+
+exports[`commands actions should be able to call /join 1`] = `
+Object {
+  "embeddedAction": undefined,
+  "payload": Object {
+    "raw": "JOIN #channel",
+  },
+  "route": Object {
+    "channelKey": "@none",
+    "serverKey": "server1",
+  },
+  "type": "SOCKET/SEND_RAW_MESSAGE",
+}
+`;
+
+exports[`commands actions should be able to call /msg 1`] = `
+Object {
+  "embeddedAction": Object {
+    "payload": Object {
+      "text": "hello",
+    },
+    "route": Object {
+      "channelKey": "#channel",
+      "serverKey": "server1",
+    },
+    "type": "MESSAGE/SEND_PRIVMSG",
+  },
+  "payload": Object {
+    "raw": "PRIVMSG #channel hello",
+  },
+  "route": Object {
+    "channelKey": "@none",
+    "serverKey": "server1",
+  },
+  "type": "SOCKET/SEND_RAW_MESSAGE",
+}
+`;
+
+exports[`commands actions should be able to call /nick 1`] = `
+Object {
+  "embeddedAction": undefined,
+  "payload": Object {
+    "raw": "NICK new_nick",
+  },
+  "route": Object {
+    "channelKey": "@none",
+    "serverKey": "server1",
+  },
+  "type": "SOCKET/SEND_RAW_MESSAGE",
+}
+`;
+
+exports[`commands actions should be able to call /part 1`] = `
+Object {
+  "embeddedAction": undefined,
+  "payload": Object {
+    "raw": "PART #channel Goodbye!",
+  },
+  "route": Object {
+    "channelKey": "@none",
+    "serverKey": "server1",
+  },
+  "type": "SOCKET/SEND_RAW_MESSAGE",
+}
+`;
+
+exports[`commands actions should be able to call /quit 1`] = `
+Object {
+  "payload": Object {
+    "quitMessage": "Goodbye!",
+  },
+  "route": Object {
+    "channelKey": "@none",
+    "serverKey": "server1",
+  },
+  "type": "SOCKET/DISCONNECT_SERVER",
+}
+`;
+
+exports[`commands actions should be able to call /raw 1`] = `
+Object {
+  "embeddedAction": undefined,
+  "payload": Object {
+    "raw": "PRIVMSG #channel :hello world",
+  },
+  "route": Object {
+    "channelKey": "@none",
+    "serverKey": "server1",
+  },
+  "type": "SOCKET/SEND_RAW_MESSAGE",
+}
+`;
+
+exports[`commands actions should be able to call /server with option -n 1`] = `
+Object {
+  "payload": Object {
+    "host": "6667",
+    "newConnection": false,
+    "port": 6667,
+  },
+  "route": Object {
+    "channelKey": "@none",
+    "serverKey": "server1",
+  },
+  "type": "SOCKET/CONNECT_SERVER",
+}
+`;
+
+exports[`commands actions should be able to call /server without option 1`] = `
+Object {
+  "payload": Object {
+    "host": "irc.network",
+    "newConnection": true,
+    "port": 6667,
+  },
+  "route": Object {
+    "channelKey": "@none",
+    "serverKey": "server1",
+  },
+  "type": "SOCKET/CONNECT_SERVER",
+}
+`;
