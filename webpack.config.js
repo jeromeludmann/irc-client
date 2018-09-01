@@ -2,7 +2,7 @@ const path = require("path");
 
 const mode = "development";
 
-const devtool = "cheap-module-eval-source-map";
+const devtool = "eval-source-map";
 
 const resolve = {
   extensions: [".ts", ".tsx", ".js"],
