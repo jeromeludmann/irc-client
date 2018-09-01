@@ -1,12 +1,12 @@
 import { Reducer } from "redux";
-import { ReplyMyInfoAction, RPL_MYINFO } from "@app/actions/messages";
+import { ReplyMyInfoReceivedAction, RPL_MYINFO_RECEIVED } from "@app/actions/messages";
 
 export type AvailableServerModesState = {
   user: string[];
   channel: string[];
 };
 
-export type AvailableModesAction = ReplyMyInfoAction;
+export type AvailableModesAction = ReplyMyInfoReceivedAction;
 
 export const availableServerModesInitialState: AvailableServerModesState = {
   user: [],
@@ -14,7 +14,7 @@ export const availableServerModesInitialState: AvailableServerModesState = {
 };
 
 const handlers: { [action: string]: Reducer<AvailableServerModesState> } = {
-  [RPL_MYINFO]: (_, action: ReplyMyInfoAction) => ({
+  [RPL_MYINFO_RECEIVED]: (_, action: ReplyMyInfoReceivedAction) => ({
     user: action.payload.availableUserModes,
     channel: action.payload.availableChannelModes
   })

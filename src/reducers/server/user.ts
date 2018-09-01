@@ -1,5 +1,5 @@
 import { Action, Reducer } from "redux";
-import { NickAction, NICK } from "@app/actions/messages";
+import { NickReceivedAction, NICK_RECEIVED } from "@app/actions/messages";
 
 export interface UserState {
   nick: string;
@@ -14,7 +14,7 @@ export const userInitialState: UserState = {
 };
 
 const handlers: { [action: string]: Reducer } = {
-  [NICK]: (user, action: NickAction) =>
+  [NICK_RECEIVED]: (user, action: NickReceivedAction) =>
     action.payload.user.nick === user.nick
       ? { ...user, nick: action.payload.nick }
       : user,
