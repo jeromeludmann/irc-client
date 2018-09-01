@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`messages should receive PRIVMSG 1`] = `
+exports[`messages actions should receive PRIVMSG 1`] = `
 Object {
   "payload": Object {
     "text": "hello world",
@@ -18,7 +18,7 @@ Object {
 }
 `;
 
-exports[`messages should send PART with message 1`] = `
+exports[`messages actions should send PART with message 1`] = `
 Object {
   "embeddedAction": undefined,
   "payload": Object {
@@ -32,7 +32,7 @@ Object {
 }
 `;
 
-exports[`messages should send PART without message 1`] = `
+exports[`messages actions should send PART without message 1`] = `
 Object {
   "embeddedAction": undefined,
   "payload": Object {
@@ -46,7 +46,7 @@ Object {
 }
 `;
 
-exports[`messages should send PING 1`] = `
+exports[`messages actions should send PING 1`] = `
 Object {
   "embeddedAction": undefined,
   "payload": Object {
@@ -60,7 +60,7 @@ Object {
 }
 `;
 
-exports[`messages should send PONG 1`] = `
+exports[`messages actions should send PONG 1`] = `
 Object {
   "embeddedAction": Object {
     "payload": Object {
@@ -83,7 +83,7 @@ Object {
 }
 `;
 
-exports[`messages should send QUIT with message 1`] = `
+exports[`messages actions should send QUIT with message 1`] = `
 Object {
   "embeddedAction": undefined,
   "payload": Object {
@@ -97,7 +97,7 @@ Object {
 }
 `;
 
-exports[`messages should send QUIT without message 1`] = `
+exports[`messages actions should send QUIT without message 1`] = `
 Object {
   "embeddedAction": undefined,
   "payload": Object {
@@ -111,7 +111,7 @@ Object {
 }
 `;
 
-exports[`messages should send USER 1`] = `
+exports[`messages actions should send USER 1`] = `
 Object {
   "embeddedAction": undefined,
   "payload": Object {

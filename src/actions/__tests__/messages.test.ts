@@ -7,7 +7,7 @@ import {
   sendUser
 } from "@app/actions/messages";
 
-describe("messages", () => {
+describe("messages actions", () => {
   it("should receive PRIVMSG", () => {
     expect(
       messagesReceived["PRIVMSG"](
