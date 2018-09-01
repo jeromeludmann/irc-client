@@ -8,9 +8,9 @@ export interface UserState {
 }
 
 export const userInitialState: UserState = {
-  nick: "",
-  user: "",
-  real: "",
+  nick: "default_nick", // TODO
+  user: "default_user", // TODO
+  real: "default_name", // TODO
 };
 
 const handlers: { [action: string]: Reducer } = {
