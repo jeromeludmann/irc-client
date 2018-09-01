@@ -1,5 +1,5 @@
 import { ServerState, reduceServer } from "@app/reducers/server";
-import { RoutedAction, isStatus } from "@app/Route";
+import { RoutedAction, isStatus, isRaw } from "@app/Route";
 import { RouteState } from "@app/reducers/route";
 import { CLOSE_WINDOW } from "@app/actions/ui";
 import { LOOKUP_SUCCESS, LOOKUP_FAILED } from "@app/actions/socket";
@@ -14,10 +14,10 @@ export const serversInitialState: ServersState = {};
 export const reduceServers = (
   servers = serversInitialState,
   action: RoutedAction,
-  extraStates: { route: RouteState },
+  extraStates: { route: RouteState }
 ): ServersState => {
   if (action.type === CLOSE_WINDOW) {
-    if (isStatus(action.route.channelKey)) {
+    if (isStatus(action.route.channelKey) || isRaw(action.route.channelKey)) {
       const isLastWindow = Object.keys(servers).length <= 1;
 
       if (!isLastWindow) {
@@ -35,8 +35,8 @@ export const reduceServers = (
         [action.route.serverKey]: reduceServer(
           servers[action.route.serverKey],
           action,
-          extraStates,
-        ),
+          extraStates
+        )
       }
     : servers;
 };
