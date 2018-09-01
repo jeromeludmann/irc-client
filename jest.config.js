@@ -1,3 +1,10 @@
+const coverageForPureParts = {
+  branches: 100,
+  functions: 100,
+  lines: 100,
+  statements: 100
+};
+
 module.exports = {
   roots: ["<rootDir>/src"],
   transform: {
@@ -10,18 +17,16 @@ module.exports = {
   },
   setupTestFrameworkScriptFile: "<rootDir>/jest.setup.ts",
   collectCoverage: true,
-  collectCoverageFrom: [
-    "<rootDir>/src/actions/**/*.{ts,tsx}",
-    "<rootDir>/src/components/**/*.{ts,tsx}",
-    "<rootDir>/src/reducers/**/*.{ts,tsx}"
-  ],
+  collectCoverageFrom: ["<rootDir>/src/**/*.{ts,tsx}"],
   coverageThreshold: {
     global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80
-    }
-  },
-  bail: true // stop tests after failure
+      branches: 50,
+      functions: 50,
+      lines: 50,
+      statements: 50
+    },
+    "./src/actions/": coverageForPureParts,
+    "./src/components/": coverageForPureParts,
+    "./src/reducers/": coverageForPureParts
+  }
 };
