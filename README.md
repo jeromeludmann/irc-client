@@ -134,8 +134,9 @@ For instance, after running the app, you can connect it with `/connect localhost
 
 ## Tests
 
-- Continue the components/reducers unit tests
-- Storybook with webpack 4
+- Add additional tests for:
+  - redux middlewares
+  - helpers
 
 ## Performances
 
