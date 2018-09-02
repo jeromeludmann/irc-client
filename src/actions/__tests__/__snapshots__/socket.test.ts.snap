@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`socket actions should generate ConnectServerAction with a new connection 1`] = `
+Object {
+  "payload": Object {
+    "host": "irc.network",
+    "newConnection": true,
+    "port": 6667,
+  },
+  "route": Object {
+    "channelKey": "@none",
+    "serverKey": "server1",
+  },
+  "type": "SOCKET/CONNECT_SERVER",
+}
+`;
+
+exports[`socket actions should generate ConnectServerAction with the existing connection 1`] = `
+Object {
+  "payload": Object {
+    "host": "irc.network",
+    "newConnection": false,
+    "port": 6667,
+  },
+  "route": Object {
+    "channelKey": "@none",
+    "serverKey": "server1",
+  },
+  "type": "SOCKET/CONNECT_SERVER",
+}
+`;
+
+exports[`socket actions should generate ConnectionEstablishedAction 1`] = `
+Object {
+  "route": Object {
+    "channelKey": "@status",
+    "serverKey": "server1",
+  },
+  "type": "SOCKET/CONNECTION_ESTABLISHED",
+}
+`;
+
+exports[`socket actions should generate LookupFailedAction 1`] = `
+Object {
+  "payload": Object {
+    "error": [Error: error while looking up],
+  },
+  "route": Object {
+    "channelKey": "@status",
+    "serverKey": "server1",
+  },
+  "serverKey": "server1",
+  "type": "SOCKET/LOOKUP_FAILED",
+}
+`;

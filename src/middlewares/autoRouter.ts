@@ -9,12 +9,10 @@ import { AppState } from "@app/reducers";
  * Useful to ensure that an action will always be routed in the reducers.
  */
 export const autoRouter: Middleware<{}, AppState> = ({
-  getState,
+  getState
 }) => next => action => {
   if (!action.hasOwnProperty("route")) {
     action.route = selectRoute(getState());
-    // tslint:disable-next-line
-    console.log(`autoRouter: Route ${action.type} with ${action.route}`);
   }
 
   next(action);

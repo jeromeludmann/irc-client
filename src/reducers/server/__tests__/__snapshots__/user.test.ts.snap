@@ -2,9 +2,9 @@
 
 exports[`reduce user receive NICK 1`] = `
 Object {
-  "nick": "",
-  "real": "",
-  "user": "",
+  "nick": "default_nick",
+  "real": "default_name",
+  "user": "default_user",
 }
 `;
 
@@ -18,8 +18,8 @@ Object {
 
 exports[`reduce user without action 1`] = `
 Object {
-  "nick": "",
-  "real": "",
-  "user": "",
+  "nick": "default_nick",
+  "real": "default_name",
+  "user": "default_user",
 }
 `;

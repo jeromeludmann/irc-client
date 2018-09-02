@@ -5,7 +5,7 @@ import {
   receiveRawMessages,
 } from "@app/actions/socket";
 import {
-  messageCallbacks,
+  messagesReceived,
   sendPongToServerEmbedded,
   sendPrivmsgEmbedded,
 } from "@app/actions/messages";
@@ -43,7 +43,7 @@ describe("reduce channel messages by dispatching", () => {
     expect(
       reduceMessages(
         undefined,
-        messageCallbacks["ERROR"]("server1", undefined, ["error message"]),
+        messagesReceived["ERROR"]("server1", undefined, ["error message"]),
         extraParams,
       ),
     ).toMatchSnapshot();
@@ -53,7 +53,7 @@ describe("reduce channel messages by dispatching", () => {
     expect(
       reduceMessages(
         undefined,
-        messageCallbacks["JOIN"]("server1", user, ["#channel"]),
+        messagesReceived["JOIN"]("server1", user, ["#channel"]),
         extraParams,
       ),
     ).toMatchSnapshot();
@@ -64,7 +64,7 @@ describe("reduce channel messages by dispatching", () => {
       expect(
         reduceMessages(
           undefined,
-          messageCallbacks["NOTICE"]("server1", "server.prefix", [
+          messagesReceived["NOTICE"]("server1", "server.prefix", [
             "",
             "notice from server",
           ]),
@@ -77,7 +77,7 @@ describe("reduce channel messages by dispatching", () => {
       expect(
         reduceMessages(
           undefined,
-          messageCallbacks["NOTICE"]("server1", user, [
+          messagesReceived["NOTICE"]("server1", user, [
             "#channel",
             "notice from channel",
           ]),
@@ -90,7 +90,7 @@ describe("reduce channel messages by dispatching", () => {
       expect(
         reduceMessages(
           undefined,
-          messageCallbacks["NOTICE"]("server1", user, [
+          messagesReceived["NOTICE"]("server1", user, [
             "nick",
             "notice from user",
           ]),
@@ -105,7 +105,7 @@ describe("reduce channel messages by dispatching", () => {
       expect(
         reduceMessages(
           undefined,
-          messageCallbacks["PART"]("server1", user, ["#channel"]),
+          messagesReceived["PART"]("server1", user, ["#channel"]),
           extraParams,
         ),
       ).toMatchSnapshot();
@@ -115,7 +115,7 @@ describe("reduce channel messages by dispatching", () => {
       expect(
         reduceMessages(
           undefined,
-          messageCallbacks["PART"]("server1", user, ["#channel", "Goodbye!"]),
+          messagesReceived["PART"]("server1", user, ["#channel", "Goodbye!"]),
           extraParams,
         ),
       ).toMatchSnapshot();
@@ -171,7 +171,7 @@ describe("reduce channel messages by dispatching", () => {
       expect(
         reduceMessages(
           undefined,
-          messageCallbacks["PING"]("server1", "server.prefix", ["key"]),
+          messagesReceived["PING"]("server1", "server.prefix", ["key"]),
           extraParams,
         ),
       ).toMatchSnapshot();
@@ -182,7 +182,7 @@ describe("reduce channel messages by dispatching", () => {
     expect(
       reduceMessages(
         undefined,
-        messageCallbacks["PRIVMSG"]("server1", user, ["#channel", "hello!"]),
+        messagesReceived["PRIVMSG"]("server1", user, ["#channel", "hello!"]),
         extraParams,
       ),
     ).toMatchSnapshot();
@@ -192,7 +192,7 @@ describe("reduce channel messages by dispatching", () => {
     expect(
       reduceMessages(
         undefined,
-        messageCallbacks["004"]("server1", "server.prefix", [
+        messagesReceived["004"]("server1", "server.prefix", [
           "",
           "serverName",
           "version",

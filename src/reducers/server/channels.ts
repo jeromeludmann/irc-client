@@ -17,7 +17,7 @@ import {
 import { RouteState } from "@app/reducers/route";
 import { UserState } from "@app/reducers/server/user";
 import { CLOSE_WINDOW, CloseWindowAction } from "@app/actions/ui";
-import { JOIN, PRIVMSG } from "@app/actions/messages";
+import { JOIN_RECEIVED, PRIVMSG_RECEIVED } from "@app/actions/messages";
 
 export interface ChannelsState {
   [key: string]: ChannelState;
@@ -103,8 +103,8 @@ export const reduceChannels = (
 
   if (
     channels.hasOwnProperty(channelKey) ||
-    action.type === PRIVMSG ||
-    action.type === JOIN
+    action.type === PRIVMSG_RECEIVED ||
+    action.type === JOIN_RECEIVED
   ) {
     return {
       ...channels,

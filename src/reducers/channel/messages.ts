@@ -7,21 +7,21 @@ import {
   RAW_MESSAGES_RECEIVED,
 } from "@app/actions/socket";
 import {
-  ErrorAction,
-  JoinAction,
-  PartAction,
-  PrivmsgAction,
-  NoticeFromServerAction,
-  NoticeFromChannelAction,
-  NoticeFromUserAction,
-  ERROR,
-  JOIN,
-  NOTICE_FROM_SERVER,
-  NOTICE_FROM_CHANNEL,
-  NOTICE_FROM_USER,
-  PART,
-  PRIVMSG,
-  PING_FROM_SERVER,
+  ErrorReceivedAction,
+  JoinReceivedAction,
+  PartReceivedAction,
+  PrivmsgReceivedAction,
+  NoticeFromServerReceivedAction,
+  NoticeFromChannelReceivedAction,
+  NoticeFromUserReceivedAction,
+  ERROR_RECEIVED,
+  JOIN_RECEIVED,
+  NOTICE_FROM_SERVER_RECEIVED,
+  NOTICE_FROM_CHANNEL_RECEIVED,
+  NOTICE_FROM_USER_RECEIVED,
+  PART_RECEIVED,
+  PRIVMSG_RECEIVED,
+  PING_FROM_SERVER_RECEIVED,
   SEND_PONG_TO_SERVER,
   SEND_PRIVMSG,
   SendPrivmsgAction,
@@ -58,32 +58,32 @@ const handlers: { [action: string]: MessagesReducer } = {
     { payload: { message } }: ConnectionFailedAction,
   ) => [...messages, message],
 
-  [ERROR]: (messages, { payload: { message } }: ErrorAction) => [
+  [ERROR_RECEIVED]: (messages, { payload: { message } }: ErrorReceivedAction) => [
     ...messages,
     message,
   ],
 
-  [JOIN]: (messages, { payload: { user, channel } }: JoinAction) => [
+  [JOIN_RECEIVED]: (messages, { payload: { user, channel } }: JoinReceivedAction) => [
     ...messages,
     `${user.nick} has joined ${channel}`,
   ],
 
-  [NOTICE_FROM_SERVER]: (messages, action: NoticeFromServerAction) => [
+  [NOTICE_FROM_SERVER_RECEIVED]: (messages, action: NoticeFromServerReceivedAction) => [
     ...messages,
     action.payload.text,
   ],
 
-  [NOTICE_FROM_CHANNEL]: (
+  [NOTICE_FROM_CHANNEL_RECEIVED]: (
     messages,
-    { payload: { user, text }, route: { channelKey } }: NoticeFromChannelAction,
+    { payload: { user, text }, route: { channelKey } }: NoticeFromChannelReceivedAction,
   ) => [...messages, `-${user.nick}/${channelKey}- ${text}`],
 
-  [NOTICE_FROM_USER]: (
+  [NOTICE_FROM_USER_RECEIVED]: (
     messages,
-    { payload: { user, text } }: NoticeFromUserAction,
+    { payload: { user, text } }: NoticeFromUserReceivedAction,
   ) => [...messages, `-${user.nick}- ${text}`],
 
-  [PART]: (messages, { payload: { user, channel, message } }: PartAction) => {
+  [PART_RECEIVED]: (messages, { payload: { user, channel, message } }: PartReceivedAction) => {
     const baseMsg = `${user.nick} has left ${channel}`;
     return [...messages, message ? `${baseMsg} (${message})` : baseMsg];
   },
@@ -107,12 +107,12 @@ const handlers: { [action: string]: MessagesReducer } = {
     `Usage: /${command.name} ${command.syntax} - ${command.description}`,
   ],
 
-  [PRIVMSG]: (messages, { payload: { user, text } }: PrivmsgAction) => [
+  [PRIVMSG_RECEIVED]: (messages, { payload: { user, text } }: PrivmsgReceivedAction) => [
     ...messages,
     `${user.nick}: ${text}`,
   ],
 
-  [PING_FROM_SERVER]: messages => [...messages, "Ping?"],
+  [PING_FROM_SERVER_RECEIVED]: messages => [...messages, "Ping?"],
 
   [RAW_MESSAGES_RECEIVED]: (messages, action: RawMessagesAction) => [
     ...messages,

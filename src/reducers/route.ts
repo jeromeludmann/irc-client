@@ -7,7 +7,7 @@ import {
   CloseWindowAction
 } from "@app/actions/ui";
 import { ServersState } from "@app/reducers/servers";
-import { JoinAction, JOIN } from "@app/actions/messages";
+import { JoinReceivedAction, JOIN_RECEIVED } from "@app/actions/messages";
 
 export type RouteState = Route;
 
@@ -23,7 +23,7 @@ type RouteReducer<A = Action> = (
 ) => RouteState;
 
 const handlers: { [action: string]: RouteReducer } = {
-  [JOIN]: (route, action: JoinAction, extraStates) =>
+  [JOIN_RECEIVED]: (route, action: JoinReceivedAction, extraStates) =>
     action.payload.user.nick ===
     extraStates.servers[action.route.serverKey].user.nick
       ? action.route

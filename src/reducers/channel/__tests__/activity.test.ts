@@ -1,5 +1,5 @@
 import { reduceActivity } from "@app/reducers/channel/activity";
-import { messageCallbacks } from "@app/actions/messages";
+import { messagesReceived } from "@app/actions/messages";
 import { switchWindow } from "@app/actions/ui";
 
 describe("reduce channel activity", () => {
@@ -12,7 +12,7 @@ describe("reduce channel activity", () => {
     expect(
       reduceActivity(
         undefined,
-        messageCallbacks["JOIN"](
+        messagesReceived["JOIN"](
           "server1",
           {
             nick: "nick",
