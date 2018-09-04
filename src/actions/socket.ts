@@ -58,7 +58,7 @@ export const SEND_RAW_MESSAGE = "SOCKET/SEND_RAW_MESSAGE";
 export interface SendRawMessageAction<A = void>
   extends RoutedAction<typeof SEND_RAW_MESSAGE> {
   payload: { raw: string };
-  embeddedAction: A;
+  embeddedAction?: A;
 }
 
 export const sendRawMessage = (
@@ -68,7 +68,6 @@ export const sendRawMessage = (
   type: SEND_RAW_MESSAGE,
   payload: { raw: message },
   route: { serverKey, channelKey: BROADCAST_NONE },
-  embeddedAction: undefined,
 });
 
 // Socket lookup

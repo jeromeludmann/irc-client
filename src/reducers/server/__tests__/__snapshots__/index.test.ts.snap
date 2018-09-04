@@ -38,6 +38,7 @@ Object {
       "messages": Array [],
     },
   },
+  "lag": 0,
   "modes": Array [],
   "name": "<unknown>",
   "user": Object {

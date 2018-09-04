@@ -15,6 +15,8 @@ import {
   sendPart,
   SendPrivmsgAction,
   sendNick,
+  sendPingToServer,
+  SendPingToServerAction,
 } from "@app/actions/messages";
 
 export type Command = {
@@ -105,6 +107,14 @@ export const commands: CommandRegistry = {
     regexp: /^(\S+)(?:\s+(.+))?$/,
     callback: (route, channel, text): SendRawMessageAction =>
       sendPart(route.serverKey, channel, text),
+  },
+
+  ping: {
+    description: "Sends a ping",
+    syntax: "",
+    regexp: /\s*/,
+    callback: (route): SendRawMessageAction<SendPingToServerAction> =>
+      sendPingToServer(route.serverKey),
   },
 
   server: {

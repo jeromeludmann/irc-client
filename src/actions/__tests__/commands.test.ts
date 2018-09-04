@@ -21,20 +21,24 @@ describe("commands actions", () => {
 
   it("should be able to call /part", () => {
     expect(
-      commands.part.callback(route, "#channel", "Goodbye!")
+      commands.part.callback(route, "#channel", "Goodbye!"),
     ).toMatchSnapshot();
+  });
+
+  it("should be able to call /ping", () => {
+    expect(commands.ping.callback(route)).toMatchSnapshot();
   });
 
   describe("should be able to call /server", () => {
     it("without option", () => {
       expect(
-        commands.server.callback(route, "-n", "irc.network", "6667")
+        commands.server.callback(route, "-n", "irc.network", "6667"),
       ).toMatchSnapshot();
     });
 
     it("with option -n", () => {
       expect(
-        commands.server.callback(route, "irc.network", "6667")
+        commands.server.callback(route, "irc.network", "6667"),
       ).toMatchSnapshot();
     });
   });
@@ -45,7 +49,7 @@ describe("commands actions", () => {
 
   it("should be able to call /raw", () => {
     expect(
-      commands.raw.callback(route, "PRIVMSG #channel :hello world")
+      commands.raw.callback(route, "PRIVMSG #channel :hello world"),
     ).toMatchSnapshot();
   });
 });

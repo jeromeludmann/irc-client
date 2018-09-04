@@ -1,61 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`reduce channel messages by dispatching ERROR 1`] = `
-Array [
-  "error message",
-]
-`;
-
-exports[`reduce channel messages by dispatching JOIN 1`] = `
-Array [
-  "nick has joined #channel",
-]
-`;
-
-exports[`reduce channel messages by dispatching NOTICE from channel 1`] = `
-Array [
-  "-nick/#channel- notice from channel",
-]
-`;
-
-exports[`reduce channel messages by dispatching NOTICE from server 1`] = `
-Array [
-  "notice from server",
-]
-`;
-
-exports[`reduce channel messages by dispatching NOTICE from user 1`] = `
-Array [
-  "-nick- notice from user",
-]
-`;
-
-exports[`reduce channel messages by dispatching PART with message 1`] = `
-Array [
-  "nick has left #channel (Goodbye!)",
-]
-`;
-
-exports[`reduce channel messages by dispatching PART without message 1`] = `
-Array [
-  "nick has left #channel",
-]
-`;
-
-exports[`reduce channel messages by dispatching PING from server 1`] = `
-Array [
-  "Ping?",
-]
-`;
-
-exports[`reduce channel messages by dispatching PRIVMSG 1`] = `
-Array [
-  "nick: hello!",
-]
-`;
-
-exports[`reduce channel messages by dispatching RPL_MYINFO 1`] = `Array []`;
-
 exports[`reduce channel messages by dispatching connection closed 1`] = `
 Array [
   "Disconnected from remote host.",
@@ -82,6 +26,7 @@ Array [
   "msg - Sends a message to a channel or a nick",
   "nick - Changes the current nick",
   "part - Leaves the channel",
+  "ping - Sends a ping",
   "server - Connects to a server",
   "quit - Disconnects from the current server",
   "raw - Sends a raw message",
@@ -90,7 +35,69 @@ Array [
 ]
 `;
 
-exports[`reduce channel messages by dispatching raw messages received 1`] = `
+exports[`reduce channel messages by dispatching receive ERROR 1`] = `
+Array [
+  "error message",
+]
+`;
+
+exports[`reduce channel messages by dispatching receive JOIN 1`] = `
+Array [
+  "nick has joined #channel",
+]
+`;
+
+exports[`reduce channel messages by dispatching receive NOTICE from channel 1`] = `
+Array [
+  "-nick/#channel- notice from channel",
+]
+`;
+
+exports[`reduce channel messages by dispatching receive NOTICE from server 1`] = `
+Array [
+  "notice from server",
+]
+`;
+
+exports[`reduce channel messages by dispatching receive NOTICE from user 1`] = `
+Array [
+  "-nick- notice from user",
+]
+`;
+
+exports[`reduce channel messages by dispatching receive PART with message 1`] = `
+Array [
+  "nick has left #channel (Goodbye!)",
+]
+`;
+
+exports[`reduce channel messages by dispatching receive PART without message 1`] = `
+Array [
+  "nick has left #channel",
+]
+`;
+
+exports[`reduce channel messages by dispatching receive PING from server 1`] = `
+Array [
+  "Ping?",
+]
+`;
+
+exports[`reduce channel messages by dispatching receive PONG (from server) 1`] = `
+Array [
+  "Response from server key in 0 ms",
+]
+`;
+
+exports[`reduce channel messages by dispatching receive PRIVMSG 1`] = `
+Array [
+  "nick: hello!",
+]
+`;
+
+exports[`reduce channel messages by dispatching receive RPL_MYINFO 1`] = `Array []`;
+
+exports[`reduce channel messages by dispatching receive raw messages 1`] = `
 Array [
   "PRIVMSG #channel :hello",
   "NICK :newNick",

@@ -20,7 +20,6 @@ Object {
 
 exports[`messages actions should send PART with message 1`] = `
 Object {
-  "embeddedAction": undefined,
   "payload": Object {
     "raw": "PART #channel Goodbye!",
   },
@@ -34,9 +33,8 @@ Object {
 
 exports[`messages actions should send PART without message 1`] = `
 Object {
-  "embeddedAction": undefined,
   "payload": Object {
-    "raw": "PART #channel ",
+    "raw": "PART #channel",
   },
   "route": Object {
     "channelKey": "@none",
@@ -48,7 +46,16 @@ Object {
 
 exports[`messages actions should send PING 1`] = `
 Object {
-  "embeddedAction": undefined,
+  "embeddedAction": Object {
+    "payload": Object {
+      "key": "key",
+    },
+    "route": Object {
+      "channelKey": "@status",
+      "serverKey": "server1",
+    },
+    "type": "MESSAGE/SEND_PING_TO_SERVER",
+  },
   "payload": Object {
     "raw": "PING key",
   },
@@ -85,7 +92,6 @@ Object {
 
 exports[`messages actions should send QUIT with message 1`] = `
 Object {
-  "embeddedAction": undefined,
   "payload": Object {
     "raw": "QUIT Goodbye!",
   },
@@ -99,9 +105,8 @@ Object {
 
 exports[`messages actions should send QUIT without message 1`] = `
 Object {
-  "embeddedAction": undefined,
   "payload": Object {
-    "raw": "QUIT ",
+    "raw": "QUIT",
   },
   "route": Object {
     "channelKey": "@none",
@@ -113,7 +118,6 @@ Object {
 
 exports[`messages actions should send USER 1`] = `
 Object {
-  "embeddedAction": undefined,
   "payload": Object {
     "raw": "USER username 0 * :Real Name",
   },

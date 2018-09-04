@@ -99,13 +99,13 @@ const handlers: {
     connectedSockets[serverKey].socket.write(
       payload.raw.slice(
         0,
-        payload.raw.length > IRC_MESSAGE_LENGTH - CRLF.length
+        payload.raw.length > IRC_MESSAGE_LENGTH
           ? IRC_MESSAGE_LENGTH
           : undefined,
       ) + CRLF,
     );
 
-    if (embeddedAction !== undefined) {
+    if (embeddedAction) {
       dispatch(embeddedAction);
     }
   },

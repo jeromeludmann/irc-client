@@ -4,7 +4,7 @@ import {
   sendPingToServer,
   sendPongToServer,
   sendQuit,
-  sendUser
+  sendUser,
 } from "@app/actions/messages";
 
 describe("messages actions", () => {
@@ -13,8 +13,8 @@ describe("messages actions", () => {
       messagesReceived["PRIVMSG"](
         "server1",
         { nick: "nick1", user: "user", host: "host" },
-        ["nick2", "hello world"]
-      )
+        ["nick2", "hello world"],
+      ),
     ).toMatchSnapshot();
   });
 

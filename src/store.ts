@@ -6,6 +6,7 @@ import { socketHandler } from "@app/middlewares/socketHandler";
 import { STATUS } from "@app/Route";
 import { serverInitialState } from "@app/reducers/server";
 import { autoRouter } from "@app/middlewares/autoRouter";
+import { lag } from "@app/middlewares/lag";
 import { pingPong } from "@app/middlewares/pingPong";
 import { register } from "@app/middlewares/register";
 import { logger } from "@app/middlewares/logger";
@@ -16,17 +17,18 @@ export const getStore = (serverKey: string) =>
     reduce,
     {
       servers: { [serverKey]: serverInitialState },
-      route: { serverKey, channelKey: STATUS }
+      route: { serverKey, channelKey: STATUS },
     },
     // be careful with the order of the middlewares
     applyMiddleware(
       messageParser, // keep first
       autoRouter,
+      lag,
       pingPong,
       register,
       commandHandler,
       ui,
       socketHandler, // keep just before logger
-      logger // keep last
-    )
+      logger, // keep last
+    ),
   );
