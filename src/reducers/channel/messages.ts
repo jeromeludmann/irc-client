@@ -25,6 +25,8 @@ import {
   SEND_PONG_TO_SERVER,
   SEND_PRIVMSG,
   SendPrivmsgAction,
+  PONG_FROM_SERVER_RECEIVED,
+  PongFromServerReceivedAction,
 } from "@app/actions/messages";
 import {
   PRINT_HELP_BY_DEFAULT,
@@ -58,24 +60,27 @@ const handlers: { [action: string]: MessagesReducer } = {
     { payload: { message } }: ConnectionFailedAction,
   ) => [...messages, message],
 
-  [ERROR_RECEIVED]: (messages, { payload: { message } }: ErrorReceivedAction) => [
-    ...messages,
-    message,
-  ],
+  [ERROR_RECEIVED]: (
+    messages,
+    { payload: { message } }: ErrorReceivedAction,
+  ) => [...messages, message],
 
-  [JOIN_RECEIVED]: (messages, { payload: { user, channel } }: JoinReceivedAction) => [
-    ...messages,
-    `${user.nick} has joined ${channel}`,
-  ],
+  [JOIN_RECEIVED]: (
+    messages,
+    { payload: { user, channel } }: JoinReceivedAction,
+  ) => [...messages, `${user.nick} has joined ${channel}`],
 
-  [NOTICE_FROM_SERVER_RECEIVED]: (messages, action: NoticeFromServerReceivedAction) => [
-    ...messages,
-    action.payload.text,
-  ],
+  [NOTICE_FROM_SERVER_RECEIVED]: (
+    messages,
+    action: NoticeFromServerReceivedAction,
+  ) => [...messages, action.payload.text],
 
   [NOTICE_FROM_CHANNEL_RECEIVED]: (
     messages,
-    { payload: { user, text }, route: { channelKey } }: NoticeFromChannelReceivedAction,
+    {
+      payload: { user, text },
+      route: { channelKey },
+    }: NoticeFromChannelReceivedAction,
   ) => [...messages, `-${user.nick}/${channelKey}- ${text}`],
 
   [NOTICE_FROM_USER_RECEIVED]: (
@@ -83,10 +88,19 @@ const handlers: { [action: string]: MessagesReducer } = {
     { payload: { user, text } }: NoticeFromUserReceivedAction,
   ) => [...messages, `-${user.nick}- ${text}`],
 
-  [PART_RECEIVED]: (messages, { payload: { user, channel, message } }: PartReceivedAction) => {
+  [PART_RECEIVED]: (
+    messages,
+    { payload: { user, channel, message } }: PartReceivedAction,
+  ) => {
     const baseMsg = `${user.nick} has left ${channel}`;
     return [...messages, message ? `${baseMsg} (${message})` : baseMsg];
   },
+
+  [PONG_FROM_SERVER_RECEIVED]: (
+    messages,
+    { payload: { key, lag } }: PongFromServerReceivedAction,
+    {},
+  ) => [...messages, `Response from server ${key} in ${lag} ms`],
 
   [PRINT_HELP_BY_DEFAULT]: (
     messages,
@@ -107,10 +121,10 @@ const handlers: { [action: string]: MessagesReducer } = {
     `Usage: /${command.name} ${command.syntax} - ${command.description}`,
   ],
 
-  [PRIVMSG_RECEIVED]: (messages, { payload: { user, text } }: PrivmsgReceivedAction) => [
-    ...messages,
-    `${user.nick}: ${text}`,
-  ],
+  [PRIVMSG_RECEIVED]: (
+    messages,
+    { payload: { user, text } }: PrivmsgReceivedAction,
+  ) => [...messages, `${user.nick}: ${text}`],
 
   [PING_FROM_SERVER_RECEIVED]: messages => [...messages, "Ping?"],
 

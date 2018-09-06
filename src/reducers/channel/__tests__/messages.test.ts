@@ -6,8 +6,8 @@ import {
 } from "@app/actions/socket";
 import {
   messagesReceived,
-  sendPongToServerEmbedded,
-  sendPrivmsgEmbedded,
+  sendPongToServer,
+  sendPrivmsg,
 } from "@app/actions/messages";
 import { commands } from "@app/actions/commands";
 
@@ -39,7 +39,7 @@ describe("reduce channel messages by dispatching", () => {
     ).toMatchSnapshot();
   });
 
-  test("ERROR", () => {
+  test("receive ERROR", () => {
     expect(
       reduceMessages(
         undefined,
@@ -49,7 +49,7 @@ describe("reduce channel messages by dispatching", () => {
     ).toMatchSnapshot();
   });
 
-  test("JOIN", () => {
+  test("receive JOIN", () => {
     expect(
       reduceMessages(
         undefined,
@@ -59,7 +59,7 @@ describe("reduce channel messages by dispatching", () => {
     ).toMatchSnapshot();
   });
 
-  describe("NOTICE", () => {
+  describe("receive NOTICE", () => {
     test("from server", () => {
       expect(
         reduceMessages(
@@ -100,7 +100,7 @@ describe("reduce channel messages by dispatching", () => {
     });
   });
 
-  describe("PART", () => {
+  describe("receive PART", () => {
     test("without message", () => {
       expect(
         reduceMessages(
@@ -120,6 +120,19 @@ describe("reduce channel messages by dispatching", () => {
         ),
       ).toMatchSnapshot();
     });
+  });
+
+  test("receive PONG (from server)", () => {
+    expect(
+      reduceMessages(
+        undefined,
+        messagesReceived["PONG"]("server1", "irc.network", [
+          "irc.network",
+          "key",
+        ]),
+        extraParams,
+      ),
+    ).toMatchSnapshot();
   });
 
   describe("print help", () => {
@@ -153,7 +166,7 @@ describe("reduce channel messages by dispatching", () => {
     });
   });
 
-  test("raw messages received", () => {
+  test("receive raw messages", () => {
     expect(
       reduceMessages(
         undefined,
@@ -166,7 +179,7 @@ describe("reduce channel messages by dispatching", () => {
     ).toMatchSnapshot();
   });
 
-  describe("PING", () => {
+  describe("receive PING", () => {
     test("from server", () => {
       expect(
         reduceMessages(
@@ -178,7 +191,7 @@ describe("reduce channel messages by dispatching", () => {
     });
   });
 
-  test("PRIVMSG", () => {
+  test("receive PRIVMSG", () => {
     expect(
       reduceMessages(
         undefined,
@@ -188,7 +201,7 @@ describe("reduce channel messages by dispatching", () => {
     ).toMatchSnapshot();
   });
 
-  test("RPL_MYINFO", () => {
+  test("receive RPL_MYINFO", () => {
     expect(
       reduceMessages(
         undefined,
@@ -205,24 +218,22 @@ describe("reduce channel messages by dispatching", () => {
   });
 
   describe("send PONG", () => {
-    test("to server", () => {
-      expect(
-        reduceMessages(
-          undefined,
-          sendPongToServerEmbedded("server1", "key"),
-          extraParams,
-        ),
-      ).toMatchSnapshot();
-    });
+    const sendPongToServerAction = sendPongToServer("server1", "key")
+      .embeddedAction;
+    if (sendPongToServerAction) {
+      test("to server", () => {
+        expect(
+          reduceMessages(undefined, sendPongToServerAction, extraParams),
+        ).toMatchSnapshot();
+      });
+    }
   });
 
   test("send PRIVMSG", () => {
-    expect(
-      reduceMessages(
-        undefined,
-        sendPrivmsgEmbedded("server1", "#channel", "hello"),
-        extraParams,
-      ),
-    );
+    const sendPrivmsgAction = sendPrivmsg("server1", "#channel", "hello")
+      .embeddedAction;
+    if (sendPrivmsgAction) {
+      expect(reduceMessages(undefined, sendPrivmsgAction, extraParams));
+    }
   });
 });
