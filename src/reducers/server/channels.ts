@@ -17,11 +17,11 @@ import {
 import { RouteState } from "@app/reducers/route";
 import { UserState } from "@app/reducers/server/user";
 import { CLOSE_WINDOW, CloseWindowAction } from "@app/actions/ui";
-import { JOIN_RECEIVED, PRIVMSG_RECEIVED } from "@app/actions/messages";
+import { RECEIVE_JOIN, RECEIVE_PRIVMSG } from "@app/actions/msgIncoming";
 
-export interface ChannelsState {
+export type ChannelsState = Readonly<{
   [key: string]: ChannelState;
-}
+}>;
 
 export const channelsInitialState: ChannelsState = {
   [RAW]: channelInitialState,
@@ -103,8 +103,8 @@ export const reduceChannels = (
 
   if (
     channels.hasOwnProperty(channelKey) ||
-    action.type === PRIVMSG_RECEIVED ||
-    action.type === JOIN_RECEIVED
+    action.type === RECEIVE_PRIVMSG ||
+    action.type === RECEIVE_JOIN
   ) {
     return {
       ...channels,

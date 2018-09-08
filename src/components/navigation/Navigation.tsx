@@ -53,8 +53,8 @@ export default class Navigation extends PureComponent<Props> {
   }
 
   private handleClick = ({ currentTarget }: MouseEvent<HTMLButtonElement>) => {
-    const serverKey = currentTarget.getAttribute("data-server-key") as string;
-    const channelKey = currentTarget.getAttribute("data-channel-key") as string;
+    const serverKey = currentTarget.getAttribute("data-server-key")!;
+    const channelKey = currentTarget.getAttribute("data-channel-key")!;
 
     this.props.onChannelButtonClick({ serverKey, channelKey });
   };

@@ -32,14 +32,14 @@ import {
 } from "@app/reducers/server/lag";
 import { Action } from "redux";
 
-export type ServerState = {
+export type ServerState = Readonly<{
   name: ServerNameState;
   user: UserState;
   availableModes: AvailableServerModesState;
   modes: ServerModesState;
   channels: ChannelsState;
   lag: ServerLagState;
-};
+}>;
 
 export const serverInitialState: ServerState = {
   name: serverNameInitialState,

@@ -2,9 +2,9 @@ import { RoutedAction, BROADCAST_ACTIVE } from "@app/Route";
 import { RouteState } from "@app/reducers/route";
 import { SWITCH_WINDOW } from "@app/actions/ui";
 import { UserState } from "@app/reducers/server/user";
-import { JoinReceivedAction, JOIN_RECEIVED } from "@app/actions/messages";
+import { ReceiveJoinAction, RECEIVE_JOIN } from "@app/actions/msgIncoming";
 
-export type ActivityState = boolean;
+export type ActivityState = Readonly<boolean>;
 
 export const activityInitialState: ActivityState = false;
 
@@ -15,7 +15,7 @@ type ActivityReducer<A = RoutedAction> = (
 ) => ActivityState;
 
 const reducers: { [action: string]: ActivityReducer } = {
-  [JOIN_RECEIVED]: (_, action: JoinReceivedAction, extraStates) =>
+  [RECEIVE_JOIN]: (_, action: ReceiveJoinAction, extraStates) =>
     action.payload.user.nick !== extraStates.user.nick,
 
   [SWITCH_WINDOW]: () => false,

@@ -1,19 +1,19 @@
 import { reduceAvailableServerModes } from "@app/reducers/server/availableModes";
-import { RPL_MYINFO_RECEIVED } from "@app/actions/messages";
+import { RECEIVE_RPL_MYINFO } from "@app/actions/msgIncoming";
 
 describe("available server modes reducer", () => {
   test("RPL_MYINFO", () => {
     expect(
       reduceAvailableServerModes(undefined, {
-        type: RPL_MYINFO_RECEIVED,
+        type: RECEIVE_RPL_MYINFO,
         payload: {
           availableChannelModes: [],
           availableUserModes: [],
           serverName: "server1",
-          version: "???"
+          version: "???",
         },
-        route: { serverKey: "server1", channelKey: "#channel" }
-      })
+        route: { serverKey: "server1", channelKey: "#channel" },
+      }),
     ).toMatchSnapshot();
   });
 });

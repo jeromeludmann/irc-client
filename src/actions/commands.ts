@@ -17,7 +17,7 @@ import {
   sendNick,
   sendPingToServer,
   SendPingToServerAction,
-} from "@app/actions/messages";
+} from "@app/actions/msgOutgoing";
 
 export type Command = {
   description: string;

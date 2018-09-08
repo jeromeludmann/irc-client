@@ -8,14 +8,14 @@ import {
   EnterInputValueAction,
 } from "@app/actions/ui";
 
-export interface InputState {
+export type InputState = Readonly<{
   value: string;
   dirtyValue: string;
-  history: {
+  history: Readonly<{
     values: string[];
     index: number;
-  };
-}
+  }>;
+}>;
 
 export const inputInitialState: InputState = {
   value: "",

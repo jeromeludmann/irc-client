@@ -1,24 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`messages actions should receive PRIVMSG 1`] = `
-Object {
-  "payload": Object {
-    "text": "hello world",
-    "user": Object {
-      "host": "host",
-      "nick": "nick1",
-      "user": "user",
-    },
-  },
-  "route": Object {
-    "channelKey": "nick1",
-    "serverKey": "server1",
-  },
-  "type": "MESSAGE/PRIVMSG",
-}
-`;
-
-exports[`messages actions should send PART with message 1`] = `
+exports[`send messages PART with message 1`] = `
 Object {
   "payload": Object {
     "raw": "PART #channel Goodbye!",
@@ -31,7 +13,7 @@ Object {
 }
 `;
 
-exports[`messages actions should send PART without message 1`] = `
+exports[`send messages PART without message 1`] = `
 Object {
   "payload": Object {
     "raw": "PART #channel",
@@ -44,7 +26,7 @@ Object {
 }
 `;
 
-exports[`messages actions should send PING 1`] = `
+exports[`send messages PING 1`] = `
 Object {
   "embeddedAction": Object {
     "payload": Object {
@@ -67,7 +49,7 @@ Object {
 }
 `;
 
-exports[`messages actions should send PONG 1`] = `
+exports[`send messages PONG 1`] = `
 Object {
   "embeddedAction": Object {
     "payload": Object {
@@ -90,7 +72,7 @@ Object {
 }
 `;
 
-exports[`messages actions should send QUIT with message 1`] = `
+exports[`send messages QUIT with message 1`] = `
 Object {
   "payload": Object {
     "raw": "QUIT Goodbye!",
@@ -103,7 +85,7 @@ Object {
 }
 `;
 
-exports[`messages actions should send QUIT without message 1`] = `
+exports[`send messages QUIT without message 1`] = `
 Object {
   "payload": Object {
     "raw": "QUIT",
@@ -116,7 +98,7 @@ Object {
 }
 `;
 
-exports[`messages actions should send USER 1`] = `
+exports[`send messages USER 1`] = `
 Object {
   "payload": Object {
     "raw": "USER username 0 * :Real Name",

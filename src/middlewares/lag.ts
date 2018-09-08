@@ -1,12 +1,14 @@
 import { Middleware } from "redux";
 import {
+  ReceivePongFromServerAction,
+  RECEIVE_PONG_FROM_SERVER,
+} from "@app/actions/msgIncoming";
+import {
   SendPingToServerAction,
-  PongFromServerReceivedAction,
   SEND_PING_TO_SERVER,
-  PONG_FROM_SERVER_RECEIVED,
-} from "@app/actions/messages";
+} from "@app/actions/msgOutgoing";
 
-type LagAction = SendPingToServerAction | PongFromServerReceivedAction;
+type LagAction = SendPingToServerAction | ReceivePongFromServerAction;
 
 export const lag: Middleware = () => next => (action: LagAction) => {
   next(
@@ -22,7 +24,7 @@ const handlers: { [action: string]: (action: LagAction) => LagAction } = {
     return action;
   },
 
-  [PONG_FROM_SERVER_RECEIVED]: (action: PongFromServerReceivedAction) => {
+  [RECEIVE_PONG_FROM_SERVER]: (action: ReceivePongFromServerAction) => {
     if (!timestamps.hasOwnProperty(action.payload.key)) {
       // tslint:disable-next-line
       console.log(

@@ -1,17 +1,17 @@
 import {
-  PongFromServerReceivedAction,
-  PONG_FROM_SERVER_RECEIVED,
-} from "@app/actions/messages";
+  ReceivePongFromServerAction,
+  RECEIVE_PONG_FROM_SERVER,
+} from "@app/actions/msgIncoming";
 import { Reducer, Action } from "redux";
 
-export type ServerLagState = number;
+export type ServerLagState = Readonly<number>;
 
 export const serverLagInitialState = 0;
 
 const handlers: { [action: string]: Reducer<ServerLagState> } = {
-  [PONG_FROM_SERVER_RECEIVED]: (
+  [RECEIVE_PONG_FROM_SERVER]: (
     _serverLag,
-    action: PongFromServerReceivedAction,
+    action: ReceivePongFromServerAction,
   ) => action.payload.lag,
 };
 

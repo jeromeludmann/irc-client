@@ -7,27 +7,29 @@ import {
   RAW_MESSAGES_RECEIVED,
 } from "@app/actions/socket";
 import {
-  ErrorReceivedAction,
-  JoinReceivedAction,
-  PartReceivedAction,
-  PrivmsgReceivedAction,
-  NoticeFromServerReceivedAction,
-  NoticeFromChannelReceivedAction,
-  NoticeFromUserReceivedAction,
-  ERROR_RECEIVED,
-  JOIN_RECEIVED,
-  NOTICE_FROM_SERVER_RECEIVED,
-  NOTICE_FROM_CHANNEL_RECEIVED,
-  NOTICE_FROM_USER_RECEIVED,
-  PART_RECEIVED,
-  PRIVMSG_RECEIVED,
-  PING_FROM_SERVER_RECEIVED,
+  ReceiveErrorAction,
+  ReceiveJoinAction,
+  ReceivePartAction,
+  ReceivePrivmsgAction,
+  ReceiveNoticeFromServerAction,
+  ReceiveNoticeFromChannelAction,
+  ReceiveNoticeFromUserAction,
+  RECEIVE_ERROR,
+  RECEIVE_JOIN,
+  RECEIVE_NOTICE_FROM_SERVER,
+  RECEIVE_NOTICE_FROM_CHANNEL,
+  RECEIVE_NOTICE_FROM_USER,
+  RECEIVE_PART,
+  RECEIVE_PRIVMSG,
+  RECEIVE_PING_FROM_SERVER,
+  RECEIVE_PONG_FROM_SERVER,
+  ReceivePongFromServerAction,
+} from "@app/actions/msgIncoming";
+import {
   SEND_PONG_TO_SERVER,
   SEND_PRIVMSG,
   SendPrivmsgAction,
-  PONG_FROM_SERVER_RECEIVED,
-  PongFromServerReceivedAction,
-} from "@app/actions/messages";
+} from "@app/actions/msgOutgoing";
 import {
   PRINT_HELP_BY_DEFAULT,
   PrintHelpByDefaultAction,
@@ -39,7 +41,7 @@ import { UserState } from "@app/reducers/server/user";
 import { RoutedAction } from "@app/Route";
 
 // TODO replace string[] by MessageState[]
-export type MessagesState = string[];
+export type MessagesState = Readonly<string[]>;
 
 export const messagesInitialState: MessagesState = [];
 
@@ -60,45 +62,45 @@ const handlers: {
     { payload: { message } }: ConnectionFailedAction,
   ) => [...messages, message],
 
-  [ERROR_RECEIVED]: (
-    messages,
-    { payload: { message } }: ErrorReceivedAction,
-  ) => [...messages, message],
+  [RECEIVE_ERROR]: (messages, { payload: { message } }: ReceiveErrorAction) => [
+    ...messages,
+    message,
+  ],
 
-  [JOIN_RECEIVED]: (
+  [RECEIVE_JOIN]: (
     messages,
-    { payload: { user, channel } }: JoinReceivedAction,
+    { payload: { user, channel } }: ReceiveJoinAction,
   ) => [...messages, `${user.nick} has joined ${channel}`],
 
-  [NOTICE_FROM_SERVER_RECEIVED]: (
+  [RECEIVE_NOTICE_FROM_SERVER]: (
     messages,
-    action: NoticeFromServerReceivedAction,
+    action: ReceiveNoticeFromServerAction,
   ) => [...messages, action.payload.text],
 
-  [NOTICE_FROM_CHANNEL_RECEIVED]: (
+  [RECEIVE_NOTICE_FROM_CHANNEL]: (
     messages,
     {
       payload: { user, text },
       route: { channelKey },
-    }: NoticeFromChannelReceivedAction,
+    }: ReceiveNoticeFromChannelAction,
   ) => [...messages, `-${user.nick}/${channelKey}- ${text}`],
 
-  [NOTICE_FROM_USER_RECEIVED]: (
+  [RECEIVE_NOTICE_FROM_USER]: (
     messages,
-    { payload: { user, text } }: NoticeFromUserReceivedAction,
+    { payload: { user, text } }: ReceiveNoticeFromUserAction,
   ) => [...messages, `-${user.nick}- ${text}`],
 
-  [PART_RECEIVED]: (
+  [RECEIVE_PART]: (
     messages,
-    { payload: { user, channel, message } }: PartReceivedAction,
+    { payload: { user, channel, message } }: ReceivePartAction,
   ) => {
     const baseMsg = `${user.nick} has left ${channel}`;
     return [...messages, message ? `${baseMsg} (${message})` : baseMsg];
   },
 
-  [PONG_FROM_SERVER_RECEIVED]: (
+  [RECEIVE_PONG_FROM_SERVER]: (
     messages,
-    { payload: { key, lag } }: PongFromServerReceivedAction,
+    { payload: { key, lag } }: ReceivePongFromServerAction,
     {},
   ) => [...messages, `Response from server ${key} in ${lag} ms`],
 
@@ -121,12 +123,12 @@ const handlers: {
     `Usage: /${command.name} ${command.syntax} - ${command.description}`,
   ],
 
-  [PRIVMSG_RECEIVED]: (
+  [RECEIVE_PRIVMSG]: (
     messages,
-    { payload: { user, text } }: PrivmsgReceivedAction,
+    { payload: { user, text } }: ReceivePrivmsgAction,
   ) => [...messages, `${user.nick}: ${text}`],
 
-  [PING_FROM_SERVER_RECEIVED]: messages => [...messages, "Ping?"],
+  [RECEIVE_PING_FROM_SERVER]: messages => [...messages, "Ping?"],
 
   [RAW_MESSAGES_RECEIVED]: (messages, action: RawMessagesAction) => [
     ...messages,

@@ -4,7 +4,7 @@ import {
   CONNECTION_ESTABLISHED,
 } from "@app/actions/socket";
 import { AppState } from "@app/reducers";
-import { sendUser, sendNick } from "@app/actions/messages";
+import { sendUser, sendNick } from "@app/actions/msgOutgoing";
 
 /**
  * Register Middleware

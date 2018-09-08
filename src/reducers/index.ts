@@ -11,10 +11,10 @@ import {
 import { RoutedAction } from "@app/Route";
 import { Reducer } from "redux";
 
-export interface AppState {
-  readonly servers: ServersState;
-  readonly route: RouteState;
-}
+export type AppState = Readonly<{
+  servers: ServersState;
+  route: RouteState;
+}>;
 
 export const rootInitialState = {
   servers: serversInitialState,

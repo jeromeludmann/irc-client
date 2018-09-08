@@ -1,4 +1,4 @@
-export type ServerModesState = string[];
+export type ServerModesState = Readonly<string[]>;
 
 export const serverModesInitialState: ServerModesState = [];
 

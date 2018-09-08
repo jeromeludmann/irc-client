@@ -1,24 +1,13 @@
 import {
-  messagesReceived,
   sendPart,
   sendPingToServer,
   sendPongToServer,
   sendQuit,
   sendUser,
-} from "@app/actions/messages";
+} from "@app/actions/msgOutgoing";
 
-describe("messages actions", () => {
-  it("should receive PRIVMSG", () => {
-    expect(
-      messagesReceived["PRIVMSG"](
-        "server1",
-        { nick: "nick1", user: "user", host: "host" },
-        ["nick2", "hello world"],
-      ),
-    ).toMatchSnapshot();
-  });
-
-  describe("should send PART", () => {
+describe("send messages", () => {
+  describe("PART", () => {
     it("without message", () => {
       expect(sendPart("server1", "#channel")).toMatchSnapshot();
     });
@@ -28,15 +17,15 @@ describe("messages actions", () => {
     });
   });
 
-  it("should send PING", () => {
+  it("PING", () => {
     expect(sendPingToServer("server1", "key")).toMatchSnapshot();
   });
 
-  it("should send PONG", () => {
+  it("PONG", () => {
     expect(sendPongToServer("server1", "key")).toMatchSnapshot();
   });
 
-  describe("should send QUIT", () => {
+  describe("QUIT", () => {
     it("without message", () => {
       expect(sendQuit("server1")).toMatchSnapshot();
     });
@@ -46,7 +35,7 @@ describe("messages actions", () => {
     });
   });
 
-  it("should send USER", () => {
+  it("USER", () => {
     expect(sendUser("server1", "username", "Real Name")).toMatchSnapshot();
   });
 });

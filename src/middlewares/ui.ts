@@ -3,7 +3,7 @@ import { CloseWindowAction, CLOSE_WINDOW } from "@app/actions/ui";
 import { AppState } from "@app/reducers";
 import { isChannel, isStatus, isRaw } from "@app/Route";
 import { disconnectServer } from "@app/actions/socket";
-import { sendPart } from "@app/actions/messages";
+import { sendPart } from "@app/actions/msgOutgoing";
 
 /**
  * UI side-effects middleware

@@ -4,9 +4,9 @@ import { RouteState } from "@app/reducers/route";
 import { CLOSE_WINDOW } from "@app/actions/ui";
 import { LOOKUP_SUCCESS, LOOKUP_FAILED } from "@app/actions/socket";
 
-export interface ServersState {
-  readonly [key: string]: ServerState;
-}
+export type ServersState = Readonly<{
+  [key: string]: ServerState;
+}>;
 
 export const serversInitialState: ServersState = {};
 
@@ -14,7 +14,7 @@ export const serversInitialState: ServersState = {};
 export const reduceServers = (
   servers = serversInitialState,
   action: RoutedAction,
-  extraStates: { route: RouteState }
+  extraStates: { route: RouteState },
 ): ServersState => {
   if (action.type === CLOSE_WINDOW) {
     if (isStatus(action.route.channelKey) || isRaw(action.route.channelKey)) {
@@ -35,8 +35,8 @@ export const reduceServers = (
         [action.route.serverKey]: reduceServer(
           servers[action.route.serverKey],
           action,
-          extraStates
-        )
+          extraStates,
+        ),
       }
     : servers;
 };

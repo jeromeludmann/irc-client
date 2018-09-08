@@ -1,7 +1,7 @@
 import { reduceRoute } from "@app/reducers/route";
 import { switchWindow, closeWindow } from "@app/actions/ui";
 import { serverInitialState } from "@app/reducers/server";
-import { messagesReceived } from "@app/actions/messages";
+import { messageReceivers } from "@app/actions/msgIncoming";
 import { STATUS } from "@app/Route";
 import { serversInitialState } from "@app/reducers/servers";
 
@@ -11,7 +11,7 @@ describe("reduce route", () => {
       expect(
         reduceRoute(
           undefined,
-          messagesReceived["JOIN"](
+          messageReceivers["JOIN"](
             "server1",
             { nick: "nick", user: "user", host: "host" },
             ["#channel"]
@@ -25,7 +25,7 @@ describe("reduce route", () => {
       expect(
         reduceRoute(
           undefined,
-          messagesReceived["JOIN"](
+          messageReceivers["JOIN"](
             "server1",
             { nick: "nick", user: "user", host: "host" },
             ["#channel"]

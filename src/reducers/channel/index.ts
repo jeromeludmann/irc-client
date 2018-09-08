@@ -17,11 +17,11 @@ import { RoutedAction } from "@app/Route";
 import { RouteState } from "@app/reducers/route";
 import { UserState } from "@app/reducers/server/user";
 
-export interface ChannelState {
-  readonly messages: MessagesState;
-  readonly input: InputState;
-  readonly activity: ActivityState;
-}
+export type ChannelState = Readonly<{
+  messages: MessagesState;
+  input: InputState;
+  activity: ActivityState;
+}>;
 
 export const channelInitialState: ChannelState = {
   messages: messagesInitialState,

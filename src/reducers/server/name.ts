@@ -1,15 +1,15 @@
 import { Action, Reducer } from "redux";
 import {
-  ReplyMyInfoReceivedAction,
-  RPL_MYINFO_RECEIVED,
-} from "@app/actions/messages";
+  ReceiveReplyMyInfoAction,
+  RECEIVE_RPL_MYINFO,
+} from "@app/actions/msgIncoming";
 
-export type ServerNameState = string;
+export type ServerNameState = Readonly<string>;
 
 export const serverNameInitialState = "<unknown>";
 
 const handlers: { [action: string]: Reducer } = {
-  [RPL_MYINFO_RECEIVED]: (_, action: ReplyMyInfoReceivedAction) =>
+  [RECEIVE_RPL_MYINFO]: (_, action: ReceiveReplyMyInfoAction) =>
     action.payload.serverName,
 };
 

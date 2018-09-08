@@ -1,5 +1,5 @@
 import { reduceServerName } from "@app/reducers/server/name";
-import { messagesReceived } from "@app/actions/messages";
+import { messageReceivers } from "@app/actions/msgIncoming";
 
 describe(" server name", () => {
   test("without action", () => {
@@ -10,7 +10,7 @@ describe(" server name", () => {
     expect(
       reduceServerName(
         undefined,
-        messagesReceived["004"]("server1", "server", [
+        messageReceivers["004"]("server1", "server", [
           "",
           "serverName",
           "version",

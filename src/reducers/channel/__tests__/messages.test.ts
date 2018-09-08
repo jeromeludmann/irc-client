@@ -4,11 +4,8 @@ import {
   setConnectionFailed,
   receiveRawMessages,
 } from "@app/actions/socket";
-import {
-  messagesReceived,
-  sendPongToServer,
-  sendPrivmsg,
-} from "@app/actions/messages";
+import { messageReceivers } from "@app/actions/msgIncoming";
+import { sendPongToServer, sendPrivmsg } from "@app/actions/msgOutgoing";
 import { commands } from "@app/actions/commands";
 
 describe("reduce channel messages by dispatching", () => {
@@ -43,7 +40,7 @@ describe("reduce channel messages by dispatching", () => {
     expect(
       reduceMessages(
         undefined,
-        messagesReceived["ERROR"]("server1", undefined, ["error message"]),
+        messageReceivers["ERROR"]("server1", undefined, ["error message"]),
         extraParams,
       ),
     ).toMatchSnapshot();
@@ -53,7 +50,7 @@ describe("reduce channel messages by dispatching", () => {
     expect(
       reduceMessages(
         undefined,
-        messagesReceived["JOIN"]("server1", user, ["#channel"]),
+        messageReceivers["JOIN"]("server1", user, ["#channel"]),
         extraParams,
       ),
     ).toMatchSnapshot();
@@ -64,7 +61,7 @@ describe("reduce channel messages by dispatching", () => {
       expect(
         reduceMessages(
           undefined,
-          messagesReceived["NOTICE"]("server1", "server.prefix", [
+          messageReceivers["NOTICE"]("server1", "server.prefix", [
             "",
             "notice from server",
           ]),
@@ -77,7 +74,7 @@ describe("reduce channel messages by dispatching", () => {
       expect(
         reduceMessages(
           undefined,
-          messagesReceived["NOTICE"]("server1", user, [
+          messageReceivers["NOTICE"]("server1", user, [
             "#channel",
             "notice from channel",
           ]),
@@ -90,7 +87,7 @@ describe("reduce channel messages by dispatching", () => {
       expect(
         reduceMessages(
           undefined,
-          messagesReceived["NOTICE"]("server1", user, [
+          messageReceivers["NOTICE"]("server1", user, [
             "nick",
             "notice from user",
           ]),
@@ -105,7 +102,7 @@ describe("reduce channel messages by dispatching", () => {
       expect(
         reduceMessages(
           undefined,
-          messagesReceived["PART"]("server1", user, ["#channel"]),
+          messageReceivers["PART"]("server1", user, ["#channel"]),
           extraParams,
         ),
       ).toMatchSnapshot();
@@ -115,7 +112,7 @@ describe("reduce channel messages by dispatching", () => {
       expect(
         reduceMessages(
           undefined,
-          messagesReceived["PART"]("server1", user, ["#channel", "Goodbye!"]),
+          messageReceivers["PART"]("server1", user, ["#channel", "Goodbye!"]),
           extraParams,
         ),
       ).toMatchSnapshot();
@@ -126,7 +123,7 @@ describe("reduce channel messages by dispatching", () => {
     expect(
       reduceMessages(
         undefined,
-        messagesReceived["PONG"]("server1", "irc.network", [
+        messageReceivers["PONG"]("server1", "irc.network", [
           "irc.network",
           "key",
         ]),
@@ -184,7 +181,7 @@ describe("reduce channel messages by dispatching", () => {
       expect(
         reduceMessages(
           undefined,
-          messagesReceived["PING"]("server1", "server.prefix", ["key"]),
+          messageReceivers["PING"]("server1", "server.prefix", ["key"]),
           extraParams,
         ),
       ).toMatchSnapshot();
@@ -195,7 +192,7 @@ describe("reduce channel messages by dispatching", () => {
     expect(
       reduceMessages(
         undefined,
-        messagesReceived["PRIVMSG"]("server1", user, ["#channel", "hello!"]),
+        messageReceivers["PRIVMSG"]("server1", user, ["#channel", "hello!"]),
         extraParams,
       ),
     ).toMatchSnapshot();
@@ -205,7 +202,7 @@ describe("reduce channel messages by dispatching", () => {
     expect(
       reduceMessages(
         undefined,
-        messagesReceived["004"]("server1", "server.prefix", [
+        messageReceivers["004"]("server1", "server.prefix", [
           "",
           "serverName",
           "version",

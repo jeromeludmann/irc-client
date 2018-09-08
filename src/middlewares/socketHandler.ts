@@ -18,7 +18,7 @@ import {
 } from "@app/actions/socket";
 import { CRLF, IRC_MESSAGE_LENGTH } from "@app/helpers";
 import { ServersState } from "@app/reducers/servers";
-import { sendQuit } from "@app/actions/messages";
+import { sendQuit } from "@app/actions/msgOutgoing";
 import { RoutedAction } from "@app/Route";
 
 /**

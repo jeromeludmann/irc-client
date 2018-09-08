@@ -1,15 +1,15 @@
-import { Reducer, Action } from "redux";
+import { Reducer, AnyAction } from "redux";
 import {
-  ReplyMyInfoReceivedAction,
-  RPL_MYINFO_RECEIVED,
-} from "@app/actions/messages";
+  ReceiveReplyMyInfoAction,
+  RECEIVE_RPL_MYINFO,
+} from "@app/actions/msgIncoming";
 
-export type AvailableServerModesState = {
+export type AvailableServerModesState = Readonly<{
   user: string[];
   channel: string[];
-};
+}>;
 
-export type AvailableModesAction = ReplyMyInfoReceivedAction;
+export type AvailableModesAction = ReceiveReplyMyInfoAction;
 
 export const availableServerModesInitialState: AvailableServerModesState = {
   user: [],
@@ -17,7 +17,7 @@ export const availableServerModesInitialState: AvailableServerModesState = {
 };
 
 const handlers: { [action: string]: Reducer<AvailableServerModesState> } = {
-  [RPL_MYINFO_RECEIVED]: (_, action: ReplyMyInfoReceivedAction) => ({
+  [RECEIVE_RPL_MYINFO]: (_, action: ReceiveReplyMyInfoAction) => ({
     user: action.payload.availableUserModes,
     channel: action.payload.availableChannelModes,
   }),
@@ -25,7 +25,7 @@ const handlers: { [action: string]: Reducer<AvailableServerModesState> } = {
 
 export const reduceAvailableServerModes = (
   availableModes = availableServerModesInitialState,
-  action: Action,
+  action: AnyAction,
 ) =>
   handlers.hasOwnProperty(action.type)
     ? handlers[action.type](availableModes, action)

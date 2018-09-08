@@ -1,5 +1,5 @@
 import { reduceUser } from "@app/reducers/server/user";
-import { messagesReceived } from "@app/actions/messages";
+import { messageReceivers } from "@app/actions/msgIncoming";
 
 describe("reduce user", () => {
   test("without action", () => {
@@ -10,7 +10,7 @@ describe("reduce user", () => {
     expect(
       reduceUser(
         undefined,
-        messagesReceived["NICK"](
+        messageReceivers["NICK"](
           "server1",
           { nick: "old_nick", user: "user", host: "host" },
           ["new_nick"],
@@ -23,7 +23,7 @@ describe("reduce user", () => {
     expect(
       reduceUser(
         { nick: "old_nick", user: "user", real: "name" },
-        messagesReceived["NICK"](
+        messageReceivers["NICK"](
           "server1",
           { nick: "old_nick", user: "user", host: "host" },
           ["new_nick"],
