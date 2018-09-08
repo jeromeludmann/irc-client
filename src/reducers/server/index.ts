@@ -18,7 +18,6 @@ import {
   reduceAvailableServerModes,
   AvailableServerModesState,
   availableServerModesInitialState,
-  AvailableModesAction,
 } from "@app/reducers/server/availableModes";
 import { ServerNameState } from "@app/reducers/server/name";
 import {
@@ -26,12 +25,12 @@ import {
   userInitialState,
   reduceUser,
 } from "@app/reducers/server/user";
-import { PongFromServerReceivedAction } from "@app/actions/messages";
 import {
   reduceLag,
   ServerLagState,
   serverLagInitialState,
 } from "@app/reducers/server/lag";
+import { Action } from "redux";
 
 export type ServerState = {
   name: ServerNameState;
@@ -53,19 +52,16 @@ export const serverInitialState: ServerState = {
 
 export const reduceServer = (
   server = serverInitialState,
-  action: RoutedAction,
+  action: Action,
   extraStates: { route: RouteState },
 ): ServerState => ({
   name: reduceServerName(server.name, action),
   user: reduceUser(server.user, action),
-  availableModes: reduceAvailableServerModes(
-    server.availableModes,
-    action as AvailableModesAction,
-  ),
+  availableModes: reduceAvailableServerModes(server.availableModes, action),
   modes: reduceServerModes(server.modes),
-  channels: reduceChannels(server.channels, action, {
+  channels: reduceChannels(server.channels, action as RoutedAction, {
     ...extraStates,
     user: server.user,
   }),
-  lag: reduceLag(server.lag, action as PongFromServerReceivedAction),
+  lag: reduceLag(server.lag, action),
 });
