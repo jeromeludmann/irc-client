@@ -1,6 +1,6 @@
 import { MapStateToProps, connect } from "react-redux";
 import { AppState } from "@app/reducers";
-import { selectValue } from "@app/reducers/input/_selectors";
+import { selectValue } from "@app/reducers/channel/_selectors";
 import Input from "@app/components/input/Input";
 import {
   updateInputValue,

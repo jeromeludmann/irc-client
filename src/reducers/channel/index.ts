@@ -7,7 +7,7 @@ import {
   InputState,
   inputInitialState,
   reduceInput,
-} from "@app/reducers/input";
+} from "@app/reducers/channel/input";
 import {
   ActivityState,
   activityInitialState,

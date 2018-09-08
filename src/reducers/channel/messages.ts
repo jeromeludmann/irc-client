@@ -43,13 +43,13 @@ export type MessagesState = string[];
 
 export const messagesInitialState: MessagesState = [];
 
-type MessagesReducer<A = Action> = (
-  messages: MessagesState,
-  action: A,
-  extraStates: { route: RouteState; user: UserState },
-) => MessagesState;
-
-const handlers: { [action: string]: MessagesReducer } = {
+const handlers: {
+  [action: string]: (
+    messages: MessagesState,
+    action: Action,
+    extraStates: { route: RouteState; user: UserState },
+  ) => MessagesState;
+} = {
   [CONNECTION_CLOSED]: messages => [
     ...messages,
     "Disconnected from remote host.",
