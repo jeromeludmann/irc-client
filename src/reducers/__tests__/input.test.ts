@@ -1,4 +1,4 @@
-import { reduceInput, inputInitialState } from "@app/reducers/channel/input";
+import { reduceInput, inputInitialState } from "@app/reducers/input";
 import {
   updateInputValue,
   enterInputValue,

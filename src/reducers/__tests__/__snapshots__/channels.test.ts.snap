@@ -2,18 +2,6 @@
 
 exports[`reduce channels broadcast active 1`] = `
 Object {
-  "": Object {
-    "activity": false,
-    "input": Object {
-      "dirtyValue": "",
-      "history": Object {
-        "index": 0,
-        "values": Array [],
-      },
-      "value": "",
-    },
-    "messages": Array [],
-  },
   "@raw": Object {
     "activity": false,
     "input": Object {
@@ -56,7 +44,7 @@ Object {
     "messages": Array [],
   },
   "@status": Object {
-    "activity": true,
+    "activity": false,
     "input": Object {
       "dirtyValue": "",
       "history": Object {

@@ -1,4 +1,4 @@
-import { reduceLag } from "@app/reducers/server/lag";
+import { reduceLag } from "@app/reducers/lag";
 import { messageReceivers } from "@app/actions/msgIncoming";
 
 test("reduce server lag", () => {

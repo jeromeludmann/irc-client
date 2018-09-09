@@ -1,9 +1,9 @@
 import React from "react";
 import { shallow, mount } from "enzyme";
 import Navigation from "@app/components/navigation/Navigation";
-import { STATUS } from "@app/Route";
-import { channelsInitialState } from "@app/reducers/server/channels";
-import { channelInitialState } from "@app/reducers/channel";
+import { BufferKey } from "@app/Route";
+import { bufferRouterInitialState } from "@app/reducers/bufferRouter";
+import { bufferInitialState } from "@app/reducers/buffer";
 
 describe("Navigation component", () => {
   const props = {
@@ -12,12 +12,12 @@ describe("Navigation component", () => {
       server1: {
         name: "server.domain",
         channels: {
-          ...channelsInitialState,
-          "#channel": { ...channelInitialState, activity: true }
+          ...bufferRouterInitialState,
+          "#channel": { ...bufferInitialState, activity: true }
         }
       }
     },
-    window: { serverKey: "server1", channelKey: STATUS }
+    window: { serverKey: "server1", channelKey: BufferKey.STATUS }
   };
 
   it("should render correctly", () => {

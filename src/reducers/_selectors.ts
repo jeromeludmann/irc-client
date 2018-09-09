@@ -1,14 +1,38 @@
-import { createSelector } from "reselect";
-import { AppState } from "@app/reducers";
-import { ServersState } from "@app/reducers/servers";
-import { RouteState } from "@app/reducers/route";
+import { createSelector } from 'reselect'
+import { RootState } from '@app/reducers'
+import { RouteState } from '@app/reducers/route'
+import { ServerState } from '@app/reducers/server'
 
-export const selectServers = ({ servers }: AppState): ServersState => servers;
+export const selectServers = ({
+  servers,
+}: RootState): {
+  [key: string]: ServerState
+} => servers
 
-export const selectRoute = ({ route }: AppState): RouteState => route;
+export const selectRoute = ({ route }: RootState): RouteState => route
 
 export const selectServer = createSelector(
   selectServers,
   selectRoute,
   (servers, { serverKey }) => servers[serverKey],
-);
+)
+
+export const selectUser = createSelector(selectServer, server => server.user)
+
+export const selectChannel = createSelector(
+  selectServer,
+  selectRoute,
+  (server, active) => server.buffers[active.bufferKey],
+)
+
+export const selectMessages = createSelector(
+  selectChannel,
+  channel => channel.messages,
+)
+
+export const selectInput = createSelector(
+  selectChannel,
+  channel => channel.input,
+)
+
+export const selectValue = createSelector(selectInput, input => input.value)

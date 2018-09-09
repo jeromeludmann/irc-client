@@ -1,4 +1,4 @@
-import { reduceUser } from "@app/reducers/server/user";
+import { reduceUser } from "@app/reducers/user";
 import { messageReceivers } from "@app/actions/msgIncoming";
 
 describe("reduce user", () => {

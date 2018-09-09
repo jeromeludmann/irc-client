@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[` server name with RPL_MYINFO received 1`] = `"serverName"`;
-
-exports[` server name without action 1`] = `"<unknown>"`;

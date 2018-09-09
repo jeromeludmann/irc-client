@@ -1,11 +1,11 @@
-import { Action } from "redux";
+import { Action } from 'redux'
 import {
   CONNECTION_FAILED,
   ConnectionFailedAction,
   RawMessagesAction,
   CONNECTION_CLOSED,
   RAW_MESSAGES_RECEIVED,
-} from "@app/actions/socket";
+} from '@app/actions/socket'
 import {
   ReceiveErrorAction,
   ReceiveJoinAction,
@@ -24,37 +24,36 @@ import {
   RECEIVE_PING_FROM_SERVER,
   RECEIVE_PONG_FROM_SERVER,
   ReceivePongFromServerAction,
-} from "@app/actions/msgIncoming";
+} from '@app/actions/msgIncoming'
 import {
   SEND_PONG_TO_SERVER,
   SEND_PRIVMSG,
   SendPrivmsgAction,
-} from "@app/actions/msgOutgoing";
+} from '@app/actions/msgOutgoing'
 import {
   PRINT_HELP_BY_DEFAULT,
   PrintHelpByDefaultAction,
   PRINT_HELP_ABOUT_COMMAND,
   PrintHelpAboutCommandAction,
-} from "@app/actions/commands";
-import { RouteState } from "@app/reducers/route";
-import { UserState } from "@app/reducers/server/user";
-import { RoutedAction } from "@app/Route";
+} from '@app/actions/commands'
+import { RouteState } from '@app/reducers/route'
+import { ServerState } from '@app/reducers/server'
 
 // TODO replace string[] by MessageState[]
-export type MessagesState = Readonly<string[]>;
+export type MessagesState = Readonly<string[]>
 
-export const messagesInitialState: MessagesState = [];
+type MessagesReducer = (
+  messages: MessagesState,
+  action: Action,
+  extraStates: { route: RouteState; server: ServerState },
+) => MessagesState
 
-const handlers: {
-  [action: string]: (
-    messages: MessagesState,
-    action: Action,
-    extraStates: { route: RouteState; user: UserState },
-  ) => MessagesState;
-} = {
+export const messagesInitialState: MessagesState = []
+
+const handlers: { [action: string]: MessagesReducer } = {
   [CONNECTION_CLOSED]: messages => [
     ...messages,
-    "Disconnected from remote host.",
+    'Disconnected from remote host.',
   ],
 
   [CONNECTION_FAILED]: (
@@ -81,9 +80,9 @@ const handlers: {
     messages,
     {
       payload: { user, text },
-      route: { channelKey },
+      route: { bufferKey },
     }: ReceiveNoticeFromChannelAction,
-  ) => [...messages, `-${user.nick}/${channelKey}- ${text}`],
+  ) => [...messages, `-${user.nick}/${bufferKey}- ${text}`],
 
   [RECEIVE_NOTICE_FROM_USER]: (
     messages,
@@ -94,8 +93,8 @@ const handlers: {
     messages,
     { payload: { user, channel, message } }: ReceivePartAction,
   ) => {
-    const baseMsg = `${user.nick} has left ${channel}`;
-    return [...messages, message ? `${baseMsg} (${message})` : baseMsg];
+    const baseMsg = `${user.nick} has left ${channel}`
+    return [...messages, message ? `${baseMsg} (${message})` : baseMsg]
   },
 
   [RECEIVE_PONG_FROM_SERVER]: (
@@ -112,7 +111,7 @@ const handlers: {
     ...Object.keys(commands).map(
       commandName => `${commandName} - ${commands[commandName].description}`,
     ),
-    "Type /HELP <command> for more details.",
+    'Type /HELP <command> for more details.',
   ],
 
   [PRINT_HELP_ABOUT_COMMAND]: (
@@ -128,26 +127,26 @@ const handlers: {
     { payload: { user, text } }: ReceivePrivmsgAction,
   ) => [...messages, `${user.nick}: ${text}`],
 
-  [RECEIVE_PING_FROM_SERVER]: messages => [...messages, "Ping?"],
+  [RECEIVE_PING_FROM_SERVER]: messages => [...messages, 'Ping?'],
 
   [RAW_MESSAGES_RECEIVED]: (messages, action: RawMessagesAction) => [
     ...messages,
     ...action.payload.messages,
   ],
 
-  [SEND_PONG_TO_SERVER]: messages => [...messages, "Pong!"],
+  [SEND_PONG_TO_SERVER]: messages => [...messages, 'Pong!'],
 
-  [SEND_PRIVMSG]: (messages, action: SendPrivmsgAction, { user: { nick } }) => [
+  [SEND_PRIVMSG]: (messages, action: SendPrivmsgAction, { server }) => [
     ...messages,
-    `${nick}: ${action.payload.text}`,
+    `${server.user.nick}: ${action.payload.text}`,
   ],
-};
+}
 
-export const reduceMessages = (
+export const reduceMessages: MessagesReducer = (
   messagesState = messagesInitialState,
-  action: RoutedAction,
-  extraStates: { route: RouteState; user: UserState },
+  action,
+  extraStates,
 ) =>
   handlers.hasOwnProperty(action.type)
     ? handlers[action.type](messagesState, action, extraStates)
-    : messagesState;
+    : messagesState

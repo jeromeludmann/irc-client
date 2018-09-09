@@ -1,4 +1,4 @@
-import { reduceMessages } from "@app/reducers/channel/messages";
+import { reduceMessages } from "@app/reducers/messages";
 import {
   setConnectionClosed,
   setConnectionFailed,
@@ -139,7 +139,7 @@ describe("reduce channel messages by dispatching", () => {
           undefined,
           commands["help"].callback({
             serverKey: "server1",
-            channelKey: "#channel",
+            bufferKey: "#channel",
           }),
           extraParams,
         ),
@@ -153,7 +153,7 @@ describe("reduce channel messages by dispatching", () => {
           commands["help"].callback(
             {
               serverKey: "server1",
-              channelKey: "#channel",
+              bufferKey: "#channel",
             },
             "msg",
           ),

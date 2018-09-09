@@ -1,20 +1,20 @@
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components'
 
 export const List = styled.ul`
   margin-bottom: 10px;
   padding: 0;
   list-style: none;
-`;
+`
 
 export const ListItem = styled.li`
   margin: 5px 0;
   list-style: none;
-`;
+`
 
-type ButtonProps = {
-  isActive: boolean;
-  hasActivity: boolean;
-};
+interface ButtonProps {
+  isActive: boolean
+  hasActivity: boolean
+}
 
 export const Button = styled.button`
   outline: none;
@@ -41,4 +41,4 @@ export const Button = styled.button`
     css`
       background-color: yellow;
     `};
-`;
+`

@@ -1,6 +1,6 @@
 import { Middleware } from "redux";
 import { isStatus, isRaw } from "@app/Route";
-import { AppState } from "@app/reducers";
+import { RootState } from "@app/reducers";
 import { EnterInputValueAction, ENTER_INPUT_VALUE } from "@app/actions/ui";
 import { commands } from "@app/actions/commands";
 
@@ -9,7 +9,7 @@ import { commands } from "@app/actions/commands";
  *
  * Handle commands from input component.
  */
-export const commandHandler: Middleware<{}, AppState> = store => next => (
+export const commandHandler: Middleware<{}, RootState> = store => next => (
   action: EnterInputValueAction,
 ) => {
   next(action);
@@ -19,17 +19,17 @@ export const commandHandler: Middleware<{}, AppState> = store => next => (
   }
 
   const { route } = store.getState();
-  const { channelKey } = route;
+  const { bufferKey } = route;
 
   const value = action.payload.value;
   const parsedCommand = value.match(/^\s*\/(\S+)(?:\s+)?(.*)?/);
 
   if (!parsedCommand) {
-    if (!isStatus(channelKey) && !isRaw(channelKey)) {
-      next(commands.msg.callback(route, channelKey, value));
+    if (!isStatus(bufferKey) && !isRaw(bufferKey)) {
+      next(commands.msg.callback(route, bufferKey as string, value));
     } else {
       // tslint:disable-next-line
-      console.warn(`Not a channel or private: "${channelKey}"`);
+      console.warn(`Not a channel or private: "${bufferKey}"`);
     }
     return;
   }
