@@ -150,4 +150,6 @@ export const commands: CommandRegistry = {
 }
 
 // aliases
+commands.connect = commands.server
+commands.disconnect = commands.quit
 commands.quote = commands.raw

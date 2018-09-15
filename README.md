@@ -94,10 +94,11 @@ For instance, after running the app, you can connect it with `/connect localhost
 | ✔   | `/msg`        |             |
 | ✔   | `/nick`       |             |
 | ✔   | `/part`       |             |
-|     | `/ping`       |             |
+| ✔   | `/ping`       |             |
 |     | `/query`      |             |
 | ✔   | `/quit`       |             |
 | ✔   | `/raw`        |             |
+| ✔   | `/server`     |             |
 |     | `/topic`      |             |
 |     | `/who`        |             |
 |     | `/whois`      |             |
