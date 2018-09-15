@@ -4,7 +4,7 @@ import {
   bufferRouterInitialState,
   reduceBufferRouter,
 } from '@app/reducers/bufferRouter'
-import { RoutedAction } from '@app/Route'
+import { RoutedAction } from '@app/utils/Route'
 import {
   RECEIVE_RPL_MYINFO,
   ReceiveReplyMyInfoAction,
@@ -13,6 +13,7 @@ import {
   RECEIVE_PONG_FROM_SERVER,
   ReceivePongFromServerAction,
 } from '@app/actions/msgIncoming'
+import { CaseReducerMap } from '@app/utils/CaseReducerMap'
 
 type ServerPartialState = Readonly<{
   name: string
@@ -57,7 +58,7 @@ export const serverInitialState = {
   buffers: bufferRouterInitialState,
 }
 
-const caseReducers: { [action: string]: ServerReducer<ServerPartialState> } = {
+const caseReducers: CaseReducerMap<ServerReducer<ServerPartialState>> = {
   [RECEIVE_NICK]: (server, action: ReceiveNickAction) => ({
     ...server,
     user:

@@ -9,11 +9,17 @@ import {
   isRaw,
   isPrivate,
   isChannel,
-} from '@app/Route'
+} from '@app/utils/Route'
 import { RouteState } from '@app/reducers/route'
 import { CLOSE_WINDOW, CloseWindowAction } from '@app/actions/ui'
-import { RECEIVE_JOIN, RECEIVE_PRIVMSG } from '@app/actions/msgIncoming'
+import {
+  RECEIVE_JOIN,
+  RECEIVE_PRIVMSG,
+  RECEIVE_PART,
+  ReceivePartAction,
+} from '@app/actions/msgIncoming'
 import { ServerState } from '@app/reducers/server'
+import { CaseReducerMap } from '@app/utils/CaseReducerMap'
 
 export type BufferRouterState = Readonly<{
   [key: string]: BufferState
@@ -54,26 +60,53 @@ const routeHandlers: { [buffer: string]: BufferRouterReducer } = {
   },
 }
 
-const caseReducers: { [action: string]: BufferRouterReducer } = {
-  [CLOSE_WINDOW]: (buffers, action: CloseWindowAction) => {
-    const updatedBuffers = { ...buffers }
+const removeCurrentBuffer = (
+  buffers: { [key: string]: BufferState },
+  bufferKey: string,
+) => {
+  const bufferMap = { ...buffers }
+  delete bufferMap[bufferKey]
+  return bufferMap
+}
 
-    if (
-      isChannel(action.route.bufferKey) ||
-      isPrivate(action.route.bufferKey)
-    ) {
-      delete updatedBuffers[action.route.bufferKey]
-      return updatedBuffers
+const removeAllServerRelatedBuffers = (buffers: {
+  [key: string]: BufferState
+}) => {
+  const bufferMap = { ...buffers }
+
+  Object.keys(buffers).forEach(buffer => {
+    if (isChannel(buffer) || isPrivate(buffer)) {
+      delete bufferMap[buffer]
+    }
+  })
+
+  return bufferMap
+}
+
+const caseReducers: CaseReducerMap<BufferRouterReducer> = {
+  [CLOSE_WINDOW]: (buffers, action: CloseWindowAction) =>
+    isChannel(action.route.bufferKey) || isPrivate(action.route.bufferKey)
+      ? removeCurrentBuffer(buffers, action.route.bufferKey)
+      : removeAllServerRelatedBuffers(buffers),
+
+  // We arbitrarily decided to close window when we "/part" the channel.
+  // But later, we could make this behavior customizable.
+  [RECEIVE_PART]: (buffers, action: ReceivePartAction, extraStates) => {
+    const itIsMe = action.payload.user.nick === extraStates.server.user.nick
+
+    if (itIsMe) {
+      return removeCurrentBuffer(buffers, action.payload.channel)
     }
 
-    // Remove all server-related buffers while closing status window
-    Object.keys(buffers).forEach(buffer => {
-      if (isChannel(buffer) || isPrivate(buffer)) {
-        delete updatedBuffers[buffer]
-      }
-    })
-
-    return updatedBuffers
+    return {
+      ...buffers,
+      // TODO check the route type and use appropriate reducer?
+      [action.route.bufferKey]: reduceBuffer(
+        buffers[action.route.bufferKey],
+        action,
+        extraStates,
+      ),
+    }
   },
 }
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { User } from "@app/Message";
+import { User } from "@app/utils/Message";
 import { List } from "@app/components/navigation/style";
 import { ListItem } from "@app/components/nicklist/style";
 

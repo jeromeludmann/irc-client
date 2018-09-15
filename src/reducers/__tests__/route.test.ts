@@ -2,7 +2,7 @@ import { reduceRoute } from '@app/reducers/route'
 import { switchWindow, closeWindow } from '@app/actions/ui'
 import { serverInitialState } from '@app/reducers/server'
 import { messageReceivers } from '@app/actions/msgIncoming'
-import { BufferKey } from '@app/Route'
+import { BufferKey } from '@app/utils/Route'
 import { serverRouterInitialState } from '@app/reducers/serverRouter'
 
 describe('reduce route', () => {

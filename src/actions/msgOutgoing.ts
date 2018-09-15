@@ -1,4 +1,4 @@
-import { RoutedAction, BufferKey } from '@app/Route'
+import { RoutedAction, BufferKey } from '@app/utils/Route'
 import { SendRawMessageAction, SEND_RAW_MESSAGE } from '@app/actions/socket'
 
 interface SendMessageAction<T = string, P = {}> extends RoutedAction<T> {

@@ -16,7 +16,7 @@ import {
   CONNECT_TO_SERVER,
   DISCONNECT_FROM_SERVER,
 } from '@app/actions/socket'
-import { CRLF, IRC_MESSAGE_LENGTH } from '@app/helpers'
+import { CRLF, IRC_MESSAGE_LENGTH } from '@app/utils/helpers'
 import { sendQuit } from '@app/actions/msgOutgoing'
 import { ServerState } from '@app/reducers/server'
 

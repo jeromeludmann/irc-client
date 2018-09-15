@@ -1,5 +1,5 @@
 import { Action } from 'redux'
-import { CHANNEL_REGEXP } from '@app/helpers'
+import { CHANNEL_REGEXP } from '@app/utils/helpers'
 
 export interface Route {
   serverKey: string

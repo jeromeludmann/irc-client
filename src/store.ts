@@ -3,14 +3,14 @@ import { reduceRoot } from '@app/reducers'
 import { messageParser } from '@app/middlewares/messageParser'
 import { commandHandler } from '@app/middlewares/commandHandler'
 import { socketHandler } from '@app/middlewares/socketHandler'
-import { BufferKey } from '@app/Route'
+import { BufferKey } from '@app/utils/Route'
 import { serverInitialState } from '@app/reducers/server'
 import { autoRouter } from '@app/middlewares/autoRouter'
 import { lag } from '@app/middlewares/lag'
 import { pingPong } from '@app/middlewares/pingPong'
 import { register } from '@app/middlewares/register'
 import { logger } from '@app/middlewares/logger'
-import { ui } from '@app/middlewares/ui'
+import { windowHandler } from '@app/middlewares/windowHandler'
 
 export const getStore = (serverKey: string) =>
   createStore(
@@ -27,7 +27,7 @@ export const getStore = (serverKey: string) =>
       pingPong,
       register,
       commandHandler,
-      ui,
+      windowHandler,
       socketHandler, // keep just before logger
       logger, // keep last
     ),

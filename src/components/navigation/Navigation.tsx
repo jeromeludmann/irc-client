@@ -1,5 +1,5 @@
 import React, { PureComponent, MouseEvent } from 'react'
-import { isStatus, isRaw } from '@app/Route'
+import { isStatus, isRaw } from '@app/utils/Route'
 import { List, ListItem, Button } from '@app/components/navigation/style'
 
 interface Props {

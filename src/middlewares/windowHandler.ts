@@ -1,7 +1,7 @@
 import { Middleware } from 'redux'
 import { CloseWindowAction, CLOSE_WINDOW } from '@app/actions/ui'
 import { RootState } from '@app/reducers'
-import { isChannel, isStatus, isRaw } from '@app/Route'
+import { isChannel, isStatus, isRaw } from '@app/utils/Route'
 import { disconnectFromServer } from '@app/actions/socket'
 import { sendPart } from '@app/actions/msgOutgoing'
 
@@ -10,7 +10,7 @@ import { sendPart } from '@app/actions/msgOutgoing'
  *
  * Handle all UI actions with side-effects.
  */
-export const ui: Middleware<{}, RootState> = _ => next => (
+export const windowHandler: Middleware<{}, RootState> = _ => next => (
   action: CloseWindowAction,
 ) => {
   next(action)

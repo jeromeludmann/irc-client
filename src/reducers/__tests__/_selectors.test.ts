@@ -3,13 +3,13 @@ import {
   selectRoute,
   selectServer,
   selectUser,
-  selectChannel,
+  selectBuffer,
   selectMessages,
   selectInput,
 } from '@app/reducers/_selectors'
 import { rootInitialState } from '@app/reducers'
 import { serverInitialState } from '@app/reducers/server'
-import { BufferKey } from '@app/Route'
+import { BufferKey } from '@app/utils/Route'
 
 describe('root selectors', () => {
   test('select servers', () => {
@@ -36,7 +36,7 @@ describe('server selectors', () => {
   })
 
   test('select channel', () => {
-    expect(selectChannel(initialState)).toMatchSnapshot()
+    expect(selectBuffer(initialState)).toMatchSnapshot()
   })
 
   test('select messages', () => {

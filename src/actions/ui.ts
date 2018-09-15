@@ -1,5 +1,5 @@
 import { Action } from 'redux'
-import { Route, RoutedAction } from '@app/Route'
+import { Route, RoutedAction } from '@app/utils/Route'
 
 // Update input value
 

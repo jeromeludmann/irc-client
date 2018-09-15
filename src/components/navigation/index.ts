@@ -1,6 +1,6 @@
 import { connect, MapStateToProps } from 'react-redux'
 import { RouteState } from '@app/reducers/route'
-import { Route } from '@app/Route'
+import { Route } from '@app/utils/Route'
 import { RootState } from '@app/reducers'
 import { selectRoute, selectServers } from '@app/reducers/_selectors'
 import { switchWindow } from '@app/actions/ui'

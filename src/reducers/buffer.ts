@@ -4,11 +4,12 @@ import {
   reduceMessages,
 } from '@app/reducers/messages'
 import { InputState, inputInitialState, reduceInput } from '@app/reducers/input'
-import { RoutedAction } from '@app/Route'
+import { RoutedAction } from '@app/utils/Route'
 import { RouteState } from '@app/reducers/route'
 import { RECEIVE_JOIN, ReceiveJoinAction } from '@app/actions/msgIncoming'
 import { SWITCH_WINDOW } from '@app/actions/ui'
 import { ServerState } from '@app/reducers/server'
+import { CaseReducerMap } from '@app/utils/CaseReducerMap'
 
 type BufferPartialState = Readonly<{
   activity: boolean
@@ -35,7 +36,7 @@ export const bufferInitialState = {
   messages: messagesInitialState,
 }
 
-const caseReducers: { [action: string]: BufferReducer<BufferPartialState> } = {
+const caseReducers: CaseReducerMap<BufferReducer<BufferPartialState>> = {
   [RECEIVE_JOIN]: (_, action: ReceiveJoinAction, extraStates) => ({
     activity: action.payload.user.nick !== extraStates.server.user.nick,
   }),

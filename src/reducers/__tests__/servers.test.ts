@@ -1,6 +1,6 @@
 import { reduceServers, serversInitialState } from "@app/reducers/servers";
 import { closeWindow } from "@app/actions/ui";
-import { BufferKey } from "@app/Route";
+import { BufferKey } from "@app/utils/Route";
 import { serverInitialState } from "@app/reducers/server";
 import { lookup } from "@app/actions/socket";
 

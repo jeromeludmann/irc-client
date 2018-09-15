@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow, mount } from "enzyme";
 import Navigation from "@app/components/navigation/Navigation";
-import { BufferKey } from "@app/Route";
+import { BufferKey } from "@app/utils/Route";
 import { bufferRouterInitialState } from "@app/reducers/bufferRouter";
 import { bufferInitialState } from "@app/reducers/buffer";
 

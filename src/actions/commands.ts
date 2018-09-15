@@ -7,8 +7,8 @@ import {
   sendRawMessage,
 } from '@app/actions/socket'
 import { closeWindow, CloseWindowAction } from '@app/actions/ui'
-import { Route, RoutedAction, BufferKey } from '@app/Route'
-import { CHANNEL_REGEXP } from '@app/helpers'
+import { Route, RoutedAction, BufferKey } from '@app/utils/Route'
+import { CHANNEL_REGEXP } from '@app/utils/helpers'
 import {
   sendJoin,
   sendPrivmsg,

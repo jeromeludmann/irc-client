@@ -1,4 +1,4 @@
-import { isPrivate } from "@app/Route";
+import { isPrivate } from "@app/utils/Route";
 
 const nick = "nickname";
 const channel = "#general";

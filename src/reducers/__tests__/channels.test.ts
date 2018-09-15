@@ -1,6 +1,6 @@
 import { reduceBufferRouter } from '@app/reducers/bufferRouter'
 import { closeWindow } from '@app/actions/ui'
-import { BufferKey } from '@app/Route'
+import { BufferKey } from '@app/utils/Route'
 import { bufferInitialState } from '@app/reducers/buffer'
 
 describe('reduce channels', () => {

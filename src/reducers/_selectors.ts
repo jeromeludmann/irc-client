@@ -19,19 +19,19 @@ export const selectServer = createSelector(
 
 export const selectUser = createSelector(selectServer, server => server.user)
 
-export const selectChannel = createSelector(
+export const selectBuffer = createSelector(
   selectServer,
   selectRoute,
   (server, active) => server.buffers[active.bufferKey],
 )
 
 export const selectMessages = createSelector(
-  selectChannel,
+  selectBuffer,
   channel => channel.messages,
 )
 
 export const selectInput = createSelector(
-  selectChannel,
+  selectBuffer,
   channel => channel.input,
 )
 

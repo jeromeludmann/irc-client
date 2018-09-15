@@ -1,4 +1,4 @@
-import { BufferKey, RoutedAction } from '@app/Route'
+import { BufferKey, RoutedAction } from '@app/utils/Route'
 
 // it seems to be useless...
 type SocketAction<T> = RoutedAction<T>

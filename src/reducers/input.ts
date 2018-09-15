@@ -7,6 +7,7 @@ import {
   GO_FORWARD_INPUT_HISTORY,
   EnterInputValueAction,
 } from '@app/actions/ui'
+import { CaseReducerMap } from '@app/utils/CaseReducerMap'
 
 export type InputState = Readonly<{
   value: string
@@ -33,7 +34,7 @@ const endOfHistory = (input: InputState) => {
   return input.history.index === input.history.values.length
 }
 
-const caseReducers: { [action: string]: InputReducer } = {
+const caseReducers: CaseReducerMap<InputReducer> = {
   [UPDATE_INPUT_VALUE]: (input, action: UpdateInputValueAction) => ({
     ...input,
     value: action.payload.value,

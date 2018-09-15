@@ -1,13 +1,18 @@
-import { Action } from 'redux'
-import { Route, BufferKey, isStatus } from '@app/Route'
+import { Action, AnyAction } from 'redux'
+import { Route, BufferKey, isStatus } from '@app/utils/Route'
 import {
   SWITCH_WINDOW,
   SwitchWindowAction,
   CLOSE_WINDOW,
-  CloseWindowAction,
 } from '@app/actions/ui'
-import { ReceiveJoinAction, RECEIVE_JOIN } from '@app/actions/msgIncoming'
+import {
+  ReceiveJoinAction,
+  RECEIVE_JOIN,
+  ReceivePartAction,
+  RECEIVE_PART,
+} from '@app/actions/msgIncoming'
 import { RootState } from '@app/reducers'
+import { CaseReducerMap } from '@app/utils/CaseReducerMap'
 
 export type RouteState = Readonly<Route>
 
@@ -22,14 +27,12 @@ type RouteReducer = (
   extraStates: { root: RootState },
 ) => RouteState
 
-const caseReducers: { [action: string]: RouteReducer } = {
-  [RECEIVE_JOIN]: (route, action: ReceiveJoinAction, extraStates) =>
-    action.payload.user.nick ===
-    extraStates.root.servers[action.route.serverKey].user.nick
-      ? action.route
-      : route,
+const itIsMe = (action: AnyAction, extraStates: { root: RootState }) =>
+  action.payload.user.nick ===
+  extraStates.root.servers[action.route.serverKey].user.nick
 
-  [CLOSE_WINDOW]: (route, _: CloseWindowAction, extraStates) => {
+const caseReducers: CaseReducerMap<RouteReducer> = {
+  [CLOSE_WINDOW]: (route, _, extraStates) => {
     if (isStatus(route.bufferKey)) {
       const keys = Object.keys(extraStates.root.servers)
       return keys.length > 1
@@ -43,15 +46,36 @@ const caseReducers: { [action: string]: RouteReducer } = {
     return { ...route, bufferKey: BufferKey.STATUS }
   },
 
-  // TODO use extraStates and check if the given route exists
-  [SWITCH_WINDOW]: (_, action: SwitchWindowAction) => action.route,
+  [RECEIVE_JOIN]: (route, action: ReceiveJoinAction, extraStates) =>
+    itIsMe(action, extraStates) ? action.route : route,
+
+  [RECEIVE_PART]: (route, action: ReceivePartAction, extraStates) =>
+    itIsMe(action, extraStates)
+      ? { ...route, bufferKey: BufferKey.STATUS }
+      : route,
+
+  [SWITCH_WINDOW]: (route, action: SwitchWindowAction, extraStates) => {
+    const { serverKey, bufferKey } = action.route
+
+    const routeFound =
+      serverKey in extraStates.root.servers &&
+      bufferKey in extraStates.root.servers[serverKey].buffers
+
+    if (!routeFound) {
+      // tslint:disable-next-line
+      console.log(`Route "${action.route}" not found`)
+      return route
+    }
+
+    return action.route
+  },
 }
 
 export const reduceRoute: RouteReducer = (
-  routeState = routeInitialState,
+  route = routeInitialState,
   action,
   extraStates,
 ) =>
   action.type in caseReducers
-    ? caseReducers[action.type](routeState, action, extraStates)
-    : routeState
+    ? caseReducers[action.type](route, action, extraStates)
+    : route

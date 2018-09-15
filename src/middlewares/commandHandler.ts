@@ -1,5 +1,5 @@
 import { Middleware } from 'redux'
-import { isStatus, isRaw } from '@app/Route'
+import { isStatus, isRaw } from '@app/utils/Route'
 import { RootState } from '@app/reducers'
 import { EnterInputValueAction, ENTER_INPUT_VALUE } from '@app/actions/ui'
 import { commands } from '@app/actions/commands'

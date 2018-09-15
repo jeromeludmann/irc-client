@@ -40,6 +40,7 @@ import {
 } from '@app/actions/commands'
 import { RouteState } from '@app/reducers/route'
 import { ServerState } from '@app/reducers/server'
+import { CaseReducerMap } from '@app/utils/CaseReducerMap'
 
 // TODO replace string[] by MessageState[]
 export type MessagesState = Readonly<string[]>
@@ -52,7 +53,7 @@ type MessagesReducer = (
 
 export const messagesInitialState: MessagesState = []
 
-const caseReducers: { [action: string]: MessagesReducer } = {
+const caseReducers: CaseReducerMap<MessagesReducer> = {
   [CONNECT_TO_SERVER]: (messages, action: ConnectToServerAction) => [
     ...messages,
     `Connecting to ${action.payload.host}…`,
