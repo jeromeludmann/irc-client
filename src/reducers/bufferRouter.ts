@@ -54,7 +54,7 @@ const routeHandlers: { [buffer: string]: BufferRouterReducer } = {
   },
 }
 
-const handlers: { [action: string]: BufferRouterReducer } = {
+const caseReducers: { [action: string]: BufferRouterReducer } = {
   [CLOSE_WINDOW]: (buffers, action: CloseWindowAction) => {
     const updatedBuffers = { ...buffers }
 
@@ -88,8 +88,8 @@ export const reduceBufferRouter: BufferRouterReducer = (
     return routeHandlers[bufferKey](buffers, action, extraStates)
   }
 
-  if (action.type in handlers) {
-    return handlers[action.type](buffers, action, extraStates)
+  if (action.type in caseReducers) {
+    return caseReducers[action.type](buffers, action, extraStates)
   }
 
   if (

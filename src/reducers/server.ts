@@ -22,7 +22,6 @@ type ServerPartialState = Readonly<{
     real: string
   }>
   lag: number
-  // TODO refactor to another nested reducer
   modes: Readonly<{
     user: string[]
     available: Readonly<{
@@ -58,7 +57,7 @@ export const serverInitialState = {
   buffers: bufferRouterInitialState,
 }
 
-const handlers: { [action: string]: ServerReducer<ServerPartialState> } = {
+const caseReducers: { [action: string]: ServerReducer<ServerPartialState> } = {
   [RECEIVE_NICK]: (server, action: ReceiveNickAction) => ({
     ...server,
     user:
@@ -93,8 +92,8 @@ export const reduceServer: ServerReducer = (
   action,
   extraStates,
 ) => ({
-  ...(action.type in handlers
-    ? handlers[action.type](server, action, extraStates)
+  ...(action.type in caseReducers
+    ? caseReducers[action.type](server, action, extraStates)
     : server),
   buffers: reduceBufferRouter(server.buffers, action as RoutedAction, {
     ...extraStates,

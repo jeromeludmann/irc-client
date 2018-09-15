@@ -35,7 +35,7 @@ export const bufferInitialState = {
   messages: messagesInitialState,
 }
 
-const handlers: { [action: string]: BufferReducer<BufferPartialState> } = {
+const caseReducers: { [action: string]: BufferReducer<BufferPartialState> } = {
   [RECEIVE_JOIN]: (_, action: ReceiveJoinAction, extraStates) => ({
     activity: action.payload.user.nick !== extraStates.server.user.nick,
   }),
@@ -48,8 +48,8 @@ export const reduceBuffer: BufferReducer = (
   action,
   extraStates,
 ): BufferState => ({
-  ...(action.type in handlers
-    ? handlers[action.type](buffer, action, extraStates)
+  ...(action.type in caseReducers
+    ? caseReducers[action.type](buffer, action, extraStates)
     : buffer),
   input: reduceInput(buffer.input, action),
   messages: reduceMessages(buffer.messages, action, extraStates),

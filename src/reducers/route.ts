@@ -22,7 +22,7 @@ type RouteReducer = (
   extraStates: { root: RootState },
 ) => RouteState
 
-const handlers: { [action: string]: RouteReducer } = {
+const caseReducers: { [action: string]: RouteReducer } = {
   [RECEIVE_JOIN]: (route, action: ReceiveJoinAction, extraStates) =>
     action.payload.user.nick ===
     extraStates.root.servers[action.route.serverKey].user.nick
@@ -52,6 +52,6 @@ export const reduceRoute: RouteReducer = (
   action,
   extraStates,
 ) =>
-  action.type in handlers
-    ? handlers[action.type](routeState, action, extraStates)
+  action.type in caseReducers
+    ? caseReducers[action.type](routeState, action, extraStates)
     : routeState

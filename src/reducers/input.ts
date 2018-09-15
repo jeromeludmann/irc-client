@@ -33,7 +33,7 @@ const endOfHistory = (input: InputState) => {
   return input.history.index === input.history.values.length
 }
 
-const handlers: { [action: string]: InputReducer } = {
+const caseReducers: { [action: string]: InputReducer } = {
   [UPDATE_INPUT_VALUE]: (input, action: UpdateInputValueAction) => ({
     ...input,
     value: action.payload.value,
@@ -70,4 +70,4 @@ const handlers: { [action: string]: InputReducer } = {
 }
 
 export const reduceInput: InputReducer = (input = inputInitialState, action) =>
-  action.type in handlers ? handlers[action.type](input, action) : input
+  action.type in caseReducers ? caseReducers[action.type](input, action) : input

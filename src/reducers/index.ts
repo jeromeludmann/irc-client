@@ -43,7 +43,7 @@ const routeActionToServer: RootReducer<
     : servers
 }
 
-const handlers: { [action: string]: RootReducer<RootPartialState> } = {
+const caseReducers: { [action: string]: RootReducer<RootPartialState> } = {
   [CLOSE_WINDOW]: (root, action, extraStates) => {
     const thereIsOnlyOneServer = Object.keys(root.servers).length <= 1
     const isChannelOrPrivate =
@@ -68,8 +68,8 @@ export const reduceRoot: Reducer<RootState, RoutedAction> = (
   }
 
   return {
-    ...(action.type in handlers
-      ? handlers[action.type](root, action, { root })
+    ...(action.type in caseReducers
+      ? caseReducers[action.type](root, action, { root })
       : { servers: routeActionToServer(root.servers, action, { root }) }),
     route: reduceRoute(root.route, action, { root }),
   }

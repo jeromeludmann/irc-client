@@ -52,7 +52,7 @@ type MessagesReducer = (
 
 export const messagesInitialState: MessagesState = []
 
-const handlers: { [action: string]: MessagesReducer } = {
+const caseReducers: { [action: string]: MessagesReducer } = {
   [CONNECT_TO_SERVER]: (messages, action: ConnectToServerAction) => [
     ...messages,
     `Connecting to ${action.payload.host}…`,
@@ -154,6 +154,6 @@ export const reduceMessages: MessagesReducer = (
   action,
   extraStates,
 ) =>
-  action.type in handlers
-    ? handlers[action.type](messagesState, action, extraStates)
+  action.type in caseReducers
+    ? caseReducers[action.type](messagesState, action, extraStates)
     : messagesState
