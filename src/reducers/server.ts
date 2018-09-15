@@ -93,7 +93,7 @@ export const reduceServer: ServerReducer = (
   action,
   extraStates,
 ) => ({
-  ...(handlers.hasOwnProperty(action.type)
+  ...(action.type in handlers
     ? handlers[action.type](server, action, extraStates)
     : server),
   buffers: reduceBufferRouter(server.buffers, action as RoutedAction, {

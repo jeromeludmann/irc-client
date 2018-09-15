@@ -11,10 +11,10 @@ import {
 } from '@app/actions/socket'
 import { RootState } from '@app/reducers'
 import {
-  ConnectServerAction,
-  DisconnectServerAction,
-  CONNECT_SERVER,
-  DISCONNECT_SERVER,
+  ConnectToServerAction,
+  DisconnectFromServerAction,
+  CONNECT_TO_SERVER,
+  DISCONNECT_FROM_SERVER,
 } from '@app/actions/socket'
 import { CRLF, IRC_MESSAGE_LENGTH } from '@app/helpers'
 import { sendQuit } from '@app/actions/msgOutgoing'
@@ -37,10 +37,10 @@ const connectedSockets: {
 const handlers: {
   [action: string]: (action: Action, store: Store<RootState>) => Action
 } = {
-  [CONNECT_SERVER]: (
-    action: ConnectServerAction,
+  [CONNECT_TO_SERVER]: (
+    action: ConnectToServerAction,
     { getState, dispatch },
-  ): ConnectServerAction => {
+  ): ConnectToServerAction => {
     const {
       payload: { host, port, newConnection },
       route,
@@ -65,10 +65,10 @@ const handlers: {
     return { ...action, route: { ...action.route, serverKey } }
   },
 
-  [DISCONNECT_SERVER]: (
-    action: DisconnectServerAction,
+  [DISCONNECT_FROM_SERVER]: (
+    action: DisconnectFromServerAction,
     { dispatch },
-  ): DisconnectServerAction => {
+  ): DisconnectFromServerAction => {
     const { payload, route } = action
 
     if (!(route.serverKey in connectedSockets)) {

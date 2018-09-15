@@ -3,7 +3,7 @@ import { RoutedAction, isChannel, isPrivate } from '@app/Route'
 import { RouteState, routeInitialState, reduceRoute } from '@app/reducers/route'
 import { ServerState, reduceServer } from '@app/reducers/server'
 import { CLOSE_WINDOW } from '@app/actions/ui'
-import { CONNECT_SERVER } from '@app/actions/socket'
+import { CONNECT_TO_SERVER } from '@app/actions/socket'
 
 type RootPartialState = Readonly<{
   servers: Readonly<{ [key: string]: ServerState }>
@@ -17,7 +17,7 @@ export type RootState = Readonly<{
 type RootReducer<S = RootState> = (
   root: S,
   action: RoutedAction,
-  extraStates: { route: RouteState },
+  extraStates: { root: RootState },
 ) => S
 
 export const rootInitialState = {
@@ -31,13 +31,13 @@ const routeActionToServer: RootReducer<
   const serverKeyFound =
     action.route !== undefined && action.route.serverKey in servers
 
-  return serverKeyFound || action.type === CONNECT_SERVER
+  return serverKeyFound || action.type === CONNECT_TO_SERVER
     ? {
         ...servers,
         [action.route.serverKey]: reduceServer(
           servers[action.route.serverKey],
           action,
-          { route: extraStates.route },
+          { route: extraStates.root.route },
         ),
       }
     : servers
@@ -69,12 +69,8 @@ export const reduceRoot: Reducer<RootState, RoutedAction> = (
 
   return {
     ...(action.type in handlers
-      ? handlers[action.type](root, action, { route: root.route })
-      : {
-          servers: routeActionToServer(root.servers, action, {
-            route: root.route,
-          }),
-        }),
+      ? handlers[action.type](root, action, { root })
+      : { servers: routeActionToServer(root.servers, action, { root }) }),
     route: reduceRoute(root.route, action, { root }),
   }
 }

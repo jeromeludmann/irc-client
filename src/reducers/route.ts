@@ -52,6 +52,6 @@ export const reduceRoute: RouteReducer = (
   action,
   extraStates,
 ) =>
-  handlers.hasOwnProperty(action.type)
+  action.type in handlers
     ? handlers[action.type](routeState, action, extraStates)
     : routeState

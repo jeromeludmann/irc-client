@@ -48,7 +48,7 @@ export const reduceBuffer: BufferReducer = (
   action,
   extraStates,
 ): BufferState => ({
-  ...(handlers.hasOwnProperty(action.type)
+  ...(action.type in handlers
     ? handlers[action.type](buffer, action, extraStates)
     : buffer),
   input: reduceInput(buffer.input, action),

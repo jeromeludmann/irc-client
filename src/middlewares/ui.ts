@@ -2,7 +2,7 @@ import { Middleware } from 'redux'
 import { CloseWindowAction, CLOSE_WINDOW } from '@app/actions/ui'
 import { RootState } from '@app/reducers'
 import { isChannel, isStatus, isRaw } from '@app/Route'
-import { disconnectServer } from '@app/actions/socket'
+import { disconnectFromServer } from '@app/actions/socket'
 import { sendPart } from '@app/actions/msgOutgoing'
 
 /**
@@ -23,7 +23,7 @@ export const ui: Middleware<{}, RootState> = _ => next => (
       isStatus(action.route.bufferKey) ||
       isRaw(action.route.bufferKey)
     ) {
-      next(disconnectServer(action.route.serverKey))
+      next(disconnectFromServer(action.route.serverKey))
     }
   }
 }

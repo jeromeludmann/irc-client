@@ -5,6 +5,8 @@ import {
   RawMessagesAction,
   CONNECTION_CLOSED,
   RAW_MESSAGES_RECEIVED,
+  CONNECT_TO_SERVER,
+  ConnectToServerAction,
 } from '@app/actions/socket'
 import {
   ReceiveErrorAction,
@@ -51,6 +53,11 @@ type MessagesReducer = (
 export const messagesInitialState: MessagesState = []
 
 const handlers: { [action: string]: MessagesReducer } = {
+  [CONNECT_TO_SERVER]: (messages, action: ConnectToServerAction) => [
+    ...messages,
+    `Connecting to ${action.payload.host}…`,
+  ],
+
   [CONNECTION_CLOSED]: messages => [
     ...messages,
     'Disconnected from remote host.',
@@ -147,6 +154,6 @@ export const reduceMessages: MessagesReducer = (
   action,
   extraStates,
 ) =>
-  handlers.hasOwnProperty(action.type)
+  action.type in handlers
     ? handlers[action.type](messagesState, action, extraStates)
     : messagesState

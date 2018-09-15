@@ -84,16 +84,16 @@ export const reduceBufferRouter: BufferRouterReducer = (
 ) => {
   const { bufferKey } = action.route
 
-  if (routeHandlers.hasOwnProperty(bufferKey)) {
+  if (bufferKey in routeHandlers) {
     return routeHandlers[bufferKey](buffers, action, extraStates)
   }
 
-  if (handlers.hasOwnProperty(action.type)) {
+  if (action.type in handlers) {
     return handlers[action.type](buffers, action, extraStates)
   }
 
   if (
-    buffers.hasOwnProperty(bufferKey) ||
+    bufferKey in buffers ||
     [RECEIVE_PRIVMSG, RECEIVE_JOIN].indexOf(action.type) > -1
   ) {
     return {

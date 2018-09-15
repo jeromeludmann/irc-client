@@ -5,10 +5,10 @@ type SocketAction<T> = RoutedAction<T>
 
 // Connect to server
 
-export const CONNECT_SERVER = 'SOCKET/CONNECT_SERVER'
+export const CONNECT_TO_SERVER = 'SOCKET/CONNECT_TO_SERVER'
 
-export interface ConnectServerAction
-  extends SocketAction<typeof CONNECT_SERVER> {
+export interface ConnectToServerAction
+  extends SocketAction<typeof CONNECT_TO_SERVER> {
   payload: {
     host: string
     port: number
@@ -16,31 +16,31 @@ export interface ConnectServerAction
   }
 }
 
-export const connectServer = (
+export const connectToServer = (
   serverKey: string,
   host: string,
   port: number = 6667,
   newConnection = false,
-): ConnectServerAction => ({
-  type: CONNECT_SERVER,
+): ConnectToServerAction => ({
+  type: CONNECT_TO_SERVER,
   payload: { host, port, newConnection },
-  route: { serverKey, bufferKey: BufferKey.NONE },
+  route: { serverKey, bufferKey: BufferKey.STATUS },
 })
 
 // Disconnect from server
 
-export const DISCONNECT_SERVER = 'SOCKET/DISCONNECT_SERVER'
+export const DISCONNECT_FROM_SERVER = 'SOCKET/DISCONNECT_FROM_SERVER'
 
-export interface DisconnectServerAction
-  extends SocketAction<typeof DISCONNECT_SERVER> {
+export interface DisconnectFromServerAction
+  extends SocketAction<typeof DISCONNECT_FROM_SERVER> {
   payload: { quitMessage?: string }
 }
 
-export const disconnectServer = (
+export const disconnectFromServer = (
   serverKey: string,
   quitMessage?: string,
-): DisconnectServerAction => ({
-  type: DISCONNECT_SERVER,
+): DisconnectFromServerAction => ({
+  type: DISCONNECT_FROM_SERVER,
   payload: { quitMessage },
   route: { serverKey, bufferKey: BufferKey.NONE },
 })

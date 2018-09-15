@@ -1,8 +1,8 @@
 import {
-  connectServer,
-  disconnectServer,
-  DisconnectServerAction,
-  ConnectServerAction,
+  connectToServer,
+  disconnectFromServer,
+  DisconnectFromServerAction,
+  ConnectToServerAction,
   SendRawMessageAction,
   sendRawMessage,
 } from '@app/actions/socket'
@@ -123,8 +123,8 @@ export const commands: CommandRegistry = {
     description: 'Connects to a server',
     syntax: '[-n] <host> [port]',
     regexp: /^(?:(-n)\s+)?(\S+)(?:\s+(\d{1,5})?)?$/,
-    callback: (route, option, host, port?): ConnectServerAction =>
-      connectServer(
+    callback: (route, option, host, port?): ConnectToServerAction =>
+      connectToServer(
         route.serverKey,
         host,
         port ? +port : undefined,
@@ -136,8 +136,8 @@ export const commands: CommandRegistry = {
     description: 'Disconnects from the current server',
     syntax: '[quit message]',
     regexp: /^(.*)$/,
-    callback: (route, quitMessage?): DisconnectServerAction =>
-      disconnectServer(route.serverKey, quitMessage),
+    callback: (route, quitMessage?): DisconnectFromServerAction =>
+      disconnectFromServer(route.serverKey, quitMessage),
   },
 
   raw: {

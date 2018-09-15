@@ -70,6 +70,4 @@ const handlers: { [action: string]: InputReducer } = {
 }
 
 export const reduceInput: InputReducer = (input = inputInitialState, action) =>
-  handlers.hasOwnProperty(action.type)
-    ? handlers[action.type](input, action)
-    : input
+  action.type in handlers ? handlers[action.type](input, action) : input
