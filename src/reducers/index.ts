@@ -53,9 +53,9 @@ const handlers: { [action: string]: RootReducer<RootPartialState> } = {
       return { servers: routeActionToServer(root.servers, action, extraStates) }
     }
 
-    const updatedServers = { ...root.servers }
-    delete updatedServers[action.route.serverKey]
-    return { servers: updatedServers }
+    const servers = { ...root.servers }
+    delete servers[action.route.serverKey]
+    return { servers }
   },
 }
 

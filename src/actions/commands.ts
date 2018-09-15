@@ -63,7 +63,7 @@ export const commands: CommandRegistry = {
         commandName = commandName.toLowerCase()
       }
 
-      if (commandName && commands.hasOwnProperty(commandName)) {
+      if (commandName && commandName in commands) {
         return {
           type: PRINT_HELP_ABOUT_COMMAND,
           payload: { command: { ...commands[commandName], name: commandName } },

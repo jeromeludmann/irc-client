@@ -1,6 +1,6 @@
-import { Middleware } from "redux";
-import { selectRoute } from "@app/reducers/_selectors";
-import { RootState } from "@app/reducers";
+import { Middleware } from 'redux'
+import { selectRoute } from '@app/reducers/_selectors'
+import { RootState } from '@app/reducers'
 
 /**
  * Action Auto Router Middleware
@@ -9,11 +9,11 @@ import { RootState } from "@app/reducers";
  * Useful to ensure that an action will always be routed in the reducers.
  */
 export const autoRouter: Middleware<{}, RootState> = ({
-  getState
+  getState,
 }) => next => action => {
-  if (!action.hasOwnProperty("route")) {
-    action.route = selectRoute(getState());
+  if (!('route' in action)) {
+    action.route = selectRoute(getState())
   }
 
-  next(action);
-};
+  next(action)
+}

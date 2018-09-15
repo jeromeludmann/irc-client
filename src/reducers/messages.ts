@@ -68,6 +68,30 @@ const handlers: { [action: string]: MessagesReducer } = {
     { payload: { message } }: ConnectionFailedAction,
   ) => [...messages, message],
 
+  [PRINT_HELP_BY_DEFAULT]: (
+    messages,
+    { payload: { commands } }: PrintHelpByDefaultAction,
+  ) => [
+    ...messages,
+    ...Object.keys(commands).map(
+      commandName => `${commandName} - ${commands[commandName].description}`,
+    ),
+    'Type /HELP <command> for more details.',
+  ],
+
+  [PRINT_HELP_ABOUT_COMMAND]: (
+    messages,
+    { payload: { command } }: PrintHelpAboutCommandAction,
+  ) => [
+    ...messages,
+    `Usage: /${command.name} ${command.syntax} - ${command.description}`,
+  ],
+
+  [RAW_MESSAGES_RECEIVED]: (messages, action: RawMessagesAction) => [
+    ...messages,
+    ...action.payload.messages,
+  ],
+
   [RECEIVE_ERROR]: (messages, { payload: { message } }: ReceiveErrorAction) => [
     ...messages,
     message,
@@ -104,42 +128,18 @@ const handlers: { [action: string]: MessagesReducer } = {
     return [...messages, message ? `${baseMsg} (${message})` : baseMsg]
   },
 
+  [RECEIVE_PING_FROM_SERVER]: messages => [...messages, 'Ping?'],
+
   [RECEIVE_PONG_FROM_SERVER]: (
     messages,
     { payload: { key, lag } }: ReceivePongFromServerAction,
     {},
   ) => [...messages, `Response from server ${key} in ${lag} ms`],
 
-  [PRINT_HELP_BY_DEFAULT]: (
-    messages,
-    { payload: { commands } }: PrintHelpByDefaultAction,
-  ) => [
-    ...messages,
-    ...Object.keys(commands).map(
-      commandName => `${commandName} - ${commands[commandName].description}`,
-    ),
-    'Type /HELP <command> for more details.',
-  ],
-
-  [PRINT_HELP_ABOUT_COMMAND]: (
-    messages,
-    { payload: { command } }: PrintHelpAboutCommandAction,
-  ) => [
-    ...messages,
-    `Usage: /${command.name} ${command.syntax} - ${command.description}`,
-  ],
-
   [RECEIVE_PRIVMSG]: (
     messages,
     { payload: { user, text } }: ReceivePrivmsgAction,
   ) => [...messages, `${user.nick}: ${text}`],
-
-  [RECEIVE_PING_FROM_SERVER]: messages => [...messages, 'Ping?'],
-
-  [RAW_MESSAGES_RECEIVED]: (messages, action: RawMessagesAction) => [
-    ...messages,
-    ...action.payload.messages,
-  ],
 
   [SEND_PONG_TO_SERVER]: messages => [...messages, 'Pong!'],
 
