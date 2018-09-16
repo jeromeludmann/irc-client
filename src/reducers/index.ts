@@ -26,24 +26,6 @@ export const rootInitialState = {
   route: routeInitialState,
 }
 
-// const routeActionToServer: RootReducer<
-//   Readonly<{ [key: string]: ServerState }>
-// > = (servers, action, extraStates) => {
-//   const serverKeyFound =
-//     action.route !== undefined && action.route.serverKey in servers
-
-//   return serverKeyFound || action.type === CONNECT_TO_SERVER
-//     ? {
-//         ...servers,
-//         [action.route.serverKey]: reduceServer(
-//           servers[action.route.serverKey],
-//           action,
-//           { route: extraStates.root.route },
-//         ),
-//       }
-//     : servers
-// }
-
 const caseReducers: CaseReducerMap<RootReducer<RootPartialState>> = {
   [CLOSE_WINDOW]: (root, action, _) => {
     const thereIsOnlyOneServer = Object.keys(root.servers).length <= 1
@@ -51,7 +33,6 @@ const caseReducers: CaseReducerMap<RootReducer<RootPartialState>> = {
       isChannel(action.route.bufferKey) || isPrivate(action.route.bufferKey)
 
     if (thereIsOnlyOneServer || isChannelOrPrivate) {
-      // return { servers: routeActionToServer(root.servers, action, extraStates) }
       return root
     }
 
@@ -61,35 +42,43 @@ const caseReducers: CaseReducerMap<RootReducer<RootPartialState>> = {
   },
 }
 
+const routeActionToServers = (
+  servers: { [key: string]: ServerState },
+  action: RoutedAction,
+  extraStates: { route: RouteState },
+) =>
+  action.route.serverKey in servers || action.type === CONNECT_TO_SERVER
+    ? {
+        ...servers,
+        [action.route.serverKey]: reduceServer(
+          servers[action.route.serverKey],
+          action,
+          extraStates,
+        ),
+      }
+    : servers
+
 export const reduceRoot: Reducer<RootState, RoutedAction> = (
   root = rootInitialState,
   action,
 ) => {
+  // prevent other actions to pass inside app reducers
   if (action.route === undefined) {
     return root
   }
 
-  const serverKeyFound =
-    action.route !== undefined && action.route.serverKey in root.servers
-
-  const pre = {
-    servers:
-      serverKeyFound || action.type === CONNECT_TO_SERVER
-        ? {
-            [action.route.serverKey]: reduceServer(
-              root.servers[action.route.serverKey],
-              action,
-              { route: root.route },
-            ),
-          }
-        : root.servers,
+  const intermediateState = {
+    ...root,
     route: reduceRoute(root.route, action, { root }),
+    servers: routeActionToServers(root.servers, action, { route: root.route }),
   }
 
   return {
-    ...pre,
+    ...intermediateState,
     ...(action.type in caseReducers
-      ? caseReducers[action.type](pre, action, { root })
+      ? caseReducers[action.type](intermediateState, action, {
+          root: intermediateState,
+        })
       : {}),
   }
 }
