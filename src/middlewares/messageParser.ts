@@ -1,8 +1,8 @@
-import { Middleware } from "redux";
-import { RAW_MESSAGES_RECEIVED, RawMessagesAction } from "@app/actions/socket";
-import { IRC_MESSAGE_LENGTH, CRLF } from "@app/helpers";
-import { GenericMessage, Prefix, Tags } from "@app/Message";
-import { messagesReceived } from "@app/actions/messages";
+import { Middleware } from 'redux'
+import { RAW_MESSAGES_RECEIVED, RawMessagesAction } from '@app/actions/socket'
+import { IRC_MESSAGE_LENGTH, CRLF } from '@app/utils/helpers'
+import { GenericMessage, Prefix, Tags } from '@app/utils/Message'
+import { messageReceivers } from '@app/actions/msgIncoming'
 
 /**
  * Message Parser Middleware
@@ -13,93 +13,93 @@ import { messagesReceived } from "@app/actions/messages";
 export const messageParser: Middleware = () => next => (
   action: RawMessagesAction,
 ) => {
-  next(action);
+  next(action)
 
   if (action.type === RAW_MESSAGES_RECEIVED) {
     action.payload.messages.forEach(rawMessage => {
-      const genericMessage = parseMessage(rawMessage);
-      const { prefix, command, params } = genericMessage;
+      const genericMessage = parseMessage(rawMessage)
+      const { prefix, command, params } = genericMessage
 
-      if (messagesReceived.hasOwnProperty(command)) {
-        next(messagesReceived[command](action.route.serverKey, prefix, params));
+      if (command in messageReceivers) {
+        next(messageReceivers[command](action.route.serverKey, prefix, params))
       }
-    });
+    })
   }
-};
+}
 
 const parseMessage = (rawMessage: string): GenericMessage => {
   const genericMessage: GenericMessage = {
-    command: "",
+    command: '',
     params: [],
-  };
-
-  if (rawMessage.length > IRC_MESSAGE_LENGTH - CRLF.length) {
-    rawMessage = rawMessage.slice(0, IRC_MESSAGE_LENGTH - CRLF.length);
   }
 
-  let pos: number;
+  if (rawMessage.length > IRC_MESSAGE_LENGTH - CRLF.length) {
+    rawMessage = rawMessage.slice(0, IRC_MESSAGE_LENGTH - CRLF.length)
+  }
+
+  let pos: number
 
   // Tags
 
-  if (rawMessage.charAt(0) === "@") {
-    pos = rawMessage.indexOf(" ");
-    genericMessage.tags = parseTags(rawMessage.slice(1, pos));
-    rawMessage = rawMessage.slice(pos + 1);
+  if (rawMessage.charAt(0) === '@') {
+    pos = rawMessage.indexOf(' ')
+    genericMessage.tags = parseTags(rawMessage.slice(1, pos))
+    rawMessage = rawMessage.slice(pos + 1)
   }
 
   // Prefix
 
-  if (rawMessage.charAt(0) === ":") {
-    pos = rawMessage.indexOf(" ");
-    genericMessage.prefix = parsePrefix(rawMessage.slice(1, pos));
-    rawMessage = rawMessage.slice(pos + 1);
+  if (rawMessage.charAt(0) === ':') {
+    pos = rawMessage.indexOf(' ')
+    genericMessage.prefix = parsePrefix(rawMessage.slice(1, pos))
+    rawMessage = rawMessage.slice(pos + 1)
   }
 
   // Command
 
-  pos = rawMessage.indexOf(" ");
+  pos = rawMessage.indexOf(' ')
   if (pos === -1) {
-    pos = rawMessage.length;
+    pos = rawMessage.length
   }
-  genericMessage.command = rawMessage.slice(0, pos).toUpperCase();
-  rawMessage = rawMessage.slice(pos + 1);
+  genericMessage.command = rawMessage.slice(0, pos).toUpperCase()
+  rawMessage = rawMessage.slice(pos + 1)
 
   // Middle parameters
 
-  while (rawMessage.length > 0 && rawMessage.charAt(0) !== ":") {
-    pos = rawMessage.indexOf(" ");
+  while (rawMessage.length > 0 && rawMessage.charAt(0) !== ':') {
+    pos = rawMessage.indexOf(' ')
     if (pos === -1) {
-      pos = rawMessage.length;
+      pos = rawMessage.length
     }
-    const middle = rawMessage.slice(0, pos);
-    genericMessage.params.push(middle);
-    rawMessage = rawMessage.slice(pos + 1);
+    const middle = rawMessage.slice(0, pos)
+    genericMessage.params.push(middle)
+    rawMessage = rawMessage.slice(pos + 1)
   }
 
   // Trailing parameter
 
   if (rawMessage.length > 0) {
-    const trailing = rawMessage.slice(1);
-    genericMessage.params.push(trailing);
+    const trailing = rawMessage.slice(1)
+    genericMessage.params.push(trailing)
   }
 
-  return genericMessage;
-};
+  return genericMessage
+}
 
 const parsePrefix = (prefix: string): Prefix => {
-  const i = prefix.indexOf("!");
+  const i = prefix.indexOf('!')
   if (i === -1) {
-    return prefix;
+    return prefix
   }
 
-  const j = prefix.indexOf("@");
+  const j = prefix.indexOf('@')
 
   return {
     nick: prefix.slice(0, i),
     user: prefix.slice(i + 1, j),
     host: prefix.slice(j + 1),
-  };
-};
+  }
+}
 
 const parseTags = (tags: string): Tags =>
-  tags.indexOf(";") > -1 ? tags.split(";") : [tags];
+  tags.indexOf(';') > -1 ? tags.split(';') : [tags]

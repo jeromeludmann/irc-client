@@ -1,0 +1,159 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+Object {
+  "buffers": Object {
+    "@raw": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@status": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+  },
+  "lag": 0,
+  "modes": Object {
+    "available": Object {
+      "channel": Array [],
+      "user": Array [],
+    },
+    "user": Array [],
+  },
+  "name": "<unknown>",
+  "user": Object {
+    "nick": "default_nick",
+    "real": "default_name",
+    "user": "default_user",
+  },
+}
+`;
+
+exports[`reduce server name with RPL_MYINFO received 1`] = `
+Object {
+  "buffers": Object {
+    "@raw": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@status": Object {
+      "activity": true,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+  },
+  "lag": 0,
+  "modes": Object {
+    "available": Object {
+      "channel": Array [
+        "c",
+        "h",
+        "a",
+        "n",
+        "n",
+        "e",
+        "l",
+        "M",
+        "o",
+        "d",
+        "e",
+        "s",
+      ],
+      "user": Array [
+        "u",
+        "s",
+        "e",
+        "r",
+        "M",
+        "o",
+        "d",
+        "e",
+        "s",
+      ],
+    },
+    "user": Array [],
+  },
+  "name": "serverName",
+  "user": Object {
+    "nick": "default_nick",
+    "real": "default_name",
+    "user": "default_user",
+  },
+}
+`;
+
+exports[`reduce server name without action 1`] = `
+Object {
+  "buffers": Object {
+    "@raw": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@status": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+  },
+  "lag": 0,
+  "modes": Object {
+    "available": Object {
+      "channel": Array [],
+      "user": Array [],
+    },
+    "user": Array [],
+  },
+  "name": "<unknown>",
+  "user": Object {
+    "nick": "default_nick",
+    "real": "default_name",
+    "user": "default_user",
+  },
+}
+`;

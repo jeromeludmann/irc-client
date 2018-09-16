@@ -1,6 +1,6 @@
 import { reduceServers, serversInitialState } from "@app/reducers/servers";
 import { closeWindow } from "@app/actions/ui";
-import { STATUS } from "@app/Route";
+import { BufferKey } from "@app/utils/Route";
 import { serverInitialState } from "@app/reducers/server";
 import { lookup } from "@app/actions/socket";
 
@@ -10,7 +10,7 @@ describe("reduce servers", () => {
       reduceServers(
         undefined,
         { type: "", route: { serverKey: "server1", channelKey: "" } },
-        { route: { serverKey: "server1", channelKey: STATUS } },
+        { route: { serverKey: "server1", channelKey: BufferKey.STATUS } },
       ),
     ).toMatchSnapshot();
   });
@@ -20,7 +20,7 @@ describe("reduce servers", () => {
       expect(
         reduceServers(
           serversInitialState,
-          closeWindow({ serverKey: "server1", channelKey: "#channel" }),
+          closeWindow({ serverKey: "server1", bufferKey: "#channel" }),
           { route: { serverKey: "server1", channelKey: "#channel" } },
         ),
       );
@@ -31,8 +31,8 @@ describe("reduce servers", () => {
         expect(
           reduceServers(
             serversInitialState,
-            closeWindow({ serverKey: "server1", channelKey: STATUS }),
-            { route: { serverKey: "server1", channelKey: STATUS } },
+            closeWindow({ serverKey: "server1", bufferKey: BufferKey.STATUS }),
+            { route: { serverKey: "server1", channelKey: BufferKey.STATUS } },
           ),
         );
       });
@@ -44,8 +44,8 @@ describe("reduce servers", () => {
               server1: serverInitialState,
               server2: serverInitialState,
             },
-            closeWindow({ serverKey: "server1", channelKey: STATUS }),
-            { route: { serverKey: "server1", channelKey: STATUS } },
+            closeWindow({ serverKey: "server1", bufferKey: BufferKey.STATUS }),
+            { route: { serverKey: "server1", channelKey: BufferKey.STATUS } },
           ),
         );
       });
@@ -57,7 +57,7 @@ describe("reduce servers", () => {
       reduceServers(
         { server1: serverInitialState },
         lookup("server1", null, "address", "family", "host"),
-        { route: { serverKey: "server1", channelKey: STATUS } },
+        { route: { serverKey: "server1", channelKey: BufferKey.STATUS } },
       ),
     );
   });

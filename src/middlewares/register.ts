@@ -3,15 +3,15 @@ import {
   ConnectionEstablishedAction,
   CONNECTION_ESTABLISHED,
 } from "@app/actions/socket";
-import { AppState } from "@app/reducers";
-import { sendUser, sendNick } from "@app/actions/messages";
+import { RootState } from "@app/reducers";
+import { sendUser, sendNick } from "@app/actions/msgOutgoing";
 
 /**
  * Register Middleware
  *
  * Register to server as soon as the connection is established.
  */
-export const register: Middleware<{}, AppState> = ({ getState }) => next => (
+export const register: Middleware<{}, RootState> = ({ getState }) => next => (
   action: ConnectionEstablishedAction,
 ) => {
   next(action);

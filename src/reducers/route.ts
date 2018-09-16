@@ -1,57 +1,81 @@
-import { Action } from "redux";
-import { Route, STATUS, isStatus, RoutedAction } from "@app/Route";
+import { Action, AnyAction } from 'redux'
+import { Route, BufferKey, isStatus } from '@app/utils/Route'
 import {
   SWITCH_WINDOW,
   SwitchWindowAction,
   CLOSE_WINDOW,
-  CloseWindowAction
-} from "@app/actions/ui";
-import { ServersState } from "@app/reducers/servers";
-import { JoinReceivedAction, JOIN_RECEIVED } from "@app/actions/messages";
+} from '@app/actions/ui'
+import {
+  ReceiveJoinAction,
+  RECEIVE_JOIN,
+  ReceivePartAction,
+  RECEIVE_PART,
+} from '@app/actions/msgIncoming'
+import { RootState } from '@app/reducers'
+import { CaseReducerMap } from '@app/utils/CaseReducerMap'
 
-export type RouteState = Route;
+export type RouteState = Readonly<Route>
 
 export const routeInitialState: RouteState = {
-  serverKey: "",
-  channelKey: STATUS
-};
+  serverKey: '',
+  bufferKey: BufferKey.STATUS,
+}
 
-type RouteReducer<A = Action> = (
+type RouteReducer = (
   state: RouteState,
-  action: A,
-  extraStates: { servers: ServersState }
-) => RouteState;
+  action: Action,
+  extraStates: { root: RootState },
+) => RouteState
 
-const handlers: { [action: string]: RouteReducer } = {
-  [JOIN_RECEIVED]: (route, action: JoinReceivedAction, extraStates) =>
-    action.payload.user.nick ===
-    extraStates.servers[action.route.serverKey].user.nick
-      ? action.route
-      : route,
+const itIsMe = (action: AnyAction, extraStates: { root: RootState }) =>
+  action.payload.user.nick ===
+  extraStates.root.servers[action.route.serverKey].user.nick
 
-  [CLOSE_WINDOW]: (route, _action: CloseWindowAction, extraStates) => {
-    if (isStatus(route.channelKey)) {
-      const keys = Object.keys(extraStates.servers);
+const caseReducers: CaseReducerMap<RouteReducer> = {
+  [CLOSE_WINDOW]: (route, _, extraStates) => {
+    if (isStatus(route.bufferKey)) {
+      const keys = Object.keys(extraStates.root.servers)
       return keys.length > 1
         ? {
             serverKey: keys.filter(key => key !== route.serverKey)[0],
-            channelKey: STATUS
+            bufferKey: BufferKey.STATUS,
           }
-        : route;
+        : route
     }
 
-    return { ...route, channelKey: STATUS };
+    return { ...route, bufferKey: BufferKey.STATUS }
   },
 
-  // TODO use extraStates and check if the given route exists
-  [SWITCH_WINDOW]: (_, action: SwitchWindowAction) => action.route
-};
+  [RECEIVE_JOIN]: (route, action: ReceiveJoinAction, extraStates) =>
+    itIsMe(action, extraStates) ? action.route : route,
 
-export const reduceRoute = (
-  routeState = routeInitialState,
-  action: RoutedAction,
-  extraStates: { servers: ServersState }
+  [RECEIVE_PART]: (route, action: ReceivePartAction, extraStates) =>
+    itIsMe(action, extraStates)
+      ? { ...route, bufferKey: BufferKey.STATUS }
+      : route,
+
+  [SWITCH_WINDOW]: (route, action: SwitchWindowAction, extraStates) => {
+    const { serverKey, bufferKey } = action.route
+
+    const routeFound =
+      serverKey in extraStates.root.servers &&
+      bufferKey in extraStates.root.servers[serverKey].buffers
+
+    if (!routeFound) {
+      // tslint:disable-next-line
+      console.log(`Route "${action.route}" not found`)
+      return route
+    }
+
+    return action.route
+  },
+}
+
+export const reduceRoute: RouteReducer = (
+  route = routeInitialState,
+  action,
+  extraStates,
 ) =>
-  handlers.hasOwnProperty(action.type)
-    ? handlers[action.type](routeState, action, extraStates)
-    : routeState;
+  action.type in caseReducers
+    ? caseReducers[action.type](route, action, extraStates)
+    : route

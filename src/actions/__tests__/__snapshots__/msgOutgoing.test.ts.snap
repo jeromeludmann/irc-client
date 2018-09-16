@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`send messages PART with message 1`] = `
+Object {
+  "payload": Object {
+    "raw": "PART #channel Goodbye!",
+  },
+  "route": Object {
+    "channelKey": "@none",
+    "serverKey": "server1",
+  },
+  "type": "SOCKET/SEND_RAW_MESSAGE",
+}
+`;
+
+exports[`send messages PART without message 1`] = `
+Object {
+  "payload": Object {
+    "raw": "PART #channel",
+  },
+  "route": Object {
+    "channelKey": "@none",
+    "serverKey": "server1",
+  },
+  "type": "SOCKET/SEND_RAW_MESSAGE",
+}
+`;
+
+exports[`send messages PING 1`] = `
+Object {
+  "embeddedAction": Object {
+    "payload": Object {
+      "key": "key",
+    },
+    "route": Object {
+      "channelKey": "@status",
+      "serverKey": "server1",
+    },
+    "type": "MESSAGE/SEND_PING_TO_SERVER",
+  },
+  "payload": Object {
+    "raw": "PING key",
+  },
+  "route": Object {
+    "channelKey": "@none",
+    "serverKey": "server1",
+  },
+  "type": "SOCKET/SEND_RAW_MESSAGE",
+}
+`;
+
+exports[`send messages PONG 1`] = `
+Object {
+  "embeddedAction": Object {
+    "payload": Object {
+      "key": "key",
+    },
+    "route": Object {
+      "channelKey": "@status",
+      "serverKey": "server1",
+    },
+    "type": "MESSAGE/SEND_PONG_TO_SERVER",
+  },
+  "payload": Object {
+    "raw": "PONG key",
+  },
+  "route": Object {
+    "channelKey": "@none",
+    "serverKey": "server1",
+  },
+  "type": "SOCKET/SEND_RAW_MESSAGE",
+}
+`;
+
+exports[`send messages QUIT with message 1`] = `
+Object {
+  "payload": Object {
+    "raw": "QUIT Goodbye!",
+  },
+  "route": Object {
+    "channelKey": "@none",
+    "serverKey": "server1",
+  },
+  "type": "SOCKET/SEND_RAW_MESSAGE",
+}
+`;
+
+exports[`send messages QUIT without message 1`] = `
+Object {
+  "payload": Object {
+    "raw": "QUIT",
+  },
+  "route": Object {
+    "channelKey": "@none",
+    "serverKey": "server1",
+  },
+  "type": "SOCKET/SEND_RAW_MESSAGE",
+}
+`;
+
+exports[`send messages USER 1`] = `
+Object {
+  "payload": Object {
+    "raw": "USER username 0 * :Real Name",
+  },
+  "route": Object {
+    "channelKey": "@none",
+    "serverKey": "server1",
+  },
+  "type": "SOCKET/SEND_RAW_MESSAGE",
+}
+`;

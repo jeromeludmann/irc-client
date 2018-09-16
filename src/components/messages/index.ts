@@ -1,14 +1,14 @@
 import { connect, MapStateToProps } from "react-redux";
 import MessageList from "@app/components/messages/MessageList";
-import { MessagesState } from "@app/reducers/channel/messages";
-import { AppState } from "@app/reducers";
-import { selectMessages } from "@app/reducers/channel/_selectors";
+import { MessagesState } from "@app/reducers/messages";
+import { RootState } from "@app/reducers";
+import { selectMessages } from "@app/reducers/_selectors";
 
 interface StateProps {
   messages: MessagesState;
 }
 
-const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = state => ({
+const mapStateToProps: MapStateToProps<StateProps, {}, RootState> = state => ({
   messages: selectMessages(state),
 });
 

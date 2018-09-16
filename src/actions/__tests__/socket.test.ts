@@ -1,5 +1,5 @@
 import {
-  connectServer,
+  connectToServer,
   setConnectionEstablished,
   lookup
 } from "@app/actions/socket";
@@ -7,12 +7,12 @@ import {
 describe("socket actions", () => {
   describe("should generate ConnectServerAction", () => {
     it("with the existing connection", () => {
-      expect(connectServer("server1", "irc.network", 6667)).toMatchSnapshot();
+      expect(connectToServer("server1", "irc.network", 6667)).toMatchSnapshot();
     });
 
     it("with a new connection", () => {
       expect(
-        connectServer("server1", "irc.network", 6667, true)
+        connectToServer("server1", "irc.network", 6667, true)
       ).toMatchSnapshot();
     });
   });
