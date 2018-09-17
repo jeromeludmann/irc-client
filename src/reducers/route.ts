@@ -79,3 +79,5 @@ export const reduceRoute: RouteReducer = (
   action.type in caseReducers
     ? caseReducers[action.type](route, action, extraStates)
     : route
+
+export const selectRoute = ({ route }: RootState): RouteState => route

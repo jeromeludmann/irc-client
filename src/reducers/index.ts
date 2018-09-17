@@ -82,3 +82,9 @@ export const reduceRoot: Reducer<RootState, RoutedAction> = (
       : {}),
   }
 }
+
+export const selectServers = ({
+  servers,
+}: RootState): {
+  [key: string]: ServerState
+} => servers

@@ -1,4 +1,5 @@
 import { Action } from 'redux'
+import { createSelector } from 'reselect'
 import {
   UPDATE_INPUT_VALUE,
   UpdateInputValueAction,
@@ -8,6 +9,7 @@ import {
   EnterInputValueAction,
 } from '@app/actions/ui'
 import { CaseReducerMap } from '@app/utils/CaseReducerMap'
+import { selectBuffer } from '@app/reducers/buffer'
 
 export type InputState = Readonly<{
   value: string
@@ -72,3 +74,23 @@ const caseReducers: CaseReducerMap<InputReducer> = {
 
 export const reduceInput: InputReducer = (input = inputInitialState, action) =>
   action.type in caseReducers ? caseReducers[action.type](input, action) : input
+
+export const selectInput = createSelector(
+  selectBuffer,
+  channel => channel.input,
+)
+
+export const selectInputValue = createSelector(
+  selectInput,
+  input => input.value,
+)
+
+export const selectInputDirtyValue = createSelector(
+  selectInput,
+  input => input.dirtyValue,
+)
+
+export const selectInputHistory = createSelector(
+  selectInput,
+  input => input.history,
+)

@@ -1,4 +1,5 @@
-import { RouteState } from '@app/reducers/route'
+import { createSelector } from 'reselect'
+import { RouteState, selectRoute } from '@app/reducers/route'
 import {
   RoutedAction,
   BufferKey,
@@ -25,6 +26,7 @@ import {
   reduceBuffer,
 } from '@app/reducers/buffer'
 import { CLOSE_WINDOW, CloseWindowAction } from '@app/actions/ui'
+import { selectServers } from '@app/reducers'
 
 export type ServerState = Readonly<{
   name: string
@@ -224,3 +226,36 @@ export const reduceServer: ServerReducer = (
       : {}),
   }
 }
+
+export const selectServer = createSelector(
+  selectServers,
+  selectRoute,
+  (servers, { serverKey }) => servers[serverKey],
+)
+
+export const selectServerName = createSelector(
+  selectServer,
+  server => server.name,
+)
+
+export const selectUser = createSelector(selectServer, server => server.user)
+
+export const selectServerLag = createSelector(
+  selectServer,
+  server => server.lag,
+)
+
+export const selectUserModes = createSelector(
+  selectServer,
+  server => server.modes.user,
+)
+
+export const selectAvailableModes = createSelector(
+  selectServer,
+  server => server.modes.available,
+)
+
+export const selectBuffers = createSelector(
+  selectServer,
+  server => server.buffers,
+)
