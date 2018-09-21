@@ -3,8 +3,8 @@ import {
   ConnectionEstablishedAction,
   CONNECTION_ESTABLISHED,
 } from "@app/actions/socket";
-import { RootState } from "@app/reducers";
-import { sendUser, sendNick } from "@app/actions/msgOutgoing";
+import { RootState } from "@app/state/root/reducer";
+import { sendUser, sendNick } from "@app/actions/messages/outgoing";
 
 /**
  * Register Middleware

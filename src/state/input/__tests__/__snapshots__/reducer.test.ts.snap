@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reduce input state anywhere in history should handle GO_BACK_INPUT_HISTORY 1`] = `
+Object {
+  "dirtyValue": "",
+  "history": Object {
+    "index": 0,
+    "values": Array [
+      "hello",
+      "world",
+    ],
+  },
+  "value": "hello",
+}
+`;
+
+exports[`reduce input state anywhere in history should handle GO_FORWARD_INPUT_HISTORY 1`] = `
+Object {
+  "dirtyValue": "",
+  "history": Object {
+    "index": 2,
+    "values": Array [
+      "hello",
+      "world",
+    ],
+  },
+  "value": "",
+}
+`;
+
+exports[`reduce input state anywhere in history should handle UPDATE_INPUT_VALUE 1`] = `
+Object {
+  "dirtyValue": "",
+  "history": Object {
+    "index": 1,
+    "values": Array [
+      "hello",
+      "world",
+    ],
+  },
+  "value": "hello",
+}
+`;
+
+exports[`reduce input state at the begin of history should handle GO_BACK_INPUT_HISTORY 1`] = `
+Object {
+  "dirtyValue": "",
+  "history": Object {
+    "index": 0,
+    "values": Array [
+      "hello",
+      "world",
+    ],
+  },
+  "value": "",
+}
+`;
+
+exports[`reduce input state at the end of history should handle GO_FORWARD_INPUT_HISTORY 1`] = `
+Object {
+  "dirtyValue": "",
+  "history": Object {
+    "index": 2,
+    "values": Array [
+      "hello",
+      "world",
+    ],
+  },
+  "value": "",
+}
+`;
+
+exports[`reduce input state at the end of history should handle UPDATE_INPUT_VALUE 1`] = `
+Object {
+  "dirtyValue": "hello",
+  "history": Object {
+    "index": 2,
+    "values": Array [
+      "hello",
+      "world",
+    ],
+  },
+  "value": "hello",
+}
+`;
+
+exports[`reduce input state should handle ENTER_INPUT_VALUE 1`] = `
+Object {
+  "dirtyValue": "",
+  "history": Object {
+    "index": 1,
+    "values": Array [
+      "hello",
+    ],
+  },
+  "value": "",
+}
+`;

@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reduce messages state should handle CONNECT_TO_SERVER 1`] = `
+Array [
+  "Connecting to server…",
+]
+`;
+
+exports[`reduce messages state should handle CONNECTION_CLOSED 1`] = `
+Array [
+  "Disconnected from remote host.",
+]
+`;
+
+exports[`reduce messages state should handle CONNECTION_FAILED 1`] = `
+Array [
+  "Connection failed",
+]
+`;
+
+exports[`reduce messages state should handle PRINT_HELP_ABOUT_COMMAND 1`] = `
+Array [
+  "Usage: /help [command] - Prints help about available commands",
+]
+`;
+
+exports[`reduce messages state should handle PRINT_HELP_BY_DEFAULT 1`] = `
+Array [
+  "close - Closes the current window",
+  "help - Prints help about available commands",
+  "join - Joins a channel",
+  "msg - Sends a message to a channel or a nick",
+  "nick - Changes the current nick",
+  "part - Leaves the channel",
+  "ping - Sends a ping",
+  "server - Connects to a server",
+  "quit - Disconnects from the current server",
+  "raw - Sends a raw message",
+  "connect - Connects to a server",
+  "disconnect - Disconnects from the current server",
+  "quote - Sends a raw message",
+  "Type /HELP <command> for more details.",
+]
+`;
+
+exports[`reduce messages state should handle RAW_MESSAGES_RECEIVED 1`] = `
+Array [
+  "PRIVMSG #channel :hello",
+  "PRIVMSG #channel :world",
+]
+`;
+
+exports[`reduce messages state should handle RECEIVE_ERROR 1`] = `
+Array [
+  "Error message",
+]
+`;
+
+exports[`reduce messages state should handle RECEIVE_JOIN 1`] = `
+Array [
+  "someone has joined #channel",
+]
+`;
+
+exports[`reduce messages state should handle RECEIVE_NOTICE_FROM_CHANNEL 1`] = `
+Array [
+  "-someone/#channel- Notice from channel",
+]
+`;
+
+exports[`reduce messages state should handle RECEIVE_NOTICE_FROM_SERVER 1`] = `
+Array [
+  "Notice from server",
+]
+`;
+
+exports[`reduce messages state should handle RECEIVE_NOTICE_FROM_USER 1`] = `
+Array [
+  "-someone- Notice from user",
+]
+`;
+
+exports[`reduce messages state should handle RECEIVE_PART 1`] = `
+Array [
+  "someone has left #channel",
+]
+`;
+
+exports[`reduce messages state should handle RECEIVE_PART with message 1`] = `
+Array [
+  "someone has left #channel (Goodbye!)",
+]
+`;
+
+exports[`reduce messages state should handle RECEIVE_PING_FROM_SERVER 1`] = `
+Array [
+  "Ping?",
+]
+`;
+
+exports[`reduce messages state should handle RECEIVE_PRIVMSG 1`] = `
+Array [
+  "someone: hello",
+]
+`;
+
+exports[`reduce messages state should handle SEND_PONG_TO_SERVER 1`] = `
+Array [
+  "Pong!",
+]
+`;
+
+exports[`reduce messages state should handle SEND_PRIVMSG 1`] = `
+Array [
+  "default_nick: hello",
+]
+`;

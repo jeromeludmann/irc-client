@@ -1,0 +1,310 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reduce root state should handle CLOSE_WINDOW on channel 1`] = `
+Object {
+  "route": Object {
+    "bufferKey": "@status",
+    "serverKey": "serverKey",
+  },
+  "servers": Object {
+    "serverKey": Object {
+      "buffers": Object {
+        "@raw": Object {
+          "activity": false,
+          "input": Object {
+            "dirtyValue": "",
+            "history": Object {
+              "index": 0,
+              "values": Array [],
+            },
+            "value": "",
+          },
+          "messages": Array [],
+        },
+        "@status": Object {
+          "activity": false,
+          "input": Object {
+            "dirtyValue": "",
+            "history": Object {
+              "index": 0,
+              "values": Array [],
+            },
+            "value": "",
+          },
+          "messages": Array [],
+        },
+      },
+      "lag": 0,
+      "modes": Object {
+        "available": Object {
+          "channel": Array [],
+          "user": Array [],
+        },
+        "user": Array [],
+      },
+      "name": "<unknown>",
+      "user": Object {
+        "nick": "default_nick",
+        "real": "default_name",
+        "user": "default_user",
+      },
+    },
+  },
+}
+`;
+
+exports[`reduce root state should handle CLOSE_WINDOW on private 1`] = `
+Object {
+  "route": Object {
+    "bufferKey": "@status",
+    "serverKey": "serverKey",
+  },
+  "servers": Object {
+    "serverKey": Object {
+      "buffers": Object {
+        "@raw": Object {
+          "activity": false,
+          "input": Object {
+            "dirtyValue": "",
+            "history": Object {
+              "index": 0,
+              "values": Array [],
+            },
+            "value": "",
+          },
+          "messages": Array [],
+        },
+        "@status": Object {
+          "activity": false,
+          "input": Object {
+            "dirtyValue": "",
+            "history": Object {
+              "index": 0,
+              "values": Array [],
+            },
+            "value": "",
+          },
+          "messages": Array [],
+        },
+      },
+      "lag": 0,
+      "modes": Object {
+        "available": Object {
+          "channel": Array [],
+          "user": Array [],
+        },
+        "user": Array [],
+      },
+      "name": "<unknown>",
+      "user": Object {
+        "nick": "default_nick",
+        "real": "default_name",
+        "user": "default_user",
+      },
+    },
+  },
+}
+`;
+
+exports[`reduce root state should handle CLOSE_WINDOW on status with at least two servers 1`] = `
+Object {
+  "route": Object {
+    "bufferKey": "@status",
+    "serverKey": "serverKey1",
+  },
+  "servers": Object {
+    "serverKey1": Object {
+      "buffers": Object {
+        "@raw": Object {
+          "activity": false,
+          "input": Object {
+            "dirtyValue": "",
+            "history": Object {
+              "index": 0,
+              "values": Array [],
+            },
+            "value": "",
+          },
+          "messages": Array [],
+        },
+        "@status": Object {
+          "activity": false,
+          "input": Object {
+            "dirtyValue": "",
+            "history": Object {
+              "index": 0,
+              "values": Array [],
+            },
+            "value": "",
+          },
+          "messages": Array [],
+        },
+      },
+      "lag": 0,
+      "modes": Object {
+        "available": Object {
+          "channel": Array [],
+          "user": Array [],
+        },
+        "user": Array [],
+      },
+      "name": "<unknown>",
+      "user": Object {
+        "nick": "default_nick",
+        "real": "default_name",
+        "user": "default_user",
+      },
+    },
+    "serverKey2": Object {
+      "buffers": Object {
+        "@raw": Object {
+          "activity": false,
+          "input": Object {
+            "dirtyValue": "",
+            "history": Object {
+              "index": 0,
+              "values": Array [],
+            },
+            "value": "",
+          },
+          "messages": Array [],
+        },
+        "@status": Object {
+          "activity": false,
+          "input": Object {
+            "dirtyValue": "",
+            "history": Object {
+              "index": 0,
+              "values": Array [],
+            },
+            "value": "",
+          },
+          "messages": Array [],
+        },
+      },
+      "lag": 0,
+      "modes": Object {
+        "available": Object {
+          "channel": Array [],
+          "user": Array [],
+        },
+        "user": Array [],
+      },
+      "name": "<unknown>",
+      "user": Object {
+        "nick": "default_nick",
+        "real": "default_name",
+        "user": "default_user",
+      },
+    },
+  },
+}
+`;
+
+exports[`reduce root state should handle CONNECT_TO_SERVER action 1`] = `
+Object {
+  "route": Object {
+    "bufferKey": "@status",
+    "serverKey": "serverKey",
+  },
+  "servers": Object {
+    "serverKey": Object {
+      "buffers": Object {
+        "@raw": Object {
+          "activity": false,
+          "input": Object {
+            "dirtyValue": "",
+            "history": Object {
+              "index": 0,
+              "values": Array [],
+            },
+            "value": "",
+          },
+          "messages": Array [],
+        },
+        "@status": Object {
+          "activity": false,
+          "input": Object {
+            "dirtyValue": "",
+            "history": Object {
+              "index": 0,
+              "values": Array [],
+            },
+            "value": "",
+          },
+          "messages": Array [
+            "Connecting to server…",
+          ],
+        },
+      },
+      "lag": 0,
+      "modes": Object {
+        "available": Object {
+          "channel": Array [],
+          "user": Array [],
+        },
+        "user": Array [],
+      },
+      "name": "<unknown>",
+      "user": Object {
+        "nick": "default_nick",
+        "real": "default_name",
+        "user": "default_user",
+      },
+    },
+  },
+}
+`;
+
+exports[`reduce root state should not handle anything 1`] = `
+Object {
+  "route": Object {
+    "bufferKey": "@status",
+    "serverKey": "serverKey",
+  },
+  "servers": Object {
+    "serverKey": Object {
+      "buffers": Object {
+        "@raw": Object {
+          "activity": false,
+          "input": Object {
+            "dirtyValue": "",
+            "history": Object {
+              "index": 0,
+              "values": Array [],
+            },
+            "value": "",
+          },
+          "messages": Array [],
+        },
+        "@status": Object {
+          "activity": false,
+          "input": Object {
+            "dirtyValue": "",
+            "history": Object {
+              "index": 0,
+              "values": Array [],
+            },
+            "value": "",
+          },
+          "messages": Array [],
+        },
+      },
+      "lag": 0,
+      "modes": Object {
+        "available": Object {
+          "channel": Array [],
+          "user": Array [],
+        },
+        "user": Array [],
+      },
+      "name": "<unknown>",
+      "user": Object {
+        "nick": "default_nick",
+        "real": "default_name",
+        "user": "default_user",
+      },
+    },
+  },
+}
+`;

@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`select server state should select available modes 1`] = `
+Object {
+  "channel": Array [],
+  "user": Array [],
+}
+`;
+
+exports[`select server state should select buffers 1`] = `
+Object {
+  "@raw": Object {
+    "activity": false,
+    "input": Object {
+      "dirtyValue": "",
+      "history": Object {
+        "index": 0,
+        "values": Array [],
+      },
+      "value": "",
+    },
+    "messages": Array [],
+  },
+  "@status": Object {
+    "activity": false,
+    "input": Object {
+      "dirtyValue": "",
+      "history": Object {
+        "index": 0,
+        "values": Array [],
+      },
+      "value": "",
+    },
+    "messages": Array [],
+  },
+}
+`;
+
+exports[`select server state should select server 1`] = `
+Object {
+  "buffers": Object {
+    "@raw": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@status": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+  },
+  "lag": 0,
+  "modes": Object {
+    "available": Object {
+      "channel": Array [],
+      "user": Array [],
+    },
+    "user": Array [],
+  },
+  "name": "<unknown>",
+  "user": Object {
+    "nick": "default_nick",
+    "real": "default_name",
+    "user": "default_user",
+  },
+}
+`;
+
+exports[`select server state should select server lag 1`] = `0`;
+
+exports[`select server state should select server name 1`] = `"<unknown>"`;
+
+exports[`select server state should select user 1`] = `
+Object {
+  "nick": "default_nick",
+  "real": "default_name",
+  "user": "default_user",
+}
+`;
+
+exports[`select server state should select user modes 1`] = `Array []`;

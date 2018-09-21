@@ -1,37 +1,148 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`commands actions should be able to call /close 1`] = `
+exports[`commands actions should handle /close 1`] = `
 Object {
   "route": Object {
-    "channelKey": "#channel",
-    "serverKey": "server1",
+    "bufferKey": "#channel",
+    "serverKey": "serverKey",
   },
   "type": "UI/CLOSE_WINDOW",
 }
 `;
 
-exports[`commands actions should be able to call /join 1`] = `
+exports[`commands actions should handle /help 1`] = `
+Object {
+  "payload": Object {
+    "commands": Object {
+      "close": Object {
+        "callback": [Function],
+        "description": "Closes the current window",
+        "regexp": /\\\\s\\*/,
+        "syntax": "",
+      },
+      "connect": Object {
+        "callback": [Function],
+        "description": "Connects to a server",
+        "regexp": /\\^\\(\\?:\\(-n\\)\\\\s\\+\\)\\?\\(\\\\S\\+\\)\\(\\?:\\\\s\\+\\(\\\\d\\{1,5\\}\\)\\?\\)\\?\\$/,
+        "syntax": "[-n] <host> [port]",
+      },
+      "disconnect": Object {
+        "callback": [Function],
+        "description": "Disconnects from the current server",
+        "regexp": /\\^\\(\\.\\*\\)\\$/,
+        "syntax": "[quit message]",
+      },
+      "help": Object {
+        "callback": [Function],
+        "description": "Prints help about available commands",
+        "regexp": /\\^\\(\\\\S\\+\\)\\?\\$/,
+        "syntax": "[command]",
+      },
+      "join": Object {
+        "callback": [Function],
+        "description": "Joins a channel",
+        "regexp": /\\^\\(\\[&\\|#\\|\\\\\\+\\|!\\]\\\\S\\+\\)\\$/,
+        "syntax": "<channel>",
+      },
+      "msg": Object {
+        "callback": [Function],
+        "description": "Sends a message to a channel or a nick",
+        "regexp": /\\^\\(\\\\S\\+\\)\\\\s\\+\\(\\.\\+\\)\\$/,
+        "syntax": "<channel or nick> <text>",
+      },
+      "nick": Object {
+        "callback": [Function],
+        "description": "Changes the current nick",
+        "regexp": /\\^\\(\\\\S\\+\\)\\$/,
+        "syntax": "<nick>",
+      },
+      "part": Object {
+        "callback": [Function],
+        "description": "Leaves the channel",
+        "regexp": /\\^\\(\\\\S\\+\\)\\(\\?:\\\\s\\+\\(\\.\\+\\)\\)\\?\\$/,
+        "syntax": "<channel> [text]",
+      },
+      "ping": Object {
+        "callback": [Function],
+        "description": "Sends a ping",
+        "regexp": /\\\\s\\*/,
+        "syntax": "",
+      },
+      "quit": Object {
+        "callback": [Function],
+        "description": "Disconnects from the current server",
+        "regexp": /\\^\\(\\.\\*\\)\\$/,
+        "syntax": "[quit message]",
+      },
+      "quote": Object {
+        "callback": [Function],
+        "description": "Sends a raw message",
+        "regexp": /\\^\\(\\.\\+\\)\\$/,
+        "syntax": "<raw message>",
+      },
+      "raw": Object {
+        "callback": [Function],
+        "description": "Sends a raw message",
+        "regexp": /\\^\\(\\.\\+\\)\\$/,
+        "syntax": "<raw message>",
+      },
+      "server": Object {
+        "callback": [Function],
+        "description": "Connects to a server",
+        "regexp": /\\^\\(\\?:\\(-n\\)\\\\s\\+\\)\\?\\(\\\\S\\+\\)\\(\\?:\\\\s\\+\\(\\\\d\\{1,5\\}\\)\\?\\)\\?\\$/,
+        "syntax": "[-n] <host> [port]",
+      },
+    },
+  },
+  "route": Object {
+    "bufferKey": "@status",
+    "serverKey": "serverKey",
+  },
+  "type": "COMMAND/PRINT_HELP_BY_DEFAULT",
+}
+`;
+
+exports[`commands actions should handle /help with given command 1`] = `
+Object {
+  "payload": Object {
+    "command": Object {
+      "callback": [Function],
+      "description": "Sends a message to a channel or a nick",
+      "name": "msg",
+      "regexp": /\\^\\(\\\\S\\+\\)\\\\s\\+\\(\\.\\+\\)\\$/,
+      "syntax": "<channel or nick> <text>",
+    },
+  },
+  "route": Object {
+    "bufferKey": "@active",
+    "serverKey": "serverKey",
+  },
+  "type": "COMMAND/PRINT_HELP_ABOUT_COMMAND",
+}
+`;
+
+exports[`commands actions should handle /join 1`] = `
 Object {
   "payload": Object {
     "raw": "JOIN #channel",
   },
   "route": Object {
-    "channelKey": "@none",
-    "serverKey": "server1",
+    "bufferKey": "@none",
+    "serverKey": "serverKey",
   },
   "type": "SOCKET/SEND_RAW_MESSAGE",
 }
 `;
 
-exports[`commands actions should be able to call /msg 1`] = `
+exports[`commands actions should handle /msg 1`] = `
 Object {
   "embeddedAction": Object {
     "payload": Object {
       "text": "hello",
     },
     "route": Object {
-      "channelKey": "#channel",
-      "serverKey": "server1",
+      "bufferKey": "#channel",
+      "serverKey": "serverKey",
     },
     "type": "MESSAGE/SEND_PRIVMSG",
   },
@@ -39,48 +150,48 @@ Object {
     "raw": "PRIVMSG #channel hello",
   },
   "route": Object {
-    "channelKey": "@none",
-    "serverKey": "server1",
+    "bufferKey": "@none",
+    "serverKey": "serverKey",
   },
   "type": "SOCKET/SEND_RAW_MESSAGE",
 }
 `;
 
-exports[`commands actions should be able to call /nick 1`] = `
+exports[`commands actions should handle /nick 1`] = `
 Object {
   "payload": Object {
     "raw": "NICK new_nick",
   },
   "route": Object {
-    "channelKey": "@none",
-    "serverKey": "server1",
+    "bufferKey": "@none",
+    "serverKey": "serverKey",
   },
   "type": "SOCKET/SEND_RAW_MESSAGE",
 }
 `;
 
-exports[`commands actions should be able to call /part 1`] = `
+exports[`commands actions should handle /part 1`] = `
 Object {
   "payload": Object {
     "raw": "PART #channel Goodbye!",
   },
   "route": Object {
-    "channelKey": "@none",
-    "serverKey": "server1",
+    "bufferKey": "@none",
+    "serverKey": "serverKey",
   },
   "type": "SOCKET/SEND_RAW_MESSAGE",
 }
 `;
 
-exports[`commands actions should be able to call /ping 1`] = `
+exports[`commands actions should handle /ping 1`] = `
 Object {
   "embeddedAction": Object {
     "payload": Object {
       "key": "1536211245164",
     },
     "route": Object {
-      "channelKey": "@status",
-      "serverKey": "server1",
+      "bufferKey": "@status",
+      "serverKey": "serverKey",
     },
     "type": "MESSAGE/SEND_PING_TO_SERVER",
   },
@@ -88,40 +199,40 @@ Object {
     "raw": "PING 1536211245164",
   },
   "route": Object {
-    "channelKey": "@none",
-    "serverKey": "server1",
+    "bufferKey": "@none",
+    "serverKey": "serverKey",
   },
   "type": "SOCKET/SEND_RAW_MESSAGE",
 }
 `;
 
-exports[`commands actions should be able to call /quit 1`] = `
+exports[`commands actions should handle /quit 1`] = `
 Object {
   "payload": Object {
     "quitMessage": "Goodbye!",
   },
   "route": Object {
-    "channelKey": "@none",
-    "serverKey": "server1",
+    "bufferKey": "@none",
+    "serverKey": "serverKey",
   },
-  "type": "SOCKET/DISCONNECT_SERVER",
+  "type": "SOCKET/DISCONNECT_FROM_SERVER",
 }
 `;
 
-exports[`commands actions should be able to call /raw 1`] = `
+exports[`commands actions should handle /raw 1`] = `
 Object {
   "payload": Object {
     "raw": "PRIVMSG #channel :hello world",
   },
   "route": Object {
-    "channelKey": "@none",
-    "serverKey": "server1",
+    "bufferKey": "@none",
+    "serverKey": "serverKey",
   },
   "type": "SOCKET/SEND_RAW_MESSAGE",
 }
 `;
 
-exports[`commands actions should be able to call /server with option -n 1`] = `
+exports[`commands actions should handle /server -n 1`] = `
 Object {
   "payload": Object {
     "host": "6667",
@@ -129,14 +240,14 @@ Object {
     "port": 6667,
   },
   "route": Object {
-    "channelKey": "@none",
-    "serverKey": "server1",
+    "bufferKey": "@status",
+    "serverKey": "serverKey",
   },
-  "type": "SOCKET/CONNECT_SERVER",
+  "type": "SOCKET/CONNECT_TO_SERVER",
 }
 `;
 
-exports[`commands actions should be able to call /server without option 1`] = `
+exports[`commands actions should handle /server 1`] = `
 Object {
   "payload": Object {
     "host": "irc.network",
@@ -144,9 +255,9 @@ Object {
     "port": 6667,
   },
   "route": Object {
-    "channelKey": "@none",
-    "serverKey": "server1",
+    "bufferKey": "@status",
+    "serverKey": "serverKey",
   },
-  "type": "SOCKET/CONNECT_SERVER",
+  "type": "SOCKET/CONNECT_TO_SERVER",
 }
 `;

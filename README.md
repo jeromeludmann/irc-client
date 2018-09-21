@@ -151,7 +151,7 @@ Project recommendation and best practices.
 
 In order to easily search reducer files, it's better to have a flat folder structure.
 
-If a reducer file named `/reducers/server/channel.ts` exports a reducer that calls nested reducers (like `messages` and `input`), as below:
+If a reducer file named `/state/server/channel.ts` exports a reducer that calls nested reducers (like `messages` and `input`), as below:
 
 ```
 reducers
@@ -164,9 +164,9 @@ reducers
 
 in this case, nested reducers contained in `channel.ts` should be splitted by following these steps:
 
-1.  create a dedicated folder `/reducers/channel/`
-2.  move `/reducers/server/channel.ts` to `/reducers/channel/index.ts`
-3.  extract its own nested reducers (`messages.ts` and `input.ts`) and put them in `/reducers/channel/`
+1.  create a dedicated folder `/state/channel/`
+2.  move `/state/server/channel.ts` to `/state/channel/index.ts`
+3.  extract its own nested reducers (`messages.ts` and `input.ts`) and put them in `/state/channel/`
 
 The expected folder structure should look like that:
 

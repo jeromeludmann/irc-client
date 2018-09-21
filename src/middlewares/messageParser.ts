@@ -2,7 +2,7 @@ import { Middleware } from 'redux'
 import { RAW_MESSAGES_RECEIVED, RawMessagesAction } from '@app/actions/socket'
 import { IRC_MESSAGE_LENGTH, CRLF } from '@app/utils/helpers'
 import { GenericMessage, Prefix, Tags } from '@app/utils/Message'
-import { messageReceivers } from '@app/actions/msgIncoming'
+import { messageReceivers } from '@app/actions/messages/incoming'
 
 /**
  * Message Parser Middleware

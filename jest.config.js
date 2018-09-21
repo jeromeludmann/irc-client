@@ -2,22 +2,22 @@ const coverageForPureParts = {
   branches: 100,
   functions: 100,
   lines: 100,
-  statements: 100
-};
+  statements: 100,
+}
 
 module.exports = {
-  roots: ["<rootDir>/src"],
+  roots: ['<rootDir>/src'],
   transform: {
-    "^.+\\.tsx?$": "ts-jest"
+    '^.+\\.tsx?$': 'ts-jest',
   },
-  testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
+  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
-    "@app/(.*)$": "<rootDir>/src/$1"
+    '@app/(.*)$': '<rootDir>/src/$1',
   },
-  setupTestFrameworkScriptFile: "<rootDir>/jest.setup.ts",
+  setupTestFrameworkScriptFile: '<rootDir>/jest.setup.ts',
   collectCoverage: true,
-  collectCoverageFrom: ["<rootDir>/src/**/*.{ts,tsx}"],
+  collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}'],
   coverageThreshold: {
     // global: {
     //   branches: 50,
@@ -25,8 +25,9 @@ module.exports = {
     //   lines: 50,
     //   statements: 50
     // },
-    "./src/actions/": coverageForPureParts,
-    "./src/components/": coverageForPureParts,
-    "./src/reducers/": coverageForPureParts
-  }
-};
+    './src/actions/': coverageForPureParts,
+    './src/views/': coverageForPureParts,
+    './src/state/': coverageForPureParts,
+  },
+  verbose: true,
+}
