@@ -1,93 +1,82 @@
-import { reduceInput, inputInitialState } from "@app/reducers/input";
+import { reduceInput, inputInitialState, InputState } from '@app/reducers/input'
 import {
-  updateInputValue,
   enterInputValue,
   goBackInputHistory,
   goForwardInputHistory,
-} from "@app/actions/ui";
+  updateInputValue,
+} from '@app/actions/ui'
 
-describe("reduce input", () => {
-  const historyValues = ["hello", "world"];
+describe('reduce input state', () => {
+  it('should handle ENTER_INPUT_VALUE', () => {
+    expect(
+      reduceInput(inputInitialState, enterInputValue('hello')),
+    ).toMatchSnapshot()
+  })
 
-  describe("update input value", () => {
-    it("anywhere in history", () => {
+  const historyValues = ['hello', 'world']
+
+  describe('at the begin of history', () => {
+    const initialState: InputState = {
+      ...inputInitialState,
+      history: {
+        ...inputInitialState.history,
+        values: historyValues,
+        index: 0,
+      },
+    }
+
+    it('should handle GO_BACK_INPUT_HISTORY', () => {
+      expect(reduceInput(initialState, goBackInputHistory())).toMatchSnapshot()
+    })
+  })
+
+  describe('anywhere in history', () => {
+    const initialState = {
+      ...inputInitialState,
+      history: {
+        ...inputInitialState.history,
+        values: historyValues,
+        index: 1,
+      },
+    }
+
+    it('should handle GO_BACK_INPUT_HISTORY', () => {
+      expect(reduceInput(initialState, goBackInputHistory())).toMatchSnapshot()
+    })
+
+    it('should handle GO_FORWARD_INPUT_HISTORY', () => {
       expect(
-        reduceInput(
-          {
-            ...inputInitialState,
-            history: { index: 1, values: historyValues },
-          },
-          updateInputValue("hello"),
-        ),
-      ).toMatchSnapshot();
-    });
+        reduceInput(initialState, goForwardInputHistory()),
+      ).toMatchSnapshot()
+    })
 
-    it("at the end of history", () => {
+    it('should handle UPDATE_INPUT_VALUE', () => {
       expect(
-        reduceInput(
-          {
-            ...inputInitialState,
-            history: { index: 2, values: historyValues },
-          },
-          updateInputValue("hello"),
-        ),
-      ).toMatchSnapshot();
-    });
-  });
+        reduceInput(initialState, updateInputValue('hello')),
+      ).toMatchSnapshot()
+    })
+  })
 
-  describe("enter input value", () => {
-    expect(reduceInput(undefined, enterInputValue("hello"))).toMatchSnapshot();
-  });
+  describe('at the end of history', () => {
+    const initialState = {
+      ...inputInitialState,
+      history: {
+        ...inputInitialState.history,
+        values: historyValues,
+        index: 2,
+      },
+    }
 
-  describe("go back input history", () => {
-    it("at the begin of history", () => {
+    it('should handle GO_FORWARD_INPUT_HISTORY', () => {
       expect(
-        reduceInput(
-          {
-            ...inputInitialState,
-            history: { index: 0, values: historyValues },
-          },
-          goBackInputHistory(),
-        ),
-      ).toMatchSnapshot();
-    });
+        reduceInput(initialState, goForwardInputHistory()),
+      ).toMatchSnapshot()
+    })
 
-    it("anywhere in history", () => {
+    it('should handle UPDATE_INPUT_VALUE', () => {
       expect(
-        reduceInput(
-          {
-            ...inputInitialState,
-            history: { index: 1, values: historyValues },
-          },
-          goBackInputHistory(),
-        ),
-      ).toMatchSnapshot();
-    });
-  });
-
-  describe("go forward input history", () => {
-    it("anywhere in the history", () => {
-      expect(
-        reduceInput(
-          {
-            ...inputInitialState,
-            history: { index: 1, values: historyValues },
-          },
-          goForwardInputHistory(),
-        ),
-      ).toMatchSnapshot();
-    });
-
-    it("at the end of history", () => {
-      expect(
-        reduceInput(
-          {
-            ...inputInitialState,
-            history: { index: 2, values: historyValues },
-          },
-          goForwardInputHistory(),
-        ),
-      ).toMatchSnapshot();
-    });
-  });
-});
+        reduceInput(initialState, updateInputValue('hello')),
+      ).toMatchSnapshot()
+    })
+  })
+})

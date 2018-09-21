@@ -1,5 +1,4 @@
 import { Action } from 'redux'
-import { createSelector } from 'reselect'
 import {
   UPDATE_INPUT_VALUE,
   UpdateInputValueAction,
@@ -9,7 +8,6 @@ import {
   EnterInputValueAction,
 } from '@app/actions/ui'
 import { CaseReducerMap } from '@app/utils/CaseReducerMap'
-import { selectBuffer } from '@app/reducers/buffer'
 
 export type InputState = Readonly<{
   value: string
@@ -37,12 +35,6 @@ const endOfHistory = (input: InputState) => {
 }
 
 const caseReducers: CaseReducerMap<InputReducer> = {
-  [UPDATE_INPUT_VALUE]: (input, action: UpdateInputValueAction) => ({
-    ...input,
-    value: action.payload.value,
-    dirtyValue: endOfHistory(input) ? action.payload.value : input.dirtyValue,
-  }),
-
   [ENTER_INPUT_VALUE]: (input, action: EnterInputValueAction) => {
     const historyValues = [...input.history.values, action.payload.value]
     return {
@@ -70,27 +62,13 @@ const caseReducers: CaseReducerMap<InputReducer> = {
             input.history.values[input.history.index + 1] || input.dirtyValue,
           history: { ...input.history, index: input.history.index + 1 },
         },
+
+  [UPDATE_INPUT_VALUE]: (input, action: UpdateInputValueAction) => ({
+    ...input,
+    value: action.payload.value,
+    dirtyValue: endOfHistory(input) ? action.payload.value : input.dirtyValue,
+  }),
 }
 
-export const reduceInput: InputReducer = (input = inputInitialState, action) =>
+export const reduceInput: InputReducer = (input, action) =>
   action.type in caseReducers ? caseReducers[action.type](input, action) : input
-
-export const selectInput = createSelector(
-  selectBuffer,
-  channel => channel.input,
-)
-
-export const selectInputValue = createSelector(
-  selectInput,
-  input => input.value,
-)
-
-export const selectInputDirtyValue = createSelector(
-  selectInput,
-  input => input.dirtyValue,
-)
-
-export const selectInputHistory = createSelector(
-  selectInput,
-  input => input.history,
-)

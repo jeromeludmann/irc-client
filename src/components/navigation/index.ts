@@ -1,9 +1,10 @@
 import { connect, MapStateToProps } from 'react-redux'
-import { RouteState, selectRoute } from '@app/reducers/route'
+import { RouteState } from '@app/reducers/route'
 import { Route } from '@app/utils/Route'
-import { RootState, selectServers } from '@app/reducers'
+import { RootState } from '@app/reducers'
 import { switchWindow } from '@app/actions/ui'
 import Navigation from '@app/components/navigation/Navigation'
+import { selectServers, selectRoute } from '@app/reducers/selectors'
 
 interface StateProps {
   servers: {

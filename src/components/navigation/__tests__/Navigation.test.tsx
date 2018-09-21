@@ -1,33 +1,33 @@
-import React from "react";
-import { shallow, mount } from "enzyme";
-import Navigation from "@app/components/navigation/Navigation";
-import { BufferKey } from "@app/utils/Route";
-import { bufferRouterInitialState } from "@app/reducers/bufferRouter";
-import { bufferInitialState } from "@app/reducers/buffer";
+import React from 'react'
+import { shallow, mount } from 'enzyme'
+import Navigation from '@app/components/navigation/Navigation'
+import { BufferKey } from '@app/utils/Route'
+import { bufferInitialState } from '@app/reducers/buffer'
+import { serverInitialState } from '@app/reducers/server'
 
-describe("Navigation component", () => {
+describe('Navigation component', () => {
   const props = {
-    onChannelButtonClick: jest.fn(),
+    onWindowButtonClick: jest.fn(),
     servers: {
-      server1: {
-        name: "server.domain",
-        channels: {
-          ...bufferRouterInitialState,
-          "#channel": { ...bufferInitialState, activity: true }
-        }
-      }
+      serverKey: {
+        name: 'irc.network',
+        buffers: {
+          ...serverInitialState.buffers,
+          '#channel': { ...bufferInitialState, activity: true },
+        },
+      },
     },
-    window: { serverKey: "server1", channelKey: BufferKey.STATUS }
-  };
+    window: { serverKey: 'serverKey', bufferKey: BufferKey.STATUS },
+  }
 
-  it("should render correctly", () => {
-    expect(shallow(<Navigation {...props} />)).toMatchSnapshot();
-  });
+  it('should render correctly', () => {
+    expect(shallow(<Navigation {...props} />)).toMatchSnapshot()
+  })
 
-  it("should handle button click event", () => {
+  it('should handle button click event', () => {
     mount(<Navigation {...props} />)
-      .find("button")
+      .find('button')
       .first()
-      .simulate("click");
-  });
-});
+      .simulate('click')
+  })
+})

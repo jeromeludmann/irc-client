@@ -2,13 +2,13 @@
 
 exports[`Navigation container should render correctly 1`] = `
 ShallowWrapper {
-  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Connect(Navigation) />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
     "getNode": [Function],
     "render": [Function],
+    "simulateError": [Function],
     "simulateEvent": [Function],
     "unmount": [Function],
   },
@@ -17,14 +17,10 @@ ShallowWrapper {
     "key": undefined,
     "nodeType": "class",
     "props": Object {
-      "onChannelButtonClick": [Function],
+      "onWindowButtonClick": [Function],
       "servers": Object {
-        "server1": Object {
-          "availableModes": Object {
-            "channel": Array [],
-            "user": Array [],
-          },
-          "channels": Object {
+        "server": Object {
+          "buffers": Object {
             "@raw": Object {
               "activity": false,
               "input": Object {
@@ -51,7 +47,13 @@ ShallowWrapper {
             },
           },
           "lag": 0,
-          "modes": Array [],
+          "modes": Object {
+            "available": Object {
+              "channel": Array [],
+              "user": Array [],
+            },
+            "user": Array [],
+          },
           "name": "<unknown>",
           "user": Object {
             "nick": "default_nick",
@@ -61,8 +63,8 @@ ShallowWrapper {
         },
       },
       "window": Object {
-        "channelKey": "@status",
-        "serverKey": "server1",
+        "bufferKey": "@status",
+        "serverKey": "server",
       },
     },
     "ref": null,
@@ -75,14 +77,10 @@ ShallowWrapper {
       "key": undefined,
       "nodeType": "class",
       "props": Object {
-        "onChannelButtonClick": [Function],
+        "onWindowButtonClick": [Function],
         "servers": Object {
-          "server1": Object {
-            "availableModes": Object {
-              "channel": Array [],
-              "user": Array [],
-            },
-            "channels": Object {
+          "server": Object {
+            "buffers": Object {
               "@raw": Object {
                 "activity": false,
                 "input": Object {
@@ -109,7 +107,13 @@ ShallowWrapper {
               },
             },
             "lag": 0,
-            "modes": Array [],
+            "modes": Object {
+              "available": Object {
+                "channel": Array [],
+                "user": Array [],
+              },
+              "user": Array [],
+            },
             "name": "<unknown>",
             "user": Object {
               "nick": "default_nick",
@@ -119,8 +123,8 @@ ShallowWrapper {
           },
         },
         "window": Object {
-          "channelKey": "@status",
-          "serverKey": "server1",
+          "bufferKey": "@status",
+          "serverKey": "server",
         },
       },
       "ref": null,
@@ -132,8 +136,19 @@ ShallowWrapper {
     "adapter": ReactSixteenAdapter {
       "options": Object {
         "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
       },
     },
+    "attachTo": undefined,
     "context": Object {
       "store": Object {
         "dispatch": [Function],
@@ -143,6 +158,7 @@ ShallowWrapper {
         Symbol(observable): [Function],
       },
     },
+    "hydrateIn": undefined,
   },
 }
 `;

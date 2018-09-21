@@ -150,7 +150,7 @@ export interface ConnectionClosedAction
 
 export const setConnectionClosed = (
   serverKey: string,
-  hadError: boolean,
+  hadError = false,
 ): ConnectionClosedAction => ({
   type: CONNECTION_CLOSED,
   payload: { hadError },

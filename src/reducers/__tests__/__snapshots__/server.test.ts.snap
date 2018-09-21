@@ -1,6 +1,120 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`reduce server state should broadcast to active buffer 1`] = `
+Object {
+  "buffers": Object {
+    "#channel": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@raw": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@status": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+  },
+  "lag": 0,
+  "modes": Object {
+    "available": Object {
+      "channel": Array [],
+      "user": Array [],
+    },
+    "user": Array [],
+  },
+  "name": "<unknown>",
+  "user": Object {
+    "nick": "me",
+    "real": "Realname",
+    "user": "user",
+  },
+}
+`;
+
+exports[`reduce server state should broadcast to all buffers 1`] = `
+Object {
+  "buffers": Object {
+    "#channel": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@raw": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@status": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+  },
+  "lag": 0,
+  "modes": Object {
+    "available": Object {
+      "channel": Array [],
+      "user": Array [],
+    },
+    "user": Array [],
+  },
+  "name": "<unknown>",
+  "user": Object {
+    "nick": "me",
+    "real": "Realname",
+    "user": "user",
+  },
+}
+`;
+
+exports[`reduce server state should handle CLOSE_WINDOW on channel 1`] = `
 Object {
   "buffers": Object {
     "@raw": Object {
@@ -38,14 +152,71 @@ Object {
   },
   "name": "<unknown>",
   "user": Object {
-    "nick": "default_nick",
-    "real": "default_name",
-    "user": "default_user",
+    "nick": "me",
+    "real": "Realname",
+    "user": "user",
   },
 }
 `;
 
-exports[`reduce server name with RPL_MYINFO received 1`] = `
+exports[`reduce server state should handle CLOSE_WINDOW on private 1`] = `
+Object {
+  "buffers": Object {
+    "#channel": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@raw": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@status": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+  },
+  "lag": 0,
+  "modes": Object {
+    "available": Object {
+      "channel": Array [],
+      "user": Array [],
+    },
+    "user": Array [],
+  },
+  "name": "<unknown>",
+  "user": Object {
+    "nick": "me",
+    "real": "Realname",
+    "user": "user",
+  },
+}
+`;
+
+exports[`reduce server state should handle CLOSE_WINDOW on status 1`] = `
 Object {
   "buffers": Object {
     "@raw": Object {
@@ -61,7 +232,123 @@ Object {
       "messages": Array [],
     },
     "@status": Object {
-      "activity": true,
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+  },
+  "lag": 0,
+  "modes": Object {
+    "available": Object {
+      "channel": Array [],
+      "user": Array [],
+    },
+    "user": Array [],
+  },
+  "name": "<unknown>",
+  "user": Object {
+    "nick": "me",
+    "real": "Realname",
+    "user": "user",
+  },
+}
+`;
+
+exports[`reduce server state should handle RECEIVE_PONG_FROM_SERVER 1`] = `
+Object {
+  "buffers": Object {
+    "#channel": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@raw": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@status": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [
+        "Response from server key in 0 ms",
+      ],
+    },
+  },
+  "lag": 0,
+  "modes": Object {
+    "available": Object {
+      "channel": Array [],
+      "user": Array [],
+    },
+    "user": Array [],
+  },
+  "name": "<unknown>",
+  "user": Object {
+    "nick": "me",
+    "real": "Realname",
+    "user": "user",
+  },
+}
+`;
+
+exports[`reduce server state should handle RECEIVE_RPL_MYINFO 1`] = `
+Object {
+  "buffers": Object {
+    "#channel": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@raw": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@status": Object {
+      "activity": false,
       "input": Object {
         "dirtyValue": "",
         "history": Object {
@@ -77,6 +364,16 @@ Object {
   "modes": Object {
     "available": Object {
       "channel": Array [
+        "a",
+        "v",
+        "a",
+        "i",
+        "l",
+        "a",
+        "b",
+        "l",
+        "e",
+        "_",
         "c",
         "h",
         "a",
@@ -84,18 +381,30 @@ Object {
         "n",
         "e",
         "l",
-        "M",
+        "_",
+        "m",
         "o",
         "d",
         "e",
         "s",
       ],
       "user": Array [
+        "a",
+        "v",
+        "a",
+        "i",
+        "l",
+        "a",
+        "b",
+        "l",
+        "e",
+        "_",
         "u",
         "s",
         "e",
         "r",
-        "M",
+        "_",
+        "m",
         "o",
         "d",
         "e",
@@ -104,16 +413,130 @@ Object {
     },
     "user": Array [],
   },
-  "name": "serverName",
+  "name": "?",
   "user": Object {
-    "nick": "default_nick",
-    "real": "default_name",
-    "user": "default_user",
+    "nick": "me",
+    "real": "Realname",
+    "user": "user",
   },
 }
 `;
 
-exports[`reduce server name without action 1`] = `
+exports[`reduce server state should not broadcast 1`] = `
+Object {
+  "buffers": Object {
+    "#channel": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@raw": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@status": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+  },
+  "lag": 0,
+  "modes": Object {
+    "available": Object {
+      "channel": Array [],
+      "user": Array [],
+    },
+    "user": Array [],
+  },
+  "name": "<unknown>",
+  "user": Object {
+    "nick": "me",
+    "real": "Realname",
+    "user": "user",
+  },
+}
+`;
+
+exports[`reduce server state when it is me should handle RECEIVE_NICK 1`] = `
+Object {
+  "buffers": Object {
+    "#channel": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@raw": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@status": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+  },
+  "lag": 0,
+  "modes": Object {
+    "available": Object {
+      "channel": Array [],
+      "user": Array [],
+    },
+    "user": Array [],
+  },
+  "name": "<unknown>",
+  "user": Object {
+    "nick": "new_nick",
+    "real": "Realname",
+    "user": "user",
+  },
+}
+`;
+
+exports[`reduce server state when it is me should handle RECEIVE_PART 1`] = `
 Object {
   "buffers": Object {
     "@raw": Object {
@@ -151,9 +574,125 @@ Object {
   },
   "name": "<unknown>",
   "user": Object {
-    "nick": "default_nick",
-    "real": "default_name",
-    "user": "default_user",
+    "nick": "me",
+    "real": "Realname",
+    "user": "user",
+  },
+}
+`;
+
+exports[`reduce server state when it is someone should handle RECEIVE_NICK 1`] = `
+Object {
+  "buffers": Object {
+    "#channel": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@raw": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@status": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+  },
+  "lag": 0,
+  "modes": Object {
+    "available": Object {
+      "channel": Array [],
+      "user": Array [],
+    },
+    "user": Array [],
+  },
+  "name": "<unknown>",
+  "user": Object {
+    "nick": "me",
+    "real": "Realname",
+    "user": "user",
+  },
+}
+`;
+
+exports[`reduce server state when it is someone should handle RECEIVE_PART 1`] = `
+Object {
+  "buffers": Object {
+    "#channel": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [
+        "someone has left #channel (Goodbye!)",
+      ],
+    },
+    "@raw": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@status": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+  },
+  "lag": 0,
+  "modes": Object {
+    "available": Object {
+      "channel": Array [],
+      "user": Array [],
+    },
+    "user": Array [],
+  },
+  "name": "<unknown>",
+  "user": Object {
+    "nick": "me",
+    "real": "Realname",
+    "user": "user",
   },
 }
 `;

@@ -10,10 +10,9 @@ type RootPartialState = Readonly<{
   servers: Readonly<{ [key: string]: ServerState }>
 }>
 
-export type RootState = Readonly<{
+export type RootState = {
   route: RouteState
-}> &
-  RootPartialState
+} & RootPartialState
 
 type RootReducer<S = RootState> = (
   root: S,
@@ -70,7 +69,9 @@ export const reduceRoot: Reducer<RootState, RoutedAction> = (
   const intermediateState = {
     ...root,
     route: reduceRoute(root.route, action, { root }),
-    servers: routeActionToServers(root.servers, action, { route: root.route }),
+    servers: routeActionToServers(root.servers, action, {
+      route: root.route,
+    }),
   }
 
   return {
@@ -82,9 +83,3 @@ export const reduceRoot: Reducer<RootState, RoutedAction> = (
       : {}),
   }
 }
-
-export const selectServers = ({
-  servers,
-}: RootState): {
-  [key: string]: ServerState
-} => servers

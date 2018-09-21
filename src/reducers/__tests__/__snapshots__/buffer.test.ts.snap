@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`reduce channel activity should receive JOIN 1`] = `
+exports[`reduce buffer state should handle RECEIVE_JOIN 1`] = `
 Object {
-  "activity": false,
+  "activity": true,
   "input": Object {
     "dirtyValue": "",
     "history": Object {
@@ -12,12 +12,12 @@ Object {
     "value": "",
   },
   "messages": Array [
-    "nick has joined #channel",
+    "someone has joined #channel",
   ],
 }
 `;
 
-exports[`reduce channel activity should switch window 1`] = `
+exports[`reduce buffer state should handle SWITCH_WINDOW 1`] = `
 Object {
   "activity": false,
   "input": Object {

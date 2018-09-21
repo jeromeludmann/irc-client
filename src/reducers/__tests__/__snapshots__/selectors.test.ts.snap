@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`selectors should select activity 1`] = `false`;
+
+exports[`selectors should select available modes 1`] = `
+Object {
+  "channel": Array [],
+  "user": Array [],
+}
+`;
+
+exports[`selectors should select buffer 1`] = `
+Object {
+  "activity": false,
+  "input": Object {
+    "dirtyValue": "",
+    "history": Object {
+      "index": 0,
+      "values": Array [],
+    },
+    "value": "",
+  },
+  "messages": Array [],
+}
+`;
+
+exports[`selectors should select buffers 1`] = `
+Object {
+  "@raw": Object {
+    "activity": false,
+    "input": Object {
+      "dirtyValue": "",
+      "history": Object {
+        "index": 0,
+        "values": Array [],
+      },
+      "value": "",
+    },
+    "messages": Array [],
+  },
+  "@status": Object {
+    "activity": false,
+    "input": Object {
+      "dirtyValue": "",
+      "history": Object {
+        "index": 0,
+        "values": Array [],
+      },
+      "value": "",
+    },
+    "messages": Array [],
+  },
+}
+`;
+
+exports[`selectors should select input 1`] = `
+Object {
+  "dirtyValue": "",
+  "history": Object {
+    "index": 0,
+    "values": Array [],
+  },
+  "value": "",
+}
+`;
+
+exports[`selectors should select input dirty value 1`] = `""`;
+
+exports[`selectors should select input history 1`] = `
+Object {
+  "index": 0,
+  "values": Array [],
+}
+`;
+
+exports[`selectors should select input history 2`] = `Array []`;
+
+exports[`selectors should select input value 1`] = `""`;
+
+exports[`selectors should select route 1`] = `
+Object {
+  "bufferKey": "@status",
+  "serverKey": "serverKey",
+}
+`;
+
+exports[`selectors should select server 1`] = `
+Object {
+  "buffers": Object {
+    "@raw": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@status": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+  },
+  "lag": 0,
+  "modes": Object {
+    "available": Object {
+      "channel": Array [],
+      "user": Array [],
+    },
+    "user": Array [],
+  },
+  "name": "<unknown>",
+  "user": Object {
+    "nick": "default_nick",
+    "real": "default_name",
+    "user": "default_user",
+  },
+}
+`;
+
+exports[`selectors should select server lag 1`] = `0`;
+
+exports[`selectors should select server name 1`] = `"<unknown>"`;
+
+exports[`selectors should select servers 1`] = `
+Object {
+  "serverKey": Object {
+    "buffers": Object {
+      "@raw": Object {
+        "activity": false,
+        "input": Object {
+          "dirtyValue": "",
+          "history": Object {
+            "index": 0,
+            "values": Array [],
+          },
+          "value": "",
+        },
+        "messages": Array [],
+      },
+      "@status": Object {
+        "activity": false,
+        "input": Object {
+          "dirtyValue": "",
+          "history": Object {
+            "index": 0,
+            "values": Array [],
+          },
+          "value": "",
+        },
+        "messages": Array [],
+      },
+    },
+    "lag": 0,
+    "modes": Object {
+      "available": Object {
+        "channel": Array [],
+        "user": Array [],
+      },
+      "user": Array [],
+    },
+    "name": "<unknown>",
+    "user": Object {
+      "nick": "default_nick",
+      "real": "default_name",
+      "user": "default_user",
+    },
+  },
+}
+`;
+
+exports[`selectors should select user 1`] = `
+Object {
+  "nick": "default_nick",
+  "real": "default_name",
+  "user": "default_user",
+}
+`;
+
+exports[`selectors should select user modes 1`] = `Array []`;

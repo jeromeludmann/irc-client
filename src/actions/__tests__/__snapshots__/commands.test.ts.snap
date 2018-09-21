@@ -16,7 +16,7 @@ Object {
     "raw": "JOIN #channel",
   },
   "route": Object {
-    "channelKey": "@none",
+    "bufferKey": "@none",
     "serverKey": "server1",
   },
   "type": "SOCKET/SEND_RAW_MESSAGE",
@@ -30,7 +30,7 @@ Object {
       "text": "hello",
     },
     "route": Object {
-      "channelKey": "#channel",
+      "bufferKey": "#channel",
       "serverKey": "server1",
     },
     "type": "MESSAGE/SEND_PRIVMSG",
@@ -39,7 +39,7 @@ Object {
     "raw": "PRIVMSG #channel hello",
   },
   "route": Object {
-    "channelKey": "@none",
+    "bufferKey": "@none",
     "serverKey": "server1",
   },
   "type": "SOCKET/SEND_RAW_MESSAGE",
@@ -52,7 +52,7 @@ Object {
     "raw": "NICK new_nick",
   },
   "route": Object {
-    "channelKey": "@none",
+    "bufferKey": "@none",
     "serverKey": "server1",
   },
   "type": "SOCKET/SEND_RAW_MESSAGE",
@@ -65,7 +65,7 @@ Object {
     "raw": "PART #channel Goodbye!",
   },
   "route": Object {
-    "channelKey": "@none",
+    "bufferKey": "@none",
     "serverKey": "server1",
   },
   "type": "SOCKET/SEND_RAW_MESSAGE",
@@ -79,7 +79,7 @@ Object {
       "key": "1536211245164",
     },
     "route": Object {
-      "channelKey": "@status",
+      "bufferKey": "@status",
       "serverKey": "server1",
     },
     "type": "MESSAGE/SEND_PING_TO_SERVER",
@@ -88,7 +88,7 @@ Object {
     "raw": "PING 1536211245164",
   },
   "route": Object {
-    "channelKey": "@none",
+    "bufferKey": "@none",
     "serverKey": "server1",
   },
   "type": "SOCKET/SEND_RAW_MESSAGE",
@@ -101,10 +101,10 @@ Object {
     "quitMessage": "Goodbye!",
   },
   "route": Object {
-    "channelKey": "@none",
+    "bufferKey": "@none",
     "serverKey": "server1",
   },
-  "type": "SOCKET/DISCONNECT_SERVER",
+  "type": "SOCKET/DISCONNECT_FROM_SERVER",
 }
 `;
 
@@ -114,7 +114,7 @@ Object {
     "raw": "PRIVMSG #channel :hello world",
   },
   "route": Object {
-    "channelKey": "@none",
+    "bufferKey": "@none",
     "serverKey": "server1",
   },
   "type": "SOCKET/SEND_RAW_MESSAGE",
@@ -129,10 +129,10 @@ Object {
     "port": 6667,
   },
   "route": Object {
-    "channelKey": "@none",
+    "bufferKey": "@status",
     "serverKey": "server1",
   },
-  "type": "SOCKET/CONNECT_SERVER",
+  "type": "SOCKET/CONNECT_TO_SERVER",
 }
 `;
 
@@ -144,9 +144,9 @@ Object {
     "port": 6667,
   },
   "route": Object {
-    "channelKey": "@none",
+    "bufferKey": "@status",
     "serverKey": "server1",
   },
-  "type": "SOCKET/CONNECT_SERVER",
+  "type": "SOCKET/CONNECT_TO_SERVER",
 }
 `;

@@ -2,14 +2,13 @@
 
 exports[`Navigation component should render correctly 1`] = `
 ShallowWrapper {
-  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Navigation
-    onChannelButtonClick={[MockFunction]}
+    onWindowButtonClick={[MockFunction]}
     servers={
       Object {
-        "server1": Object {
-          "channels": Object {
+        "serverKey": Object {
+          "buffers": Object {
             "#channel": Object {
               "activity": true,
               "input": Object {
@@ -47,14 +46,14 @@ ShallowWrapper {
               "messages": Array [],
             },
           },
-          "name": "server.domain",
+          "name": "irc.network",
         },
       }
     }
     window={
       Object {
-        "channelKey": "@status",
-        "serverKey": "server1",
+        "bufferKey": "@status",
+        "serverKey": "serverKey",
       }
     }
   />,
@@ -62,6 +61,7 @@ ShallowWrapper {
     "batchedUpdates": [Function],
     "getNode": [Function],
     "render": [Function],
+    "simulateError": [Function],
     "simulateEvent": [Function],
     "unmount": [Function],
   },
@@ -74,30 +74,30 @@ ShallowWrapper {
         <styled.ul>
           <styled.li>
             <styled.button
-              data-channel-key="@raw"
-              data-server-key="server1"
+              data-buffer-key="@raw"
+              data-server-key="serverKey"
               hasActivity={false}
               isActive={false}
               onClick={[Function]}
             >
-              server1
+              serverKey
             </styled.button>
           </styled.li>
           <styled.li>
             <styled.button
-              data-channel-key="@status"
-              data-server-key="server1"
+              data-buffer-key="@status"
+              data-server-key="serverKey"
               hasActivity={false}
               isActive={true}
               onClick={[Function]}
             >
-              server.domain
+              irc.network
             </styled.button>
           </styled.li>
           <styled.li>
             <styled.button
-              data-channel-key="#channel"
-              data-server-key="server1"
+              data-buffer-key="#channel"
+              data-server-key="serverKey"
               hasActivity={true}
               isActive={false}
               onClick={[Function]}
@@ -112,36 +112,36 @@ ShallowWrapper {
     "rendered": Array [
       Object {
         "instance": null,
-        "key": "server1",
+        "key": "serverKey",
         "nodeType": "class",
         "props": Object {
           "children": Array [
             <styled.li>
               <styled.button
-                data-channel-key="@raw"
-                data-server-key="server1"
+                data-buffer-key="@raw"
+                data-server-key="serverKey"
                 hasActivity={false}
                 isActive={false}
                 onClick={[Function]}
               >
-                server1
+                serverKey
               </styled.button>
             </styled.li>,
             <styled.li>
               <styled.button
-                data-channel-key="@status"
-                data-server-key="server1"
+                data-buffer-key="@status"
+                data-server-key="serverKey"
                 hasActivity={false}
                 isActive={true}
                 onClick={[Function]}
               >
-                server.domain
+                irc.network
               </styled.button>
             </styled.li>,
             <styled.li>
               <styled.button
-                data-channel-key="#channel"
-                data-server-key="server1"
+                data-buffer-key="#channel"
+                data-server-key="serverKey"
                 hasActivity={true}
                 isActive={false}
                 onClick={[Function]}
@@ -159,13 +159,13 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "children": <styled.button
-                data-channel-key="@raw"
-                data-server-key="server1"
+                data-buffer-key="@raw"
+                data-server-key="serverKey"
                 hasActivity={false}
                 isActive={false}
                 onClick={[Function]}
               >
-                server1
+                serverKey
               </styled.button>,
             },
             "ref": null,
@@ -174,15 +174,15 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": "server1",
-                "data-channel-key": "@raw",
-                "data-server-key": "server1",
+                "children": "serverKey",
+                "data-buffer-key": "@raw",
+                "data-server-key": "serverKey",
                 "hasActivity": false,
                 "isActive": false,
                 "onClick": [Function],
               },
               "ref": null,
-              "rendered": "server1",
+              "rendered": "serverKey",
               "type": [Function],
             },
             "type": [Function],
@@ -193,13 +193,13 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "children": <styled.button
-                data-channel-key="@status"
-                data-server-key="server1"
+                data-buffer-key="@status"
+                data-server-key="serverKey"
                 hasActivity={false}
                 isActive={true}
                 onClick={[Function]}
               >
-                server.domain
+                irc.network
               </styled.button>,
             },
             "ref": null,
@@ -208,15 +208,15 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": "server.domain",
-                "data-channel-key": "@status",
-                "data-server-key": "server1",
+                "children": "irc.network",
+                "data-buffer-key": "@status",
+                "data-server-key": "serverKey",
                 "hasActivity": false,
                 "isActive": true,
                 "onClick": [Function],
               },
               "ref": null,
-              "rendered": "server.domain",
+              "rendered": "irc.network",
               "type": [Function],
             },
             "type": [Function],
@@ -227,8 +227,8 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "children": <styled.button
-                data-channel-key="#channel"
-                data-server-key="server1"
+                data-buffer-key="#channel"
+                data-server-key="serverKey"
                 hasActivity={true}
                 isActive={false}
                 onClick={[Function]}
@@ -243,8 +243,8 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "children": "#channel",
-                "data-channel-key": "#channel",
-                "data-server-key": "server1",
+                "data-buffer-key": "#channel",
+                "data-server-key": "serverKey",
                 "hasActivity": true,
                 "isActive": false,
                 "onClick": [Function],
@@ -271,30 +271,30 @@ ShallowWrapper {
           <styled.ul>
             <styled.li>
               <styled.button
-                data-channel-key="@raw"
-                data-server-key="server1"
+                data-buffer-key="@raw"
+                data-server-key="serverKey"
                 hasActivity={false}
                 isActive={false}
                 onClick={[Function]}
               >
-                server1
+                serverKey
               </styled.button>
             </styled.li>
             <styled.li>
               <styled.button
-                data-channel-key="@status"
-                data-server-key="server1"
+                data-buffer-key="@status"
+                data-server-key="serverKey"
                 hasActivity={false}
                 isActive={true}
                 onClick={[Function]}
               >
-                server.domain
+                irc.network
               </styled.button>
             </styled.li>
             <styled.li>
               <styled.button
-                data-channel-key="#channel"
-                data-server-key="server1"
+                data-buffer-key="#channel"
+                data-server-key="serverKey"
                 hasActivity={true}
                 isActive={false}
                 onClick={[Function]}
@@ -309,36 +309,36 @@ ShallowWrapper {
       "rendered": Array [
         Object {
           "instance": null,
-          "key": "server1",
+          "key": "serverKey",
           "nodeType": "class",
           "props": Object {
             "children": Array [
               <styled.li>
                 <styled.button
-                  data-channel-key="@raw"
-                  data-server-key="server1"
+                  data-buffer-key="@raw"
+                  data-server-key="serverKey"
                   hasActivity={false}
                   isActive={false}
                   onClick={[Function]}
                 >
-                  server1
+                  serverKey
                 </styled.button>
               </styled.li>,
               <styled.li>
                 <styled.button
-                  data-channel-key="@status"
-                  data-server-key="server1"
+                  data-buffer-key="@status"
+                  data-server-key="serverKey"
                   hasActivity={false}
                   isActive={true}
                   onClick={[Function]}
                 >
-                  server.domain
+                  irc.network
                 </styled.button>
               </styled.li>,
               <styled.li>
                 <styled.button
-                  data-channel-key="#channel"
-                  data-server-key="server1"
+                  data-buffer-key="#channel"
+                  data-server-key="serverKey"
                   hasActivity={true}
                   isActive={false}
                   onClick={[Function]}
@@ -356,13 +356,13 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "children": <styled.button
-                  data-channel-key="@raw"
-                  data-server-key="server1"
+                  data-buffer-key="@raw"
+                  data-server-key="serverKey"
                   hasActivity={false}
                   isActive={false}
                   onClick={[Function]}
                 >
-                  server1
+                  serverKey
                 </styled.button>,
               },
               "ref": null,
@@ -371,15 +371,15 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "server1",
-                  "data-channel-key": "@raw",
-                  "data-server-key": "server1",
+                  "children": "serverKey",
+                  "data-buffer-key": "@raw",
+                  "data-server-key": "serverKey",
                   "hasActivity": false,
                   "isActive": false,
                   "onClick": [Function],
                 },
                 "ref": null,
-                "rendered": "server1",
+                "rendered": "serverKey",
                 "type": [Function],
               },
               "type": [Function],
@@ -390,13 +390,13 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "children": <styled.button
-                  data-channel-key="@status"
-                  data-server-key="server1"
+                  data-buffer-key="@status"
+                  data-server-key="serverKey"
                   hasActivity={false}
                   isActive={true}
                   onClick={[Function]}
                 >
-                  server.domain
+                  irc.network
                 </styled.button>,
               },
               "ref": null,
@@ -405,15 +405,15 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "children": "server.domain",
-                  "data-channel-key": "@status",
-                  "data-server-key": "server1",
+                  "children": "irc.network",
+                  "data-buffer-key": "@status",
+                  "data-server-key": "serverKey",
                   "hasActivity": false,
                   "isActive": true,
                   "onClick": [Function],
                 },
                 "ref": null,
-                "rendered": "server.domain",
+                "rendered": "irc.network",
                 "type": [Function],
               },
               "type": [Function],
@@ -424,8 +424,8 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "children": <styled.button
-                  data-channel-key="#channel"
-                  data-server-key="server1"
+                  data-buffer-key="#channel"
+                  data-server-key="serverKey"
                   hasActivity={true}
                   isActive={false}
                   onClick={[Function]}
@@ -440,8 +440,8 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "children": "#channel",
-                  "data-channel-key": "#channel",
-                  "data-server-key": "server1",
+                  "data-buffer-key": "#channel",
+                  "data-server-key": "serverKey",
                   "hasActivity": true,
                   "isActive": false,
                   "onClick": [Function],
@@ -463,8 +463,20 @@ ShallowWrapper {
     "adapter": ReactSixteenAdapter {
       "options": Object {
         "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
       },
     },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
   },
 }
 `;

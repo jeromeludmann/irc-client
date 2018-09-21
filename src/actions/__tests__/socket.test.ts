@@ -1,35 +1,48 @@
 import {
   connectToServer,
   setConnectionEstablished,
-  lookup
-} from "@app/actions/socket";
+  lookup,
+  setConnectionClosed,
+} from '@app/actions/socket'
 
-describe("socket actions", () => {
-  describe("should generate ConnectServerAction", () => {
-    it("with the existing connection", () => {
-      expect(connectToServer("server1", "irc.network", 6667)).toMatchSnapshot();
-    });
+describe('socket actions', () => {
+  it('should generate ConnectServerAction with the existing connection', () => {
+    expect(connectToServer('server1', 'irc.network', 6667)).toMatchSnapshot()
+  })
 
-    it("with a new connection", () => {
-      expect(
-        connectToServer("server1", "irc.network", 6667, true)
-      ).toMatchSnapshot();
-    });
-  });
+  it('should generate ConnectServerAction with a new connection', () => {
+    expect(
+      connectToServer('serverKey', 'irc.network', 6667, true),
+    ).toMatchSnapshot()
+  })
 
-  it("should generate ConnectionEstablishedAction", () => {
-    expect(setConnectionEstablished("server1")).toMatchSnapshot();
-  });
+  it('should generate ConnectionEstablishedAction', () => {
+    expect(setConnectionEstablished('serverKey')).toMatchSnapshot()
+  })
 
-  it("should generate LookupFailedAction", () => {
+  it('should generate LookupSuccessAction', () => {
+    expect(
+      lookup('serverKey', null, 'address', 'family', 'irc.network'),
+    ).toMatchSnapshot()
+  })
+
+  it('should generate LookupFailedAction', () => {
     expect(
       lookup(
-        "server1",
-        new Error("error while looking up"),
-        "address",
-        "family",
-        "irc.network"
-      )
-    ).toMatchSnapshot();
-  });
-});
+        'serverKey',
+        new Error('error while looking up'),
+        'address',
+        'family',
+        'irc.network',
+      ),
+    ).toMatchSnapshot()
+  })
+
+  it('should generate ConnectionClosedAction', () => {
+    expect(setConnectionClosed('serverKey')).toMatchSnapshot()
+  })
+
+  it('should generate ConnectionClosedAction with error', () => {
+    expect(setConnectionClosed('serverKey', true)).toMatchSnapshot()
+  })
+})

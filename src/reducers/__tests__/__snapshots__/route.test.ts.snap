@@ -1,50 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`reduce route close window on a channel 1`] = `
+exports[`reduce route state should handle CLOSE_WINDOW on channel 1`] = `
 Object {
-  "channelKey": "@status",
-  "serverKey": "server1",
+  "bufferKey": "@status",
+  "serverKey": "serverKey",
 }
 `;
 
-exports[`reduce route close window on a status 1`] = `
+exports[`reduce route state should handle CLOSE_WINDOW on status 1`] = `
 Object {
-  "channelKey": "@status",
-  "serverKey": "server1",
+  "bufferKey": "@status",
+  "serverKey": "serverKey",
 }
 `;
 
-exports[`reduce route close window on a status 2`] = `
+exports[`reduce route state should handle RECEIVE_JOIN 1`] = `
 Object {
-  "channelKey": "@status",
-  "serverKey": "server2",
+  "bufferKey": "@status",
+  "serverKey": "",
 }
 `;
 
-exports[`reduce route switch window on a channel 1`] = `
+exports[`reduce route state should handle RECEIVE_JOIN when it is me 1`] = `
 Object {
-  "channelKey": "#channel",
-  "serverKey": "server1",
+  "bufferKey": "#channel",
+  "serverKey": "serverKey",
 }
 `;
 
-exports[`reduce route switch window on a status 1`] = `
+exports[`reduce route state should handle RECEIVE_PART 1`] = `
 Object {
-  "channelKey": "@status",
-  "serverKey": "server1",
+  "bufferKey": "@status",
+  "serverKey": "",
 }
 `;
 
-exports[`reduce route with join receveid when I join a channel myself 1`] = `
+exports[`reduce route state should handle RECEIVE_PART when it is me 1`] = `
 Object {
-  "channelKey": "#channel",
-  "serverKey": "server1",
+  "bufferKey": "@status",
+  "serverKey": "",
 }
 `;
 
-exports[`reduce route with join receveid when an user joins a channel 1`] = `
+exports[`reduce route state should handle SWITCH_WINDOW 1`] = `
 Object {
-  "channelKey": "@status",
+  "bufferKey": "#channel",
+  "serverKey": "serverKey",
+}
+`;
+
+exports[`reduce route state should handle SWITCH_WINDOW with a not found route 1`] = `
+Object {
+  "bufferKey": "@status",
   "serverKey": "",
 }
 `;
