@@ -6,7 +6,7 @@ Object {
     "raw": "PART #channel Goodbye!",
   },
   "route": Object {
-    "channelKey": "@none",
+    "bufferKey": "@none",
     "serverKey": "server1",
   },
   "type": "SOCKET/SEND_RAW_MESSAGE",
@@ -19,7 +19,7 @@ Object {
     "raw": "PART #channel",
   },
   "route": Object {
-    "channelKey": "@none",
+    "bufferKey": "@none",
     "serverKey": "server1",
   },
   "type": "SOCKET/SEND_RAW_MESSAGE",
@@ -33,7 +33,7 @@ Object {
       "key": "key",
     },
     "route": Object {
-      "channelKey": "@status",
+      "bufferKey": "@status",
       "serverKey": "server1",
     },
     "type": "MESSAGE/SEND_PING_TO_SERVER",
@@ -42,7 +42,7 @@ Object {
     "raw": "PING key",
   },
   "route": Object {
-    "channelKey": "@none",
+    "bufferKey": "@none",
     "serverKey": "server1",
   },
   "type": "SOCKET/SEND_RAW_MESSAGE",
@@ -56,7 +56,7 @@ Object {
       "key": "key",
     },
     "route": Object {
-      "channelKey": "@status",
+      "bufferKey": "@status",
       "serverKey": "server1",
     },
     "type": "MESSAGE/SEND_PONG_TO_SERVER",
@@ -65,7 +65,7 @@ Object {
     "raw": "PONG key",
   },
   "route": Object {
-    "channelKey": "@none",
+    "bufferKey": "@none",
     "serverKey": "server1",
   },
   "type": "SOCKET/SEND_RAW_MESSAGE",
@@ -78,7 +78,7 @@ Object {
     "raw": "QUIT Goodbye!",
   },
   "route": Object {
-    "channelKey": "@none",
+    "bufferKey": "@none",
     "serverKey": "server1",
   },
   "type": "SOCKET/SEND_RAW_MESSAGE",
@@ -91,7 +91,7 @@ Object {
     "raw": "QUIT",
   },
   "route": Object {
-    "channelKey": "@none",
+    "bufferKey": "@none",
     "serverKey": "server1",
   },
   "type": "SOCKET/SEND_RAW_MESSAGE",
@@ -104,7 +104,7 @@ Object {
     "raw": "USER username 0 * :Real Name",
   },
   "route": Object {
-    "channelKey": "@none",
+    "bufferKey": "@none",
     "serverKey": "server1",
   },
   "type": "SOCKET/SEND_RAW_MESSAGE",

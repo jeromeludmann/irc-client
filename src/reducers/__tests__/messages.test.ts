@@ -1,236 +1,206 @@
-import { reduceMessages } from "@app/reducers/messages";
+import { reduceMessages, messagesInitialState } from '@app/reducers/messages'
+import { routeInitialState } from '@app/reducers/route'
+import { serverInitialState } from '@app/reducers/server'
 import {
+  connectToServer,
   setConnectionClosed,
   setConnectionFailed,
   receiveRawMessages,
-} from "@app/actions/socket";
-import { messageReceivers } from "@app/actions/msgIncoming";
-import { sendPongToServer, sendPrivmsg } from "@app/actions/msgOutgoing";
-import { commands } from "@app/actions/commands";
+} from '@app/actions/socket'
+import { commands } from '@app/actions/commands'
+import { messageReceivers } from '@app/actions/msgIncoming'
+import { User } from '@app/utils/Message'
+import { sendPongToServer, sendPrivmsg } from '@app/actions/msgOutgoing'
 
-describe("reduce channel messages by dispatching", () => {
-  const extraParams = {
-    user: { nick: "nick", user: "user", real: "name" },
-    route: { serverKey: "server1", channelKey: "#channel" },
-  };
+describe('reduce messages state', () => {
+  //   const initialState = { ...messagesInitialState }
+  const someone: User = { nick: 'someone', user: 'user', host: 'host' }
+  const me: User = { nick: 'me', user: 'user', host: 'host' }
+  const extraStates = { route: routeInitialState, server: serverInitialState }
+  const route = {
+    serverKey: 'serverKey',
+    bufferKey: '#channel',
+  }
 
-  const user = { nick: "nick", user: "user", host: "host" };
-
-  test("connection closed", () => {
+  it('should handle CONNECT_TO_SERVER', () => {
     expect(
       reduceMessages(
-        undefined,
-        setConnectionClosed("server1", false),
-        extraParams,
+        messagesInitialState,
+        connectToServer('serverKey', 'server'),
+        extraStates,
       ),
-    ).toMatchSnapshot();
-  });
+    ).toMatchSnapshot()
+  })
 
-  test("connection failed", () => {
+  it('should handle CONNECTION_CLOSED', () => {
     expect(
       reduceMessages(
-        undefined,
-        setConnectionFailed("server1", "Error", "Connection error"),
-        extraParams,
+        messagesInitialState,
+        setConnectionClosed('serverKey'),
+        extraStates,
       ),
-    ).toMatchSnapshot();
-  });
+    ).toMatchSnapshot()
+  })
 
-  test("receive ERROR", () => {
+  it('should handle CONNECTION_FAILED', () => {
     expect(
       reduceMessages(
-        undefined,
-        messageReceivers["ERROR"]("server1", undefined, ["error message"]),
-        extraParams,
+        messagesInitialState,
+        setConnectionFailed('serverKey', 'Error', 'Connection failed'),
+        extraStates,
       ),
-    ).toMatchSnapshot();
-  });
+    ).toMatchSnapshot()
+  })
 
-  test("receive JOIN", () => {
+  it('should handle PRINT_HELP_BY_DEFAULT', () => {
     expect(
       reduceMessages(
-        undefined,
-        messageReceivers["JOIN"]("server1", user, ["#channel"]),
-        extraParams,
+        messagesInitialState,
+        commands.help.callback(route),
+        extraStates,
       ),
-    ).toMatchSnapshot();
-  });
+    ).toMatchSnapshot()
+  })
 
-  describe("receive NOTICE", () => {
-    test("from server", () => {
-      expect(
-        reduceMessages(
-          undefined,
-          messageReceivers["NOTICE"]("server1", "server.prefix", [
-            "",
-            "notice from server",
-          ]),
-          extraParams,
-        ),
-      ).toMatchSnapshot();
-    });
-
-    test("from channel", () => {
-      expect(
-        reduceMessages(
-          undefined,
-          messageReceivers["NOTICE"]("server1", user, [
-            "#channel",
-            "notice from channel",
-          ]),
-          extraParams,
-        ),
-      ).toMatchSnapshot();
-    });
-
-    test("from user", () => {
-      expect(
-        reduceMessages(
-          undefined,
-          messageReceivers["NOTICE"]("server1", user, [
-            "nick",
-            "notice from user",
-          ]),
-          extraParams,
-        ),
-      ).toMatchSnapshot();
-    });
-  });
-
-  describe("receive PART", () => {
-    test("without message", () => {
-      expect(
-        reduceMessages(
-          undefined,
-          messageReceivers["PART"]("server1", user, ["#channel"]),
-          extraParams,
-        ),
-      ).toMatchSnapshot();
-    });
-
-    test("with message", () => {
-      expect(
-        reduceMessages(
-          undefined,
-          messageReceivers["PART"]("server1", user, ["#channel", "Goodbye!"]),
-          extraParams,
-        ),
-      ).toMatchSnapshot();
-    });
-  });
-
-  test("receive PONG (from server)", () => {
+  it('should handle PRINT_HELP_ABOUT_COMMAND', () => {
     expect(
       reduceMessages(
-        undefined,
-        messageReceivers["PONG"]("server1", "irc.network", [
-          "irc.network",
-          "key",
+        messagesInitialState,
+        commands.help.callback(route, 'help'),
+        extraStates,
+      ),
+    ).toMatchSnapshot()
+  })
+
+  it('should handle RAW_MESSAGES_RECEIVED', () => {
+    expect(
+      reduceMessages(
+        messagesInitialState,
+        receiveRawMessages('serverKey', [
+          'PRIVMSG #channel :hello',
+          'PRIVMSG #channel :world',
         ]),
-        extraParams,
+        extraStates,
       ),
-    ).toMatchSnapshot();
-  });
+    ).toMatchSnapshot()
+  })
 
-  describe("print help", () => {
-    test("by default", () => {
-      expect(
-        reduceMessages(
-          undefined,
-          commands["help"].callback({
-            serverKey: "server1",
-            bufferKey: "#channel",
-          }),
-          extraParams,
-        ),
-      ).toMatchSnapshot();
-    });
-
-    test("about command", () => {
-      expect(
-        reduceMessages(
-          undefined,
-          commands["help"].callback(
-            {
-              serverKey: "server1",
-              bufferKey: "#channel",
-            },
-            "msg",
-          ),
-          extraParams,
-        ),
-      ).toMatchSnapshot();
-    });
-  });
-
-  test("receive raw messages", () => {
+  it('should handle RECEIVE_ERROR', () => {
     expect(
       reduceMessages(
-        undefined,
-        receiveRawMessages("server1", [
-          "PRIVMSG #channel :hello",
-          "NICK :newNick",
+        messagesInitialState,
+        messageReceivers.ERROR('serverKey', 'server', ['Error message']),
+        extraStates,
+      ),
+    ).toMatchSnapshot()
+  })
+
+  it('should handle RECEIVE_JOIN', () => {
+    expect(
+      reduceMessages(
+        messagesInitialState,
+        messageReceivers.JOIN('serverKey', someone, ['#channel']),
+        extraStates,
+      ),
+    ).toMatchSnapshot()
+  })
+
+  it('should handle RECEIVE_NOTICE_FROM_SERVER', () => {
+    expect(
+      reduceMessages(
+        messagesInitialState,
+        messageReceivers.NOTICE('serverKey', 'server', [
+          'server',
+          'Notice from server',
         ]),
-        extraParams,
+        extraStates,
       ),
-    ).toMatchSnapshot();
-  });
+    ).toMatchSnapshot()
+  })
 
-  describe("receive PING", () => {
-    test("from server", () => {
-      expect(
-        reduceMessages(
-          undefined,
-          messageReceivers["PING"]("server1", "server.prefix", ["key"]),
-          extraParams,
-        ),
-      ).toMatchSnapshot();
-    });
-  });
-
-  test("receive PRIVMSG", () => {
+  it('should handle RECEIVE_NOTICE_FROM_CHANNEL', () => {
     expect(
       reduceMessages(
-        undefined,
-        messageReceivers["PRIVMSG"]("server1", user, ["#channel", "hello!"]),
-        extraParams,
-      ),
-    ).toMatchSnapshot();
-  });
-
-  test("receive RPL_MYINFO", () => {
-    expect(
-      reduceMessages(
-        undefined,
-        messageReceivers["004"]("server1", "server.prefix", [
-          "",
-          "serverName",
-          "version",
-          "user modes",
-          "channel modes",
+        messagesInitialState,
+        messageReceivers.NOTICE('serverKey', someone, [
+          '#channel',
+          'Notice from channel',
         ]),
-        extraParams,
+        extraStates,
       ),
-    ).toMatchSnapshot();
-  });
+    ).toMatchSnapshot()
+  })
 
-  describe("send PONG", () => {
-    const sendPongToServerAction = sendPongToServer("server1", "key")
-      .embeddedAction;
-    if (sendPongToServerAction) {
-      test("to server", () => {
-        expect(
-          reduceMessages(undefined, sendPongToServerAction, extraParams),
-        ).toMatchSnapshot();
-      });
-    }
-  });
+  it('should handle RECEIVE_NOTICE_FROM_USER', () => {
+    expect(
+      reduceMessages(
+        messagesInitialState,
+        messageReceivers.NOTICE('serverKey', someone, [
+          'me',
+          'Notice from user',
+        ]),
+        extraStates,
+      ),
+    ).toMatchSnapshot()
+  })
 
-  test("send PRIVMSG", () => {
-    const sendPrivmsgAction = sendPrivmsg("server1", "#channel", "hello")
-      .embeddedAction;
-    if (sendPrivmsgAction) {
-      expect(reduceMessages(undefined, sendPrivmsgAction, extraParams));
-    }
-  });
-});
+  it('should handle RECEIVE_PART', () => {
+    expect(
+      reduceMessages(
+        messagesInitialState,
+        messageReceivers.PART('serverKey', someone, ['#channel']),
+        extraStates,
+      ),
+    ).toMatchSnapshot()
+  })
+
+  it('should handle RECEIVE_PART with message', () => {
+    expect(
+      reduceMessages(
+        messagesInitialState,
+        messageReceivers.PART('serverKey', someone, ['#channel', 'Goodbye!']),
+        extraStates,
+      ),
+    ).toMatchSnapshot()
+  })
+
+  it('should handle RECEIVE_PING_FROM_SERVER', () => {
+    expect(
+      reduceMessages(
+        messagesInitialState,
+        messageReceivers.PING('serverKey', 'server', ['key']),
+        extraStates,
+      ),
+    ).toMatchSnapshot()
+  })
+
+  it('should handle RECEIVE_PRIVMSG', () => {
+    expect(
+      reduceMessages(
+        messagesInitialState,
+        messageReceivers.PRIVMSG('serverKey', someone, ['#channel', 'hello']),
+        extraStates,
+      ),
+    ).toMatchSnapshot()
+  })
+
+  it('should handle SEND_PONG_TO_SERVER', () => {
+    expect(
+      reduceMessages(
+        messagesInitialState,
+        sendPongToServer('serverKey', 'key').embeddedAction!,
+        extraStates,
+      ),
+    ).toMatchSnapshot()
+  })
+
+  it('should handle SEND_PRIVMSG', () => {
+    expect(
+      reduceMessages(
+        messagesInitialState,
+        sendPrivmsg('serverKey', '#channel', 'hello').embeddedAction!,
+        extraStates,
+      ),
+    ).toMatchSnapshot()
+  })
+})

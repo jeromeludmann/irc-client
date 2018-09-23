@@ -1,5 +1,4 @@
-import { createSelector } from 'reselect'
-import { RouteState, selectRoute } from '@app/reducers/route'
+import { RouteState } from '@app/reducers/route'
 import {
   RoutedAction,
   BufferKey,
@@ -26,7 +25,7 @@ import {
   reduceBuffer,
 } from '@app/reducers/buffer'
 import { CLOSE_WINDOW, CloseWindowAction } from '@app/actions/ui'
-import { selectServers } from '@app/reducers'
+import { AnyAction } from 'redux'
 
 export type ServerState = Readonly<{
   name: string
@@ -101,6 +100,9 @@ const removeAllServerRelatedBuffers = (buffers: {
   return bufferMap
 }
 
+const itIsme = (server: ServerState, action: AnyAction) =>
+  action.payload.user.nick === server.user.nick
+
 const caseReducers: CaseReducerMap<ServerReducer> = {
   [CLOSE_WINDOW]: (server, action: CloseWindowAction) => ({
     ...server,
@@ -112,16 +114,15 @@ const caseReducers: CaseReducerMap<ServerReducer> = {
 
   [RECEIVE_NICK]: (server, action: ReceiveNickAction) => ({
     ...server,
-    user:
-      action.payload.user.nick === server.user.nick
-        ? { ...server.user, nick: action.payload.nick }
-        : server.user,
+    user: itIsme(server, action)
+      ? { ...server.user, nick: action.payload.nick }
+      : server.user,
   }),
 
   // We arbitrarily decided to close window when we "/part" the channel.
   // But later, we could make this behavior customizable.
   [RECEIVE_PART]: (server, action: ReceivePartAction) =>
-    action.payload.user.nick === server.user.nick
+    itIsme(server, action)
       ? {
           ...server,
           buffers: removeCurrentBuffer(server.buffers, action.payload.channel),
@@ -226,36 +227,3 @@ export const reduceServer: ServerReducer = (
       : {}),
   }
 }
-
-export const selectServer = createSelector(
-  selectServers,
-  selectRoute,
-  (servers, { serverKey }) => servers[serverKey],
-)
-
-export const selectServerName = createSelector(
-  selectServer,
-  server => server.name,
-)
-
-export const selectUser = createSelector(selectServer, server => server.user)
-
-export const selectServerLag = createSelector(
-  selectServer,
-  server => server.lag,
-)
-
-export const selectUserModes = createSelector(
-  selectServer,
-  server => server.modes.user,
-)
-
-export const selectAvailableModes = createSelector(
-  selectServer,
-  server => server.modes.available,
-)
-
-export const selectBuffers = createSelector(
-  selectServer,
-  server => server.buffers,
-)

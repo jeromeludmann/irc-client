@@ -1,24 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`reduce channel messages by dispatching connection closed 1`] = `
+exports[`reduce messages state should handle CONNECT_TO_SERVER 1`] = `
+Array [
+  "Connecting to server…",
+]
+`;
+
+exports[`reduce messages state should handle CONNECTION_CLOSED 1`] = `
 Array [
   "Disconnected from remote host.",
 ]
 `;
 
-exports[`reduce channel messages by dispatching connection failed 1`] = `
+exports[`reduce messages state should handle CONNECTION_FAILED 1`] = `
 Array [
-  "Connection error",
+  "Connection failed",
 ]
 `;
 
-exports[`reduce channel messages by dispatching print help about command 1`] = `
+exports[`reduce messages state should handle PRINT_HELP_ABOUT_COMMAND 1`] = `
 Array [
-  "Usage: /msg <channel or nick> <text> - Sends a message to a channel or a nick",
+  "Usage: /help [command] - Prints help about available commands",
 ]
 `;
 
-exports[`reduce channel messages by dispatching print help by default 1`] = `
+exports[`reduce messages state should handle PRINT_HELP_BY_DEFAULT 1`] = `
 Array [
   "close - Closes the current window",
   "help - Prints help about available commands",
@@ -30,82 +36,82 @@ Array [
   "server - Connects to a server",
   "quit - Disconnects from the current server",
   "raw - Sends a raw message",
+  "connect - Connects to a server",
+  "disconnect - Disconnects from the current server",
   "quote - Sends a raw message",
   "Type /HELP <command> for more details.",
 ]
 `;
 
-exports[`reduce channel messages by dispatching receive ERROR 1`] = `
+exports[`reduce messages state should handle RAW_MESSAGES_RECEIVED 1`] = `
 Array [
-  "error message",
+  "PRIVMSG #channel :hello",
+  "PRIVMSG #channel :world",
 ]
 `;
 
-exports[`reduce channel messages by dispatching receive JOIN 1`] = `
+exports[`reduce messages state should handle RECEIVE_ERROR 1`] = `
 Array [
-  "nick has joined #channel",
+  "Error message",
 ]
 `;
 
-exports[`reduce channel messages by dispatching receive NOTICE from channel 1`] = `
+exports[`reduce messages state should handle RECEIVE_JOIN 1`] = `
 Array [
-  "-nick/#channel- notice from channel",
+  "someone has joined #channel",
 ]
 `;
 
-exports[`reduce channel messages by dispatching receive NOTICE from server 1`] = `
+exports[`reduce messages state should handle RECEIVE_NOTICE_FROM_CHANNEL 1`] = `
 Array [
-  "notice from server",
+  "-someone/#channel- Notice from channel",
 ]
 `;
 
-exports[`reduce channel messages by dispatching receive NOTICE from user 1`] = `
+exports[`reduce messages state should handle RECEIVE_NOTICE_FROM_SERVER 1`] = `
 Array [
-  "-nick- notice from user",
+  "Notice from server",
 ]
 `;
 
-exports[`reduce channel messages by dispatching receive PART with message 1`] = `
+exports[`reduce messages state should handle RECEIVE_NOTICE_FROM_USER 1`] = `
 Array [
-  "nick has left #channel (Goodbye!)",
+  "-someone- Notice from user",
 ]
 `;
 
-exports[`reduce channel messages by dispatching receive PART without message 1`] = `
+exports[`reduce messages state should handle RECEIVE_PART 1`] = `
 Array [
-  "nick has left #channel",
+  "someone has left #channel",
 ]
 `;
 
-exports[`reduce channel messages by dispatching receive PING from server 1`] = `
+exports[`reduce messages state should handle RECEIVE_PART with message 1`] = `
+Array [
+  "someone has left #channel (Goodbye!)",
+]
+`;
+
+exports[`reduce messages state should handle RECEIVE_PING_FROM_SERVER 1`] = `
 Array [
   "Ping?",
 ]
 `;
 
-exports[`reduce channel messages by dispatching receive PONG (from server) 1`] = `
+exports[`reduce messages state should handle RECEIVE_PRIVMSG 1`] = `
 Array [
-  "Response from server key in 0 ms",
+  "someone: hello",
 ]
 `;
 
-exports[`reduce channel messages by dispatching receive PRIVMSG 1`] = `
-Array [
-  "nick: hello!",
-]
-`;
-
-exports[`reduce channel messages by dispatching receive RPL_MYINFO 1`] = `Array []`;
-
-exports[`reduce channel messages by dispatching receive raw messages 1`] = `
-Array [
-  "PRIVMSG #channel :hello",
-  "NICK :newNick",
-]
-`;
-
-exports[`reduce channel messages by dispatching send PONG to server 1`] = `
+exports[`reduce messages state should handle SEND_PONG_TO_SERVER 1`] = `
 Array [
   "Pong!",
+]
+`;
+
+exports[`reduce messages state should handle SEND_PRIVMSG 1`] = `
+Array [
+  "default_nick: hello",
 ]
 `;

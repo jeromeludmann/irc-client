@@ -7,7 +7,7 @@ import {
   goBackInputHistory,
   goForwardInputHistory,
 } from '@app/actions/ui'
-import { selectInputValue } from '@app/reducers/input';
+import { selectInputValue } from '@app/reducers/selectors'
 
 interface StateProps {
   value: string

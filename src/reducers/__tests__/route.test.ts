@@ -1,104 +1,109 @@
-import { reduceRoute } from '@app/reducers/route'
-import { switchWindow, closeWindow } from '@app/actions/ui'
-import { serverInitialState } from '@app/reducers/server'
+import { reduceRoute, routeInitialState } from '@app/reducers/route'
+import { closeWindow, switchWindow } from '@app/actions/ui'
 import { messageReceivers } from '@app/actions/msgIncoming'
+import { rootInitialState } from '@app/reducers'
+import { serverInitialState } from '@app/reducers/server'
+import { bufferInitialState } from '@app/reducers/buffer'
 import { BufferKey } from '@app/utils/Route'
-import { serverRouterInitialState } from '@app/reducers/serverRouter'
 
-describe('reduce route', () => {
-  describe('with join receveid', () => {
-    test('when an user joins a channel', () => {
-      expect(
-        reduceRoute(
-          undefined,
-          messageReceivers['JOIN'](
-            'server1',
-            { nick: 'nick', user: 'user', host: 'host' },
-            ['#channel'],
-          ),
-          { servers: { server1: serverInitialState } },
-        ),
-      ).toMatchSnapshot()
-    })
+describe('reduce route state', () => {
+  const someone = { nick: 'someone', user: 'user', host: 'host' }
+  const me = { nick: 'me', user: 'user', host: 'host' }
+  
 
-    test('when I join a channel myself', () => {
-      expect(
-        reduceRoute(
-          undefined,
-          messageReceivers['JOIN'](
-            'server1',
-            { nick: 'nick', user: 'user', host: 'host' },
-            ['#channel'],
-          ),
-          {
-            servers: {
-              server1: {
-                ...serverInitialState,
-                user: { ...serverInitialState.user, nick: 'nick' },
-              },
-            },
+  const extraStates = {
+    root: {
+      ...rootInitialState,
+      servers: {
+        serverKey: {
+          ...serverInitialState,
+          user: { nick: 'me', user: 'user', real: 'Realname' },
+          buffers: {
+            ...serverInitialState.buffers,
+            '#channel': bufferInitialState,
           },
-        ),
-      ).toMatchSnapshot()
-    })
+        },
+      },
+    },
+  }
+
+  it('should handle CLOSE_WINDOW on status', () => {
+    expect(
+      reduceRoute(
+        { serverKey: 'serverKey', bufferKey: BufferKey.STATUS },
+        closeWindow({ serverKey: 'serverKey', bufferKey: BufferKey.STATUS }),
+        extraStates,
+      ),
+    ).toMatchSnapshot()
   })
 
-  describe('close window', () => {
-    test('on a status', () => {
-      expect(
-        reduceRoute(
-          { serverKey: 'server1', bufferKey: BufferKey.STATUS },
-          closeWindow({ serverKey: 'server1', bufferKey: BufferKey.STATUS }),
-          {
-            servers: { server1: serverInitialState },
-          },
-        ),
-      ).toMatchSnapshot()
-
-      expect(
-        reduceRoute(
-          { serverKey: 'server1', bufferKey: BufferKey.STATUS },
-          closeWindow({ serverKey: 'server1', bufferKey: BufferKey.STATUS }),
-          {
-            servers: {
-              server1: serverInitialState,
-              server2: serverInitialState,
-            },
-          },
-        ),
-      ).toMatchSnapshot()
-    })
-
-    test('on a channel', () => {
-      expect(
-        reduceRoute(
-          { serverKey: 'server1', bufferKey: '#channel' },
-          closeWindow({ serverKey: 'server1', bufferKey: '#channel' }),
-          { servers: { server1: serverInitialState } },
-        ),
-      ).toMatchSnapshot()
-    })
+  it('should handle CLOSE_WINDOW on channel', () => {
+    expect(
+      reduceRoute(
+        { serverKey: 'serverKey', bufferKey: '#channel' },
+        closeWindow({ serverKey: 'serverKey', bufferKey: '#channel' }),
+        extraStates,
+      ),
+    ).toMatchSnapshot()
   })
 
-  describe('switch window', () => {
-    test('on a status', () => {
-      expect(
-        reduceRoute(
-          undefined,
-          switchWindow({ serverKey: 'server1', bufferKey: BufferKey.STATUS }),
-          { servers: serversInitialState },
-        ),
-      ).toMatchSnapshot()
-    })
+  it('should handle RECEIVE_JOIN', () => {
+    expect(
+      reduceRoute(
+        routeInitialState,
+        messageReceivers.JOIN('serverKey', someone, ['#channel']),
+        extraStates,
+      ),
+    ).toMatchSnapshot()
+  })
 
-    test('on a channel', () => {
-      expect(
-        reduceRoute(
-          undefined,
-          switchWindow({ serverKey: 'server1', bufferKey: '#channel' }),
-          { servers: serversInitialState },
-        ),
-      ).toMatchSnapshot()
-    })
+  it('should handle RECEIVE_JOIN when it is me', () => {
+    expect(
+      reduceRoute(
+        routeInitialState,
+        messageReceivers.JOIN('serverKey', me, ['#channel']),
+        extraStates,
+      ),
+    ).toMatchSnapshot()
+  })
+
+  it('should handle RECEIVE_PART', () => {
+    expect(
+      reduceRoute(
+        routeInitialState,
+        messageReceivers.PART('serverKey', someone, ['#channel', 'Goodbye!']),
+        extraStates,
+      ),
+    ).toMatchSnapshot()
+  })
+
+  it('should handle RECEIVE_PART when it is me', () => {
+    expect(
+      reduceRoute(
+        routeInitialState,
+        messageReceivers.PART('serverKey', me, ['#channel', 'Goodbye!']),
+        extraStates,
+      ),
+    ).toMatchSnapshot()
+  })
+
+  it('should handle SWITCH_WINDOW', () => {
+    expect(
+      reduceRoute(
+        routeInitialState,
+        switchWindow({ serverKey: 'serverKey', bufferKey: '#channel' }),
+        extraStates,
+      ),
+    ).toMatchSnapshot()
+  })
+
+  it('should handle SWITCH_WINDOW with a not found route', () => {
+    expect(
+      reduceRoute(
+        routeInitialState,
+        switchWindow({ serverKey: 'unknown', bufferKey: '#unknown' }),
+        extraStates,
+      ),
+    ).toMatchSnapshot()
   })
 })

@@ -8,10 +8,10 @@ Object {
     "port": 6667,
   },
   "route": Object {
-    "channelKey": "@none",
-    "serverKey": "server1",
+    "bufferKey": "@status",
+    "serverKey": "serverKey",
   },
-  "type": "SOCKET/CONNECT_SERVER",
+  "type": "SOCKET/CONNECT_TO_SERVER",
 }
 `;
 
@@ -23,18 +23,44 @@ Object {
     "port": 6667,
   },
   "route": Object {
-    "channelKey": "@none",
+    "bufferKey": "@status",
     "serverKey": "server1",
   },
-  "type": "SOCKET/CONNECT_SERVER",
+  "type": "SOCKET/CONNECT_TO_SERVER",
+}
+`;
+
+exports[`socket actions should generate ConnectionClosedAction 1`] = `
+Object {
+  "payload": Object {
+    "hadError": false,
+  },
+  "route": Object {
+    "bufferKey": "@all",
+    "serverKey": "serverKey",
+  },
+  "type": "SOCKET/CONNECTION_CLOSED",
+}
+`;
+
+exports[`socket actions should generate ConnectionClosedAction with error 1`] = `
+Object {
+  "payload": Object {
+    "hadError": true,
+  },
+  "route": Object {
+    "bufferKey": "@all",
+    "serverKey": "serverKey",
+  },
+  "type": "SOCKET/CONNECTION_CLOSED",
 }
 `;
 
 exports[`socket actions should generate ConnectionEstablishedAction 1`] = `
 Object {
   "route": Object {
-    "channelKey": "@status",
-    "serverKey": "server1",
+    "bufferKey": "@status",
+    "serverKey": "serverKey",
   },
   "type": "SOCKET/CONNECTION_ESTABLISHED",
 }
@@ -46,10 +72,26 @@ Object {
     "error": [Error: error while looking up],
   },
   "route": Object {
-    "channelKey": "@status",
-    "serverKey": "server1",
+    "bufferKey": "@status",
+    "serverKey": "serverKey",
   },
-  "serverKey": "server1",
+  "serverKey": "serverKey",
   "type": "SOCKET/LOOKUP_FAILED",
+}
+`;
+
+exports[`socket actions should generate LookupSuccessAction 1`] = `
+Object {
+  "payload": Object {
+    "address": "address",
+    "family": "family",
+    "host": "irc.network",
+  },
+  "route": Object {
+    "bufferKey": "@status",
+    "serverKey": "serverKey",
+  },
+  "serverKey": "serverKey",
+  "type": "SOCKET/LOOKUP_SUCCESS",
 }
 `;

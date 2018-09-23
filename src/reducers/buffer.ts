@@ -1,4 +1,3 @@
-import { createSelector } from 'reselect'
 import {
   MessagesState,
   messagesInitialState,
@@ -6,11 +5,12 @@ import {
 } from '@app/reducers/messages'
 import { InputState, inputInitialState, reduceInput } from '@app/reducers/input'
 import { RoutedAction } from '@app/utils/Route'
-import { RouteState, selectRoute } from '@app/reducers/route'
+import { RouteState } from '@app/reducers/route'
 import { RECEIVE_JOIN, ReceiveJoinAction } from '@app/actions/msgIncoming'
 import { SWITCH_WINDOW } from '@app/actions/ui'
-import { ServerState, selectBuffers } from '@app/reducers/server'
+import { ServerState } from '@app/reducers/server'
 import { CaseReducerMap } from '@app/utils/CaseReducerMap'
+import { AnyAction } from 'redux'
 
 type BufferPartialState = Readonly<{
   activity: boolean
@@ -37,16 +37,19 @@ export const bufferInitialState = {
   messages: messagesInitialState,
 }
 
+const itIsMe = (action: AnyAction, extraStates: { server: ServerState }) =>
+  action.payload.user.nick === extraStates.server.user.nick
+
 const caseReducers: CaseReducerMap<BufferReducer<BufferPartialState>> = {
   [RECEIVE_JOIN]: (_, action: ReceiveJoinAction, extraStates) => ({
-    activity: action.payload.user.nick !== extraStates.server.user.nick,
+    activity: !itIsMe(action, extraStates),
   }),
 
   [SWITCH_WINDOW]: () => ({ activity: false }),
 }
 
 export const reduceBuffer: BufferReducer = (
-  buffer = bufferInitialState,
+  buffer,
   action,
   extraStates,
 ): BufferState => ({
@@ -56,14 +59,3 @@ export const reduceBuffer: BufferReducer = (
   input: reduceInput(buffer.input, action),
   messages: reduceMessages(buffer.messages, action, extraStates),
 })
-
-export const selectBuffer = createSelector(
-  selectBuffers,
-  selectRoute,
-  (buffers, route) => buffers[route.bufferKey],
-)
-
-export const selectActivity = createSelector(
-  selectBuffer,
-  buffer => buffer.activity,
-)

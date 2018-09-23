@@ -63,7 +63,7 @@ const caseReducers: CaseReducerMap<RouteReducer> = {
 
     if (!routeFound) {
       // tslint:disable-next-line
-      console.log(`Route "${action.route}" not found`)
+      console.log(`Route "${JSON.stringify(action.route)}" not found`)
       return route
     }
 
@@ -71,13 +71,7 @@ const caseReducers: CaseReducerMap<RouteReducer> = {
   },
 }
 
-export const reduceRoute: RouteReducer = (
-  route = routeInitialState,
-  action,
-  extraStates,
-) =>
+export const reduceRoute: RouteReducer = (route, action, extraStates) =>
   action.type in caseReducers
     ? caseReducers[action.type](route, action, extraStates)
     : route
-
-export const selectRoute = ({ route }: RootState): RouteState => route

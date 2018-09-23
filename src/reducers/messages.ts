@@ -1,5 +1,4 @@
 import { Action } from 'redux'
-import { createSelector } from 'reselect'
 import {
   CONNECTION_FAILED,
   ConnectionFailedAction,
@@ -42,7 +41,6 @@ import {
 import { RouteState } from '@app/reducers/route'
 import { ServerState } from '@app/reducers/server'
 import { CaseReducerMap } from '@app/utils/CaseReducerMap'
-import { selectBuffer } from '@app/reducers/buffer'
 
 // TODO replace string[] by MessageState[]
 export type MessagesState = Readonly<string[]>
@@ -153,15 +151,10 @@ const caseReducers: CaseReducerMap<MessagesReducer> = {
 }
 
 export const reduceMessages: MessagesReducer = (
-  messagesState = messagesInitialState,
+  messagesState,
   action,
   extraStates,
 ) =>
   action.type in caseReducers
     ? caseReducers[action.type](messagesState, action, extraStates)
     : messagesState
-
-export const selectMessages = createSelector(
-  selectBuffer,
-  channel => channel.messages,
-)

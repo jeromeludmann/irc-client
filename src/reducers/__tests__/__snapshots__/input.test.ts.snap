@@ -1,19 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
-Object {
-  "dirtyValue": "",
-  "history": Object {
-    "index": 1,
-    "values": Array [
-      "hello",
-    ],
-  },
-  "value": "",
-}
-`;
-
-exports[`reduce input go back input history anywhere in history 1`] = `
+exports[`reduce input state anywhere in history should handle GO_BACK_INPUT_HISTORY 1`] = `
 Object {
   "dirtyValue": "",
   "history": Object {
@@ -27,21 +14,7 @@ Object {
 }
 `;
 
-exports[`reduce input go back input history at the begin of history 1`] = `
-Object {
-  "dirtyValue": "",
-  "history": Object {
-    "index": 0,
-    "values": Array [
-      "hello",
-      "world",
-    ],
-  },
-  "value": "",
-}
-`;
-
-exports[`reduce input go forward input history anywhere in the history 1`] = `
+exports[`reduce input state anywhere in history should handle GO_FORWARD_INPUT_HISTORY 1`] = `
 Object {
   "dirtyValue": "",
   "history": Object {
@@ -55,21 +28,7 @@ Object {
 }
 `;
 
-exports[`reduce input go forward input history at the end of history 1`] = `
-Object {
-  "dirtyValue": "",
-  "history": Object {
-    "index": 2,
-    "values": Array [
-      "hello",
-      "world",
-    ],
-  },
-  "value": "",
-}
-`;
-
-exports[`reduce input update input value anywhere in history 1`] = `
+exports[`reduce input state anywhere in history should handle UPDATE_INPUT_VALUE 1`] = `
 Object {
   "dirtyValue": "",
   "history": Object {
@@ -83,7 +42,35 @@ Object {
 }
 `;
 
-exports[`reduce input update input value at the end of history 1`] = `
+exports[`reduce input state at the begin of history should handle GO_BACK_INPUT_HISTORY 1`] = `
+Object {
+  "dirtyValue": "",
+  "history": Object {
+    "index": 0,
+    "values": Array [
+      "hello",
+      "world",
+    ],
+  },
+  "value": "",
+}
+`;
+
+exports[`reduce input state at the end of history should handle GO_FORWARD_INPUT_HISTORY 1`] = `
+Object {
+  "dirtyValue": "",
+  "history": Object {
+    "index": 2,
+    "values": Array [
+      "hello",
+      "world",
+    ],
+  },
+  "value": "",
+}
+`;
+
+exports[`reduce input state at the end of history should handle UPDATE_INPUT_VALUE 1`] = `
 Object {
   "dirtyValue": "hello",
   "history": Object {
@@ -94,5 +81,18 @@ Object {
     ],
   },
   "value": "hello",
+}
+`;
+
+exports[`reduce input state should handle ENTER_INPUT_VALUE 1`] = `
+Object {
+  "dirtyValue": "",
+  "history": Object {
+    "index": 1,
+    "values": Array [
+      "hello",
+    ],
+  },
+  "value": "",
 }
 `;
