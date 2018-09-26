@@ -2,8 +2,8 @@ import { Middleware } from "redux";
 import {
   ReceivePingFromServerAction,
   RECEIVE_PING_FROM_SERVER,
-} from "@app/actions/msgIncoming";
-import { sendPongToServer } from "@app/actions/msgOutgoing";
+} from "@app/actions/messages/incoming";
+import { sendPongToServer } from "@app/actions/messages/outgoing";
 
 /**
  * Ping/Pong Middleware

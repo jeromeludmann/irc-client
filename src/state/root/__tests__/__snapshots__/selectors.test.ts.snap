@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`select root state should select servers 1`] = `
+Object {
+  "serverKey": Object {
+    "buffers": Object {
+      "@raw": Object {
+        "activity": false,
+        "input": Object {
+          "dirtyValue": "",
+          "history": Object {
+            "index": 0,
+            "values": Array [],
+          },
+          "value": "",
+        },
+        "messages": Array [],
+      },
+      "@status": Object {
+        "activity": false,
+        "input": Object {
+          "dirtyValue": "",
+          "history": Object {
+            "index": 0,
+            "values": Array [],
+          },
+          "value": "",
+        },
+        "messages": Array [],
+      },
+    },
+    "lag": 0,
+    "modes": Object {
+      "available": Object {
+        "channel": Array [],
+        "user": Array [],
+      },
+      "user": Array [],
+    },
+    "name": "<unknown>",
+    "user": Object {
+      "nick": "default_nick",
+      "real": "default_name",
+      "user": "default_user",
+    },
+  },
+}
+`;

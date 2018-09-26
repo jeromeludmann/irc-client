@@ -1,0 +1,482 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Navigation component should render correctly 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Navigation
+    onWindowButtonClick={[MockFunction]}
+    servers={
+      Object {
+        "serverKey": Object {
+          "buffers": Object {
+            "#channel": Object {
+              "activity": true,
+              "input": Object {
+                "dirtyValue": "",
+                "history": Object {
+                  "index": 0,
+                  "values": Array [],
+                },
+                "value": "",
+              },
+              "messages": Array [],
+            },
+            "@raw": Object {
+              "activity": false,
+              "input": Object {
+                "dirtyValue": "",
+                "history": Object {
+                  "index": 0,
+                  "values": Array [],
+                },
+                "value": "",
+              },
+              "messages": Array [],
+            },
+            "@status": Object {
+              "activity": false,
+              "input": Object {
+                "dirtyValue": "",
+                "history": Object {
+                  "index": 0,
+                  "values": Array [],
+                },
+                "value": "",
+              },
+              "messages": Array [],
+            },
+          },
+          "name": "irc.network",
+        },
+      }
+    }
+    window={
+      Object {
+        "bufferKey": "@status",
+        "serverKey": "serverKey",
+      }
+    }
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "function",
+    "props": Object {
+      "children": Array [
+        <styled.ul>
+          <styled.li>
+            <styled.button
+              data-buffer-key="@raw"
+              data-server-key="serverKey"
+              hasActivity={false}
+              isActive={false}
+              onClick={[Function]}
+            >
+              serverKey
+            </styled.button>
+          </styled.li>
+          <styled.li>
+            <styled.button
+              data-buffer-key="@status"
+              data-server-key="serverKey"
+              hasActivity={false}
+              isActive={true}
+              onClick={[Function]}
+            >
+              irc.network
+            </styled.button>
+          </styled.li>
+          <styled.li>
+            <styled.button
+              data-buffer-key="#channel"
+              data-server-key="serverKey"
+              hasActivity={true}
+              isActive={false}
+              onClick={[Function]}
+            >
+              #channel
+            </styled.button>
+          </styled.li>
+        </styled.ul>,
+      ],
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": "serverKey",
+        "nodeType": "class",
+        "props": Object {
+          "children": Array [
+            <styled.li>
+              <styled.button
+                data-buffer-key="@raw"
+                data-server-key="serverKey"
+                hasActivity={false}
+                isActive={false}
+                onClick={[Function]}
+              >
+                serverKey
+              </styled.button>
+            </styled.li>,
+            <styled.li>
+              <styled.button
+                data-buffer-key="@status"
+                data-server-key="serverKey"
+                hasActivity={false}
+                isActive={true}
+                onClick={[Function]}
+              >
+                irc.network
+              </styled.button>
+            </styled.li>,
+            <styled.li>
+              <styled.button
+                data-buffer-key="#channel"
+                data-server-key="serverKey"
+                hasActivity={true}
+                isActive={false}
+                onClick={[Function]}
+              >
+                #channel
+              </styled.button>
+            </styled.li>,
+          ],
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": "@raw",
+            "nodeType": "class",
+            "props": Object {
+              "children": <styled.button
+                data-buffer-key="@raw"
+                data-server-key="serverKey"
+                hasActivity={false}
+                isActive={false}
+                onClick={[Function]}
+              >
+                serverKey
+              </styled.button>,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": "serverKey",
+                "data-buffer-key": "@raw",
+                "data-server-key": "serverKey",
+                "hasActivity": false,
+                "isActive": false,
+                "onClick": [Function],
+              },
+              "ref": null,
+              "rendered": "serverKey",
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": "@status",
+            "nodeType": "class",
+            "props": Object {
+              "children": <styled.button
+                data-buffer-key="@status"
+                data-server-key="serverKey"
+                hasActivity={false}
+                isActive={true}
+                onClick={[Function]}
+              >
+                irc.network
+              </styled.button>,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": "irc.network",
+                "data-buffer-key": "@status",
+                "data-server-key": "serverKey",
+                "hasActivity": false,
+                "isActive": true,
+                "onClick": [Function],
+              },
+              "ref": null,
+              "rendered": "irc.network",
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": "#channel",
+            "nodeType": "class",
+            "props": Object {
+              "children": <styled.button
+                data-buffer-key="#channel"
+                data-server-key="serverKey"
+                hasActivity={true}
+                isActive={false}
+                onClick={[Function]}
+              >
+                #channel
+              </styled.button>,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": "#channel",
+                "data-buffer-key": "#channel",
+                "data-server-key": "serverKey",
+                "hasActivity": true,
+                "isActive": false,
+                "onClick": [Function],
+              },
+              "ref": null,
+              "rendered": "#channel",
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+        ],
+        "type": [Function],
+      },
+    ],
+    "type": Symbol(react.fragment),
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "function",
+      "props": Object {
+        "children": Array [
+          <styled.ul>
+            <styled.li>
+              <styled.button
+                data-buffer-key="@raw"
+                data-server-key="serverKey"
+                hasActivity={false}
+                isActive={false}
+                onClick={[Function]}
+              >
+                serverKey
+              </styled.button>
+            </styled.li>
+            <styled.li>
+              <styled.button
+                data-buffer-key="@status"
+                data-server-key="serverKey"
+                hasActivity={false}
+                isActive={true}
+                onClick={[Function]}
+              >
+                irc.network
+              </styled.button>
+            </styled.li>
+            <styled.li>
+              <styled.button
+                data-buffer-key="#channel"
+                data-server-key="serverKey"
+                hasActivity={true}
+                isActive={false}
+                onClick={[Function]}
+              >
+                #channel
+              </styled.button>
+            </styled.li>
+          </styled.ul>,
+        ],
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": "serverKey",
+          "nodeType": "class",
+          "props": Object {
+            "children": Array [
+              <styled.li>
+                <styled.button
+                  data-buffer-key="@raw"
+                  data-server-key="serverKey"
+                  hasActivity={false}
+                  isActive={false}
+                  onClick={[Function]}
+                >
+                  serverKey
+                </styled.button>
+              </styled.li>,
+              <styled.li>
+                <styled.button
+                  data-buffer-key="@status"
+                  data-server-key="serverKey"
+                  hasActivity={false}
+                  isActive={true}
+                  onClick={[Function]}
+                >
+                  irc.network
+                </styled.button>
+              </styled.li>,
+              <styled.li>
+                <styled.button
+                  data-buffer-key="#channel"
+                  data-server-key="serverKey"
+                  hasActivity={true}
+                  isActive={false}
+                  onClick={[Function]}
+                >
+                  #channel
+                </styled.button>
+              </styled.li>,
+            ],
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": "@raw",
+              "nodeType": "class",
+              "props": Object {
+                "children": <styled.button
+                  data-buffer-key="@raw"
+                  data-server-key="serverKey"
+                  hasActivity={false}
+                  isActive={false}
+                  onClick={[Function]}
+                >
+                  serverKey
+                </styled.button>,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "serverKey",
+                  "data-buffer-key": "@raw",
+                  "data-server-key": "serverKey",
+                  "hasActivity": false,
+                  "isActive": false,
+                  "onClick": [Function],
+                },
+                "ref": null,
+                "rendered": "serverKey",
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": "@status",
+              "nodeType": "class",
+              "props": Object {
+                "children": <styled.button
+                  data-buffer-key="@status"
+                  data-server-key="serverKey"
+                  hasActivity={false}
+                  isActive={true}
+                  onClick={[Function]}
+                >
+                  irc.network
+                </styled.button>,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "irc.network",
+                  "data-buffer-key": "@status",
+                  "data-server-key": "serverKey",
+                  "hasActivity": false,
+                  "isActive": true,
+                  "onClick": [Function],
+                },
+                "ref": null,
+                "rendered": "irc.network",
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": "#channel",
+              "nodeType": "class",
+              "props": Object {
+                "children": <styled.button
+                  data-buffer-key="#channel"
+                  data-server-key="serverKey"
+                  hasActivity={true}
+                  isActive={false}
+                  onClick={[Function]}
+                >
+                  #channel
+                </styled.button>,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": "#channel",
+                  "data-buffer-key": "#channel",
+                  "data-server-key": "serverKey",
+                  "hasActivity": true,
+                  "isActive": false,
+                  "onClick": [Function],
+                },
+                "ref": null,
+                "rendered": "#channel",
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+          ],
+          "type": [Function],
+        },
+      ],
+      "type": Symbol(react.fragment),
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
+  },
+}
+`;

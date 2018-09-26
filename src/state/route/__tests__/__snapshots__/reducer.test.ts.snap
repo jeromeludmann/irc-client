@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reduce route state should handle CLOSE_WINDOW on channel 1`] = `
+Object {
+  "bufferKey": "@status",
+  "serverKey": "serverKey",
+}
+`;
+
+exports[`reduce route state should handle CLOSE_WINDOW on status 1`] = `
+Object {
+  "bufferKey": "@status",
+  "serverKey": "serverKey",
+}
+`;
+
+exports[`reduce route state should handle RECEIVE_JOIN 1`] = `
+Object {
+  "bufferKey": "@status",
+  "serverKey": "serverKey",
+}
+`;
+
+exports[`reduce route state should handle RECEIVE_JOIN when it is me 1`] = `
+Object {
+  "bufferKey": "#channel",
+  "serverKey": "serverKey",
+}
+`;
+
+exports[`reduce route state should handle RECEIVE_PART 1`] = `
+Object {
+  "bufferKey": "@status",
+  "serverKey": "serverKey",
+}
+`;
+
+exports[`reduce route state should handle RECEIVE_PART when it is me 1`] = `
+Object {
+  "bufferKey": "@status",
+  "serverKey": "serverKey",
+}
+`;
+
+exports[`reduce route state should handle SWITCH_WINDOW 1`] = `
+Object {
+  "bufferKey": "#channel",
+  "serverKey": "serverKey",
+}
+`;
+
+exports[`reduce route state should handle SWITCH_WINDOW with a not found route 1`] = `
+Object {
+  "bufferKey": "@status",
+  "serverKey": "serverKey",
+}
+`;

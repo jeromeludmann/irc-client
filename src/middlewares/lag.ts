@@ -2,11 +2,11 @@ import { Middleware } from 'redux'
 import {
   ReceivePongFromServerAction,
   RECEIVE_PONG_FROM_SERVER,
-} from '@app/actions/msgIncoming'
+} from '@app/actions/messages/incoming'
 import {
   SendPingToServerAction,
   SEND_PING_TO_SERVER,
-} from '@app/actions/msgOutgoing'
+} from '@app/actions/messages/outgoing'
 
 type LagAction = SendPingToServerAction | ReceivePongFromServerAction
 

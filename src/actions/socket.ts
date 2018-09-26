@@ -1,14 +1,9 @@
 import { BufferKey, RoutedAction } from '@app/utils/Route'
 
-// it seems to be useless...
-type SocketAction<T> = RoutedAction<T>
-
-// Connect to server
-
 export const CONNECT_TO_SERVER = 'SOCKET/CONNECT_TO_SERVER'
 
 export interface ConnectToServerAction
-  extends SocketAction<typeof CONNECT_TO_SERVER> {
+  extends RoutedAction<typeof CONNECT_TO_SERVER> {
   payload: {
     host: string
     port: number
@@ -27,12 +22,10 @@ export const connectToServer = (
   route: { serverKey, bufferKey: BufferKey.STATUS },
 })
 
-// Disconnect from server
-
 export const DISCONNECT_FROM_SERVER = 'SOCKET/DISCONNECT_FROM_SERVER'
 
 export interface DisconnectFromServerAction
-  extends SocketAction<typeof DISCONNECT_FROM_SERVER> {
+  extends RoutedAction<typeof DISCONNECT_FROM_SERVER> {
   payload: { quitMessage?: string }
 }
 
@@ -44,8 +37,6 @@ export const disconnectFromServer = (
   payload: { quitMessage },
   route: { serverKey, bufferKey: BufferKey.NONE },
 })
-
-// Send raw message to socket
 
 export const SEND_RAW_MESSAGE = 'SOCKET/SEND_RAW_MESSAGE'
 
@@ -64,14 +55,12 @@ export const sendRawMessage = (
   route: { serverKey, bufferKey: BufferKey.NONE },
 })
 
-// Socket lookup
-
 export const LOOKUP_SUCCESS = 'SOCKET/LOOKUP_SUCCESS'
 
 export const LOOKUP_FAILED = 'SOCKET/LOOKUP_FAILED'
 
 export interface LookupSuccessAction
-  extends SocketAction<typeof LOOKUP_SUCCESS> {
+  extends RoutedAction<typeof LOOKUP_SUCCESS> {
   serverKey: string
   payload: {
     address: string
@@ -80,7 +69,7 @@ export interface LookupSuccessAction
   }
 }
 
-export interface LookupFailedAction extends SocketAction<typeof LOOKUP_FAILED> {
+export interface LookupFailedAction extends RoutedAction<typeof LOOKUP_FAILED> {
   serverKey: string
   payload: { error: Error }
 }
@@ -107,12 +96,10 @@ export const lookup = (
       }
 }
 
-// Receive raw messages from socket
-
 export const RAW_MESSAGES_RECEIVED = 'SOCKET/RAW_MESSAGES_RECEIVED'
 
 export interface RawMessagesAction
-  extends SocketAction<typeof RAW_MESSAGES_RECEIVED> {
+  extends RoutedAction<typeof RAW_MESSAGES_RECEIVED> {
   payload: { messages: string[] }
 }
 
@@ -125,12 +112,10 @@ export const receiveRawMessages = (
   route: { serverKey, bufferKey: BufferKey.RAW },
 })
 
-// Socket connection established
-
 export const CONNECTION_ESTABLISHED = 'SOCKET/CONNECTION_ESTABLISHED'
 
 export interface ConnectionEstablishedAction
-  extends SocketAction<typeof CONNECTION_ESTABLISHED> {}
+  extends RoutedAction<typeof CONNECTION_ESTABLISHED> {}
 
 export const setConnectionEstablished = (
   serverKey: string,
@@ -139,30 +124,26 @@ export const setConnectionEstablished = (
   route: { serverKey, bufferKey: BufferKey.STATUS },
 })
 
-// Socket connection closed
-
 export const CONNECTION_CLOSED = 'SOCKET/CONNECTION_CLOSED'
 
 export interface ConnectionClosedAction
-  extends SocketAction<typeof CONNECTION_CLOSED> {
+  extends RoutedAction<typeof CONNECTION_CLOSED> {
   payload: { hadError: boolean }
 }
 
 export const setConnectionClosed = (
   serverKey: string,
-  hadError: boolean,
+  hadError = false,
 ): ConnectionClosedAction => ({
   type: CONNECTION_CLOSED,
   payload: { hadError },
   route: { serverKey, bufferKey: BufferKey.ALL },
 })
 
-// Socket connection failed
-
 export const CONNECTION_FAILED = 'SOCKET/CONNECTION_FAILED'
 
 export interface ConnectionFailedAction
-  extends SocketAction<typeof CONNECTION_FAILED> {
+  extends RoutedAction<typeof CONNECTION_FAILED> {
   payload: {
     name: string
     message: string

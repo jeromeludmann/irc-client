@@ -9,7 +9,7 @@ import {
   SEND_RAW_MESSAGE,
   SendRawMessageAction,
 } from '@app/actions/socket'
-import { RootState } from '@app/reducers'
+import { RootState } from '@app/state/root/reducer'
 import {
   ConnectToServerAction,
   DisconnectFromServerAction,
@@ -17,8 +17,8 @@ import {
   DISCONNECT_FROM_SERVER,
 } from '@app/actions/socket'
 import { CRLF, IRC_MESSAGE_LENGTH } from '@app/utils/helpers'
-import { sendQuit } from '@app/actions/msgOutgoing'
-import { ServerState } from '@app/reducers/server'
+import { sendQuit } from '@app/actions/messages/outgoing'
+import { ServerState } from '@app/state/server/reducer'
 
 /**
  * Socket Middleware

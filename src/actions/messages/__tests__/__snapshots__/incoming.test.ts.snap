@@ -1,0 +1,232 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`incoming messages actions should receive 004 1`] = `
+Object {
+  "payload": Object {
+    "availableChannelModes": Array [
+      "a",
+      "v",
+      "a",
+      "i",
+      "l",
+      "a",
+      "b",
+      "l",
+      "e",
+      "_",
+      "c",
+      "h",
+      "a",
+      "n",
+      "n",
+      "e",
+      "l",
+      "_",
+      "m",
+      "o",
+      "d",
+      "e",
+      "s",
+    ],
+    "availableUserModes": Array [
+      "a",
+      "v",
+      "a",
+      "i",
+      "l",
+      "a",
+      "b",
+      "l",
+      "e",
+      "_",
+      "u",
+      "s",
+      "e",
+      "r",
+      "_",
+      "m",
+      "o",
+      "d",
+      "e",
+      "s",
+    ],
+    "serverName": "irc.network",
+    "version": "version",
+  },
+  "route": Object {
+    "bufferKey": "@status",
+    "serverKey": "serverKey",
+  },
+  "type": "MESSAGE/RECEIVE_RPL_MYINFO",
+}
+`;
+
+exports[`incoming messages actions should receive ERROR 1`] = `
+Object {
+  "payload": Object {
+    "message": "Error message",
+  },
+  "route": Object {
+    "bufferKey": "@all",
+    "serverKey": "serverKey",
+  },
+  "type": "MESSAGE/RECEIVE_ERROR",
+}
+`;
+
+exports[`incoming messages actions should receive JOIN 1`] = `
+Object {
+  "payload": Object {
+    "channel": "#channel",
+    "user": Object {
+      "host": "host",
+      "nick": "nick",
+      "user": "user",
+    },
+  },
+  "route": Object {
+    "bufferKey": "#channel",
+    "serverKey": "serverKey",
+  },
+  "type": "MESSAGE/RECEIVE_JOIN",
+}
+`;
+
+exports[`incoming messages actions should receive NICK 1`] = `
+Object {
+  "payload": Object {
+    "nick": "new_nick",
+    "user": Object {
+      "host": "host",
+      "nick": "nick",
+      "user": "user",
+    },
+  },
+  "route": Object {
+    "bufferKey": "@status",
+    "serverKey": "serverKey",
+  },
+  "type": "MESSAGE/RECEIVE_NICK",
+}
+`;
+
+exports[`incoming messages actions should receive NOTICE from channel 1`] = `
+Object {
+  "payload": Object {
+    "channel": "#channel",
+    "text": "hello world",
+    "user": Object {
+      "host": "host",
+      "nick": "nick",
+      "user": "user",
+    },
+  },
+  "route": Object {
+    "bufferKey": "#channel",
+    "serverKey": "serverKey",
+  },
+  "type": "MESSAGE/RECEIVE_NOTICE_FROM_CHANNEL",
+}
+`;
+
+exports[`incoming messages actions should receive NOTICE from server 1`] = `
+Object {
+  "payload": Object {
+    "server": "irc.network",
+    "text": "hello world",
+  },
+  "route": Object {
+    "bufferKey": "@status",
+    "serverKey": "serverKey",
+  },
+  "type": "MESSAGE/RECEIVE_NOTICE_FROM_SERVER",
+}
+`;
+
+exports[`incoming messages actions should receive NOTICE from user 1`] = `
+Object {
+  "payload": Object {
+    "text": "hello world",
+    "user": Object {
+      "host": "host",
+      "nick": "nick",
+      "user": "user",
+    },
+  },
+  "route": Object {
+    "bufferKey": "@active",
+    "serverKey": "serverKey",
+  },
+  "type": "MESSAGE/RECEIVE_NOTICE_FROM_USER",
+}
+`;
+
+exports[`incoming messages actions should receive PART 1`] = `
+Object {
+  "payload": Object {
+    "channel": "#channel",
+    "message": undefined,
+    "user": Object {
+      "host": "host",
+      "nick": "nick",
+      "user": "user",
+    },
+  },
+  "route": Object {
+    "bufferKey": "#channel",
+    "serverKey": "serverKey",
+  },
+  "type": "MESSAGE/RECEIVE_PART",
+}
+`;
+
+exports[`incoming messages actions should receive PART with message 1`] = `
+Object {
+  "payload": Object {
+    "channel": "#channel",
+    "message": "Goodbye!",
+    "user": Object {
+      "host": "host",
+      "nick": "nick",
+      "user": "user",
+    },
+  },
+  "route": Object {
+    "bufferKey": "#channel",
+    "serverKey": "serverKey",
+  },
+  "type": "MESSAGE/RECEIVE_PART",
+}
+`;
+
+exports[`incoming messages actions should receive PONG 1`] = `
+Object {
+  "payload": Object {
+    "key": "key",
+    "lag": 0,
+  },
+  "route": Object {
+    "bufferKey": "@status",
+    "serverKey": "serverKey",
+  },
+  "type": "MESSAGE/RECEIVE_PONG_FROM_SERVER",
+}
+`;
+
+exports[`incoming messages actions should receive PRIVMSG 1`] = `
+Object {
+  "payload": Object {
+    "text": "hello world",
+    "user": Object {
+      "host": "host",
+      "nick": "nick1",
+      "user": "user",
+    },
+  },
+  "route": Object {
+    "bufferKey": "nick1",
+    "serverKey": "serverKey",
+  },
+  "type": "MESSAGE/RECEIVE_PRIVMSG",
+}
+`;

@@ -1,6 +1,6 @@
 import { Middleware } from 'redux'
-import { RootState } from '@app/reducers'
-import { selectRoute } from '@app/reducers/route';
+import { RootState } from '@app/state/root/reducer'
+import { selectRoute } from '@app/state/route/selectors';
 
 /**
  * Action Auto Router Middleware

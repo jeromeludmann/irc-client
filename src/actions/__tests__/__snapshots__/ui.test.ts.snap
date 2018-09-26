@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ui actions should create CloseWindowAction 1`] = `
+Object {
+  "route": Object {
+    "bufferKey": "#channel",
+    "serverKey": "serverKey",
+  },
+  "type": "UI/CLOSE_WINDOW",
+}
+`;
+
+exports[`ui actions should create EnterInputValueAction 1`] = `
+Object {
+  "payload": Object {
+    "value": "hello",
+  },
+  "type": "UI/ENTER_INPUT_VALUE",
+}
+`;
+
+exports[`ui actions should create GoBackInputHistoryAction 1`] = `
+Object {
+  "type": "UI/GO_BACK_INPUT_HISTORY",
+}
+`;
+
+exports[`ui actions should create GoForwardInputHistoryAction 1`] = `
+Object {
+  "type": "UI/GO_FORWARD_INPUT_HISTORY",
+}
+`;
+
+exports[`ui actions should create SwitchWindowAction 1`] = `
+Object {
+  "route": Object {
+    "bufferKey": "#channel",
+    "serverKey": "serverKey",
+  },
+  "type": "UI/SWITCH_WINDOW",
+}
+`;
+
+exports[`ui actions should create UpdateInputValueAction 1`] = `
+Object {
+  "payload": Object {
+    "value": "hello",
+  },
+  "type": "UI/UPDATE_INPUT_VALUE",
+}
+`;

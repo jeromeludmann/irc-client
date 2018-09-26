@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`select input state should select input 1`] = `
+Object {
+  "dirtyValue": "",
+  "history": Object {
+    "index": 0,
+    "values": Array [],
+  },
+  "value": "",
+}
+`;
+
+exports[`select input state should select input dirty value 1`] = `""`;
+
+exports[`select input state should select input history 1`] = `
+Object {
+  "index": 0,
+  "values": Array [],
+}
+`;
+
+exports[`select input state should select input history 2`] = `Array []`;
+
+exports[`select input state should select input value 1`] = `""`;

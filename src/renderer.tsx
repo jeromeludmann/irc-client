@@ -1,17 +1,16 @@
-import React from "react";
-import { render } from "react-dom";
-import { Provider } from "react-redux";
-import { injectGlobal } from "styled-components";
-import { getStore } from "@app/store";
-import { App } from "@app/components/App";
-import { generateServerKey } from "@app/middlewares/socketHandler";
+import React from 'react'
+import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+import { injectGlobal } from 'styled-components'
+import { Layout } from '@app/views/Layout'
+import { store } from '@app/store'
 
 render(
-  <Provider store={getStore(generateServerKey())}>
-    <App />
+  <Provider store={store}>
+    <Layout />
   </Provider>,
-  document.getElementById("root")
-);
+  document.getElementById('root'),
+)
 
 // tslint:disable-next-line
 injectGlobal`
@@ -20,4 +19,4 @@ injectGlobal`
     font-family: Menlo, Monaco, Courier;
     font-size: 12px;
   }
-`;
+`
