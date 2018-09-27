@@ -73,7 +73,7 @@ ShallowWrapper {
       "children": Array [
         <styled.ul>
           <styled.li>
-            <styled.button
+            <Styled(styled.button)
               data-buffer-key="@raw"
               data-server-key="serverKey"
               hasActivity={false}
@@ -81,10 +81,10 @@ ShallowWrapper {
               onClick={[Function]}
             >
               serverKey
-            </styled.button>
+            </Styled(styled.button)>
           </styled.li>
           <styled.li>
-            <styled.button
+            <Styled(styled.button)
               data-buffer-key="@status"
               data-server-key="serverKey"
               hasActivity={false}
@@ -92,10 +92,10 @@ ShallowWrapper {
               onClick={[Function]}
             >
               irc.network
-            </styled.button>
+            </Styled(styled.button)>
           </styled.li>
           <styled.li>
-            <styled.button
+            <Styled(styled.button)
               data-buffer-key="#channel"
               data-server-key="serverKey"
               hasActivity={true}
@@ -103,7 +103,7 @@ ShallowWrapper {
               onClick={[Function]}
             >
               #channel
-            </styled.button>
+            </Styled(styled.button)>
           </styled.li>
         </styled.ul>,
       ],
@@ -117,7 +117,7 @@ ShallowWrapper {
         "props": Object {
           "children": Array [
             <styled.li>
-              <styled.button
+              <Styled(styled.button)
                 data-buffer-key="@raw"
                 data-server-key="serverKey"
                 hasActivity={false}
@@ -125,10 +125,10 @@ ShallowWrapper {
                 onClick={[Function]}
               >
                 serverKey
-              </styled.button>
+              </Styled(styled.button)>
             </styled.li>,
             <styled.li>
-              <styled.button
+              <Styled(styled.button)
                 data-buffer-key="@status"
                 data-server-key="serverKey"
                 hasActivity={false}
@@ -136,10 +136,10 @@ ShallowWrapper {
                 onClick={[Function]}
               >
                 irc.network
-              </styled.button>
+              </Styled(styled.button)>
             </styled.li>,
             <styled.li>
-              <styled.button
+              <Styled(styled.button)
                 data-buffer-key="#channel"
                 data-server-key="serverKey"
                 hasActivity={true}
@@ -147,7 +147,7 @@ ShallowWrapper {
                 onClick={[Function]}
               >
                 #channel
-              </styled.button>
+              </Styled(styled.button)>
             </styled.li>,
           ],
         },
@@ -158,7 +158,7 @@ ShallowWrapper {
             "key": "@raw",
             "nodeType": "class",
             "props": Object {
-              "children": <styled.button
+              "children": <Styled(styled.button)
                 data-buffer-key="@raw"
                 data-server-key="serverKey"
                 hasActivity={false}
@@ -166,7 +166,7 @@ ShallowWrapper {
                 onClick={[Function]}
               >
                 serverKey
-              </styled.button>,
+              </Styled(styled.button)>,
             },
             "ref": null,
             "rendered": Object {
@@ -192,7 +192,7 @@ ShallowWrapper {
             "key": "@status",
             "nodeType": "class",
             "props": Object {
-              "children": <styled.button
+              "children": <Styled(styled.button)
                 data-buffer-key="@status"
                 data-server-key="serverKey"
                 hasActivity={false}
@@ -200,7 +200,7 @@ ShallowWrapper {
                 onClick={[Function]}
               >
                 irc.network
-              </styled.button>,
+              </Styled(styled.button)>,
             },
             "ref": null,
             "rendered": Object {
@@ -226,7 +226,7 @@ ShallowWrapper {
             "key": "#channel",
             "nodeType": "class",
             "props": Object {
-              "children": <styled.button
+              "children": <Styled(styled.button)
                 data-buffer-key="#channel"
                 data-server-key="serverKey"
                 hasActivity={true}
@@ -234,7 +234,7 @@ ShallowWrapper {
                 onClick={[Function]}
               >
                 #channel
-              </styled.button>,
+              </Styled(styled.button)>,
             },
             "ref": null,
             "rendered": Object {
@@ -270,7 +270,7 @@ ShallowWrapper {
         "children": Array [
           <styled.ul>
             <styled.li>
-              <styled.button
+              <Styled(styled.button)
                 data-buffer-key="@raw"
                 data-server-key="serverKey"
                 hasActivity={false}
@@ -278,10 +278,10 @@ ShallowWrapper {
                 onClick={[Function]}
               >
                 serverKey
-              </styled.button>
+              </Styled(styled.button)>
             </styled.li>
             <styled.li>
-              <styled.button
+              <Styled(styled.button)
                 data-buffer-key="@status"
                 data-server-key="serverKey"
                 hasActivity={false}
@@ -289,10 +289,10 @@ ShallowWrapper {
                 onClick={[Function]}
               >
                 irc.network
-              </styled.button>
+              </Styled(styled.button)>
             </styled.li>
             <styled.li>
-              <styled.button
+              <Styled(styled.button)
                 data-buffer-key="#channel"
                 data-server-key="serverKey"
                 hasActivity={true}
@@ -300,7 +300,7 @@ ShallowWrapper {
                 onClick={[Function]}
               >
                 #channel
-              </styled.button>
+              </Styled(styled.button)>
             </styled.li>
           </styled.ul>,
         ],
@@ -314,7 +314,7 @@ ShallowWrapper {
           "props": Object {
             "children": Array [
               <styled.li>
-                <styled.button
+                <Styled(styled.button)
                   data-buffer-key="@raw"
                   data-server-key="serverKey"
                   hasActivity={false}
@@ -322,10 +322,10 @@ ShallowWrapper {
                   onClick={[Function]}
                 >
                   serverKey
-                </styled.button>
+                </Styled(styled.button)>
               </styled.li>,
               <styled.li>
-                <styled.button
+                <Styled(styled.button)
                   data-buffer-key="@status"
                   data-server-key="serverKey"
                   hasActivity={false}
@@ -333,10 +333,10 @@ ShallowWrapper {
                   onClick={[Function]}
                 >
                   irc.network
-                </styled.button>
+                </Styled(styled.button)>
               </styled.li>,
               <styled.li>
-                <styled.button
+                <Styled(styled.button)
                   data-buffer-key="#channel"
                   data-server-key="serverKey"
                   hasActivity={true}
@@ -344,7 +344,7 @@ ShallowWrapper {
                   onClick={[Function]}
                 >
                   #channel
-                </styled.button>
+                </Styled(styled.button)>
               </styled.li>,
             ],
           },
@@ -355,7 +355,7 @@ ShallowWrapper {
               "key": "@raw",
               "nodeType": "class",
               "props": Object {
-                "children": <styled.button
+                "children": <Styled(styled.button)
                   data-buffer-key="@raw"
                   data-server-key="serverKey"
                   hasActivity={false}
@@ -363,7 +363,7 @@ ShallowWrapper {
                   onClick={[Function]}
                 >
                   serverKey
-                </styled.button>,
+                </Styled(styled.button)>,
               },
               "ref": null,
               "rendered": Object {
@@ -389,7 +389,7 @@ ShallowWrapper {
               "key": "@status",
               "nodeType": "class",
               "props": Object {
-                "children": <styled.button
+                "children": <Styled(styled.button)
                   data-buffer-key="@status"
                   data-server-key="serverKey"
                   hasActivity={false}
@@ -397,7 +397,7 @@ ShallowWrapper {
                   onClick={[Function]}
                 >
                   irc.network
-                </styled.button>,
+                </Styled(styled.button)>,
               },
               "ref": null,
               "rendered": Object {
@@ -423,7 +423,7 @@ ShallowWrapper {
               "key": "#channel",
               "nodeType": "class",
               "props": Object {
-                "children": <styled.button
+                "children": <Styled(styled.button)
                   data-buffer-key="#channel"
                   data-server-key="serverKey"
                   hasActivity={true}
@@ -431,7 +431,7 @@ ShallowWrapper {
                   onClick={[Function]}
                 >
                   #channel
-                </styled.button>,
+                </Styled(styled.button)>,
               },
               "ref": null,
               "rendered": Object {
