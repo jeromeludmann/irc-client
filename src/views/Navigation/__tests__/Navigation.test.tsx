@@ -1,6 +1,6 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-import Navigation from '@app/views/navigation/Navigation'
+import Navigation from '@app/views/Navigation/Navigation'
 import { BufferKey } from '@app/utils/Route'
 import { bufferInitialState } from '@app/state/buffer/reducer'
 import { serverInitialState } from '@app/state/server/reducer'

@@ -1,6 +1,6 @@
 import React from "react";
 import { User } from "@app/utils/Message";
-import { List } from "@app/views/navigation/style";
+import { List } from "@app/views/Navigation/style";
 import { ListItem } from "@app/views/nicklist/style";
 
 interface Props {

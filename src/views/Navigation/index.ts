@@ -3,7 +3,7 @@ import { RouteState } from '@app/state/route/reducer'
 import { Route } from '@app/utils/Route'
 import { RootState } from '@app/state/root/reducer'
 import { switchWindow } from '@app/actions/ui'
-import Navigation from '@app/views/navigation/Navigation'
+import Navigation from '@app/views/Navigation/Navigation'
 import { selectServers } from '@app/state/root/selectors'
 import { selectRoute } from '@app/state/route/selectors'
 

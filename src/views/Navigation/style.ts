@@ -16,7 +16,7 @@ interface ButtonProps {
   hasActivity: boolean
 }
 
-export const Button = styled.button`
+const BaseButton = styled.button`
   outline: none;
   border: 1px solid #ddd;
   width: 100%;
@@ -28,7 +28,9 @@ export const Button = styled.button`
   &:hover {
     color: red;
   }
+`
 
+export const Button = styled(BaseButton)`
   ${(props: ButtonProps) =>
     props.isActive &&
     css`

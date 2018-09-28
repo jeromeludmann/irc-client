@@ -1,6 +1,6 @@
 import React from "react";
 import { mount, ReactWrapper, shallow } from "enzyme";
-import Input from "@app/views/input/Input";
+import Input from "@app/views/Input/Input";
 
 interface Props {
   onArrowDown: () => void;
