@@ -52,7 +52,7 @@ const caseReducers: { [action: string]: BufferReducer<BufferPartialState> } = {
 }
 
 export const reduceBuffer: BufferReducer = (
-  buffer,
+  buffer = bufferInitialState,
   action,
   extraStates,
 ): BufferState => ({

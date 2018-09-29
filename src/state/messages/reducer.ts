@@ -150,7 +150,7 @@ const caseReducers: { [action: string]: MessagesReducer } = {
 }
 
 export const reduceMessages: MessagesReducer = (
-  messagesState,
+  messagesState = messagesInitialState,
   action,
   extraStates,
 ) =>

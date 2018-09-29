@@ -206,7 +206,11 @@ const routeActionToBuffers: BufferRouterReducer = (
   return buffers
 }
 
-export const reduceServer: ServerReducer = (server, action, extraStates) => {
+export const reduceServer: ServerReducer = (
+  server = serverInitialState,
+  action,
+  extraStates,
+) => {
   const intermediateState = {
     ...server,
     buffers: routeActionToBuffers(server.buffers, action, {

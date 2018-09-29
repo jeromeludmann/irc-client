@@ -70,7 +70,11 @@ const caseReducers: { [action: string]: RouteReducer } = {
   },
 }
 
-export const reduceRoute: RouteReducer = (route, action, extraStates) =>
+export const reduceRoute: RouteReducer = (
+  route = routeInitialState,
+  action,
+  extraStates,
+) =>
   action.type in caseReducers
     ? caseReducers[action.type](route, action, extraStates)
     : route

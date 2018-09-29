@@ -69,5 +69,5 @@ const caseReducers: { [action: string]: InputReducer } = {
   }),
 }
 
-export const reduceInput: InputReducer = (input, action) =>
+export const reduceInput: InputReducer = (input = inputInitialState, action) =>
   action.type in caseReducers ? caseReducers[action.type](input, action) : input
