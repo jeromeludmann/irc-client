@@ -1,4 +1,8 @@
-import { reduceInput, inputInitialState, InputState } from '@app/state/input/reducer'
+import {
+  reduceInput,
+  inputInitialState,
+  InputState,
+} from '@app/state/input/reducer'
 import {
   enterInputValue,
   goBackInputHistory,
@@ -8,9 +12,7 @@ import {
 
 describe('reduce input state', () => {
   it('should handle ENTER_INPUT_VALUE', () => {
-    expect(
-      reduceInput(inputInitialState, enterInputValue('hello')),
-    ).toMatchSnapshot()
+    expect(reduceInput(undefined!, enterInputValue('hello'))).toMatchSnapshot()
   })
 
   const historyValues = ['hello', 'world']

@@ -47,7 +47,7 @@ describe('reduce root state', () => {
   it('should not handle anything', () => {
     expect(
       reduceRoot(undefined, {
-        type: '',
+        type: 'WHATEVER',
         route: { serverKey: 'serverKey', bufferKey: '#channel' },
       }),
     ).toMatchSnapshot()

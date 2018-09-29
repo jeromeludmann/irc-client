@@ -9,7 +9,6 @@ import { BufferKey } from '@app/utils/Route'
 describe('reduce route state', () => {
   const someone = { nick: 'someone', user: 'user', host: 'host' }
   const me = { nick: 'me', user: 'user', host: 'host' }
-  
 
   const extraStates = {
     root: {
@@ -104,6 +103,12 @@ describe('reduce route state', () => {
         switchWindow({ serverKey: 'unknown', bufferKey: '#unknown' }),
         extraStates,
       ),
+    ).toMatchSnapshot()
+  })
+
+  it('should not handle anything', () => {
+    expect(
+      reduceRoute(undefined!, { type: 'WHATEVER' }, extraStates),
     ).toMatchSnapshot()
   })
 })

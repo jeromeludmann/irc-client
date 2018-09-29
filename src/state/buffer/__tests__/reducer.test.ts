@@ -13,7 +13,7 @@ describe('reduce buffer state', () => {
   it('should handle RECEIVE_JOIN', () => {
     expect(
       reduceBuffer(
-        bufferInitialState,
+        undefined!,
         messageReceivers.JOIN('serverKey', someone, ['#channel']),
         extraStates,
       ),

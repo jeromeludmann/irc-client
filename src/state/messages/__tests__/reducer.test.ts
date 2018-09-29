@@ -1,4 +1,7 @@
-import { reduceMessages, messagesInitialState } from '@app/state/messages/reducer'
+import {
+  reduceMessages,
+  messagesInitialState,
+} from '@app/state/messages/reducer'
 import { routeInitialState } from '@app/state/route/reducer'
 import { serverInitialState } from '@app/state/server/reducer'
 import {
@@ -15,7 +18,6 @@ import { sendPongToServer, sendPrivmsg } from '@app/actions/messages/outgoing'
 describe('reduce messages state', () => {
   //   const initialState = { ...messagesInitialState }
   const someone: User = { nick: 'someone', user: 'user', host: 'host' }
-  const me: User = { nick: 'me', user: 'user', host: 'host' }
   const extraStates = { route: routeInitialState, server: serverInitialState }
   const route = {
     serverKey: 'serverKey',
@@ -201,6 +203,12 @@ describe('reduce messages state', () => {
         sendPrivmsg('serverKey', '#channel', 'hello').embeddedAction!,
         extraStates,
       ),
+    ).toMatchSnapshot()
+  })
+
+  it('should not handle anything', () => {
+    expect(
+      reduceMessages(undefined!, { type: 'WHATEVER' }, extraStates),
     ).toMatchSnapshot()
   })
 })

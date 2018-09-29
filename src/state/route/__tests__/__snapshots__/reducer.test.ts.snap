@@ -55,3 +55,10 @@ Object {
   "serverKey": "serverKey",
 }
 `;
+
+exports[`reduce route state should not handle anything 1`] = `
+Object {
+  "bufferKey": "@status",
+  "serverKey": "serverKey",
+}
+`;

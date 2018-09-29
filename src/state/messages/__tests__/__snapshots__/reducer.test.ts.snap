@@ -115,3 +115,5 @@ Array [
   "default_nick: hello",
 ]
 `;
+
+exports[`reduce messages state should not handle anything 1`] = `Array []`;

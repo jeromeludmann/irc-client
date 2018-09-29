@@ -168,4 +168,14 @@ describe('reduce server state', () => {
       ),
     ).toMatchSnapshot()
   })
+
+  it('should not handle anything', () => {
+    expect(
+      reduceServer(undefined!, {
+        type: 'WHATEVER',
+        route: { serverKey: 'serverKey', bufferKey: '#channel' },
+        extraStates,
+      }),
+    ).toMatchSnapshot()
+  })
 })

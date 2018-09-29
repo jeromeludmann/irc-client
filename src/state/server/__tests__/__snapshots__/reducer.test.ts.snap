@@ -479,6 +479,51 @@ Object {
 }
 `;
 
+exports[`reduce server state should not handle anything 1`] = `
+Object {
+  "buffers": Object {
+    "@raw": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@status": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+  },
+  "lag": 0,
+  "modes": Object {
+    "available": Object {
+      "channel": Array [],
+      "user": Array [],
+    },
+    "user": Array [],
+  },
+  "name": "<unknown>",
+  "user": Object {
+    "nick": "default_nick",
+    "real": "default_name",
+    "user": "default_user",
+  },
+}
+`;
+
 exports[`reduce server state when it is me should handle RECEIVE_NICK 1`] = `
 Object {
   "buffers": Object {
