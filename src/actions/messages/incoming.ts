@@ -1,5 +1,5 @@
 import { RoutedAction, BufferKey, isChannel } from '@app/utils/Route'
-import { User, Server, Prefix, isPrefixServer } from '@app/utils/Message'
+import { User, Server, Prefix, isPrefixServer } from '@app/core/Message'
 
 interface ReceiveMessageAction<T = string, P = {}> extends RoutedAction<T> {
   payload: P
@@ -185,7 +185,7 @@ export const messageReceivers: {
 
   PONG: (serverKey, _: Server, params): ReceivePongFromServerAction => ({
     type: RECEIVE_PONG_FROM_SERVER,
-    payload: { key: params[1], lag: 0 },
+    payload: { key: params[1], lag: -1 },
     route: { serverKey, bufferKey: BufferKey.STATUS },
   }),
 

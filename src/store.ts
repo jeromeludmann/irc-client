@@ -1,27 +1,29 @@
 import { createStore, applyMiddleware } from 'redux'
-import { messageParser } from '@app/middlewares/messageParser'
-import { commandHandler } from '@app/middlewares/commandHandler'
-import { socketHandler } from '@app/middlewares/socketHandler'
+import createSagaMiddleware from 'redux-saga'
+import { reduceRoot, rootInitialState } from '@app/state/root/reducer'
 import { autoRouter } from '@app/middlewares/autoRouter'
 import { lag } from '@app/middlewares/lag'
-import { pingPong } from '@app/middlewares/pingPong'
-import { register } from '@app/middlewares/register'
 import { logger } from '@app/middlewares/logger'
-import { windowHandler } from '@app/middlewares/windowHandler'
-import { reduceRoot, rootInitialState } from '@app/state/root/reducer'
+import { socket } from '@app/effects/socket'
+import { parser } from '@app/effects/parser'
+import { recognition } from '@app/effects/recognition'
+import { pingReply } from '@app/effects/pingReply'
+import { commands } from '@app/effects/commands'
+import { window } from '@app/effects/window'
+
+const workers = createSagaMiddleware({
+  context: { sockets: {} },
+})
 
 export const store = createStore(
   reduceRoot,
   rootInitialState,
-  applyMiddleware(
-    messageParser, // keep first
-    autoRouter,
-    lag,
-    pingPong,
-    register,
-    commandHandler,
-    windowHandler,
-    socketHandler, // keep just before logger
-    logger, // keep last
-  ),
+  applyMiddleware(autoRouter, lag, workers, logger),
 )
+
+workers.run(socket)
+workers.run(parser)
+workers.run(recognition)
+workers.run(pingReply)
+workers.run(commands)
+workers.run(window)

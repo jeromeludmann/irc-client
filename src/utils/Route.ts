@@ -17,11 +17,19 @@ export const BufferKey = {
   ACTIVE: '@active',
   NONE: '@none',
 }
-export const isRaw = (key: string) => key === BufferKey.RAW
 
-export const isStatus = (key: string) => key === BufferKey.STATUS
+export function isRaw(key: string) {
+  return key === BufferKey.RAW
+}
 
-export const isChannel = (key: string) => CHANNEL_REGEXP.test(key)
+export function isStatus(key: string) {
+  return key === BufferKey.STATUS
+}
 
-export const isPrivate = (key: string) =>
-  !isRaw(key) && !isStatus(key) && !isChannel(key)
+export function isChannel(key: string) {
+  return CHANNEL_REGEXP.test(key)
+}
+
+export function isPrivate(key: string) {
+  return !isRaw(key) && !isStatus(key) && !isChannel(key)
+}

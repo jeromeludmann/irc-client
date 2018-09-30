@@ -1,40 +1,35 @@
-import { Middleware } from 'redux'
-import { RAW_MESSAGES_RECEIVED, RawMessagesAction } from '@app/actions/socket'
-import { IRC_MESSAGE_LENGTH, CRLF } from '@app/utils/helpers'
-import { GenericMessage, Prefix, Tags } from '@app/utils/Message'
+import { put, takeEvery } from 'redux-saga/effects'
+import { RawMessagesAction, RAW_MESSAGES_RECEIVED } from '@app/actions/socket'
 import { messageReceivers } from '@app/actions/messages/incoming'
+import { GenericMessage, Prefix, Tags } from '@app/core/Message'
+import { IRC_MESSAGE_LENGTH } from '@app/utils/helpers'
 
-/**
- * Message Parser Middleware
- *
- * Parse a raw message in order to get a generic message that will be used in
- * the message callbacks.
- */
-export const messageParser: Middleware = () => next => (
-  action: RawMessagesAction,
-) => {
-  next(action)
+export function* parser() {
+  yield takeEvery(RAW_MESSAGES_RECEIVED, parseRawMessages)
+}
 
-  if (action.type === RAW_MESSAGES_RECEIVED) {
-    action.payload.messages.forEach(rawMessage => {
-      const genericMessage = parseMessage(rawMessage)
-      const { prefix, command, params } = genericMessage
+function* parseRawMessages(action: RawMessagesAction) {
+  const {
+    payload: { messages },
+    route: { serverKey },
+  } = action
 
-      if (command in messageReceivers) {
-        next(messageReceivers[command](action.route.serverKey, prefix, params))
-      }
-    })
+  for (const rawMessage of messages) {
+    const { prefix, command, params } = parseMessage(rawMessage)
+    if (command in messageReceivers) {
+      yield put(messageReceivers[command](serverKey, prefix, params))
+    }
   }
 }
 
-const parseMessage = (rawMessage: string): GenericMessage => {
+function parseMessage(rawMessage: string): GenericMessage {
   const genericMessage: GenericMessage = {
     command: '',
     params: [],
   }
 
-  if (rawMessage.length > IRC_MESSAGE_LENGTH - CRLF.length) {
-    rawMessage = rawMessage.slice(0, IRC_MESSAGE_LENGTH - CRLF.length)
+  if (rawMessage.length > IRC_MESSAGE_LENGTH) {
+    rawMessage = rawMessage.slice(0, IRC_MESSAGE_LENGTH)
   }
 
   let pos: number
@@ -86,7 +81,7 @@ const parseMessage = (rawMessage: string): GenericMessage => {
   return genericMessage
 }
 
-const parsePrefix = (prefix: string): Prefix => {
+function parsePrefix(prefix: string): Prefix {
   const i = prefix.indexOf('!')
   if (i === -1) {
     return prefix
@@ -101,5 +96,6 @@ const parsePrefix = (prefix: string): Prefix => {
   }
 }
 
-const parseTags = (tags: string): Tags =>
-  tags.indexOf(';') > -1 ? tags.split(';') : [tags]
+function parseTags(tags: string): Tags {
+  return tags.indexOf(';') > -1 ? tags.split(';') : [tags]
+}

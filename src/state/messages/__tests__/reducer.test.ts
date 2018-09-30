@@ -10,9 +10,9 @@ import {
   setConnectionFailed,
   receiveRawMessages,
 } from '@app/actions/socket'
-import { commands } from '@app/actions/commands'
+import { commandMap } from '@app/actions/commands'
 import { messageReceivers } from '@app/actions/messages/incoming'
-import { User } from '@app/utils/Message'
+import { User } from '@app/core/Message'
 import { sendPongToServer, sendPrivmsg } from '@app/actions/messages/outgoing'
 
 describe('reduce messages state', () => {
@@ -58,7 +58,7 @@ describe('reduce messages state', () => {
     expect(
       reduceMessages(
         messagesInitialState,
-        commands.help.callback(route),
+        commandMap.help.callback(route),
         extraStates,
       ),
     ).toMatchSnapshot()
@@ -68,7 +68,7 @@ describe('reduce messages state', () => {
     expect(
       reduceMessages(
         messagesInitialState,
-        commands.help.callback(route, 'help'),
+        commandMap.help.callback(route, 'help'),
         extraStates,
       ),
     ).toMatchSnapshot()

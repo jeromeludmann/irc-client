@@ -1,4 +1,4 @@
-import { isPrefixServer, isPrefixUser } from "@app/utils/Message";
+import { isPrefixServer, isPrefixUser } from "@app/core/Message";
 
 describe("Message", () => {
   const server = "irc.network";

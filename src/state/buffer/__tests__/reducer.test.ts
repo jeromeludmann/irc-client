@@ -1,6 +1,6 @@
 import { reduceBuffer, bufferInitialState } from '@app/state/buffer/reducer'
 import { messageReceivers } from '@app/actions/messages/incoming'
-import { User } from '@app/utils/Message'
+import { User } from '@app/core/Message'
 import { serverInitialState } from '@app/state/server/reducer'
 import { switchWindow } from '@app/actions/ui'
 import { Route } from '@app/utils/Route'

@@ -42,7 +42,7 @@ import { RouteState } from '@app/state/route/reducer'
 import { ServerState } from '@app/state/server/reducer'
 
 // TODO replace string[] by MessageState[]
-export type MessagesState = Readonly<string[]>
+export type MessagesState = string[]
 
 type MessagesReducer = (
   messages: MessagesState,

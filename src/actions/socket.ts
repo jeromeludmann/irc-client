@@ -1,4 +1,7 @@
 import { BufferKey, RoutedAction } from '@app/utils/Route'
+import { generateServerKey } from '@app/utils/helpers'
+import { store } from '@app/store'
+import { selectServers } from '@app/state/root/selectors'
 
 export const CONNECT_TO_SERVER = 'SOCKET/CONNECT_TO_SERVER'
 
@@ -16,12 +19,19 @@ export const connectToServer = (
   host: string,
   port: number = 6667,
   newConnection = false,
-): ConnectToServerAction => ({
-  type: CONNECT_TO_SERVER,
-  payload: { host, port, newConnection },
-  route: { serverKey, bufferKey: BufferKey.STATUS },
-})
-
+): ConnectToServerAction => {
+  const key = newConnection
+    ? generateServerKey(Object.keys(selectServers(store.getState())))
+    : serverKey
+  return {
+    type: CONNECT_TO_SERVER,
+    payload: { host, port, newConnection },
+    route: {
+      serverKey: key,
+      bufferKey: BufferKey.STATUS,
+    },
+  }
+}
 export const DISCONNECT_FROM_SERVER = 'SOCKET/DISCONNECT_FROM_SERVER'
 
 export interface DisconnectFromServerAction
