@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es5",
+    "target": "es6",
     "jsx": "react",
     "sourceMap": true,
     "noImplicitAny": true,
@@ -20,7 +20,7 @@
     "baseUrl": ".",
     "paths": {
       "@app/*": ["src/*"]
-    },
+    }
   },
   "exclude": ["node_modules/*", "dist/*"]
 }
