@@ -203,7 +203,7 @@ exports[`incoming messages actions should receive PONG 1`] = `
 Object {
   "payload": Object {
     "key": "key",
-    "lag": 0,
+    "lag": -1,
   },
   "route": Object {
     "bufferKey": "@status",

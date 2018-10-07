@@ -19,12 +19,6 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}'],
   coverageThreshold: {
-    // global: {
-    //   branches: 50,
-    //   functions: 50,
-    //   lines: 50,
-    //   statements: 50
-    // },
     './src/actions/': coverageForPureParts,
     './src/views/': coverageForPureParts,
     './src/state/': coverageForPureParts,

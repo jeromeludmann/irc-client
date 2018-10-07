@@ -10,7 +10,7 @@ import {
 
 describe('socket actions', () => {
   it('should create ConnectServerAction with existing connection', () => {
-    expect(connectToServer('server1', 'irc.network', 6667)).toMatchSnapshot()
+    expect(connectToServer('serverKey', 'irc.network', 6667)).toMatchSnapshot()
   })
 
   it('should create ConnectServerAction with new connection', () => {

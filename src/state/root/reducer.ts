@@ -1,4 +1,3 @@
-import { Reducer } from 'redux'
 import { RoutedAction, isChannel, isPrivate } from '@app/utils/Route'
 import {
   RouteState,
@@ -64,10 +63,10 @@ const routeActionToServers = (
       }
     : servers
 
-export const reduceRoot: Reducer<RootState, RoutedAction> = (
-  root = rootInitialState,
-  action,
-) => {
+export function reduceRoot(
+  root: RootState | undefined = rootInitialState,
+  action: RoutedAction,
+): RootState {
   // prevent other actions to pass inside app reducers
   if (action.route === undefined) {
     return root

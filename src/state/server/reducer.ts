@@ -1,3 +1,4 @@
+import { AnyAction } from 'redux'
 import { RouteState } from '@app/state/route/reducer'
 import {
   RoutedAction,
@@ -24,7 +25,6 @@ import {
   reduceBuffer,
 } from '@app/state/buffer/reducer'
 import { CLOSE_WINDOW, CloseWindowAction } from '@app/actions/ui'
-import { AnyAction } from 'redux'
 
 export type ServerState = Readonly<{
   name: string
@@ -99,7 +99,7 @@ const removeAllServerRelatedBuffers = (buffers: {
   return bufferMap
 }
 
-const itIsme = (server: ServerState, action: AnyAction) =>
+const itIsMe = (server: ServerState, action: AnyAction) =>
   action.payload.user.nick === server.user.nick
 
 const caseReducers: { [action: string]: ServerReducer } = {
@@ -113,7 +113,7 @@ const caseReducers: { [action: string]: ServerReducer } = {
 
   [RECEIVE_NICK]: (server, action: ReceiveNickAction) => ({
     ...server,
-    user: itIsme(server, action)
+    user: itIsMe(server, action)
       ? { ...server.user, nick: action.payload.nick }
       : server.user,
   }),
@@ -121,7 +121,7 @@ const caseReducers: { [action: string]: ServerReducer } = {
   // We arbitrarily decided to close window when we "/part" the channel.
   // But later, we could make this behavior customizable.
   [RECEIVE_PART]: (server, action: ReceivePartAction) =>
-    itIsme(server, action)
+    itIsMe(server, action)
       ? {
           ...server,
           buffers: removeCurrentBuffer(server.buffers, action.payload.channel),

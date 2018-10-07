@@ -1,5 +1,5 @@
 import { RoutedAction, BufferKey, isChannel } from '@app/utils/Route'
-import { User, Server, Prefix, isPrefixServer } from '@app/core/Message'
+import { User, Server, Prefix, isPrefixServer } from '@app/utils/Message'
 
 interface ReceiveMessageAction<T = string, P = {}> extends RoutedAction<T> {
   payload: P

@@ -12,7 +12,7 @@ import {
 } from '@app/actions/socket'
 import { commandMap } from '@app/actions/commands'
 import { messageReceivers } from '@app/actions/messages/incoming'
-import { User } from '@app/core/Message'
+import { User } from '@app/utils/Message'
 import { sendPongToServer, sendPrivmsg } from '@app/actions/messages/outgoing'
 
 describe('reduce messages state', () => {

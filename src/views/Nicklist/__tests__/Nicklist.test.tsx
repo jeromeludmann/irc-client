@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 import Nicklist from '@app/views/Nicklist'
-import { User } from '@app/core/Message'
+import { User } from '@app/utils/Message'
 
 describe('Nicklist component', () => {
   const users: User[] = [

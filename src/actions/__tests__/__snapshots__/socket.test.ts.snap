@@ -9,7 +9,7 @@ Object {
   },
   "route": Object {
     "bufferKey": "@status",
-    "serverKey": "server1",
+    "serverKey": "serverKey",
   },
   "type": "SOCKET/CONNECT_TO_SERVER",
 }

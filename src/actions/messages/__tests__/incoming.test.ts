@@ -1,5 +1,5 @@
 import { messageReceivers } from '@app/actions/messages/incoming'
-import { User } from '@app/core/Message'
+import { User } from '@app/utils/Message'
 
 describe('incoming messages actions', () => {
   const user: User = { nick: 'nick', user: 'user', host: 'host' }

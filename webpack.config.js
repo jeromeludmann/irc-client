@@ -1,4 +1,5 @@
 const path = require('path')
+const CircularDependencyPlugin = require('circular-dependency-plugin')
 
 const mode = 'development'
 
@@ -10,6 +11,14 @@ const resolve = {
     '@app': path.resolve(__dirname, 'src'),
   },
 }
+
+const plugins = [
+  new CircularDependencyPlugin({
+    exclude: /node_modules/,
+    failOnError: true,
+    allowAsyncCycles: false,
+  }),
+]
 
 const rules = {
   ts: ({ tsconfigPath }) => ({
@@ -44,6 +53,7 @@ const mainConfig = {
     __dirname: false,
     __filename: false,
   },
+  plugins,
 }
 
 const rendererConfig = {
@@ -59,6 +69,7 @@ const rendererConfig = {
   module: {
     rules: [rules.ts({ tsconfigPath: '../tsc.renderer.json' })],
   },
+  plugins,
 }
 
 module.exports = [mainConfig, rendererConfig]

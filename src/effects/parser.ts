@@ -1,7 +1,7 @@
 import { put, takeEvery } from 'redux-saga/effects'
 import { RawMessagesAction, RAW_MESSAGES_RECEIVED } from '@app/actions/socket'
 import { messageReceivers } from '@app/actions/messages/incoming'
-import { GenericMessage, Prefix, Tags } from '@app/core/Message'
+import { GenericMessage, Prefix, Tags } from '@app/utils/Message'
 import { IRC_MESSAGE_LENGTH } from '@app/utils/helpers'
 
 export function* parser() {

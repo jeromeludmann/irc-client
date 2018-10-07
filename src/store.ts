@@ -10,6 +10,7 @@ import { recognition } from '@app/effects/recognition'
 import { pingReply } from '@app/effects/pingReply'
 import { commands } from '@app/effects/commands'
 import { window } from '@app/effects/window'
+import { serverKeyGenerator } from '@app/middlewares/serverKeyGenerator'
 
 const workers = createSagaMiddleware({
   context: { sockets: {} },
@@ -18,7 +19,7 @@ const workers = createSagaMiddleware({
 export const store = createStore(
   reduceRoot,
   rootInitialState,
-  applyMiddleware(autoRouter, lag, workers, logger),
+  applyMiddleware(autoRouter, serverKeyGenerator, lag, workers, logger),
 )
 
 workers.run(socket)

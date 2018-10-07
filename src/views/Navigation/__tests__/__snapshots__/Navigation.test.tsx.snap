@@ -11,15 +11,6 @@ ShallowWrapper {
           "buffers": Object {
             "#channel": Object {
               "activity": true,
-              "input": Object {
-                "dirtyValue": "",
-                "history": Object {
-                  "index": 0,
-                  "values": Array [],
-                },
-                "value": "",
-              },
-              "messages": Array [],
             },
             "@raw": Object {
               "activity": false,

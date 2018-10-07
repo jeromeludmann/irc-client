@@ -5,7 +5,7 @@ import {
 } from '@app/state/server/reducer'
 import { closeWindow } from '@app/actions/ui'
 import { messageReceivers } from '@app/actions/messages/incoming'
-import { User } from '@app/core/Message'
+import { User } from '@app/utils/Message'
 import { BufferKey } from '@app/utils/Route'
 import { bufferInitialState } from '@app/state/buffer/reducer'
 

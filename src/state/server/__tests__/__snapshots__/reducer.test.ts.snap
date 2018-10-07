@@ -299,11 +299,11 @@ Object {
         "value": "",
       },
       "messages": Array [
-        "Response from server key in 0 ms",
+        "Response from server key in -1 ms",
       ],
     },
   },
-  "lag": 0,
+  "lag": -1,
   "modes": Object {
     "available": Object {
       "channel": Array [],
