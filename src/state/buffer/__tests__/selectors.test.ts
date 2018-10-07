@@ -1,12 +1,12 @@
-import { selectBuffer, selectActivity } from '@app/state/buffer/selectors'
+import { getBuffer, getActivity } from '@app/state/buffer/selectors'
 import { rootInitialState } from '@app/state/root/reducer'
 
 describe('select buffer state', () => {
   it('should select buffer', () => {
-    expect(selectBuffer(rootInitialState)).toMatchSnapshot()
+    expect(getBuffer(rootInitialState)).toMatchSnapshot()
   })
 
   it('should select activity', () => {
-    expect(selectActivity(rootInitialState)).toMatchSnapshot()
+    expect(getActivity(rootInitialState)).toMatchSnapshot()
   })
 })

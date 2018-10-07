@@ -1,7 +1,4 @@
 import { createSelector } from 'reselect'
-import { selectBuffer } from '@app/state/buffer/selectors'
+import { getBuffer } from '@app/state/buffer/selectors'
 
-export const selectMessages = createSelector(
-  selectBuffer,
-  buffer => buffer.messages,
-)
+export const getMessages = createSelector(getBuffer, buffer => buffer.messages)

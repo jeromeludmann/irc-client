@@ -1,30 +1,30 @@
 import {
-  selectInput,
-  selectInputValue,
-  selectInputDirtyValue,
-  selectInputHistory,
+  getInput,
+  getInputValue,
+  getInputDirtyValue,
+  getInputHistory,
 } from '@app/state/input/selectors'
-import { selectMessages } from '@app/state/messages/selectors'
+import { getMessages } from '@app/state/messages/selectors'
 import { rootInitialState } from '@app/state/root/reducer'
 
 describe('select input state', () => {
   it('should select input', () => {
-    expect(selectInput(rootInitialState)).toMatchSnapshot()
+    expect(getInput(rootInitialState)).toMatchSnapshot()
   })
 
   it('should select input value', () => {
-    expect(selectInputValue(rootInitialState)).toMatchSnapshot()
+    expect(getInputValue(rootInitialState)).toMatchSnapshot()
   })
 
   it('should select input dirty value', () => {
-    expect(selectInputDirtyValue(rootInitialState)).toMatchSnapshot()
+    expect(getInputDirtyValue(rootInitialState)).toMatchSnapshot()
   })
 
   it('should select input history', () => {
-    expect(selectInputHistory(rootInitialState)).toMatchSnapshot()
+    expect(getInputHistory(rootInitialState)).toMatchSnapshot()
   })
 
   it('should select input history', () => {
-    expect(selectMessages(rootInitialState)).toMatchSnapshot()
+    expect(getMessages(rootInitialState)).toMatchSnapshot()
   })
 })

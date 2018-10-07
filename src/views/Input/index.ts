@@ -7,7 +7,7 @@ import {
   goBackInputHistory,
   goForwardInputHistory,
 } from '@app/actions/ui'
-import { selectInputValue } from '@app/state/input/selectors'
+import { getInputValue } from '@app/state/input/selectors'
 
 interface StateProps {
   value: string
@@ -21,7 +21,7 @@ interface DispatchProps {
 }
 
 const mapStateToProps: MapStateToProps<StateProps, {}, RootState> = state => ({
-  value: selectInputValue(state),
+  value: getInputValue(state),
 })
 
 const mapDispatchToProps: DispatchProps = {

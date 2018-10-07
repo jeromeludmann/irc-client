@@ -1,7 +1,7 @@
 import { BufferKey, RoutedAction } from '@app/utils/Route'
 import { generateServerKey } from '@app/utils/helpers'
 import { store } from '@app/store'
-import { selectServers } from '@app/state/root/selectors'
+import { getServers } from '@app/state/root/selectors'
 
 export const CONNECT_TO_SERVER = 'SOCKET/CONNECT_TO_SERVER'
 
@@ -21,7 +21,7 @@ export const connectToServer = (
   newConnection = false,
 ): ConnectToServerAction => {
   const key = newConnection
-    ? generateServerKey(Object.keys(selectServers(store.getState())))
+    ? generateServerKey(Object.keys(getServers(store.getState())))
     : serverKey
   return {
     type: CONNECT_TO_SERVER,

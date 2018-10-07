@@ -4,8 +4,8 @@ import { Route } from '@app/utils/Route'
 import { RootState } from '@app/state/root/reducer'
 import { switchWindow } from '@app/actions/ui'
 import Navigation from '@app/views/Navigation/Navigation'
-import { selectServers } from '@app/state/root/selectors'
-import { selectRoute } from '@app/state/route/selectors'
+import { getServers } from '@app/state/root/selectors'
+import { getRoute } from '@app/state/route/selectors'
 
 interface StateProps {
   servers: {
@@ -23,8 +23,8 @@ interface DispatchProps {
 
 const mapStateToProps: MapStateToProps<StateProps, {}, RootState> = state => ({
   // TODO provide a better selector to Navigation
-  servers: selectServers(state),
-  window: selectRoute(state),
+  servers: getServers(state),
+  window: getRoute(state),
 })
 
 const mapDispatchToProps: DispatchProps = {

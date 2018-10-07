@@ -1,36 +1,27 @@
 import { createSelector } from 'reselect'
-import { selectServers } from '@app/state/root/selectors'
-import { selectRoute } from '@app/state/route/selectors'
+import { getServers } from '@app/state/root/selectors'
+import { getRoute } from '@app/state/route/selectors'
 
-export const selectServer = createSelector(
-  selectServers,
-  selectRoute,
+export const getServer = createSelector(
+  getServers,
+  getRoute,
   (servers, { serverKey }) => servers[serverKey],
 )
 
-export const selectServerName = createSelector(
-  selectServer,
-  server => server.name,
-)
+export const getServerName = createSelector(getServer, server => server.name)
 
-export const selectUser = createSelector(selectServer, server => server.user)
+export const getUser = createSelector(getServer, server => server.user)
 
-export const selectServerLag = createSelector(
-  selectServer,
-  server => server.lag,
-)
+export const getServerLag = createSelector(getServer, server => server.lag)
 
-export const selectUserModes = createSelector(
-  selectServer,
+export const getUserModes = createSelector(
+  getServer,
   server => server.modes.user,
 )
 
-export const selectAvailableModes = createSelector(
-  selectServer,
+export const getAvailableModes = createSelector(
+  getServer,
   server => server.modes.available,
 )
 
-export const selectBuffers = createSelector(
-  selectServer,
-  server => server.buffers,
-)
+export const getBuffers = createSelector(getServer, server => server.buffers)

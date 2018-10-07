@@ -1,8 +1,10 @@
 import { RootState } from '@app/state/root/reducer'
 import { ServerState } from '@app/state/server/reducer'
 
-export const selectServers = ({
-  servers,
-}: RootState): {
+export function getServers(
+  state: RootState,
+): {
   [key: string]: ServerState
-} => servers
+} {
+  return state.servers
+}

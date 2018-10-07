@@ -2,7 +2,7 @@ import { takeEvery, put, select } from 'redux-saga/effects'
 import { ENTER_INPUT_VALUE, EnterInputValueAction } from '@app/actions/ui'
 import { isStatus, isRaw } from '@app/utils/Route'
 import { commandMap } from '@app/actions/commands'
-import { selectRoute } from '@app/state/route/selectors'
+import { getRoute } from '@app/state/route/selectors'
 import { RouteState } from '@app/state/route/reducer'
 
 export function* commands() {
@@ -10,7 +10,7 @@ export function* commands() {
 }
 
 function* parseCommand(action: EnterInputValueAction) {
-  const route: RouteState = yield select(selectRoute)
+  const route: RouteState = yield select(getRoute)
   const { bufferKey } = route
 
   const value = action.payload.value
