@@ -24,8 +24,6 @@ import {
   RECEIVE_PART,
   RECEIVE_PRIVMSG,
   RECEIVE_PING_FROM_SERVER,
-  RECEIVE_PONG_FROM_SERVER,
-  ReceivePongFromServerAction,
 } from '@app/actions/messages/incoming'
 import {
   SEND_PONG_TO_SERVER,
@@ -40,6 +38,7 @@ import {
 } from '@app/actions/commands'
 import { RouteState } from '@app/state/route/reducer'
 import { ServerState } from '@app/state/server/reducer'
+import { UPDATE_SERVER_LAG, UpdateServerLagAction } from '@app/actions/ui'
 
 // TODO replace string[] by MessageState[]
 export type MessagesState = string[]
@@ -130,12 +129,6 @@ const caseReducers: { [action: string]: MessagesReducer } = {
 
   [RECEIVE_PING_FROM_SERVER]: messages => [...messages, 'Ping?'],
 
-  [RECEIVE_PONG_FROM_SERVER]: (
-    messages,
-    { payload: { key, lag } }: ReceivePongFromServerAction,
-    {},
-  ) => [...messages, `Response from server ${key} in ${lag} ms`],
-
   [RECEIVE_PRIVMSG]: (
     messages,
     { payload: { user, text } }: ReceivePrivmsgAction,
@@ -147,6 +140,12 @@ const caseReducers: { [action: string]: MessagesReducer } = {
     ...messages,
     `${server.user.nick}: ${action.payload.text}`,
   ],
+
+  [UPDATE_SERVER_LAG]: (
+    messages,
+    { payload: { lag } }: UpdateServerLagAction,
+    {},
+  ) => [...messages, `Server lag: ${lag} ms`],
 }
 
 export const reduceMessages: MessagesReducer = (

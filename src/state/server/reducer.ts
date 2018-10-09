@@ -1,4 +1,4 @@
-import { AnyAction } from 'redux'
+import { AnyAction, Action } from 'redux'
 import { RouteState } from '@app/state/route/reducer'
 import {
   RoutedAction,
@@ -12,8 +12,6 @@ import {
   ReceiveReplyMyInfoAction,
   RECEIVE_NICK,
   ReceiveNickAction,
-  RECEIVE_PONG_FROM_SERVER,
-  ReceivePongFromServerAction,
   RECEIVE_PART,
   ReceivePartAction,
   RECEIVE_PRIVMSG,
@@ -24,7 +22,12 @@ import {
   bufferInitialState,
   reduceBuffer,
 } from '@app/state/buffer/reducer'
-import { CLOSE_WINDOW, CloseWindowAction } from '@app/actions/ui'
+import {
+  CLOSE_WINDOW,
+  CloseWindowAction,
+  UPDATE_SERVER_LAG,
+  UpdateServerLagAction,
+} from '@app/actions/ui'
 
 export type ServerState = Readonly<{
   name: string
@@ -48,7 +51,7 @@ export type ServerState = Readonly<{
 
 type ServerReducer<S = ServerState> = (
   server: S,
-  action: RoutedAction,
+  action: Action,
   extraStates: { route: RouteState },
 ) => S
 
@@ -128,14 +131,6 @@ const caseReducers: { [action: string]: ServerReducer } = {
         }
       : server,
 
-  [RECEIVE_PONG_FROM_SERVER]: (
-    server,
-    action: ReceivePongFromServerAction,
-  ) => ({
-    ...server,
-    lag: action.payload.lag,
-  }),
-
   [RECEIVE_RPL_MYINFO]: (server, action: ReceiveReplyMyInfoAction) => ({
     ...server,
     name: action.payload.serverName,
@@ -146,6 +141,11 @@ const caseReducers: { [action: string]: ServerReducer } = {
         user: action.payload.availableUserModes,
       },
     },
+  }),
+
+  [UPDATE_SERVER_LAG]: (server, action: UpdateServerLagAction) => ({
+    ...server,
+    lag: action.payload.lag,
   }),
 }
 
@@ -213,7 +213,7 @@ export const reduceServer: ServerReducer = (
 ) => {
   const intermediateState = {
     ...server,
-    buffers: routeActionToBuffers(server.buffers, action, {
+    buffers: routeActionToBuffers(server.buffers, action as RoutedAction, {
       ...extraStates,
       server,
     }),
