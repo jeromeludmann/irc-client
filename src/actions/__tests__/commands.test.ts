@@ -1,61 +1,61 @@
-import { commandMap } from '@app/actions/commands'
+import { commands } from '@app/actions/commands'
 
 describe('commands actions', () => {
   const route = { serverKey: 'serverKey', bufferKey: '#channel' }
 
   it('should handle /close', () => {
-    expect(commandMap.close.callback(route)).toMatchSnapshot()
+    expect(commands.close.callback(route)).toMatchSnapshot()
   })
 
   it('should handle /help', () => {
-    expect(commandMap.help.callback(route)).toMatchSnapshot()
+    expect(commands.help.callback(route)).toMatchSnapshot()
   })
 
   it('should handle /help with given command', () => {
-    expect(commandMap.help.callback(route, 'msg')).toMatchSnapshot()
+    expect(commands.help.callback(route, 'msg')).toMatchSnapshot()
   })
 
   it('should handle /join', () => {
-    expect(commandMap.join.callback(route, '#channel')).toMatchSnapshot()
+    expect(commands.join.callback(route, '#channel')).toMatchSnapshot()
   })
 
   it('should handle /msg', () => {
-    expect(commandMap.msg.callback(route, '#channel', 'hello')).toMatchSnapshot()
+    expect(commands.msg.callback(route, '#channel', 'hello')).toMatchSnapshot()
   })
 
   it('should handle /nick', () => {
-    expect(commandMap.nick.callback(route, 'new_nick')).toMatchSnapshot()
+    expect(commands.nick.callback(route, 'new_nick')).toMatchSnapshot()
   })
 
   it('should handle /part', () => {
     expect(
-      commandMap.part.callback(route, '#channel', 'Goodbye!'),
+      commands.part.callback(route, '#channel', 'Goodbye!'),
     ).toMatchSnapshot()
   })
 
   it('should handle /ping', () => {
-    expect(commandMap.ping.callback(route)).toMatchSnapshot()
+    expect(commands.ping.callback(route)).toMatchSnapshot()
   })
 
   it('should handle /server', () => {
     expect(
-      commandMap.server.callback(route, '-n', 'irc.network', '6667'),
+      commands.server.callback(route, '-n', 'irc.network', '6667'),
     ).toMatchSnapshot()
   })
 
   it('should handle /server -n', () => {
     expect(
-      commandMap.server.callback(route, 'irc.network', '6667'),
+      commands.server.callback(route, 'irc.network', '6667'),
     ).toMatchSnapshot()
   })
 
   it('should handle /quit', () => {
-    expect(commandMap.quit.callback(route, 'Goodbye!')).toMatchSnapshot()
+    expect(commands.quit.callback(route, 'Goodbye!')).toMatchSnapshot()
   })
 
   it('should handle /raw', () => {
     expect(
-      commandMap.raw.callback(route, 'PRIVMSG #channel :hello world'),
+      commands.raw.callback(route, 'PRIVMSG #channel :hello world'),
     ).toMatchSnapshot()
   })
 })

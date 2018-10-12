@@ -11,18 +11,18 @@ import { command } from '@app/effects/command'
 import { ui } from '@app/effects/ui'
 import { lag } from '@app/effects/lag'
 
-const workers = createSagaMiddleware()
+const effects = createSagaMiddleware()
 
 export const store = createStore(
   reduceRoot,
   rootInitialState,
-  applyMiddleware(router, workers, logger),
+  applyMiddleware(router, effects, logger),
 )
 
-workers.run(parser)
-workers.run(server)
-workers.run(pingReply)
-workers.run(register)
-workers.run(command)
-workers.run(lag)
-workers.run(ui)
+effects.run(parser)
+effects.run(server)
+effects.run(pingReply)
+effects.run(register)
+effects.run(command)
+effects.run(lag)
+effects.run(ui)

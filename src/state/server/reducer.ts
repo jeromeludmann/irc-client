@@ -1,4 +1,4 @@
-import { AnyAction, Action } from 'redux'
+import { AnyAction } from 'redux'
 import { RouteState } from '@app/state/route/reducer'
 import {
   RoutedAction,
@@ -51,7 +51,7 @@ export type ServerState = Readonly<{
 
 type ServerReducer<S = ServerState> = (
   server: S,
-  action: Action,
+  action: RoutedAction,
   extraStates: { route: RouteState },
 ) => S
 

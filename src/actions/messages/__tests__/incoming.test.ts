@@ -57,7 +57,10 @@ describe('incoming messages actions', () => {
 
   it('should receive PONG', () => {
     expect(
-      messageReceivers.PONG('serverKey', 'irc.network', ['irc.network', 'key']),
+      messageReceivers.PONG('serverKey', 'irc.network', [
+        'irc.network',
+        '1536211245164',
+      ]),
     ).toMatchSnapshot()
   })
 
