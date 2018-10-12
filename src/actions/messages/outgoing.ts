@@ -57,16 +57,16 @@ export const SEND_PING_TO_SERVER = 'MESSAGE/SEND_PING_TO_SERVER'
 export type SendPingToServerAction = SendMessageAction<
   typeof SEND_PING_TO_SERVER,
   {
-    key: string
+    key: number
   }
 >
 
 export const sendPingToServer = (
   serverKey: string,
-  key = String(Date.now()),
+  key = Date.now(),
 ): SendRawMessageAction<SendPingToServerAction> => ({
   type: SEND_RAW_MESSAGE,
-  payload: { raw: toRaw('ping', key) },
+  payload: { raw: toRaw('ping', key.toString()) },
   route: { serverKey, bufferKey: BufferKey.NONE },
   embeddedAction: {
     type: SEND_PING_TO_SERVER,
@@ -79,7 +79,9 @@ export const SEND_PONG_TO_SERVER = 'MESSAGE/SEND_PONG_TO_SERVER'
 
 export type SendPongToServerAction = SendMessageAction<
   typeof SEND_PONG_TO_SERVER,
-  { key: string }
+  {
+    key: string
+  }
 >
 
 export const sendPongToServer = (

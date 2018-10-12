@@ -6,7 +6,7 @@ import {
 import { sendPongToServer } from '@app/actions/messages/outgoing'
 
 export function* pingReply() {
-  for (;;) {
+  while (true) {
     const action: ReceivePingFromServerAction = yield take(
       RECEIVE_PING_FROM_SERVER,
     )

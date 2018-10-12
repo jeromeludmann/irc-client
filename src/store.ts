@@ -1,31 +1,28 @@
 import { createStore, applyMiddleware } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import { reduceRoot, rootInitialState } from '@app/state/root/reducer'
-import { autoRouter } from '@app/middlewares/autoRouter'
+import { router } from '@app/middlewares/router'
 import { logger } from '@app/middlewares/logger'
-import { socket } from '@app/effects/socket'
+import { server } from '@app/effects/server'
 import { parser } from '@app/effects/parser'
-import { recognition } from '@app/effects/recognition'
+import { register } from '@app/effects/register'
 import { pingReply } from '@app/effects/pingReply'
-import { commands } from '@app/effects/commands'
-import { window } from '@app/effects/window'
-import { serverKeyGenerator } from '@app/middlewares/serverKeyGenerator'
-import { serverLag } from '@app/effects/serverLag'
+import { command } from '@app/effects/command'
+import { ui } from '@app/effects/ui'
+import { lag } from '@app/effects/lag'
 
-const workers = createSagaMiddleware({
-  context: { sockets: {} },
-})
+const workers = createSagaMiddleware()
 
 export const store = createStore(
   reduceRoot,
   rootInitialState,
-  applyMiddleware(autoRouter, serverKeyGenerator, workers, logger),
+  applyMiddleware(router, workers, logger),
 )
 
-workers.run(socket)
 workers.run(parser)
-workers.run(recognition)
+workers.run(server)
 workers.run(pingReply)
-workers.run(commands)
-workers.run(window)
-workers.run(serverLag)
+workers.run(register)
+workers.run(command)
+workers.run(lag)
+workers.run(ui)

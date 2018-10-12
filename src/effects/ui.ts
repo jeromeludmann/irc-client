@@ -4,7 +4,7 @@ import { sendPart } from '@app/actions/messages/outgoing'
 import { takeEvery, put } from 'redux-saga/effects'
 import { disconnectFromServer } from '@app/actions/socket'
 
-export function* window() {
+export function* ui() {
   yield takeEvery(CLOSE_WINDOW, closeWindow)
 }
 

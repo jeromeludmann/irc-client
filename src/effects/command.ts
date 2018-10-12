@@ -5,7 +5,7 @@ import { commandMap } from '@app/actions/commands'
 import { getRoute } from '@app/state/route/selectors'
 import { RouteState } from '@app/state/route/reducer'
 
-export function* commands() {
+export function* command() {
   yield takeEvery(ENTER_INPUT_VALUE, parseCommand)
 }
 
@@ -34,8 +34,8 @@ function* parseCommand(action: EnterInputValueAction) {
     return
   }
 
-  const cmd = commandMap[commandName]
-  const parsedParams = params.match(cmd.regexp)
+  const currentCommand = commandMap[commandName]
+  const parsedParams = params.match(currentCommand.regexp)
 
   if (!parsedParams) {
     console.warn(`Command found but bad params provided: "${params}"`)
@@ -43,5 +43,5 @@ function* parseCommand(action: EnterInputValueAction) {
     return
   }
 
-  yield put(cmd.callback(route, ...parsedParams.slice(1)))
+  yield put(currentCommand.callback(route, ...parsedParams.slice(1)))
 }

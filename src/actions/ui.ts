@@ -1,6 +1,15 @@
 import { Action } from 'redux'
 import { Route, RoutedAction, BufferKey } from '@app/utils/Route'
 
+export const ADD_NEW_SERVER = 'UI/ADD_NEW_SERVER'
+
+export interface AddNewServerAction
+  extends RoutedAction<typeof ADD_NEW_SERVER> {}
+
+export function addNewServer(route: Route): AddNewServerAction {
+  return { type: ADD_NEW_SERVER, route }
+}
+
 export const CLOSE_WINDOW = 'UI/CLOSE_WINDOW'
 
 export interface CloseWindowAction extends RoutedAction<typeof CLOSE_WINDOW> {}
@@ -59,8 +68,6 @@ export interface UpdateInputValueAction
 export function updateInputValue(value: string): UpdateInputValueAction {
   return { type: UPDATE_INPUT_VALUE, payload: { value } }
 }
-
-// TODO put me somewhere:
 
 export const UPDATE_SERVER_LAG = 'UI/UPDATE_SERVER_LAG'
 

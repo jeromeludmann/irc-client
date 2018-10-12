@@ -93,8 +93,7 @@ export const RECEIVE_PONG_FROM_SERVER = 'MESSAGE/RECEIVE_PONG_FROM_SERVER'
 export type ReceivePongFromServerAction = ReceiveMessageAction<
   typeof RECEIVE_PONG_FROM_SERVER,
   {
-    key: string
-    lag: number
+    key: number
   }
 >
 
@@ -185,7 +184,7 @@ export const messageReceivers: {
 
   PONG: (serverKey, _: Server, params): ReceivePongFromServerAction => ({
     type: RECEIVE_PONG_FROM_SERVER,
-    payload: { key: params[1], lag: -1 },
+    payload: { key: parseInt(params[1], 10) },
     route: { serverKey, bufferKey: BufferKey.STATUS },
   }),
 

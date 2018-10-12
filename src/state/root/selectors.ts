@@ -1,10 +1,9 @@
 import { RootState } from '@app/state/root/reducer'
-import { ServerState } from '@app/state/server/reducer'
 
-export function getServers(
-  state: RootState,
-): {
-  [key: string]: ServerState
-} {
+export function getServers(state: RootState) {
   return state.servers
+}
+
+export function getServerKeys(state: RootState) {
+  return Object.keys(state.servers)
 }
