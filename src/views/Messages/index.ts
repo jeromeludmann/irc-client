@@ -9,7 +9,7 @@ interface StateProps {
 }
 
 const mapStateToProps: MapStateToProps<StateProps, {}, RootState> = state => ({
-  messages: getMessages(state),
+  messages: getMessages()(state),
 })
 
 export default connect(mapStateToProps)(Messages)

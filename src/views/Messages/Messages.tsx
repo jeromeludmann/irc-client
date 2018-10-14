@@ -1,5 +1,5 @@
 import React from "react";
-import { MessageList, MessageListItem } from "@app/views/messages/style";
+import { MessageList, MessageListItem } from "@app/views/Messages/style";
 
 interface Props {
   messages: string[];

@@ -1,13 +1,11 @@
 import { createSelector } from 'reselect'
 import { getBuffer } from '@app/state/buffer/selectors'
+import { Route } from '@app/utils/Route'
 
-export const getInput = createSelector(getBuffer, channel => channel.input)
+export function getInput(route?: Route) {
+  return createSelector(getBuffer(route), channel => channel.input)
+}
 
-export const getInputValue = createSelector(getInput, input => input.value)
-
-export const getInputDirtyValue = createSelector(
-  getInput,
-  input => input.dirtyValue,
-)
-
-export const getInputHistory = createSelector(getInput, input => input.history)
+export function getInputValue(route?: Route) {
+  return createSelector(getInput(route), input => input.value)
+}

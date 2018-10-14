@@ -1,6 +1,6 @@
 import { MapStateToProps, connect } from 'react-redux'
 import { RootState } from '@app/state/root/reducer'
-import Input from '@app/views/input/Input'
+import Input from '@app/views/Input/Input'
 import {
   updateInputValue,
   enterInputValue,
@@ -21,7 +21,7 @@ interface DispatchProps {
 }
 
 const mapStateToProps: MapStateToProps<StateProps, {}, RootState> = state => ({
-  value: getInputValue(state),
+  value: getInputValue()(state),
 })
 
 const mapDispatchToProps: DispatchProps = {

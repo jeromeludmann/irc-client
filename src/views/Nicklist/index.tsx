@@ -1,7 +1,7 @@
 import React from "react";
 import { User } from "@app/utils/Message";
-import { List } from "@app/views/Navigation/style";
-import { ListItem } from "@app/views/nicklist/style";
+import { List } from "@app/views/Navigationnnn/style";
+import { ListItem } from "@app/views/Nicklistttt/style";
 
 interface Props {
   users: User[];
