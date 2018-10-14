@@ -1,38 +1,34 @@
-import { Middleware } from "redux";
-import { UPDATE_INPUT_VALUE } from "@app/actions/ui";
+import { Dispatch, AnyAction } from 'redux'
+import { UPDATE_INPUT_VALUE } from '@app/actions/ui'
 
-const excluded = [UPDATE_INPUT_VALUE];
+const excluded = [UPDATE_INPUT_VALUE]
 
-/**
- * Logger Middleware
- *
- * Log all dispatched actions.
- */
-export const logger: Middleware = _ => next => action => {
-  if (excluded.indexOf(action.type) === -1) {
-    // tslint:disable-next-line
-    console.log(`%c ${JSON.stringify(action)}`, stylize(action.type));
+export function logger() {
+  return (next: Dispatch) => (action: AnyAction) => {
+    if (!excluded.includes(action.type)) {
+      console.log(`%c ${JSON.stringify(action)}`, stylize(action.type))
+    }
+
+    next(action)
   }
-
-  next(action);
-};
+}
 
 function stylize(type: string) {
-  if (type.indexOf("MESSAGE/SEND_") === 0) {
-    return "color: red";
+  if (type.startsWith('MESSAGE/SEND_')) {
+    return 'color: red'
   }
 
-  if (type.indexOf("MESSAGE/") === 0) {
-    return "color: blue";
+  if (type.startsWith('MESSAGE/')) {
+    return 'color: blue'
   }
 
-  if (type.indexOf("SOCKET/") === 0) {
-    return "color: lightgray";
+  if (type.startsWith('SOCKET/')) {
+    return 'color: lightgray'
   }
 
-  if (type.indexOf("UI/") === 0) {
-    return "color: lightgreen";
+  if (type.startsWith('UI/')) {
+    return 'color: lightgreen'
   }
 
-  return "color: black";
+  return 'color: black'
 }

@@ -1,4 +1,3 @@
-import { Reducer } from 'redux'
 import { RoutedAction, isChannel, isPrivate } from '@app/utils/Route'
 import {
   RouteState,
@@ -10,8 +9,7 @@ import {
   reduceServer,
   serverInitialState,
 } from '@app/state/server/reducer'
-import { CLOSE_WINDOW } from '@app/actions/ui'
-import { CONNECT_TO_SERVER } from '@app/actions/socket'
+import { CLOSE_WINDOW, ADD_NEW_SERVER } from '@app/actions/ui'
 
 type RootPartialState = Readonly<{
   servers: Readonly<{ [key: string]: ServerState }>
@@ -53,7 +51,7 @@ const routeActionToServers = (
   action: RoutedAction,
   extraStates: { route: RouteState },
 ) =>
-  action.route.serverKey in servers || action.type === CONNECT_TO_SERVER
+  action.route.serverKey in servers || action.type === ADD_NEW_SERVER
     ? {
         ...servers,
         [action.route.serverKey]: reduceServer(
@@ -64,10 +62,10 @@ const routeActionToServers = (
       }
     : servers
 
-export const reduceRoot: Reducer<RootState, RoutedAction> = (
-  root = rootInitialState,
-  action,
-) => {
+export function reduceRoot(
+  root: RootState | undefined = rootInitialState,
+  action: RoutedAction,
+): RootState {
   // prevent other actions to pass inside app reducers
   if (action.route === undefined) {
     return root

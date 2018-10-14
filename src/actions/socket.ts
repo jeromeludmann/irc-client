@@ -16,12 +16,16 @@ export const connectToServer = (
   host: string,
   port: number = 6667,
   newConnection = false,
-): ConnectToServerAction => ({
-  type: CONNECT_TO_SERVER,
-  payload: { host, port, newConnection },
-  route: { serverKey, bufferKey: BufferKey.STATUS },
-})
-
+): ConnectToServerAction => {
+  return {
+    type: CONNECT_TO_SERVER,
+    payload: { host, port, newConnection },
+    route: {
+      serverKey,
+      bufferKey: BufferKey.STATUS,
+    },
+  }
+}
 export const DISCONNECT_FROM_SERVER = 'SOCKET/DISCONNECT_FROM_SERVER'
 
 export interface DisconnectFromServerAction

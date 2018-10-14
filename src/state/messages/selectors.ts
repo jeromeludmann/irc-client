@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect'
-import { selectBuffer } from '@app/state/buffer/selectors'
+import { getBuffer } from '@app/state/buffer/selectors'
+import { Route } from '@app/utils/Route'
 
-export const selectMessages = createSelector(
-  selectBuffer,
-  buffer => buffer.messages,
-)
+export function getMessages(route?: Route) {
+  return createSelector(getBuffer(route), buffer => buffer.messages)
+}

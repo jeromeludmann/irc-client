@@ -187,7 +187,7 @@ exports[`commands actions should handle /ping 1`] = `
 Object {
   "embeddedAction": Object {
     "payload": Object {
-      "key": "1536211245164",
+      "key": 1536211245164,
     },
     "route": Object {
       "bufferKey": "@status",

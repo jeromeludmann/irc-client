@@ -10,7 +10,7 @@
 
 Written in [TypeScript](https://github.com/Microsoft/TypeScript).
 
-Made with [React](https://github.com/facebook/react), [Redux](https://github.com/reduxjs/redux), [Node.js](https://github.com/nodejs/node), [Styled Components](https://github.com/styled-components/styled-components) and [Electron](https://github.com/electron/electron).
+Made with [React](https://github.com/facebook/react), [Redux](https://github.com/reduxjs/redux) [(Saga)](https://github.com/redux-saga/redux-saga), [Styled Components](https://github.com/styled-components/styled-components), [Node](https://github.com/nodejs/node) and [Electron](https://github.com/electron/electron).
 
 # Developer documentation
 
@@ -135,68 +135,32 @@ For instance, after running the app, you can connect it with `/connect localhost
 
 ## Tests
 
-- Add additional tests for:
-  - redux middlewares
-  - helpers
+- Add additional tests for sagas
 
 ## Performances
 
-- Bufferize messages by limiting nodes in DOM in order to avoid performance issues
+- Buffer messages by limiting nodes in DOM in order to avoid performance issues
 
 # Codebase best practices
 
 Project recommendation and best practices.
 
-## Keep reducer folder structure flat
-
-In order to easily search reducer files, it's better to have a flat folder structure.
-
-If a reducer file named `/state/server/channel.ts` exports a reducer that calls nested reducers (like `messages` and `input`), as below:
-
-```
-reducers
-└── server
-    ├── channel.ts <- also contains messages and input reducers
-    ├── index.ts
-    ├── modes.ts
-    └── channels.ts
-```
-
-in this case, nested reducers contained in `channel.ts` should be splitted by following these steps:
-
-1.  create a dedicated folder `/state/channel/`
-2.  move `/state/server/channel.ts` to `/state/channel/index.ts`
-3.  extract its own nested reducers (`messages.ts` and `input.ts`) and put them in `/state/channel/`
-
-The expected folder structure should look like that:
-
-```
-reducers
-├── channel
-│   ├── index.ts
-│   ├── input.ts    <- extracted reducer from channel
-│   └── messages.ts <- extracted reducer from channel
-└── server
-    ├── index.ts
-    ├── modes.ts
-    └── channels.ts
-```
+_WIP_
 
 ## Keep reducers and selectors together
 
-Since they are tightly coupled, it is needed to keep reducers and related selectors together.
-
-For instance, a `channel` reducer has its related selectors in its own folder:
+Since they are tightly coupled, keep reducers and related selectors together:
 
 ```
-reducers
-└── channel
-    ├── _selectors.ts <- also contains all channel related selectors
-    ├── index.ts
-    ├── input.ts
-    └── messages.ts
+state
+├── route
+│   ├── reducer.ts
+│   └── selectors.ts
+└── server
+    ├── reducer.ts
+    └── selectors.ts
 ```
 
 ## UI theming
 
-TO DO
+_WIP_

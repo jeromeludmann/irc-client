@@ -261,65 +261,6 @@ Object {
 }
 `;
 
-exports[`reduce server state should handle RECEIVE_PONG_FROM_SERVER 1`] = `
-Object {
-  "buffers": Object {
-    "#channel": Object {
-      "activity": false,
-      "input": Object {
-        "dirtyValue": "",
-        "history": Object {
-          "index": 0,
-          "values": Array [],
-        },
-        "value": "",
-      },
-      "messages": Array [],
-    },
-    "@raw": Object {
-      "activity": false,
-      "input": Object {
-        "dirtyValue": "",
-        "history": Object {
-          "index": 0,
-          "values": Array [],
-        },
-        "value": "",
-      },
-      "messages": Array [],
-    },
-    "@status": Object {
-      "activity": false,
-      "input": Object {
-        "dirtyValue": "",
-        "history": Object {
-          "index": 0,
-          "values": Array [],
-        },
-        "value": "",
-      },
-      "messages": Array [
-        "Response from server key in 0 ms",
-      ],
-    },
-  },
-  "lag": 0,
-  "modes": Object {
-    "available": Object {
-      "channel": Array [],
-      "user": Array [],
-    },
-    "user": Array [],
-  },
-  "name": "<unknown>",
-  "user": Object {
-    "nick": "me",
-    "real": "Realname",
-    "user": "user",
-  },
-}
-`;
-
 exports[`reduce server state should handle RECEIVE_RPL_MYINFO 1`] = `
 Object {
   "buffers": Object {
@@ -414,6 +355,63 @@ Object {
     "user": Array [],
   },
   "name": "?",
+  "user": Object {
+    "nick": "me",
+    "real": "Realname",
+    "user": "user",
+  },
+}
+`;
+
+exports[`reduce server state should handle UPDATE_SERVER_LAG 1`] = `
+Object {
+  "buffers": Object {
+    "#channel": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@raw": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+    "@status": Object {
+      "activity": false,
+      "input": Object {
+        "dirtyValue": "",
+        "history": Object {
+          "index": 0,
+          "values": Array [],
+        },
+        "value": "",
+      },
+      "messages": Array [],
+    },
+  },
+  "lag": 0,
+  "modes": Object {
+    "available": Object {
+      "channel": Array [],
+      "user": Array [],
+    },
+    "user": Array [],
+  },
+  "name": "<unknown>",
   "user": Object {
     "nick": "me",
     "real": "Realname",

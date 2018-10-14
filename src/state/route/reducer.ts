@@ -61,7 +61,6 @@ const caseReducers: { [action: string]: RouteReducer } = {
       bufferKey in extraStates.root.servers[serverKey].buffers
 
     if (!routeFound) {
-      // tslint:disable-next-line
       console.log(`Route "${JSON.stringify(action.route)}" not found`)
       return route
     }

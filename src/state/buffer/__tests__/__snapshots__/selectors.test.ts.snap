@@ -1,7 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`select buffer state should select activity 1`] = `false`;
-
 exports[`select buffer state should select buffer 1`] = `
 Object {
   "activity": false,

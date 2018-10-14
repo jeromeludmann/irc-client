@@ -104,16 +104,6 @@ describe('reduce server state', () => {
     })
   })
 
-  it('should handle RECEIVE_PONG_FROM_SERVER', () => {
-    expect(
-      reduceServer(
-        initialState,
-        messageReceivers.PONG('serverKey', 'server', ['server', 'key']),
-        extraStates,
-      ),
-    ).toMatchSnapshot()
-  })
-
   it('should handle RECEIVE_RPL_MYINFO', () => {
     expect(
       reduceServer(
@@ -125,6 +115,16 @@ describe('reduce server state', () => {
           'available_user_modes',
           'available_channel_modes',
         ]),
+        extraStates,
+      ),
+    ).toMatchSnapshot()
+  })
+
+  it('should handle UPDATE_SERVER_LAG', () => {
+    expect(
+      reduceServer(
+        initialState,
+        messageReceivers.PONG('serverKey', 'server', ['server', 'key']),
         extraStates,
       ),
     ).toMatchSnapshot()
@@ -171,11 +171,14 @@ describe('reduce server state', () => {
 
   it('should not handle anything', () => {
     expect(
-      reduceServer(undefined!, {
-        type: 'WHATEVER',
-        route: { serverKey: 'serverKey', bufferKey: '#channel' },
+      reduceServer(
+        undefined!,
+        {
+          type: 'WHATEVER',
+          route: { serverKey: 'serverKey', bufferKey: '#channel' },
+        },
         extraStates,
-      }),
+      ),
     ).toMatchSnapshot()
   })
 })

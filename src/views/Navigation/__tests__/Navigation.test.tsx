@@ -2,22 +2,21 @@ import React from 'react'
 import { shallow, mount } from 'enzyme'
 import Navigation from '@app/views/Navigation/Navigation'
 import { BufferKey } from '@app/utils/Route'
-import { bufferInitialState } from '@app/state/buffer/reducer'
 import { serverInitialState } from '@app/state/server/reducer'
 
 describe('Navigation component', () => {
   const props = {
-    onWindowButtonClick: jest.fn(),
     servers: {
       serverKey: {
         name: 'irc.network',
         buffers: {
           ...serverInitialState.buffers,
-          '#channel': { ...bufferInitialState, activity: true },
+          '#channel': { activity: true },
         },
       },
     },
     window: { serverKey: 'serverKey', bufferKey: BufferKey.STATUS },
+    onWindowButtonClick: jest.fn(),
   }
 
   it('should render correctly', () => {

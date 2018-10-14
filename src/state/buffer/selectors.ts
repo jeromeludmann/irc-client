@@ -1,14 +1,13 @@
 import { createSelector } from 'reselect'
-import { selectBuffers } from '@app/state/server/selectors'
-import { selectRoute } from '@app/state/route/selectors'
+import { getBuffers } from '@app/state/server/selectors'
+import { getRoute } from '@app/state/route/selectors'
+import { Route } from '@app/utils/Route'
 
-export const selectBuffer = createSelector(
-  selectBuffers,
-  selectRoute,
-  (buffers, route) => buffers[route.bufferKey],
-)
-
-export const selectActivity = createSelector(
-  selectBuffer,
-  buffer => buffer.activity,
-)
+export function getBuffer(route?: Route) {
+  return createSelector(
+    getBuffers(route ? route.serverKey : undefined),
+    getRoute,
+    (buffers, currentRoute) =>
+      buffers[route ? route.bufferKey : currentRoute.bufferKey],
+  )
+}

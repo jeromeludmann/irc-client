@@ -1,27 +1,28 @@
 import { createStore, applyMiddleware } from 'redux'
-import { messageParser } from '@app/middlewares/messageParser'
-import { commandHandler } from '@app/middlewares/commandHandler'
-import { socketHandler } from '@app/middlewares/socketHandler'
-import { autoRouter } from '@app/middlewares/autoRouter'
-import { lag } from '@app/middlewares/lag'
-import { pingPong } from '@app/middlewares/pingPong'
-import { register } from '@app/middlewares/register'
-import { logger } from '@app/middlewares/logger'
-import { windowHandler } from '@app/middlewares/windowHandler'
+import createSagaMiddleware from 'redux-saga'
 import { reduceRoot, rootInitialState } from '@app/state/root/reducer'
+import { router } from '@app/middlewares/router'
+import { logger } from '@app/middlewares/logger'
+import { server } from '@app/effects/server'
+import { parser } from '@app/effects/parser'
+import { register } from '@app/effects/register'
+import { pingReply } from '@app/effects/pingReply'
+import { command } from '@app/effects/command'
+import { ui } from '@app/effects/ui'
+import { lag } from '@app/effects/lag'
+
+const effects = createSagaMiddleware()
 
 export const store = createStore(
   reduceRoot,
   rootInitialState,
-  applyMiddleware(
-    messageParser, // keep first
-    autoRouter,
-    lag,
-    pingPong,
-    register,
-    commandHandler,
-    windowHandler,
-    socketHandler, // keep just before logger
-    logger, // keep last
-  ),
+  applyMiddleware(router, effects, logger),
 )
+
+effects.run(parser)
+effects.run(server)
+effects.run(pingReply)
+effects.run(register)
+effects.run(command)
+effects.run(lag)
+effects.run(ui)

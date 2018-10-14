@@ -1,17 +1,21 @@
 import { Action } from 'redux'
-import { Route, RoutedAction } from '@app/utils/Route'
+import { Route, RoutedAction, BufferKey } from '@app/utils/Route'
+
+export const ADD_NEW_SERVER = 'UI/ADD_NEW_SERVER'
+
+export interface AddNewServerAction
+  extends RoutedAction<typeof ADD_NEW_SERVER> {}
+
+export function addNewServer(route: Route): AddNewServerAction {
+  return { type: ADD_NEW_SERVER, route }
+}
 
 export const CLOSE_WINDOW = 'UI/CLOSE_WINDOW'
 
-export interface CloseWindowAction extends Action<typeof CLOSE_WINDOW> {
-  route: Route
-}
+export interface CloseWindowAction extends RoutedAction<typeof CLOSE_WINDOW> {}
 
 export function closeWindow(route: Route): CloseWindowAction {
-  return {
-    type: CLOSE_WINDOW,
-    route,
-  }
+  return { type: CLOSE_WINDOW, route }
 }
 
 export const ENTER_INPUT_VALUE = 'UI/ENTER_INPUT_VALUE'
@@ -19,6 +23,10 @@ export const ENTER_INPUT_VALUE = 'UI/ENTER_INPUT_VALUE'
 export interface EnterInputValueAction
   extends Action<typeof ENTER_INPUT_VALUE> {
   payload: { value: string }
+}
+
+export function enterInputValue(value: string): EnterInputValueAction {
+  return { type: ENTER_INPUT_VALUE, payload: { value } }
 }
 
 export const GO_BACK_INPUT_HISTORY = 'UI/GO_BACK_INPUT_HISTORY'
@@ -61,6 +69,20 @@ export function updateInputValue(value: string): UpdateInputValueAction {
   return { type: UPDATE_INPUT_VALUE, payload: { value } }
 }
 
-export function enterInputValue(value: string): EnterInputValueAction {
-  return { type: ENTER_INPUT_VALUE, payload: { value } }
+export const UPDATE_SERVER_LAG = 'UI/UPDATE_SERVER_LAG'
+
+export interface UpdateServerLagAction
+  extends RoutedAction<typeof UPDATE_SERVER_LAG> {
+  payload: { lag: number }
+}
+
+export function updateServerLag(
+  serverKey: string,
+  lag: number,
+): UpdateServerLagAction {
+  return {
+    type: UPDATE_SERVER_LAG,
+    payload: { lag },
+    route: { serverKey, bufferKey: BufferKey.STATUS },
+  }
 }

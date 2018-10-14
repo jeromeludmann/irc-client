@@ -1,8 +1,12 @@
-const coverageForPureParts = {
-  branches: 100,
-  functions: 100,
-  lines: 100,
-  statements: 100,
+const REQUIRED_COVERAGE = 80
+
+function getCoverage(coverage) {
+  return {
+    branches: coverage,
+    functions: coverage,
+    lines: coverage,
+    statements: coverage,
+  }
 }
 
 module.exports = {
@@ -19,15 +23,11 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}'],
   coverageThreshold: {
-    // global: {
-    //   branches: 50,
-    //   functions: 50,
-    //   lines: 50,
-    //   statements: 50
-    // },
-    './src/actions/': coverageForPureParts,
-    './src/views/': coverageForPureParts,
-    './src/state/': coverageForPureParts,
+    // global: getCoverage(REQUIRED_COVERAGE),
+    './src/actions/': getCoverage(REQUIRED_COVERAGE),
+    './src/views/': getCoverage(REQUIRED_COVERAGE),
+    './src/state/': getCoverage(REQUIRED_COVERAGE),
+    // './src/effects/': getCoverage(REQUIRED_COVERAGE),
   },
   verbose: true,
 }

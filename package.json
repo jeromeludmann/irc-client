@@ -40,6 +40,7 @@
     "@types/react": "^16.3.14",
     "@types/react-dom": "^16.0.5",
     "@types/react-redux": "^6.0.0",
+    "circular-dependency-plugin": "^5.0.2",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "jest": "^23.4.1",
@@ -52,12 +53,13 @@
     "webpack-cli": "^2.1.4"
   },
   "dependencies": {
-    "electron": "^2.0.9",
-    "react": "^16.5.1",
-    "react-dom": "^16.5.1",
+    "electron": "^2.0.11",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
     "react-redux": "^5.0.7",
-    "redux": "^4.0.0",
+    "redux": "^4.0.1",
+    "redux-saga": "^0.16.0",
     "reselect": "^3.0.1",
-    "styled-components": "^3.4.6"
+    "styled-components": "^3.4.10"
   }
 }
