@@ -5,10 +5,10 @@ import { takeEvery, put } from 'redux-saga/effects'
 import { disconnectFromServer } from '@app/actions/socket'
 
 export function* ui() {
-  yield takeEvery(CLOSE_WINDOW, closeWindow)
+  yield takeEvery(CLOSE_WINDOW, closeWindowProperly)
 }
 
-function* closeWindow(action: CloseWindowAction) {
+export function* closeWindowProperly(action: CloseWindowAction) {
   if (isChannel(action.route.bufferKey)) {
     const channel = action.route.bufferKey
     return yield put(sendPart(action.route.serverKey, channel))
