@@ -43,7 +43,7 @@ export interface PrintHelpAboutCommandAction
   payload: { command: Command & { name: string } }
 }
 
-export const commands: CommandRegistry = {
+export const commandRegistry: CommandRegistry = {
   close: {
     description: 'Closes the current window',
     syntax: '',
@@ -63,11 +63,11 @@ export const commands: CommandRegistry = {
         commandName = commandName.toLowerCase()
       }
 
-      if (commandName && commandName in commands) {
+      if (commandName && commandName in commandRegistry) {
         return {
           type: PRINT_HELP_ABOUT_COMMAND,
           payload: {
-            command: { ...commands[commandName], name: commandName },
+            command: { ...commandRegistry[commandName], name: commandName },
           },
           route: { ...route, bufferKey: BufferKey.ACTIVE },
         }
@@ -75,7 +75,7 @@ export const commands: CommandRegistry = {
 
       return {
         type: PRINT_HELP_BY_DEFAULT,
-        payload: { commands },
+        payload: { commands: commandRegistry },
         route: { ...route, bufferKey: BufferKey.STATUS },
       }
     },
@@ -152,6 +152,6 @@ export const commands: CommandRegistry = {
 }
 
 // aliases
-commands.connect = commands.server
-commands.disconnect = commands.quit
-commands.quote = commands.raw
+commandRegistry.connect = commandRegistry.server
+commandRegistry.disconnect = commandRegistry.quit
+commandRegistry.quote = commandRegistry.raw
