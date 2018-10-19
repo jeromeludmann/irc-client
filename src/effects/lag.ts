@@ -4,20 +4,17 @@ import {
   ReceivePongFromServerAction,
 } from '@app/actions/messages/incoming'
 import { updateServerLag } from '@app/actions/ui'
+import { computeLag } from '@app/utils/lag'
 
 export function* lag() {
-  yield takeEvery(RECEIVE_PONG_FROM_SERVER, receivePong)
+  yield takeEvery(RECEIVE_PONG_FROM_SERVER, computeServerLag)
 }
 
-function* receivePong(action: ReceivePongFromServerAction) {
+export function* computeServerLag(action: ReceivePongFromServerAction) {
   console.log('receivePong: started', action)
 
-  const time: number = yield* computeServerLag(action.payload.key)
+  const time: number = yield call(computeLag, action.payload.key)
   yield put(updateServerLag(action.route.serverKey, time))
 
   console.log('receivePong: ended', action)
-}
-
-function* computeServerLag(pongTime: number) {
-  return yield call(() => Promise.resolve(Date.now() - pongTime))
 }
