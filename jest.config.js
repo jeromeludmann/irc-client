@@ -27,7 +27,7 @@ module.exports = {
     './src/actions/': getCoverage(REQUIRED_COVERAGE),
     './src/views/': getCoverage(REQUIRED_COVERAGE),
     './src/state/': getCoverage(REQUIRED_COVERAGE),
-    // './src/effects/': getCoverage(REQUIRED_COVERAGE),
+    './src/effects/': getCoverage(REQUIRED_COVERAGE),
   },
   verbose: true,
 }
