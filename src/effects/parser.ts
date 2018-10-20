@@ -8,7 +8,7 @@ export function* parser() {
   yield takeEvery(RAW_MESSAGES_RECEIVED, parseRawMessages)
 }
 
-function* parseRawMessages(action: RawMessagesAction) {
+export function* parseRawMessages(action: RawMessagesAction) {
   const {
     payload: { messages },
     route: { serverKey },
@@ -16,8 +16,11 @@ function* parseRawMessages(action: RawMessagesAction) {
 
   for (const rawMessage of messages) {
     const { prefix, command, params } = parseMessage(rawMessage)
+
     if (command in messageReceivers) {
       yield put(messageReceivers[command](serverKey, prefix, params))
+    } else {
+      console.log(`Unknown command: ${command}`)
     }
   }
 }
@@ -97,5 +100,5 @@ function parsePrefix(prefix: string): Prefix {
 }
 
 function parseTags(tags: string): Tags {
-  return tags.indexOf(';') > -1 ? tags.split(';') : [tags]
+  return tags.includes(';') ? tags.split(';') : [tags]
 }
