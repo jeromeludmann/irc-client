@@ -4,7 +4,7 @@ import { messageReceivers } from '@app/actions/messages/incoming'
 import { GenericMessage, Prefix, Tags } from '@app/utils/Message'
 import { IRC_MESSAGE_LENGTH } from '@app/utils/helpers'
 
-export function* parser() {
+export function* watch() {
   yield takeEvery(RAW_MESSAGES_RECEIVED, parseRawMessages)
 }
 

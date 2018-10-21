@@ -1,19 +1,19 @@
 import { takeEvery, put } from 'redux-saga/effects'
-import { parser, parseRawMessages } from '../parser'
+import * as ParserEffects from '../parser'
 import { RAW_MESSAGES_RECEIVED, receiveRawMessages } from '@app/actions/socket'
 import { messageReceivers } from '@app/actions/messages/incoming'
 
 describe('parser effects', () => {
-  const gen = parser()
+  const watch = ParserEffects.watch()
 
   it('should watch RAW_MESSAGES_RECEIVED', () => {
-    expect(gen.next().value).toEqual(
-      takeEvery(RAW_MESSAGES_RECEIVED, parseRawMessages),
+    expect(watch.next().value).toEqual(
+      takeEvery(RAW_MESSAGES_RECEIVED, ParserEffects.parseRawMessages),
     )
   })
 
   it('should be done', () => {
-    expect(gen.next().done).toBeTruthy()
+    expect(watch.next().done).toBeTruthy()
   })
 })
 
@@ -26,29 +26,31 @@ describe('parse raw messages', () => {
     '@aaa=bbb;ccc;example.com/ddd=eee :nick!user@host PRIVMSG #channel :hello with many tags',
     ':nick!user@host PART #channel :goodbye',
   ]
-  const gen = parseRawMessages(receiveRawMessages('serverKey', rawMessages))
+  const parseRawMessages = ParserEffects.parseRawMessages(
+    receiveRawMessages('serverKey', rawMessages),
+  )
   const user = { nick: 'nick', user: 'user', host: 'host' }
 
   it('should receive PING message', () => {
-    expect(gen.next().value).toEqual(
+    expect(parseRawMessages.next().value).toEqual(
       put(messageReceivers.PING('serverKey', undefined, ['abcdefghij'])),
     )
   })
 
   it('should receive JOIN message', () => {
-    expect(gen.next().value).toEqual(
+    expect(parseRawMessages.next().value).toEqual(
       put(messageReceivers.JOIN('serverKey', user, ['#channel'])),
     )
   })
 
   it('should receive PRIVMSG message', () => {
-    expect(gen.next().value).toEqual(
+    expect(parseRawMessages.next().value).toEqual(
       put(messageReceivers.PRIVMSG('serverKey', user, ['#channel', 'hello'])),
     )
   })
 
   it('should receive PRIVMSG message with one tag', () => {
-    expect(gen.next().value).toEqual(
+    expect(parseRawMessages.next().value).toEqual(
       put(
         messageReceivers.PRIVMSG('serverKey', user, [
           '#channel',
@@ -59,7 +61,7 @@ describe('parse raw messages', () => {
   })
 
   it('should receive PRIVMSG message with many tags', () => {
-    expect(gen.next().value).toEqual(
+    expect(parseRawMessages.next().value).toEqual(
       put(
         messageReceivers.PRIVMSG('serverKey', user, [
           '#channel',
@@ -70,13 +72,13 @@ describe('parse raw messages', () => {
   })
 
   it('should receive PART message', () => {
-    expect(gen.next().value).toEqual(
+    expect(parseRawMessages.next().value).toEqual(
       put(messageReceivers.PART('serverKey', user, ['#channel', 'goodbye'])),
     )
   })
 
   it('should be done', () => {
-    expect(gen.next().done).toBeTruthy()
+    expect(parseRawMessages.next().done).toBeTruthy()
   })
 })
 
@@ -88,10 +90,12 @@ describe('parse bad raw messages', () => {
     `:nick!user@host VERY_LONG_MESSAGE :${generateLongString()}`,
   ]
 
-  const gen = parseRawMessages(receiveRawMessages('serverKey', rawMessages))
+  const parseRawMessages = ParserEffects.parseRawMessages(
+    receiveRawMessages('serverKey', rawMessages),
+  )
 
   it('should not handle any messages and just be done', () => {
-    expect(gen.next().done).toBeTruthy()
+    expect(parseRawMessages.next().done).toBeTruthy()
   })
 })
 

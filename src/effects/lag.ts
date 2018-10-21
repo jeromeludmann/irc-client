@@ -6,7 +6,7 @@ import {
 import { updateServerLag } from '@app/actions/ui'
 import { computeLag } from '@app/utils/lag'
 
-export function* lag() {
+export function* watch() {
   yield takeEvery(RECEIVE_PONG_FROM_SERVER, computeServerLag)
 }
 

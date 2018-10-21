@@ -1,31 +1,31 @@
-import { effects } from '..'
+import * as RootEffects from '..'
 import { all, call } from 'redux-saga/effects'
-import { parser } from '../parser'
-import { socket } from '../socket'
-import { pingReply } from '../pingReply'
-import { register } from '../register'
-import { command } from '../command'
-import { lag } from '../lag'
-import { ui } from '../ui'
+import * as SocketEffects from '@app/effects/socket'
+import * as ParserEffects from '@app/effects/parser'
+import * as RegisterEffects from '@app/effects/register'
+import * as PingReplyEffects from '@app/effects/pingReply'
+import * as CommandEffects from '@app/effects/command'
+import * as UiEffects from '@app/effects/ui'
+import * as LagEffects from '@app/effects/lag'
 
 describe('root effects', () => {
-  const gen = effects()
+  const watch = RootEffects.watch()
 
   it('should run all effects', () => {
-    expect(gen.next().value).toEqual(
+    expect(watch.next().value).toEqual(
       all([
-        call(parser),
-        call(socket),
-        call(pingReply),
-        call(register),
-        call(command),
-        call(lag),
-        call(ui),
+        call(ParserEffects.watch),
+        call(SocketEffects.watch),
+        call(PingReplyEffects.watch),
+        call(RegisterEffects.watch),
+        call(CommandEffects.watch),
+        call(LagEffects.watch),
+        call(UiEffects.watch),
       ]),
     )
   })
 
   it('should be done', () => {
-    expect(gen.next().done).toBeTruthy()
+    expect(watch.next().done).toBeTruthy()
   })
 })

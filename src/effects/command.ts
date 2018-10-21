@@ -5,7 +5,7 @@ import { commandRegistry } from '@app/actions/commands'
 import { getRoute } from '@app/state/route/selectors'
 import { RouteState } from '@app/state/route/reducer'
 
-export function* command() {
+export function* watch() {
   yield takeEvery(ENTER_INPUT_VALUE, parseCommand)
 }
 

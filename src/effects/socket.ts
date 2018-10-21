@@ -10,7 +10,7 @@ import { getServerKeys } from '@app/state/root/selectors'
 import * as SocketUtils from '@app/utils/sockets'
 import { generateKey } from '@app/utils/generateKey'
 
-export function* socket() {
+export function* watch() {
   yield takeEvery(SocketActions.CONNECT_TO_SERVER, connectToServer)
   yield takeEvery(SocketActions.SEND_RAW_MESSAGE, sendMessage)
   yield takeEvery(SocketActions.DISCONNECT_FROM_SERVER, disconnectFromServer)

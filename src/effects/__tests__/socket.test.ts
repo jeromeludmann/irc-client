@@ -11,22 +11,22 @@ import { addNewServer } from '@app/actions/ui'
 import { BufferKey } from '@app/utils/Route'
 
 describe('server effects', () => {
-  const gen = ServerEffects.socket()
+  const watch = ServerEffects.watch()
 
   it('should watch CONNECT_TO_SERVER', () => {
-    expect(gen.next().value).toEqual(
+    expect(watch.next().value).toEqual(
       takeEvery(SocketActions.CONNECT_TO_SERVER, ServerEffects.connectToServer),
     )
   })
 
   it('should watch SEND_RAW_MESSAGE', () => {
-    expect(gen.next().value).toEqual(
+    expect(watch.next().value).toEqual(
       takeEvery(SocketActions.SEND_RAW_MESSAGE, ServerEffects.sendMessage),
     )
   })
 
   it('should watch DISCONNECT_FROM_SERVER', () => {
-    expect(gen.next().value).toEqual(
+    expect(watch.next().value).toEqual(
       takeEvery(
         SocketActions.DISCONNECT_FROM_SERVER,
         ServerEffects.disconnectFromServer,
@@ -35,7 +35,7 @@ describe('server effects', () => {
   })
 
   it('should be done', () => {
-    expect(gen.next().done).toBeTruthy()
+    expect(watch.next().done).toBeTruthy()
   })
 })
 
@@ -43,14 +43,14 @@ describe('connect to server', () => {
   const host = 'irc.network'
   const port = 6667
 
-  const gen = ServerEffects.connectToServer(
+  const connectToServer = ServerEffects.connectToServer(
     SocketActions.connectToServer('serverKey', host, port),
   )
 
   const serverKey = 'serverKey'
 
   it('should connect socket', () => {
-    expect(gen.next(serverKey).value).toEqual(
+    expect(connectToServer.next(serverKey).value).toEqual(
       call(SocketUtils.connect, serverKey, host, port),
     )
   })
@@ -58,7 +58,7 @@ describe('connect to server', () => {
   const socket = new Socket()
 
   it('should create socket channel', () => {
-    expect(gen.next(socket).value).toEqual(
+    expect(connectToServer.next(socket).value).toEqual(
       call(ServerEffects.createSocketChannel, serverKey, socket),
     )
   })
@@ -66,48 +66,54 @@ describe('connect to server', () => {
   const socketChannel = ServerEffects.createSocketChannel(serverKey, socket)
 
   it('should watch action from socket channel', () => {
-    expect(gen.next(socketChannel).value).toEqual(take(socketChannel))
+    expect(connectToServer.next(socketChannel).value).toEqual(
+      take(socketChannel),
+    )
   })
 
   it('should dispatch END action', () => {
-    expect(gen.next(END).value).toEqual(put(END))
+    expect(connectToServer.next(END).value).toEqual(put(END))
   })
 
   it('should watch END action from socket channel', () => {
-    expect(gen.next().value).toEqual(take(socketChannel))
+    expect(connectToServer.next().value).toEqual(take(socketChannel))
   })
 
   it('should remove socket', () => {
-    expect(gen.return!(END).value).toEqual(call(SocketUtils.remove, serverKey))
+    expect(connectToServer.return!(END).value).toEqual(
+      call(SocketUtils.remove, serverKey),
+    )
   })
 
   it('should be done', () => {
-    expect(gen.next().value).toBeTruthy()
+    expect(connectToServer.next().value).toBeTruthy()
   })
 })
 
 describe('connect to server (with new connection)', () => {
-  const gen = ServerEffects.connectToServer(
+  const connectToServer = ServerEffects.connectToServer(
     SocketActions.connectToServer('serverKey', 'irc.network', 6667, true),
   )
 
   it('should generate server key', () => {
-    expect(gen.next().value).toEqual(call(ServerEffects.getNewServerKey))
+    expect(connectToServer.next().value).toEqual(
+      call(ServerEffects.getNewServerKey),
+    )
   })
 })
 
 describe('send message (QUIT)', () => {
   const action = OutgoingMessageActions.sendQuit('serverKey', 'goodbye')
-  const gen = ServerEffects.sendMessage(action)
+  const sendMessage = ServerEffects.sendMessage(action)
 
   it('should send message', () => {
-    expect(gen.next().value).toEqual(
+    expect(sendMessage.next().value).toEqual(
       call(SocketUtils.send, action.route.serverKey, action.payload.raw),
     )
   })
 
   it('should be done', () => {
-    expect(gen.next().done).toBeTruthy()
+    expect(sendMessage.next().done).toBeTruthy()
   })
 })
 
@@ -118,29 +124,29 @@ describe('send message (PRIVMSG)', () => {
     'hello',
   )
 
-  const gen = ServerEffects.sendMessage(action)
+  const sendMessage = ServerEffects.sendMessage(action)
 
   it('should send message', () => {
-    expect(gen.next().value).toEqual(
+    expect(sendMessage.next().value).toEqual(
       call(SocketUtils.send, action.route.serverKey, action.payload.raw),
     )
   })
 
   it('should dispatch embedded action if needed', () => {
-    expect(gen.next().value).toEqual(put(action.embeddedAction!))
+    expect(sendMessage.next().value).toEqual(put(action.embeddedAction!))
   })
 
   it('should be done', () => {
-    expect(gen.next().done).toBeTruthy()
+    expect(sendMessage.next().done).toBeTruthy()
   })
 })
 
 describe('disconnect from server', () => {
   const action = SocketActions.disconnectFromServer('serverKey', 'goodbye')
-  const gen = ServerEffects.disconnectFromServer(action)
+  const disconnectFromServer = ServerEffects.disconnectFromServer(action)
 
   it('should send QUIT message', () => {
-    expect(gen.next().value).toEqual(
+    expect(disconnectFromServer.next().value).toEqual(
       put(
         OutgoingMessageActions.sendQuit(
           action.route.serverKey,
@@ -151,27 +157,27 @@ describe('disconnect from server', () => {
   })
 
   it('should close connection', () => {
-    expect(gen.next().value).toEqual(
+    expect(disconnectFromServer.next().value).toEqual(
       call(SocketUtils.close, action.route.serverKey),
     )
   })
 
   it('should be done', () => {
-    expect(gen.next().done).toBeTruthy()
+    expect(disconnectFromServer.next().done).toBeTruthy()
   })
 })
 
 describe('get new server key', () => {
-  const gen = ServerEffects.getNewServerKey()
+  const getNewServerKey = ServerEffects.getNewServerKey()
 
   it('should get server keys from state', () => {
-    expect(gen.next().value).toEqual(select(getServerKeys))
+    expect(getNewServerKey.next().value).toEqual(select(getServerKeys))
   })
 
   const existingServerKeys = ['serverKey']
 
   it('should generate key', () => {
-    expect(gen.next(existingServerKeys).value).toEqual(
+    expect(getNewServerKey.next(existingServerKeys).value).toEqual(
       call(generateKey, existingServerKeys),
     )
   })
@@ -179,12 +185,12 @@ describe('get new server key', () => {
   const serverKey = 'serverKey2'
 
   it('should add new server slot', () => {
-    expect(gen.next(serverKey).value).toEqual(
+    expect(getNewServerKey.next(serverKey).value).toEqual(
       put(addNewServer({ serverKey, bufferKey: BufferKey.NONE })),
     )
   })
 
   it('should be done', () => {
-    expect(gen.next().done).toBeTruthy()
+    expect(getNewServerKey.next().done).toBeTruthy()
   })
 })

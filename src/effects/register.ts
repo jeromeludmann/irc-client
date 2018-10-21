@@ -7,7 +7,7 @@ import { sendUser, sendNick } from '@app/actions/messages/outgoing'
 import { ServerState } from '@app/state/server/reducer'
 import { getServerSelector } from '@app/state/server/selectors'
 
-export function* register() {
+export function* watch() {
   yield takeEvery(CONNECTION_ESTABLISHED, registerToServer)
 }
 

@@ -5,7 +5,7 @@ import {
 } from '@app/actions/messages/incoming'
 import { sendPongToServer } from '@app/actions/messages/outgoing'
 
-export function* pingReply() {
+export function* watch() {
   yield takeEvery(RECEIVE_PING_FROM_SERVER, replyWithPong)
 }
 
