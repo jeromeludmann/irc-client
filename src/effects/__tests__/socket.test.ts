@@ -1,14 +1,10 @@
-import { Socket } from 'net'
-import { END } from 'redux-saga'
-import { takeEvery, call, take, put, select } from 'redux-saga/effects'
+import { eventChannel } from 'redux-saga'
+import { takeEvery, call, take, put } from 'redux-saga/effects'
 import * as ServerEffects from '../socket'
 import * as SocketActions from '@app/actions/socket'
 import * as OutgoingMessageActions from '@app/actions/messages/outgoing'
 import * as SocketUtils from '@app/utils/sockets'
-import { getServerKeys } from '@app/state/root/selectors'
-import { generateKey } from '@app/utils/generateKey'
-import { addNewServer } from '@app/actions/ui'
-import { BufferKey } from '@app/utils/Route'
+import { ADD_NEW_SERVER } from '@app/actions/ui'
 
 describe('server effects', () => {
   const watch = ServerEffects.watch()
@@ -55,38 +51,18 @@ describe('connect to server', () => {
     )
   })
 
-  const socket = new Socket()
-
-  it('should create socket channel', () => {
-    expect(connectToServer.next(socket).value).toEqual(
-      call(ServerEffects.createSocketChannel, serverKey, socket),
-    )
+  const socketChannel = eventChannel(() => () => {
+    /* mocked */
   })
-
-  const socketChannel = ServerEffects.createSocketChannel(serverKey, socket)
 
   it('should watch action from socket channel', () => {
     expect(connectToServer.next(socketChannel).value).toEqual(
-      take(socketChannel),
-    )
-  })
-
-  it('should dispatch END action', () => {
-    expect(connectToServer.next(END).value).toEqual(put(END))
-  })
-
-  it('should watch END action from socket channel', () => {
-    expect(connectToServer.next().value).toEqual(take(socketChannel))
-  })
-
-  it('should remove socket', () => {
-    expect(connectToServer.return!(END).value).toEqual(
-      call(SocketUtils.remove, serverKey),
+      takeEvery(socketChannel, put),
     )
   })
 
   it('should be done', () => {
-    expect(connectToServer.next().value).toBeTruthy()
+    expect(connectToServer.next().done).toBeTruthy()
   })
 })
 
@@ -95,10 +71,8 @@ describe('connect to server (with new connection)', () => {
     SocketActions.connectToServer('serverKey', 'irc.network', 6667, true),
   )
 
-  it('should generate server key', () => {
-    expect(connectToServer.next().value).toEqual(
-      call(ServerEffects.getNewServerKey),
-    )
+  it('should wait for ADD_NEW_SERVER', () => {
+    expect(connectToServer.next().value).toEqual(take(ADD_NEW_SERVER))
   })
 })
 
@@ -164,33 +138,5 @@ describe('disconnect from server', () => {
 
   it('should be done', () => {
     expect(disconnectFromServer.next().done).toBeTruthy()
-  })
-})
-
-describe('get new server key', () => {
-  const getNewServerKey = ServerEffects.getNewServerKey()
-
-  it('should get server keys from state', () => {
-    expect(getNewServerKey.next().value).toEqual(select(getServerKeys))
-  })
-
-  const existingServerKeys = ['serverKey']
-
-  it('should generate key', () => {
-    expect(getNewServerKey.next(existingServerKeys).value).toEqual(
-      call(generateKey, existingServerKeys),
-    )
-  })
-
-  const serverKey = 'serverKey2'
-
-  it('should add new server slot', () => {
-    expect(getNewServerKey.next(serverKey).value).toEqual(
-      put(addNewServer({ serverKey, bufferKey: BufferKey.NONE })),
-    )
-  })
-
-  it('should be done', () => {
-    expect(getNewServerKey.next().done).toBeTruthy()
   })
 })

@@ -61,7 +61,6 @@ function createSocketChannel(serverKey: string) {
       buffer += data
       const messages = buffer.split(CRLF)
       buffer = messages.pop() || ''
-
       emit(SocketActions.receiveRawMessages(serverKey, messages))
     })
 
@@ -85,12 +84,8 @@ function createSocketChannel(serverKey: string) {
 
     return () => {
       if (serverKey in sockets) {
-        console.log('end of socket channel...', serverKey)
         sockets[serverKey].end()
-
-        console.log('>> deleting socket...', serverKey)
         delete sockets[serverKey]
-        console.log('>> deleting socket OK', serverKey)
       }
     }
   })

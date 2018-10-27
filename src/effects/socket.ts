@@ -1,12 +1,10 @@
 import { Channel } from 'redux-saga'
-import { takeEvery, call, put, select } from 'redux-saga/effects'
+import { takeEvery, call, put, take } from 'redux-saga/effects'
 import * as SocketActions from '@app/actions/socket'
 import * as OutgoingMessageActions from '@app/actions/messages/outgoing'
-import { addNewServer } from '@app/actions/ui'
-import { BufferKey, RoutedAction } from '@app/utils/Route'
-import { getServerKeys } from '@app/state/root/selectors'
+import { ADD_NEW_SERVER, AddNewServerAction } from '@app/actions/ui'
+import { RoutedAction } from '@app/utils/Route'
 import * as SocketUtils from '@app/utils/sockets'
-import { generateKey } from '@app/utils/generateKey'
 
 export function* watch() {
   yield takeEvery(SocketActions.CONNECT_TO_SERVER, connectToServer)
@@ -22,7 +20,7 @@ export function* connectToServer(action: SocketActions.ConnectToServerAction) {
   } = action
 
   const serverKey = newConnection
-    ? yield call(getNewServerKey)
+    ? ((yield take(ADD_NEW_SERVER)) as AddNewServerAction).route.serverKey
     : action.route.serverKey
 
   const socketChannel: Channel<RoutedAction> = yield call(
@@ -42,6 +40,7 @@ export function* sendMessage(
 
   yield call(SocketUtils.send, action.route.serverKey, action.payload.raw)
 
+  // TODO move to another saga
   if (action.embeddedAction !== undefined) {
     yield put(action.embeddedAction)
   }
@@ -63,11 +62,4 @@ export function* disconnectFromServer(
   yield call(SocketUtils.close, action.route.serverKey)
 
   console.log('disconnectFromServer: ended', action)
-}
-
-export function* getNewServerKey() {
-  const existingServerKeys: string[] = yield select(getServerKeys)
-  const serverKey: string = yield call(generateKey, existingServerKeys)
-  yield put(addNewServer({ serverKey, bufferKey: BufferKey.NONE }))
-  return serverKey
 }
