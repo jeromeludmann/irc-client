@@ -1,11 +1,9 @@
-import { Socket } from 'net'
-import { eventChannel, END } from 'redux-saga'
-import { takeEvery, call, put, take, select } from 'redux-saga/effects'
+import { Channel } from 'redux-saga'
+import { takeEvery, call, put, select } from 'redux-saga/effects'
 import * as SocketActions from '@app/actions/socket'
 import * as OutgoingMessageActions from '@app/actions/messages/outgoing'
-import { CRLF } from '@app/utils/helpers'
 import { addNewServer } from '@app/actions/ui'
-import { BufferKey } from '@app/utils/Route'
+import { BufferKey, RoutedAction } from '@app/utils/Route'
 import { getServerKeys } from '@app/state/root/selectors'
 import * as SocketUtils from '@app/utils/sockets'
 import { generateKey } from '@app/utils/generateKey'
@@ -27,19 +25,14 @@ export function* connectToServer(action: SocketActions.ConnectToServerAction) {
     ? yield call(getNewServerKey)
     : action.route.serverKey
 
-  const socket: Socket = yield call(SocketUtils.connect, serverKey, host, port)
-  const socketChannel = yield call(createSocketChannel, serverKey, socket)
+  const socketChannel: Channel<RoutedAction> = yield call(
+    SocketUtils.connect,
+    serverKey,
+    host,
+    port,
+  )
 
-  try {
-    while (true) {
-      const socketAction = yield take(socketChannel)
-      yield put(socketAction)
-    }
-  } finally {
-    yield call(SocketUtils.remove, serverKey)
-
-    console.log('connectToServer: ended', action)
-  }
+  yield takeEvery(socketChannel, put)
 }
 
 export function* sendMessage(
@@ -77,49 +70,4 @@ export function* getNewServerKey() {
   const serverKey: string = yield call(generateKey, existingServerKeys)
   yield put(addNewServer({ serverKey, bufferKey: BufferKey.NONE }))
   return serverKey
-}
-
-export function createSocketChannel(serverKey: string, socket: Socket) {
-  return eventChannel(emit => {
-    let buffer = ''
-
-    socket.on('lookup', (error, address, family, host) => {
-      emit(SocketActions.lookup(serverKey, error, address, family, host))
-    })
-
-    socket.on('connect', () => {
-      emit(SocketActions.setConnectionEstablished(serverKey))
-    })
-
-    socket.on('data', data => {
-      buffer += data
-      const messages = buffer.split(CRLF)
-      buffer = messages.pop() || ''
-
-      emit(SocketActions.receiveRawMessages(serverKey, messages))
-    })
-
-    socket.on('close', hadError => {
-      emit(SocketActions.setConnectionClosed(serverKey, hadError))
-      emit(END)
-    })
-
-    socket.on('error', ({ name, message, stack }) => {
-      emit(SocketActions.setConnectionFailed(serverKey, name, message, stack))
-      emit(END)
-    })
-
-    socket.on('end', () => {
-      console.warn('unhandled socket end')
-    })
-
-    socket.on('timeout', () => {
-      console.warn('unhandled socket timeout')
-    })
-
-    return () => {
-      console.log('end of socket channel', serverKey)
-      socket.end()
-    }
-  })
 }
