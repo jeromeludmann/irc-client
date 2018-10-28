@@ -191,7 +191,7 @@ const routeActionToBuffers: BufferRouterReducer = (
 
   if (
     action.route.bufferKey in buffers ||
-    [RECEIVE_PRIVMSG, RECEIVE_JOIN].indexOf(action.type) > -1
+    [RECEIVE_PRIVMSG, RECEIVE_JOIN].includes(action.type)
   ) {
     return {
       ...buffers,

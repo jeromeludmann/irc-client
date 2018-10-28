@@ -1,53 +1,65 @@
-import { Socket, SocketConnectOpts } from 'net'
-import { call } from 'redux-saga/effects'
-import { IRC_MESSAGE_LENGTH, CRLF } from '@app/utils/helpers'
+import { Channel } from 'redux-saga'
+import { takeEvery, call, put, take } from 'redux-saga/effects'
+import * as SocketActions from '@app/actions/socket'
+import * as OutgoingMessageActions from '@app/actions/messages/outgoing'
+import { ADD_NEW_SERVER, AddNewServerAction } from '@app/actions/ui'
+import { RoutedAction } from '@app/utils/Route'
+import * as SocketUtils from '@app/utils/sockets'
 
-interface SocketMap {
-  [serverKey: string]: Socket
+export function* watch() {
+  yield takeEvery(SocketActions.CONNECT_TO_SERVER, connectToServer)
+  yield takeEvery(SocketActions.SEND_RAW_MESSAGE, sendMessage)
+  yield takeEvery(SocketActions.DISCONNECT_FROM_SERVER, disconnectFromServer)
 }
 
-const socketMap: SocketMap = {}
+export function* connectToServer(action: SocketActions.ConnectToServerAction) {
+  console.log('connectToServer: started', action)
 
-export function* connect(serverKey: string, host: string, port: number) {
-  const socket: Socket = yield* get(serverKey)
-  return yield call(
-    (options: SocketConnectOpts) => Promise.resolve(socket.connect(options)),
-    { host, port },
+  const {
+    payload: { host, port, newConnection },
+  } = action
+
+  const serverKey = newConnection
+    ? ((yield take(ADD_NEW_SERVER)) as AddNewServerAction).route.serverKey
+    : action.route.serverKey
+
+  const socketChannel: Channel<RoutedAction> = yield call(
+    SocketUtils.connect,
+    serverKey,
+    host,
+    port,
   )
+
+  yield takeEvery(socketChannel, put)
 }
 
-export function* send(serverKey: string, message: string) {
-  const socket: Socket = yield* get(serverKey)
-  yield call(
-    str => Promise.resolve(socket.write(str)),
-    message.slice(0, IRC_MESSAGE_LENGTH) + CRLF,
-  )
-}
+export function* sendMessage(
+  action: SocketActions.SendRawMessageAction<OutgoingMessageActions.SendMessageAction | void>,
+) {
+  console.log('sendRawMessage: started', action)
 
-export function* end(serverKey: string) {
-  const socket: Socket = yield* get(serverKey)
-  yield call(() => Promise.resolve(socket.end()))
-}
+  yield call(SocketUtils.send, action.route.serverKey, action.payload.raw)
 
-export function* get(serverKey: string) {
-  const sockets: SocketMap = yield call(() => Promise.resolve(socketMap))
-
-  return serverKey in sockets
-    ? yield call(() => Promise.resolve(sockets[serverKey]))
-    : yield call(() => {
-        sockets[serverKey] = new Socket()
-        sockets[serverKey].setKeepAlive(true, 5000)
-        return Promise.resolve(sockets[serverKey])
-      })
-}
-
-export function* remove(serverKey: string) {
-  const sockets: SocketMap = yield call(() => Promise.resolve(socketMap))
-
-  if (serverKey in sockets) {
-    yield call(() => {
-      delete sockets[serverKey]
-      return Promise.resolve()
-    })
+  // TODO move to another saga
+  if (action.embeddedAction !== undefined) {
+    yield put(action.embeddedAction)
   }
+
+  console.log('sendRawMessage: ended', action)
+}
+
+export function* disconnectFromServer(
+  action: SocketActions.DisconnectFromServerAction,
+) {
+  console.log('disconnectFromServer: started', action)
+
+  yield put(
+    OutgoingMessageActions.sendQuit(
+      action.route.serverKey,
+      action.payload.quitMessage,
+    ),
+  )
+  yield call(SocketUtils.close, action.route.serverKey)
+
+  console.log('disconnectFromServer: ended', action)
 }
