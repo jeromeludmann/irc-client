@@ -3,7 +3,7 @@ import {
   serverInitialState,
   ServerState,
 } from '@app/state/server/reducer'
-import { closeWindow } from '@app/actions/ui'
+import { closeWindow, updateServerLag } from '@app/actions/ui'
 import { messageReceivers } from '@app/actions/messages/incoming'
 import { User } from '@app/utils/Message'
 import { BufferKey } from '@app/utils/Route'
@@ -124,7 +124,7 @@ describe('reduce server state', () => {
     expect(
       reduceServer(
         initialState,
-        messageReceivers.PONG('serverKey', 'server', ['server', 'key']),
+        updateServerLag('serverKey', 1536211245164),
         extraStates,
       ),
     ).toMatchSnapshot()

@@ -1,6 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`select root state should select servers 1`] = `
+exports[`getServerKeys() should get server keys 1`] = `
+Array [
+  "serverKey",
+]
+`;
+
+exports[`getServers() should get servers 1`] = `
 Object {
   "serverKey": Object {
     "buffers": Object {

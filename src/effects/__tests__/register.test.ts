@@ -4,7 +4,7 @@ import {
   setConnectionEstablished,
 } from '@app/actions/socket'
 import { select, put, takeEvery, call } from 'redux-saga/effects'
-import { getServerSelector } from '@app/state/server/selectors'
+import { getServerFactory } from '@app/state/server/selectors'
 import { sendUser, sendNick } from '@app/actions/messages/outgoing'
 
 describe('register effects', () => {
@@ -29,12 +29,12 @@ describe('register to server', () => {
 
   it('should get "getServer" selector', () => {
     expect(registerToServer.next().value).toEqual(
-      call(getServerSelector, serverKey),
+      call(getServerFactory, serverKey),
     )
   })
 
   it('should get server state', () => {
-    const getServer = getServerSelector(serverKey)
+    const getServer = getServerFactory(serverKey)
     expect(registerToServer.next(getServer).value).toEqual(select(getServer))
   })
 

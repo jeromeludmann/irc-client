@@ -1,8 +1,14 @@
 import { rootInitialState } from '@app/state/root/reducer'
-import { getServers } from '@app/state/root/selectors'
+import { getServers, getServerKeys } from '@app/state/root/selectors'
 
-describe('select root state', () => {
-  it('should select servers', () => {
+describe('getServers()', () => {
+  it('should get servers', () => {
     expect(getServers(rootInitialState)).toMatchSnapshot()
+  })
+})
+
+describe('getServerKeys()', () => {
+  it('should get server keys', () => {
+    expect(getServerKeys(rootInitialState)).toMatchSnapshot()
   })
 })

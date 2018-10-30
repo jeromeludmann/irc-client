@@ -1,7 +1,7 @@
 import { reduceRoot, rootInitialState } from '@app/state/root/reducer'
 import { closeWindow } from '@app/actions/ui'
 import { serverInitialState } from '@app/state/server/reducer'
-import { BufferKey } from '@app/utils/Route'
+import { BufferKey, RoutedAction } from '@app/utils/Route'
 import { connectToServer } from '@app/actions/socket'
 
 describe('reduce root state', () => {
@@ -48,8 +48,7 @@ describe('reduce root state', () => {
     expect(
       reduceRoot(undefined, {
         type: 'WHATEVER',
-        route: { serverKey: 'serverKey', bufferKey: '#channel' },
-      }),
+      } as RoutedAction),
     ).toMatchSnapshot()
   })
 })

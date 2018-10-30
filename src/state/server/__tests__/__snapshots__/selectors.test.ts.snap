@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`select server state should select buffers 1`] = `
+exports[`getBuffers() should get buffers 1`] = `
 Object {
   "@raw": Object {
     "activity": false,
@@ -29,7 +29,7 @@ Object {
 }
 `;
 
-exports[`select server state should select server 1`] = `
+exports[`getServerFactory() should get "getServer" selector 1`] = `
 Object {
   "buffers": Object {
     "@raw": Object {

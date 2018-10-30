@@ -1,12 +1,14 @@
-import { getServerSelector, getBuffers } from '@app/state/server/selectors'
+import { getServerFactory, getBuffers } from '@app/state/server/selectors'
 import { rootInitialState } from '@app/state/root/reducer'
 
-describe('select server state', () => {
-  it('should select server', () => {
-    expect(getServerSelector()(rootInitialState)).toMatchSnapshot()
+describe('getServerFactory()', () => {
+  it('should get "getServer" selector', () => {
+    expect(getServerFactory()(rootInitialState)).toMatchSnapshot()
   })
+})
 
-  it('should select buffers', () => {
+describe('getBuffers()', () => {
+  it('should get buffers', () => {
     expect(getBuffers()(rootInitialState)).toMatchSnapshot()
   })
 })

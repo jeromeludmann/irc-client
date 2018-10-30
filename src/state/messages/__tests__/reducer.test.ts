@@ -14,6 +14,7 @@ import { commandRegistry } from '@app/actions/commands'
 import { messageReceivers } from '@app/actions/messages/incoming'
 import { User } from '@app/utils/Message'
 import { sendPongToServer, sendPrivmsg } from '@app/actions/messages/outgoing'
+import { updateServerLag } from '@app/actions/ui'
 
 describe('reduce messages state', () => {
   const someone: User = { nick: 'someone', user: 'user', host: 'host' }
@@ -200,6 +201,16 @@ describe('reduce messages state', () => {
       reduceMessages(
         messagesInitialState,
         sendPrivmsg('serverKey', '#channel', 'hello').embeddedAction!,
+        extraStates,
+      ),
+    ).toMatchSnapshot()
+  })
+
+  it('should handle UPDATE_SERVER_LAG', () => {
+    expect(
+      reduceMessages(
+        messagesInitialState,
+        updateServerLag('serverKey', 1536211245164),
         extraStates,
       ),
     ).toMatchSnapshot()

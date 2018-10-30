@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect'
-import { getBuffer } from '@app/state/buffer/selectors'
+import { getBufferFactory } from '@app/state/buffer/selectors'
 import { Route } from '@app/utils/Route'
 
 export function getMessages(route?: Route) {
-  return createSelector(getBuffer(route), buffer => buffer.messages)
+  return createSelector(getBufferFactory(route), buffer => buffer.messages)
 }

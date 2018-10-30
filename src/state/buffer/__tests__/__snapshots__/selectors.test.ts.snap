@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`select buffer state should select buffer 1`] = `
+exports[`getBufferFactory() should get "getBuffer" selector 1`] = `
 Object {
   "activity": false,
   "input": Object {
@@ -14,3 +14,5 @@ Object {
   "messages": Array [],
 }
 `;
+
+exports[`getBufferFactory(route) should get "getBuffer" selector 1`] = `undefined`;

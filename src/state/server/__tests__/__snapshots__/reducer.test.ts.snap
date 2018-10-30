@@ -400,10 +400,12 @@ Object {
         },
         "value": "",
       },
-      "messages": Array [],
+      "messages": Array [
+        "Server lag: 1536211245164 ms",
+      ],
     },
   },
-  "lag": 0,
+  "lag": 1536211245164,
   "modes": Object {
     "available": Object {
       "channel": Array [],

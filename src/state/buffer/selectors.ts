@@ -3,7 +3,7 @@ import { getBuffers } from '@app/state/server/selectors'
 import { getRoute } from '@app/state/route/selectors'
 import { Route } from '@app/utils/Route'
 
-export function getBuffer(route?: Route) {
+export function getBufferFactory(route?: Route) {
   return createSelector(
     getBuffers(route ? route.serverKey : undefined),
     getRoute,

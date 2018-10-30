@@ -116,4 +116,10 @@ Array [
 ]
 `;
 
+exports[`reduce messages state should handle UPDATE_SERVER_LAG 1`] = `
+Array [
+  "Server lag: 1536211245164 ms",
+]
+`;
+
 exports[`reduce messages state should not handle anything 1`] = `Array []`;
