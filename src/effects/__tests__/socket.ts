@@ -7,7 +7,7 @@ import * as SocketUtils from '@app/utils/sockets'
 import { ADD_NEW_SERVER } from '@app/actions/ui'
 
 describe('server effects', () => {
-  const watch = ServerEffects.watch()
+  const watch = ServerEffects.socketHandler()
 
   it('should watch CONNECT_TO_SERVER', () => {
     expect(watch.next().value).toEqual(
