@@ -15,7 +15,7 @@ describe('root effects', () => {
     expect(watch.next().value).toEqual(
       all([
         call(ParserEffects.watch),
-        call(SocketEffects.watch),
+        call(SocketEffects.socketHandler),
         call(PingReplyEffects.watch),
         call(RegisterEffects.watch),
         call(CommandEffects.watch),
