@@ -53,7 +53,7 @@
     "webpack-cli": "^2.1.4"
   },
   "dependencies": {
-    "electron": "^2.0.12",
+    "electron": "^2.0.13",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-redux": "^5.1.0",
