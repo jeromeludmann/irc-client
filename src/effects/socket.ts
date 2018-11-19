@@ -1,7 +1,6 @@
 import { Socket } from 'net'
-import { eventChannel, END, Task } from 'redux-saga'
-import { fork, call, put, take } from 'redux-saga/effects'
-import * as OutgoingMessageActions from '@app/actions/messages/outgoing'
+import { eventChannel, END, buffers, Channel } from 'redux-saga'
+import { fork, call, put, take, race, actionChannel } from 'redux-saga/effects'
 import { ADD_NEW_SERVER, AddNewServerAction } from '@app/actions/ui'
 import * as SocketUtils from '@app/utils/sockets'
 import {
@@ -19,95 +18,154 @@ import {
 } from '@app/actions/socket'
 import { RoutedAction } from '@app/utils/Route'
 import { CRLF } from '@app/utils/helpers'
+import {
+  SEND_PRIVMSG,
+  sendQuit,
+  SendMessageAction,
+} from '@app/actions/messages/outgoing'
+import { createAntiFloodChannel } from './flood'
 
-export function* socketHandler() {
-  while (true) {
-    const action = yield take(CONNECT_TO_SERVER)
-    yield fork(connectToServer, action)
+export function* watchNewConnections() {
+  try {
+    console.log('[started] socket/watchNewConnections')
+
+    while (true) {
+      const action = yield take(CONNECT_TO_SERVER)
+      yield fork(connectToServer, action)
+    }
+  } finally {
+    console.log('[ended] socket/watchNewConnections')
   }
 }
 
 export function* connectToServer(action: ConnectToServerAction) {
-  console.log('connectToServer: started', action)
-
-  const {
-    payload: { host, port, newConnection },
-  } = action
-
-  const serverKey = newConnection
-    ? ((yield take(ADD_NEW_SERVER)) as AddNewServerAction).route.serverKey
-    : action.route.serverKey
-
-  const socket = yield call(SocketUtils.connect, host, port)
-
-  const tasks: Task[] = [
-    yield fork(sendMessage, socket, serverKey),
-    yield fork(disconnectFromServer, socket, serverKey),
-  ]
-
-  const socketChannel = yield call(createSocketChannel, serverKey, socket)
-
   try {
+    console.log('[started] socket/connectToServer')
+
+    const {
+      payload: { host, port, newConnection },
+    } = action
+
+    const serverKey = newConnection
+      ? ((yield take(ADD_NEW_SERVER)) as AddNewServerAction).route.serverKey
+      : action.route.serverKey
+
+    const socket = yield call(SocketUtils.connect, host, port)
+    yield fork(runSocketWorkers, serverKey, socket)
+  } finally {
+    console.log('[ended] socket/connectToServer')
+  }
+}
+
+export function* runSocketWorkers(serverKey: string, socket: Socket) {
+  try {
+    console.log('[started] socket/runSocketWorkers')
+
+    yield race({
+      e1: call(receiveMessages, serverKey, socket),
+      e2: call(sendMessages, serverKey, socket),
+      e3: call(disconnectFromServer, serverKey, socket),
+    })
+  } finally {
+    console.log('[ended] socket/runSocketWorkers')
+  }
+}
+
+const outgoingMessages: { [action: string]: { antiFlood: boolean } } = {
+  [SEND_PRIVMSG]: { antiFlood: true },
+  [SEND_RAW_MESSAGE]: { antiFlood: false },
+}
+
+export function* receiveMessages(serverKey: string, socket: Socket) {
+  try {
+    console.log('[started] socket/receiveMessages')
+
+    const socketChannel = yield call(createSocketChannel, serverKey, socket)
+
     while (true) {
       const socketAction = yield take(socketChannel)
       yield put(socketAction)
     }
   } finally {
-    tasks.forEach(task => task.cancel())
-    console.log('connectToServer: ended', action)
+    console.log('[ended] socket/receiveMessages')
   }
 }
 
-export function* sendMessage(socket: Socket, serverKey: string) {
-  console.log('sendMessage: started', serverKey)
-
-  const predicate = (a: RoutedAction) =>
-    a.type === SEND_RAW_MESSAGE && a.route.serverKey === serverKey
-
+export function* sendMessages(serverKey: string, socket: Socket) {
   try {
+    console.log('[started] socket/sendMessages')
+
+    const defaultMessageChannel = yield actionChannel(
+      (action: RoutedAction) =>
+        action.type in outgoingMessages &&
+        !outgoingMessages[action.type].antiFlood &&
+        action.route.serverKey === serverKey,
+
+      buffers.expanding(10),
+    )
+
+    const antiFloodMessageChannel = yield createAntiFloodChannel(
+      (a: SendMessageAction) =>
+        a.type in outgoingMessages &&
+        outgoingMessages[a.type].antiFlood &&
+        a.route.serverKey === serverKey,
+
+      {
+        threshold: { number: 3, duration: 3000 },
+        slowDown: 1000,
+        refresh: 2000,
+      },
+    )
+
+    yield fork(runOutgoingMessageLoop, socket, defaultMessageChannel)
+    yield fork(runOutgoingMessageLoop, socket, antiFloodMessageChannel)
+  } finally {
+    console.log('[ended] socket/sendMessages')
+  }
+}
+
+export function* runOutgoingMessageLoop(
+  socket: Socket,
+  channel: Channel<RoutedAction>,
+) {
+  try {
+    console.log('[started] socket/runOutgoingMessageLoop')
+
     while (true) {
-      const action: SendRawMessageAction = yield take(predicate)
+      const action: SendRawMessageAction = yield take(channel)
 
-      // TODO will be call since we will use actionChannel
-      yield fork(SocketUtils.send, socket, action.payload.raw)
-
-      // TODO move to another saga?
+      // TODO refactoring: to remove
       if (action.embeddedAction !== undefined) {
         yield put(action.embeddedAction)
       }
+
+      yield fork(SocketUtils.send, socket, action.payload.raw)
     }
   } finally {
-    console.log('sendMessage: ended', serverKey)
+    console.log('[ended] socket/runOutgoingMessageLoop')
   }
 }
 
-export function* disconnectFromServer(socket: Socket, serverKey: string) {
-  console.log('disconnectFromServer: started', serverKey)
-
-  const predicate = (a: RoutedAction) =>
-    a.type === DISCONNECT_FROM_SERVER && a.route.serverKey === serverKey
-
+export function* disconnectFromServer(serverKey: string, socket: Socket) {
   try {
-    while (true) {
-      const action: DisconnectFromServerAction = yield take(predicate)
+    console.log('[started] socket/disconnectFromServer')
 
-      yield put(
-        OutgoingMessageActions.sendQuit(
-          action.route.serverKey,
-          action.payload.quitMessage,
-        ),
-      )
+    const predicate = (a: RoutedAction) =>
+      a.type === DISCONNECT_FROM_SERVER && a.route.serverKey === serverKey
 
-      yield call(SocketUtils.close, socket)
-    }
+    const action: DisconnectFromServerAction = yield take(predicate)
+
+    yield put(sendQuit(action.route.serverKey, action.payload.quitMessage))
+    yield fork(SocketUtils.close, socket)
   } finally {
-    console.log('disconnectFromServer: ended', serverKey)
+    console.log('[ended] socket/disconnectFromServer')
   }
 }
 
 export function createSocketChannel(serverKey: string, socket: Socket) {
   return eventChannel<RoutedAction>(emit => {
-    console.log('eventChannel: started', serverKey)
+    console.log('[started] socket/eventChannel')
+
     let buffer = ''
 
     socket.on('lookup', (error, address, family, host) => {
@@ -144,8 +202,7 @@ export function createSocketChannel(serverKey: string, socket: Socket) {
     })
 
     return () => {
-      // socket.end()
-      console.log('eventChannel: ended', serverKey)
+      console.log('[ended] socket/eventChannel')
     }
   })
 }
