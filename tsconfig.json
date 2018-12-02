@@ -19,7 +19,8 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "@app/*": ["src/*"]
+      "@app/*": ["src/*"],
+      "@util/*": ["util/*"]
     }
   },
   "exclude": ["node_modules/*", "dist/*"]

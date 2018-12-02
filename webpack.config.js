@@ -9,6 +9,7 @@ const resolve = {
   extensions: ['.ts', '.tsx', '.js'],
   alias: {
     '@app': path.resolve(__dirname, 'src'),
+    '@util': path.resolve(__dirname, 'util'),
   },
 }
 
