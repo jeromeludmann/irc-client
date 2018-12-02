@@ -2,13 +2,19 @@ import {
   ConnectionEstablishedAction,
   CONNECTION_ESTABLISHED,
 } from '@app/actions/socket'
-import { takeEvery, call, select, put } from 'redux-saga/effects'
+import { take, fork, call, select, put } from 'redux-saga/effects'
 import { sendUser, sendNick } from '@app/actions/messages/outgoing'
 import { ServerState } from '@app/state/server/reducer'
 import { getServerFactory } from '@app/state/server/selectors'
 
-export function* watch() {
-  yield takeEvery(CONNECTION_ESTABLISHED, registerToServer)
+export function* runRegister() {
+  while (true) {
+    const action: ConnectionEstablishedAction = yield take(
+      CONNECTION_ESTABLISHED,
+    )
+
+    yield fork(registerToServer, action)
+  }
 }
 
 export function* registerToServer(action: ConnectionEstablishedAction) {

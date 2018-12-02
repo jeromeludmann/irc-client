@@ -1,58 +1,29 @@
-import * as RegisterEffects from '../register'
-import {
-  CONNECTION_ESTABLISHED,
-  setConnectionEstablished,
-} from '@app/actions/socket'
-import { select, put, takeEvery, call } from 'redux-saga/effects'
-import { getServerFactory } from '@app/state/server/selectors'
+import { exploreSaga } from '@util/exploreSaga'
+import { setConnectionEstablished } from '@app/actions/socket'
+import { runRegister } from '../register'
 import { sendUser, sendNick } from '@app/actions/messages/outgoing'
+import { RootState, rootInitialState } from '@app/state/root/reducer'
 
-describe('register effects', () => {
-  const watch = RegisterEffects.watch()
-
-  it('should watch CONNECTION_ESTABLISHED', () => {
-    expect(watch.next().value).toEqual(
-      takeEvery(CONNECTION_ESTABLISHED, RegisterEffects.registerToServer),
-    )
-  })
-
-  it('should be done', () => {
-    expect(watch.next().done).toBeTruthy()
-  })
-})
-
-describe('register to server', () => {
-  const serverKey = 'serverKey'
-  const registerToServer = RegisterEffects.registerToServer(
-    setConnectionEstablished(serverKey),
+describe('run register', () => {
+  const output = exploreSaga<RootState>(
+    {
+      actions: [setConnectionEstablished('serverKey')],
+      state: rootInitialState,
+    },
+    runRegister,
   )
 
-  it('should get "getServer" selector', () => {
-    expect(registerToServer.next().value).toEqual(
-      call(getServerFactory, serverKey),
+  it('should dispatch send user', () => {
+    expect(output.actions).toContainEqual(
+      sendUser('serverKey', 'default_user', 'default_name'),
     )
   })
 
-  it('should get server state', () => {
-    const getServer = getServerFactory(serverKey)
-    expect(registerToServer.next(getServer).value).toEqual(select(getServer))
+  it('should dispatch send nick', () => {
+    expect(output.actions).toContainEqual(sendNick('serverKey', 'default_nick'))
   })
 
-  const server = { user: { nick: 'nick', user: 'user', real: 'real' } }
-
-  it('should send USER message', () => {
-    expect(registerToServer.next(server).value).toEqual(
-      put(sendUser(serverKey, server.user.user, server.user.real)),
-    )
-  })
-
-  it('should send NICK message', () => {
-    expect(registerToServer.next().value).toEqual(
-      put(sendNick(serverKey, server.user.nick)),
-    )
-  })
-
-  it('should be done', () => {
-    expect(registerToServer.next().done).toBeTruthy()
+  it('should match snapshot', () => {
+    expect(output.actions).toMatchSnapshot()
   })
 })
