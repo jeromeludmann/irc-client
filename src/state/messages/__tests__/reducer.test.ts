@@ -190,7 +190,7 @@ describe('reduce messages state', () => {
     expect(
       reduceMessages(
         messagesInitialState,
-        sendPongToServer('serverKey', 'key').embeddedAction!,
+        sendPongToServer('serverKey', 'key'),
         extraStates,
       ),
     ).toMatchSnapshot()
@@ -200,7 +200,7 @@ describe('reduce messages state', () => {
     expect(
       reduceMessages(
         messagesInitialState,
-        sendPrivmsg('serverKey', '#channel', 'hello').embeddedAction!,
+        sendPrivmsg('serverKey', '#channel', 'hello'),
         extraStates,
       ),
     ).toMatchSnapshot()

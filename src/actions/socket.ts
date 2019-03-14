@@ -44,10 +44,9 @@ export const disconnectFromServer = (
 
 export const SEND_RAW_MESSAGE = 'SOCKET/SEND_RAW_MESSAGE'
 
-export interface SendRawMessageAction<A = void>
+export interface SendRawMessageAction
   extends RoutedAction<typeof SEND_RAW_MESSAGE> {
   payload: { raw: string }
-  embeddedAction?: A
 }
 
 export const sendRawMessage = (

@@ -20,7 +20,6 @@ module.exports = {
     '@app/(.*)$': '<rootDir>/src/$1',
   },
   setupTestFrameworkScriptFile: '<rootDir>/jest.setup.ts',
-  collectCoverage: true,
   collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}'],
   coverageThreshold: {
     // global: getCoverage(REQUIRED_COVERAGE),
@@ -29,5 +28,4 @@ module.exports = {
     './src/state/': getCoverage(REQUIRED_COVERAGE),
     './src/effects/': getCoverage(REQUIRED_COVERAGE),
   },
-  verbose: true,
 }

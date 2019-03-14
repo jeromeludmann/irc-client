@@ -1,6 +1,7 @@
 import { Action } from 'redux'
-import { delay, channel, Channel, buffers, Predicate } from 'redux-saga'
-import { fork, take, call, actionChannel, put } from 'redux-saga/effects'
+import { channel, Channel, buffers } from 'redux-saga'
+import { fork, take, call, actionChannel, put, delay } from 'redux-saga/effects'
+import { Predicate } from '@redux-saga/types'
 import { setFlood } from '@app/actions/flood'
 import { getCurrentTime } from '@app/utils/time'
 import { push, shift } from '@app/utils/array'
@@ -47,7 +48,7 @@ export function* runAntiFlood(
     times,
   )
 
-  yield fork(notifyFloodStatus, parameters, times)
+  // yield fork(notifyFloodStatus, parameters, times)
 
   console.log('[ended] flood/runAntiFlood')
 }
