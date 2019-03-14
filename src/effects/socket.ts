@@ -6,7 +6,6 @@ import * as SocketUtils from '@app/utils/sockets'
 import {
   CONNECT_TO_SERVER,
   ConnectToServerAction,
-  SEND_RAW_MESSAGE,
   DISCONNECT_FROM_SERVER,
   SendRawMessageAction,
   DisconnectFromServerAction,
@@ -22,6 +21,7 @@ import {
   SEND_PRIVMSG,
   sendQuit,
   SendMessageAction,
+  SEND_MESSAGE,
 } from '@app/actions/messages/outgoing'
 import { createAntiFloodChannel } from './flood'
 
@@ -71,11 +71,6 @@ export function* runSocketWorkers(serverKey: string, socket: Socket) {
   }
 }
 
-const outgoingMessages: { [action: string]: { antiFlood: boolean } } = {
-  [SEND_PRIVMSG]: { antiFlood: true },
-  [SEND_RAW_MESSAGE]: { antiFlood: false },
-}
-
 export function* receiveMessages(serverKey: string, socket: Socket) {
   try {
     console.log('[started] socket/receiveMessages')
@@ -92,23 +87,25 @@ export function* receiveMessages(serverKey: string, socket: Socket) {
 }
 
 export function* sendMessages(serverKey: string, socket: Socket) {
+  const subjectToAntiFlood = [SEND_PRIVMSG]
+
   try {
     console.log('[started] socket/sendMessages')
 
     const defaultMessageChannel = yield actionChannel(
-      (action: RoutedAction) =>
-        action.type in outgoingMessages &&
-        !outgoingMessages[action.type].antiFlood &&
+      (action: SendMessageAction) =>
+        action.group === SEND_MESSAGE &&
+        !subjectToAntiFlood.includes(action.type) &&
         action.route.serverKey === serverKey,
 
       buffers.expanding(10),
     )
 
     const antiFloodMessageChannel = yield* createAntiFloodChannel(
-      (a: SendMessageAction) =>
-        a.type in outgoingMessages &&
-        outgoingMessages[a.type].antiFlood &&
-        a.route.serverKey === serverKey,
+      (action: SendMessageAction) =>
+        action.group === SEND_MESSAGE &&
+        subjectToAntiFlood.includes(action.type) &&
+        action.route.serverKey === serverKey,
 
       {
         threshold: { number: 3, duration: 3000 },
@@ -133,12 +130,6 @@ export function* runOutgoingMessageLoop(
 
     while (true) {
       const action: SendRawMessageAction = yield take(channel)
-
-      // TODO refactoring: to remove
-      if (action.embeddedAction !== undefined) {
-        yield put(action.embeddedAction)
-      }
-
       yield fork(SocketUtils.send, socket, action.payload.raw)
     }
   } finally {

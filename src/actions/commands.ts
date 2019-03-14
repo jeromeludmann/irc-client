@@ -17,6 +17,9 @@ import {
   sendNick,
   sendPingToServer,
   SendPingToServerAction,
+  SendJoinAction,
+  SendNickAction,
+  SendPartAction,
 } from '@app/actions/messages/outgoing'
 
 export interface Command {
@@ -85,7 +88,7 @@ export const commandRegistry: CommandRegistry = {
     description: 'Joins a channel',
     syntax: '<channel>',
     regexp: CHANNEL_REGEXP,
-    callback: (route, channel): SendRawMessageAction =>
+    callback: (route, channel): SendJoinAction =>
       sendJoin(route.serverKey, channel),
   },
 
@@ -93,7 +96,7 @@ export const commandRegistry: CommandRegistry = {
     description: 'Sends a message to a channel or a nick',
     syntax: '<channel or nick> <text>',
     regexp: /^(\S+)\s+(.+)$/,
-    callback: (route, channel, text): SendRawMessageAction<SendPrivmsgAction> =>
+    callback: (route, channel, text): SendPrivmsgAction =>
       sendPrivmsg(route.serverKey, channel, text),
   },
 
@@ -101,15 +104,14 @@ export const commandRegistry: CommandRegistry = {
     description: 'Changes the current nick',
     syntax: '<nick>',
     regexp: /^(\S+)$/,
-    callback: (route, nick): SendRawMessageAction =>
-      sendNick(route.serverKey, nick),
+    callback: (route, nick): SendNickAction => sendNick(route.serverKey, nick),
   },
 
   part: {
     description: 'Leaves the channel',
     syntax: '<channel> [text]',
     regexp: /^(\S+)(?:\s+(.+))?$/,
-    callback: (route, channel, text): SendRawMessageAction =>
+    callback: (route, channel, text): SendPartAction =>
       sendPart(route.serverKey, channel, text),
   },
 
@@ -117,7 +119,7 @@ export const commandRegistry: CommandRegistry = {
     description: 'Sends a ping',
     syntax: '',
     regexp: /\s*/,
-    callback: (route): SendRawMessageAction<SendPingToServerAction> =>
+    callback: (route): SendPingToServerAction =>
       sendPingToServer(route.serverKey),
   },
 

@@ -2,160 +2,154 @@
 
 exports[`outgoing messages actions should send JOIN 1`] = `
 Object {
+  "group": "MESSAGE/SEND_MESSAGE",
   "payload": Object {
+    "channel": "#channel",
     "raw": "JOIN #channel",
   },
   "route": Object {
     "bufferKey": "@none",
     "serverKey": "serverKey",
   },
-  "type": "SOCKET/SEND_RAW_MESSAGE",
+  "type": "MESSAGE/SEND_JOIN",
 }
 `;
 
 exports[`outgoing messages actions should send NICK 1`] = `
 Object {
+  "group": "MESSAGE/SEND_MESSAGE",
   "payload": Object {
+    "nick": "new_nick",
     "raw": "NICK new_nick",
   },
   "route": Object {
     "bufferKey": "@none",
     "serverKey": "serverKey",
   },
-  "type": "SOCKET/SEND_RAW_MESSAGE",
+  "type": "MESSAGE/SEND_NICK",
 }
 `;
 
 exports[`outgoing messages actions should send PART 1`] = `
 Object {
+  "group": "MESSAGE/SEND_MESSAGE",
   "payload": Object {
+    "channel": "#channel",
     "raw": "PART #channel",
+    "text": "",
   },
   "route": Object {
     "bufferKey": "@none",
     "serverKey": "serverKey",
   },
-  "type": "SOCKET/SEND_RAW_MESSAGE",
+  "type": "MESSAGE/SEND_PART",
 }
 `;
 
 exports[`outgoing messages actions should send PART with message 1`] = `
 Object {
+  "group": "MESSAGE/SEND_MESSAGE",
   "payload": Object {
+    "channel": "#channel",
     "raw": "PART #channel Goodbye!",
+    "text": "Goodbye!",
   },
   "route": Object {
     "bufferKey": "@none",
     "serverKey": "serverKey",
   },
-  "type": "SOCKET/SEND_RAW_MESSAGE",
+  "type": "MESSAGE/SEND_PART",
 }
 `;
 
 exports[`outgoing messages actions should send PING 1`] = `
 Object {
-  "embeddedAction": Object {
-    "payload": Object {
-      "key": 123456789,
-    },
-    "route": Object {
-      "bufferKey": "@status",
-      "serverKey": "serverKey",
-    },
-    "type": "MESSAGE/SEND_PING_TO_SERVER",
-  },
+  "group": "MESSAGE/SEND_MESSAGE",
   "payload": Object {
+    "key": 123456789,
     "raw": "PING 123456789",
   },
   "route": Object {
-    "bufferKey": "@none",
+    "bufferKey": "@status",
     "serverKey": "serverKey",
   },
-  "type": "SOCKET/SEND_RAW_MESSAGE",
+  "type": "MESSAGE/SEND_PING_TO_SERVER",
 }
 `;
 
 exports[`outgoing messages actions should send PONG 1`] = `
 Object {
-  "embeddedAction": Object {
-    "payload": Object {
-      "key": "key",
-    },
-    "route": Object {
-      "bufferKey": "@status",
-      "serverKey": "serverKey",
-    },
-    "type": "MESSAGE/SEND_PONG_TO_SERVER",
-  },
+  "group": "MESSAGE/SEND_MESSAGE",
   "payload": Object {
+    "key": "key",
     "raw": "PONG key",
   },
   "route": Object {
-    "bufferKey": "@none",
+    "bufferKey": "@status",
     "serverKey": "serverKey",
   },
-  "type": "SOCKET/SEND_RAW_MESSAGE",
+  "type": "MESSAGE/SEND_PONG_TO_SERVER",
 }
 `;
 
 exports[`outgoing messages actions should send PRIVMSG 1`] = `
 Object {
-  "embeddedAction": Object {
-    "payload": Object {
-      "text": "hello world",
-    },
-    "route": Object {
-      "bufferKey": "#channel",
-      "serverKey": "serverKey",
-    },
-    "type": "MESSAGE/SEND_PRIVMSG",
-  },
+  "group": "MESSAGE/SEND_MESSAGE",
   "payload": Object {
+    "channel": "#channel",
     "raw": "PRIVMSG #channel :hello world",
+    "text": "hello world",
   },
   "route": Object {
-    "bufferKey": "@none",
+    "bufferKey": "#channel",
     "serverKey": "serverKey",
   },
-  "type": "SOCKET/SEND_RAW_MESSAGE",
+  "type": "MESSAGE/SEND_PRIVMSG",
 }
 `;
 
 exports[`outgoing messages actions should send QUIT 1`] = `
 Object {
+  "group": "MESSAGE/SEND_MESSAGE",
   "payload": Object {
     "raw": "QUIT",
+    "text": "",
   },
   "route": Object {
     "bufferKey": "@none",
     "serverKey": "serverKey",
   },
-  "type": "SOCKET/SEND_RAW_MESSAGE",
+  "type": "MESSAGE/SEND_QUIT",
 }
 `;
 
 exports[`outgoing messages actions should send QUIT with message 1`] = `
 Object {
+  "group": "MESSAGE/SEND_MESSAGE",
   "payload": Object {
     "raw": "QUIT Goodbye!",
+    "text": "Goodbye!",
   },
   "route": Object {
     "bufferKey": "@none",
     "serverKey": "serverKey",
   },
-  "type": "SOCKET/SEND_RAW_MESSAGE",
+  "type": "MESSAGE/SEND_QUIT",
 }
 `;
 
 exports[`outgoing messages actions should send USER 1`] = `
 Object {
+  "group": "MESSAGE/SEND_MESSAGE",
   "payload": Object {
     "raw": "USER username 0 * :Real Name",
+    "realname": "Real Name",
+    "username": "username",
   },
   "route": Object {
     "bufferKey": "@none",
     "serverKey": "serverKey",
   },
-  "type": "SOCKET/SEND_RAW_MESSAGE",
+  "type": "MESSAGE/SEND_USER",
 }
 `;

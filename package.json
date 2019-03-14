@@ -1,12 +1,13 @@
 {
   "name": "irc-client",
   "version": "0.2.0",
-  "description": "IRC client. Written in TypeScript. Made with React, Redux, Node.js, Styled Components and Electron",
+  "description": "IRC client built with web technologies",
   "scripts": {
     "build": "webpack",
     "build:watch": "npm run build -- -w --progress --color",
     "test": "jest",
     "test:watch": "npm run test -- --watch",
+    "test:cover": "npm run test -- --collectCoverage",
     "test:check-coverage": "open coverage/lcov-report/index.html",
     "start": "electron dist/main.js",
     "clean": "rm -rf dist/ coverage/"

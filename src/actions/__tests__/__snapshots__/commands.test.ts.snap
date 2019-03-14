@@ -123,86 +123,78 @@ Object {
 
 exports[`commands actions should handle /join 1`] = `
 Object {
+  "group": "MESSAGE/SEND_MESSAGE",
   "payload": Object {
+    "channel": "#channel",
     "raw": "JOIN #channel",
   },
   "route": Object {
     "bufferKey": "@none",
     "serverKey": "serverKey",
   },
-  "type": "SOCKET/SEND_RAW_MESSAGE",
+  "type": "MESSAGE/SEND_JOIN",
 }
 `;
 
 exports[`commands actions should handle /msg 1`] = `
 Object {
-  "embeddedAction": Object {
-    "payload": Object {
-      "text": "hello",
-    },
-    "route": Object {
-      "bufferKey": "#channel",
-      "serverKey": "serverKey",
-    },
-    "type": "MESSAGE/SEND_PRIVMSG",
-  },
+  "group": "MESSAGE/SEND_MESSAGE",
   "payload": Object {
+    "channel": "#channel",
     "raw": "PRIVMSG #channel hello",
+    "text": "hello",
   },
   "route": Object {
-    "bufferKey": "@none",
+    "bufferKey": "#channel",
     "serverKey": "serverKey",
   },
-  "type": "SOCKET/SEND_RAW_MESSAGE",
+  "type": "MESSAGE/SEND_PRIVMSG",
 }
 `;
 
 exports[`commands actions should handle /nick 1`] = `
 Object {
+  "group": "MESSAGE/SEND_MESSAGE",
   "payload": Object {
+    "nick": "new_nick",
     "raw": "NICK new_nick",
   },
   "route": Object {
     "bufferKey": "@none",
     "serverKey": "serverKey",
   },
-  "type": "SOCKET/SEND_RAW_MESSAGE",
+  "type": "MESSAGE/SEND_NICK",
 }
 `;
 
 exports[`commands actions should handle /part 1`] = `
 Object {
+  "group": "MESSAGE/SEND_MESSAGE",
   "payload": Object {
+    "channel": "#channel",
     "raw": "PART #channel Goodbye!",
+    "text": "Goodbye!",
   },
   "route": Object {
     "bufferKey": "@none",
     "serverKey": "serverKey",
   },
-  "type": "SOCKET/SEND_RAW_MESSAGE",
+  "type": "MESSAGE/SEND_PART",
 }
 `;
 
 exports[`commands actions should handle /ping 1`] = `
 Object {
-  "embeddedAction": Object {
-    "payload": Object {
-      "key": 1536211245164,
-    },
-    "route": Object {
-      "bufferKey": "@status",
-      "serverKey": "serverKey",
-    },
-    "type": "MESSAGE/SEND_PING_TO_SERVER",
-  },
+  "group": "MESSAGE/SEND_MESSAGE",
   "payload": Object {
+    "key": 1536211245164,
     "raw": "PING 1536211245164",
   },
   "route": Object {
-    "bufferKey": "@none",
+    "bufferKey": "@status",
     "serverKey": "serverKey",
   },
-  "type": "SOCKET/SEND_RAW_MESSAGE",
+  "type": "MESSAGE/SEND_PING_TO_SERVER",
 }
 `;
 
