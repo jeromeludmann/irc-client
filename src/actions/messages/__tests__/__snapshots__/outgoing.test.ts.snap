@@ -56,7 +56,7 @@ exports[`outgoing messages actions should send PING 1`] = `
 Object {
   "embeddedAction": Object {
     "payload": Object {
-      "key": "key",
+      "key": 123456789,
     },
     "route": Object {
       "bufferKey": "@status",
@@ -65,7 +65,7 @@ Object {
     "type": "MESSAGE/SEND_PING_TO_SERVER",
   },
   "payload": Object {
-    "raw": "PING key",
+    "raw": "PING 123456789",
   },
   "route": Object {
     "bufferKey": "@none",

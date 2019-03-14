@@ -27,7 +27,7 @@ describe('outgoing messages actions', () => {
   })
 
   it('should send PING', () => {
-    expect(sendPingToServer('serverKey', 'key')).toMatchSnapshot()
+    expect(sendPingToServer('serverKey', 123456789)).toMatchSnapshot()
   })
 
   it('should send PONG', () => {
