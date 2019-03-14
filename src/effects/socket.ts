@@ -104,7 +104,7 @@ export function* sendMessages(serverKey: string, socket: Socket) {
       buffers.expanding(10),
     )
 
-    const antiFloodMessageChannel = yield createAntiFloodChannel(
+    const antiFloodMessageChannel = yield* createAntiFloodChannel(
       (a: SendMessageAction) =>
         a.type in outgoingMessages &&
         outgoingMessages[a.type].antiFlood &&

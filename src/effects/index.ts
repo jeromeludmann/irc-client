@@ -5,12 +5,12 @@ import * as PingReplyEffects from '@app/effects/pingReply'
 import * as CommandEffects from '@app/effects/command'
 import * as UiEffects from '@app/effects/ui'
 import * as LagEffects from '@app/effects/lag'
-import { socketHandler } from './socket'
+import { watchNewConnections } from './socket'
 
 export function* watch() {
   yield all([
     call(ParserEffects.watch),
-    call(socketHandler),
+    call(watchNewConnections),
     call(PingReplyEffects.watch),
     call(RegisterEffects.watch),
     call(CommandEffects.watch),
