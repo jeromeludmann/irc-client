@@ -9,6 +9,7 @@
     "test:watch": "npm run test -- --watch",
     "test:cover": "npm run test -- --collectCoverage",
     "test:check-coverage": "open coverage/lcov-report/index.html",
+    "coveralls": "jest --coverage && cat coverage/lcov.info | coveralls",
     "start": "electron dist/main.js",
     "clean": "rm -rf dist/ coverage/"
   },
@@ -42,6 +43,7 @@
     "@types/react-dom": "^16.0.5",
     "@types/react-redux": "^6.0.0",
     "circular-dependency-plugin": "^5.0.2",
+    "coveralls": "^3.0.3",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "jest": "^23.4.1",
