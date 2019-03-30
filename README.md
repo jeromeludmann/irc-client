@@ -8,6 +8,9 @@
                 RFC 1459/2812 client protocol
 ```
 
+[![Build Status](https://travis-ci.org/jeromeludmann/irc-client.svg?branch=develop)](https://travis-ci.org/jeromeludmann/irc-client)
+[![Coverage Status](https://coveralls.io/repos/github/jeromeludmann/irc-client/badge.svg?branch=develop)](https://coveralls.io/github/jeromeludmann/irc-client?branch=develop)
+
 Written in [TypeScript](https://github.com/Microsoft/TypeScript).
 
 Made with [React](https://github.com/facebook/react), [Redux](https://github.com/reduxjs/redux) [(Saga)](https://github.com/redux-saga/redux-saga), [Styled Components](https://github.com/styled-components/styled-components), [Node](https://github.com/nodejs/node) and [Electron](https://github.com/electron/electron).
