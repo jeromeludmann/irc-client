@@ -8,8 +8,8 @@
                 RFC 1459/2812 client protocol
 ```
 
-[![Build Status](https://travis-ci.org/jeromeludmann/irc-client.svg?branch=develop)](https://travis-ci.org/jeromeludmann/irc-client)
-[![Coverage Status](https://coveralls.io/repos/github/jeromeludmann/irc-client/badge.svg?branch=develop)](https://coveralls.io/github/jeromeludmann/irc-client?branch=develop)
+[![Build Status](https://travis-ci.org/jeromeludmann/irc-client-poc.svg?branch=develop)](https://travis-ci.org/jeromeludmann/irc-client-poc)
+[![Coverage Status](https://coveralls.io/repos/github/jeromeludmann/irc-client-poc/badge.svg?branch=develop)](https://coveralls.io/github/jeromeludmann/irc-client-poc?branch=develop)
 
 Written in [TypeScript](https://github.com/Microsoft/TypeScript).
 
